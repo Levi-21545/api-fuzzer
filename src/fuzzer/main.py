@@ -4,6 +4,8 @@ from typing import Iterable
 
 from fuzzer.model.endpoint import Endpoint
 
+from fuzzer.utils.writer import write_results, write_results_jsonl
+
 from fuzzer.cli.args import parse_args
 from fuzzer.cli.select import select_endpoints
 
@@ -66,10 +68,8 @@ async def async_main():
     # Garantir que o diretório de saída existe
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    if args.output_dir:
-        with open(args.output_dir / "results.txt", "w") as f:
-            # write as json
-            f.write(f"{results}\n")
+    write_results(results, args.output_dir)    
+    # write_results_jsonl(results, args.output_dir)    
 
     # # 6. Saída bruta (análise vem depois)
     # for result in results:
