@@ -1,6 +1,6 @@
 import sys
 from fuzzer.parser.openapi_parser import OpenAPIParser
-
+from fuzzer.generator.valid_generator import generate_valid_value
 
 def main():
     if len(sys.argv) < 3:
@@ -18,6 +18,9 @@ def main():
         print(f"{ep.method} {ep.path}")
         if ep.request_body:
             print(f"  request body: {ep.request_body}")
+            payload = generate_valid_value(ep.request_body)
+            print(ep.method, ep.path, payload)
+
         if ep.parameters:
             print(f"  parameters: {[p.name for p in ep.parameters]}")
         if ep.responses:
