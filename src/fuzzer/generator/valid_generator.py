@@ -2,7 +2,7 @@ import random
 import string
 from typing import Any
 
-from fuzzer.model.types import Schema
+from fuzzer.model.schema import Schema
 
 
 def generate_valid_value(schema: Schema) -> Any:

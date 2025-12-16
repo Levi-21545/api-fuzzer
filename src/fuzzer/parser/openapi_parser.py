@@ -1,6 +1,24 @@
 import yaml
 from typing import Dict, Any
-from fuzzer.model.types import APISpec, Endpoint, Parameter, Schema
+
+from fuzzer.model.api_spec import APISpec
+from fuzzer.model.endpoint import Endpoint
+from fuzzer.model.parameter import Parameter
+from fuzzer.model.request_body import RequestBody
+from fuzzer.model.schema import Schema
+
+from fuzzer.model.http import HttpMethod
+
+
+def parse_openapi(spec_path: str) -> APISpec:
+    """
+    Facade function to parse an OpenAPI specification file.
+
+    This function exists to decouple the CLI/orchestrator layer
+    from the concrete OpenAPIParser implementation.
+    """
+    parser = OpenAPIParser(spec_path)
+    return parser.parse()
 
 
 class OpenAPIParser:
@@ -9,23 +27,44 @@ class OpenAPIParser:
             self.raw = yaml.safe_load(f)
 
     def parse(self) -> APISpec:
-        base_url = self.raw["servers"][0]["url"]
+        base_urls = self._parse_servers(self.raw)
         endpoints = []
 
         for path, methods in self.raw.get("paths", {}).items():
+            path_servers = self._parse_servers(methods)
+
             for method, data in methods.items():
+                if method.lower() not in {"get", "post", "put", "patch", "delete"}:
+                    continue
+
+                operation_servers = self._parse_servers(data)
+
+                servers = (
+                    operation_servers
+                    or path_servers
+                    or None
+                )
+
                 endpoints.append(
                     Endpoint(
                         path=path,
-                        method=method.upper(),
+                        method=HttpMethod(method.upper()),
                         parameters=self._parse_parameters(data),
                         request_body=self._parse_request_body(data),
                         responses=self._parse_responses(data),
+                        servers=servers,
                     )
                 )
 
-        return APISpec(base_url=base_url, endpoints=endpoints)
+        return APISpec(base_urls=base_urls, endpoints=endpoints)
 
+    @staticmethod
+    def _parse_servers(data: Dict[str, Any]) -> list[str]:
+        servers = data.get("servers")
+        if not servers:
+            return []
+        return [s["url"] for s in servers]
+    
     def _parse_parameters(self, data: Dict[str, Any]):
         params = []
         for p in data.get("parameters", []):
@@ -45,12 +84,17 @@ class OpenAPIParser:
             return None
 
         content = body.get("content", {})
-        if "application/json" not in content:
-            return None
 
-        schema = content["application/json"].get("schema", {})
-        return self._parse_schema(schema)
+        if "application/json" in content:
+            request_body = RequestBody(
+                content_type="application/json",
+                schema=self._parse_schema(content["application/json"]["schema"]),
+            )
+        else:
+            request_body = None
 
+        return request_body
+    
     def _parse_responses(self, data: Dict[str, Any]):
         responses = {}
         for status, r in data.get("responses", {}).items():
