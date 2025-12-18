@@ -18,6 +18,12 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--auth",
+        type=Path,
+        help="Path for authentication configuration file (YAML)"
+    )
+
+    parser.add_argument(
         "--level",
         type=int,
         default=1,

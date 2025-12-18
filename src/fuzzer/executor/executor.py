@@ -13,9 +13,11 @@ class Executor:
         self,
         spec: APISpec,
         override_base_url: Optional[str] = None,
+        override_headers: Optional[dict[str, str]] = None,
     ):
         self.spec = spec
         self.override_base_url = override_base_url
+        self.override_headers = override_headers
         self.client = httpx.AsyncClient()
 
     async def execute(
@@ -26,6 +28,9 @@ class Executor:
     ) -> ExecutionResult:
         base_url = self._resolve_base_url(endpoint)
         url = f"{base_url.rstrip('/')}{endpoint.path}"
+
+        if self.override_headers:
+            headers = self.override_headers
 
         start = time.perf_counter()
 
