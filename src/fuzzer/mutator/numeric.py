@@ -3,17 +3,17 @@ from fuzzer.model.schema import Schema
 
 
 class NumericMutator(Mutator):
-    def mutate(self, value: int | float, schema: Schema) -> list[int | float]:
+    def mutate(self, baseline: int | float, schema: Schema) -> list[int | float]:
         mutations = []
 
-        if value is None:
+        if baseline is None:
             return mutations
 
         mutations.extend([
             -1,
             0,
-            value + 1,
-            value - 1,
+            baseline + 1,
+            baseline - 1,
             2**31,
         ])
 

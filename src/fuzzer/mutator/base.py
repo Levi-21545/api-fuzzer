@@ -6,7 +6,7 @@ from fuzzer.model.schema import Schema
 
 class Mutator(ABC):
     @abstractmethod
-    def mutate(self, value: Any, schema: Schema) -> list[Any]:
+    def mutate(self, baseline: Any, schema: Schema) -> list[Any]:
         ...
 
     def _invalid_value_for(self, schema: Schema) -> Any:

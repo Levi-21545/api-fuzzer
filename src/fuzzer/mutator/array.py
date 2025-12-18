@@ -8,47 +8,58 @@ from fuzzer.mutator.base import Mutator as BaseMutator
 class ArrayMutator(BaseMutator):
     """
     Mutations for array schemas.
-    Focuses on size constraints and item validity.
+    Focuses on size constraints, item validity and structure.
     """
 
-    def mutate(self, schema: Schema) -> list[Any]:
+    def mutate(self, baseline: Any, schema: Schema) -> list[Any]:
         mutations: list[Any] = []
 
         item_schema = schema.items
-        if not item_schema:
-            return [[]]
-
         min_items = schema.min_items or 0
         max_items = schema.max_items
 
-        # 1. Array válido mínimo
-        valid_size = max(min_items, 1)
-        valid_array = [
-            generate_valid_value(item_schema)
-            for _ in range(valid_size)
-        ]
-        mutations.append(valid_array)
+        # Garantir baseline utilizável
+        if isinstance(baseline, list):
+            base_array = list(baseline)
+        else:
+            base_array = []
 
-        # 2. Array vazio (se viola minItems)
+        # 1. Baseline como mutação válida
+        if base_array:
+            mutations.append(base_array)
+
+        # 2. Array mínimo válido
+        if item_schema:
+            size = max(min_items, 1)
+            mutations.append(
+                [generate_valid_value(item_schema) for _ in range(size)]
+            )
+
+        # 3. Violação: array vazio
         if min_items > 0:
             mutations.append([])
 
-        # 3. Array grande demais (se maxItems existir)
-        if max_items is not None:
-            oversized = [
-                generate_valid_value(item_schema)
-                for _ in range(max_items + 1)
-            ]
-            mutations.append(oversized)
+        # 4. Violação: array grande demais
+        if max_items is not None and item_schema:
+            mutations.append(
+                [generate_valid_value(item_schema) for _ in range(max_items + 1)]
+            )
 
-        # 4. Item com tipo inválido
-        invalid_item = self._invalid_value_for(item_schema)
-        mutations.append([invalid_item])
+        # 5. Violação: item com tipo inválido
+        if item_schema:
+            mutated = list(base_array) or [generate_valid_value(item_schema)]
+            mutated[0] = self._invalid_value_for(item_schema)
+            mutations.append(mutated)
 
-        # 5. Item null
-        mutations.append([None])
+        # 6. Violação: item nulo
+        if base_array:
+            mutated = list(base_array)
+            mutated[0] = None
+            mutations.append(mutated)
+        elif item_schema:
+            mutations.append([None])
 
-        # 6. Estrutura errada (objeto no lugar de array)
+        # 7. Violação estrutural
         mutations.append({"not": "an array"})
 
         return mutations
