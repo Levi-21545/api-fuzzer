@@ -25,6 +25,12 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--max",
+        type=int,
+        help="Maximum number of mutations per payload"
+    )
+
+    parser.add_argument(
         "--limit",
         type=int,
         help="Maximum number of endpoints to execute"

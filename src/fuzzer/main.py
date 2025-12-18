@@ -48,7 +48,7 @@ async def async_main():
         print("No endpoints selected. Exiting.")
         return
     
-    mutation_engine = MutationEngine(level=args.level, max_mutations=20)
+    mutation_engine = MutationEngine(level=args.level, max_mutations=args.max)
 
     # 3. Planejamento das execuções
     execution_plan = list(build_execution_plan(selected_endpoints, mutation_engine))

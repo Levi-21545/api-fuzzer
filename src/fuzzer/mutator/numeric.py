@@ -1,20 +1,13 @@
+from fuzzer.mutator.mutation_operation import MutationOp
 from fuzzer.mutator.base import Mutator
 from fuzzer.model.schema import Schema
 
 
 class NumericMutator(Mutator):
-    def mutate(self, baseline: int | float, schema: Schema) -> list[int | float]:
-        mutations = []
-
-        if baseline is None:
-            return mutations
-
-        mutations.extend([
-            -1,
-            0,
-            baseline + 1,
-            baseline - 1,
-            2**31,
-        ])
-
-        return mutations
+    def mutate(self, path: tuple[str, ...], schema: Schema) -> list[MutationOp]:
+        return [
+            MutationOp(path, "replace", -1),
+            MutationOp(path, "replace", 0),
+            MutationOp(path, "replace", "NaN"),
+            MutationOp(path, "delete"),
+        ]
