@@ -18,6 +18,13 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--level",
+        type=int,
+        default=1,
+        help="Fuzzing level (0 for no mutations, higher for more aggressive fuzzing)"
+    )
+
+    parser.add_argument(
         "--limit",
         type=int,
         help="Maximum number of endpoints to execute"

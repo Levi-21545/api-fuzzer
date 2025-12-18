@@ -3,13 +3,15 @@ from typing import Any
 
 from fuzzer.model.endpoint import Endpoint
 from fuzzer.model.schema import Schema
-from fuzzer.model.parameter import Parameter
 
 from fuzzer.generator.valid_generator import generate_valid_value
+
+from fuzzer.mutator.engine import MutationEngine
 
 
 def generates_payloads(
     endpoint: Endpoint,
+    mutation_engine: MutationEngine,
 ) -> Generator[tuple[str | None, dict[str, str]], None, None]:
     """
     Generate payloads and headers for a given endpoint,
@@ -19,34 +21,37 @@ def generates_payloads(
         (payload, headers)
     """
 
-    headers: dict[str, str] = {}
+    base_headers: dict[str, str] = {}
 
     # 1. Content-Type vindo do requestBody
     if endpoint.request_body:
-        headers["Content-Type"] = endpoint.request_body.content_type
+        base_headers["Content-Type"] = endpoint.request_body.content_type
 
     # 2. Headers definidos como parameters
     for param in endpoint.parameters:
         if param.location != "header":
             continue
 
-        headers[param.name] = _generate_header_value(param.schema)
+        base_headers[param.name] = _generate_header_value(param.schema)
 
-    # 3. Payload
+    # 3. Sem request body
     if endpoint.request_body is None:
-        yield None, headers
+        yield None, base_headers
         return
+    
+    print("Generating mutated payloads...")
 
-    payload = _build_payload_from_schema(endpoint.request_body.schema)
-    yield payload, headers
+    # 4. Payloads mutados
+    payloads = mutation_engine.generate(endpoint.request_body.schema)
 
+    print(f"Generated {len(payloads)} payloads for endpoint {endpoint.path} [{endpoint.method}]")
+
+    for payload in payloads:
+        # copia defensiva: headers não devem ser mutados entre execuções
+        headers = dict(base_headers)
+        yield payload, headers
+    
 
 def _generate_header_value(schema: Schema) -> str:
     value = generate_valid_value(schema)
     return str(value)
-
-def _build_payload_from_schema(schema: Schema) -> Any:
-    """
-    Recursively build a valid payload based on a Schema.
-    """
-    return generate_valid_value(schema)
