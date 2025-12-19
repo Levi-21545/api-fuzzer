@@ -25,19 +25,19 @@ def write_results_jsonl(results, output_dir: Path):
             f.write(json.dumps(result.to_dict(), ensure_ascii=False) + "\n")
 
 def write_execution_plan(
-    execution_plan: list[tuple[Endpoint, Any | None, dict[str, str]]],
+    execution_plan: list[tuple[Endpoint, str, Any | None, dict[str, str]]],
     output_dir: Path,
 ) -> None:
     output_file = output_dir / ("execution_plan" + timestamp() + ".json")
 
     serialized = []
 
-    for endpoint, payload, headers in execution_plan:
+    for endpoint, path, payload, headers in execution_plan:
         serialized.append(
             {
                 "endpoint_id": f"{endpoint.method.value} {endpoint.path}",
                 "method": endpoint.method.value,
-                "path": endpoint.path,
+                "path": path,
                 "payload": payload,
                 "headers": headers,
             }

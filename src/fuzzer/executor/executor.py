@@ -23,11 +23,12 @@ class Executor:
     async def execute(
         self,
         endpoint: Endpoint,
+        path: str,
         payload: str | None,
         headers: dict[str, str],
     ) -> ExecutionResult:
         base_url = self._resolve_base_url(endpoint)
-        url = f"{base_url.rstrip('/')}{endpoint.path}"
+        url = f"{base_url.rstrip('/')}{path}"
 
         if self.override_headers:
             headers = self.override_headers

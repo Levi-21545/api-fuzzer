@@ -1,42 +1,41 @@
 from collections.abc import Generator
-from typing import Any
 
 from fuzzer.model.endpoint import Endpoint
 from fuzzer.model.schema import Schema
 
 from fuzzer.generator.valid_generator import generate_valid_value
-
 from fuzzer.mutator.engine import MutationEngine
+
+from fuzzer.utils.helpers import uuid4
 
 
 def generates_payloads(
     endpoint: Endpoint,
     mutation_engine: MutationEngine,
-) -> Generator[tuple[str | None, dict[str, str]], None, None]:
+) -> Generator[tuple[str, dict[str, str], dict | None], None, None]:
     """
-    Generate payloads and headers for a given endpoint,
+    Generate path, payloads and headers for a given endpoint,
     strictly guided by the OpenAPI contract.
 
     Yields:
-        (payload, headers)
+        (resolved_path, headers, payload)
     """
 
-    base_headers: dict[str, str] = {}
+    headers: dict[str, str] = {}
+    path = _resolve_path(endpoint)
 
-    # 1. Content-Type vindo do requestBody
+    # 1. Content-Type
     if endpoint.request_body:
-        base_headers["Content-Type"] = endpoint.request_body.content_type
+        headers["Content-Type"] = endpoint.request_body.content_type
 
-    # 2. Headers definidos como parameters
+    # 2. Headers declarados no schema
     for param in endpoint.parameters:
-        if param.location != "header":
-            continue
+        if param.location == "header":
+            headers[param.name] = _generate_header_value(param.schema)
 
-        base_headers[param.name] = _generate_header_value(param.schema)
-
-    # 3. Sem request body
+    # 3. Endpoint sem body
     if endpoint.request_body is None:
-        yield None, base_headers
+        yield path, headers, None
         return
     
     print("Generating mutated payloads...")
@@ -46,12 +45,21 @@ def generates_payloads(
 
     print(f"Generated {len(payloads)} payloads for endpoint {endpoint.path} [{endpoint.method}]")
 
+    # Payloads mutados
     for payload in payloads:
-        # copia defensiva: headers não devem ser mutados entre execuções
-        headers = dict(base_headers)
-        yield payload, headers
+        yield path, dict(headers), payload  # cópia defensiva
     
 
 def _generate_header_value(schema: Schema) -> str:
-    value = generate_valid_value(schema)
-    return str(value)
+    return str(generate_valid_value(schema))
+
+def _resolve_path(endpoint: Endpoint) -> str:
+    path = endpoint.path
+
+    for param in endpoint.parameters:
+        if param.location == "path":
+            # value = generate_valid_value(param.schema)
+            value = uuid4()
+            path = path.replace(f"{{{param.name}}}", str(value))
+
+    return path

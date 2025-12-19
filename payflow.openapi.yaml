@@ -26,8 +26,8 @@ paths:
                 - email
                 - password
             example:
-              email: levi@tuamaeaquelaursa.com
-              password: Senhateste123#
+              email: test@example.com
+              password: secret123
       responses:
         '200':
           description: ''
@@ -53,8 +53,10 @@ paths:
               properties:
                 email:
                   type: string
+                  format: email
                 password:
                   type: string
+                  minLength: 6
                 first_name:
                   type: string
                 last_name:
@@ -65,10 +67,10 @@ paths:
                 - first_name
                 - last_name
             example:
-              email: helena-de-lima@tuamaeaquelaursa.com
-              password: Senhateste123#
+              email: test@example.com
+              password: secret123
               first_name: Levi
-              last_name: Gomes
+              last_name: Deus
       responses:
         '200':
           description: ''
@@ -257,6 +259,7 @@ paths:
                       type: string
                     email:
                       type: string
+                      format: email
                     phone:
                       type: string
                     taxIdType:
@@ -313,6 +316,7 @@ paths:
                   type: string
                 email:
                   type: string
+                  format: email
                 phone:
                   type: string
                 taxIdType:
@@ -393,6 +397,7 @@ paths:
                   type: string
                 email:
                   type: string
+                  format: email
                 phone:
                   type: string
                 taxIdType:
@@ -543,6 +548,7 @@ paths:
                       type: string
                     email:
                       type: string
+                      format: email
                     phone:
                       type: string
                     country:
@@ -602,6 +608,7 @@ paths:
                   type: string
                 email:
                   type: string
+                  format: email
                 phone:
                   type: string
                 country:
@@ -696,6 +703,7 @@ paths:
                   type: string
                 email:
                   type: string
+                  format: email
                 phone:
                   type: string
                 country:
@@ -807,8 +815,16 @@ paths:
                       type: string
                     currency:
                       type: string
+                      enum:
+                        - BRL
+                        - USD
+                        - EUR
                     paymentMethod:
                       type: string
+                      enum:
+                        - pix
+                        - boleto
+                        - cartao
                     billingCycle:
                       type: string
                       enum:
@@ -864,8 +880,16 @@ paths:
                   type: string
                 currency:
                   type: string
+                  enum:
+                    - BRL
+                    - USD
+                    - EUR
                 paymentMethod:
                   type: string
+                  enum:
+                    - pix
+                    - boleto
+                    - cartao
                 billingCycle:
                   type: string
                   enum:
@@ -911,8 +935,16 @@ paths:
                     type: string
                   currency:
                     type: string
+                    enum:
+                      - BRL
+                      - USD
+                      - EUR
                   paymentMethod:
                     type: string
+                    enum:
+                      - pix
+                      - boleto
+                      - cartao
                   billingCycle:
                     type: string
                     enum:
@@ -1005,8 +1037,16 @@ paths:
                   type: string
                 currency:
                   type: string
+                  enum:
+                    - BRL
+                    - USD
+                    - EUR
                 paymentMethod:
                   type: string
+                  enum:
+                    - pix
+                    - boleto
+                    - cartao
                 billingCycle:
                   type: string
                   enum:
@@ -2187,6 +2227,7 @@ components:
           type: string
         email:
           type: string
+          format: email
         phone:
           type: string
         country:
@@ -2275,6 +2316,7 @@ components:
           type: string
         email:
           type: string
+          format: email
         phone:
           type: string
         taxIdType:
@@ -2327,8 +2369,16 @@ components:
                 type: string
               currency:
                 type: string
+                enum:
+                  - BRL
+                  - USD
+                  - EUR
               paymentMethod:
                 type: string
+                enum:
+                  - pix
+                  - boleto
+                  - cartao
             required:
               - id
               - gateway
@@ -2401,8 +2451,16 @@ components:
           type: string
         currency:
           type: string
+          enum:
+            - BRL
+            - USD
+            - EUR
         paymentMethod:
           type: string
+          enum:
+            - pix
+            - boleto
+            - cartao
         billingCycle:
           type: string
           enum:
@@ -2875,8 +2933,10 @@ components:
           description: ID
         email:
           type: string
+          format: email
         password:
           type: string
+          minLength: 6
         first_name:
           type: string
         last_name:

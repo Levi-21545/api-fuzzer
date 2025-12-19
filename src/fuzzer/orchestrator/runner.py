@@ -14,23 +14,25 @@ class ExecutionRunner:
     async def _run_one(
         self,
         endpoint: Endpoint,
+        path: str,
         payload: str | None,
         headers: dict[str, str],
     ) -> ExecutionResult:
         async with self.semaphore:
             return await self.executor.execute(
                 endpoint=endpoint,
+                path=path,
                 payload=payload,
                 headers=headers,
             )
 
     async def run(
         self,
-        tasks: Iterable[tuple[Endpoint, str | None, dict[str, str]]],
+        tasks: Iterable[tuple[Endpoint, str, str | None, dict[str, str]]],
     ) -> list[ExecutionResult]:
         coroutines = [
-            self._run_one(endpoint, payload, headers)
-            for endpoint, payload, headers in tasks
+            self._run_one(endpoint, path, payload, headers)
+            for endpoint, path, payload, headers in tasks
         ]
 
         results = await asyncio.gather(*coroutines)
