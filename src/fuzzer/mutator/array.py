@@ -16,22 +16,21 @@ class ArrayMutator(Mutator):
         mutations: list[MutationOp] = []
 
         item_schema = schema.items
-        min_items = schema.min_items or 0
-        max_items = schema.max_items
+        if item_schema is None:
+            return []
 
-        # 1. Array válido mínimo
-        valid_size = max(min_items, 1)
-        valid_array = (
-            [generate_valid_value(item_schema) for _ in range(valid_size)]
-            if item_schema
-            else []
-        )
+        min_items = getattr(schema, "minItems", None)
+        max_items = getattr(schema, "maxItems", None)
 
+        min_items = min_items if isinstance(min_items, int) else 0
+
+        # 1. array válido mínimo
+        size = max(min_items, 1)
         mutations.append(
             MutationOp(
                 path=path,
                 op="replace",
-                value=valid_array,
+                value=[generate_valid_value(item_schema) for _ in range(size)],
             )
         )
 
@@ -46,7 +45,7 @@ class ArrayMutator(Mutator):
             )
 
         # 3. Array grande demais
-        if max_items is not None and item_schema:
+        if isinstance(max_items, int):
             oversized = [
                 generate_valid_value(item_schema)
                 for _ in range(max_items + 1)

@@ -7,6 +7,7 @@ class NumericMutator(Mutator):
     def mutate(self, path: tuple[str, ...], schema: Schema) -> list[MutationOp]:
         return [
             MutationOp(path, "replace", -1),
+            MutationOp(path, "replace", +1),
             MutationOp(path, "replace", 0),
             MutationOp(path, "replace", "NaN"),
             MutationOp(path, "delete"),

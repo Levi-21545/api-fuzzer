@@ -126,7 +126,7 @@ class OpenAPIParser:
             "pattern",
         ):
             if key in raw:
-                schema.constraints[key] = raw[key]
+                schema.constraints[key] = raw.get(key)
 
         if schema.type == "object":
             for prop, sub in raw.get("properties", {}).items():

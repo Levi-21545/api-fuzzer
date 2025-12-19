@@ -1,8 +1,8 @@
-import random
-import string
 from typing import Any
 
 from fuzzer.model.schema import Schema
+
+from fuzzer.utils.helpers import uuid4, email, datetime
 
 
 def generate_valid_value(schema: Schema) -> Any:
@@ -30,6 +30,13 @@ def generate_valid_value(schema: Schema) -> Any:
 def _string(schema: Schema) -> str:
     if schema.constraints and "enum" in schema.constraints:
         return schema.constraints["enum"][0]
+    
+    if schema.format == "uuid":
+        return uuid4()
+    if schema.format == "email":
+        return email()
+    if schema.format == "date-time":
+        return datetime()
 
     min_len = schema.constraints.get("minLength", 1) if schema.constraints else 1
     max_len = schema.constraints.get("maxLength", min_len + 5) if schema.constraints else min_len + 5
