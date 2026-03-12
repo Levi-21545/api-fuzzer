@@ -53,9 +53,10 @@ async def resolve_auth_headers(auth_config_path: Path) -> dict[str, str]:
     for name, path in response_cfg["extract"].items():
         extracted[name] = _extract_by_path(data, path)
 
-    # 2. Monta headers finais
+    # 2. Monta headers finais (se existir seção de headers)
+    headers_cfg = inject_cfg.get("headers", {}) or {}
     headers: dict[str, str] = {}
-    for header_name, template in inject_cfg['headers'].items():
+    for header_name, template in headers_cfg.items():
         headers[header_name] = str(template).format(**extracted)
 
     return headers

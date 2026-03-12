@@ -1,5 +1,6 @@
 import asyncio
 from collections.abc import Iterable
+from typing import Any
 
 from fuzzer.executor.executor import Executor
 from fuzzer.executor.result import ExecutionResult
@@ -15,7 +16,7 @@ class ExecutionRunner:
         self,
         endpoint: Endpoint,
         path: str,
-        payload: str | None,
+        payload: Any | None,
         headers: dict[str, str],
     ) -> ExecutionResult:
         async with self.semaphore:
@@ -28,7 +29,7 @@ class ExecutionRunner:
 
     async def run(
         self,
-        tasks: Iterable[tuple[Endpoint, str, str | None, dict[str, str]]],
+        tasks: Iterable[tuple[Endpoint, str, Any | None, dict[str, str]]],
     ) -> list[ExecutionResult]:
         coroutines = [
             self._run_one(endpoint, path, payload, headers)

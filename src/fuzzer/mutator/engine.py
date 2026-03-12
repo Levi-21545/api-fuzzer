@@ -1,4 +1,4 @@
-from typing import Any, Iterable
+from typing import Any, Iterable, Optional
 from itertools import combinations
 from copy import deepcopy
 
@@ -9,9 +9,9 @@ from fuzzer.mutator.mutation_operation import MutationOp
 
 
 class MutationEngine:
-    def __init__(self, level: int, max_mutations: int = 20):
+    def __init__(self, level: int, max_mutations: Optional[int] = 20):
         self.level = level
-        self.max_mutations = max_mutations
+        self.max_mutations: Optional[int] = max_mutations
 
     def generate(self, target_schema: Schema) -> list[Any]:
         baseline = generate_valid_value(target_schema)
@@ -37,7 +37,7 @@ class MutationEngine:
         for payload in self.generate_level2_payloads(baseline, level1_ops):
             payloads.append(payload)
 
-            if len(payloads) >= self.max_mutations:
+            if self.max_mutations is not None and len(payloads) >= self.max_mutations:
                 break
 
         return payloads

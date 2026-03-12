@@ -4,7 +4,7 @@ from typing import List, Optional
 from fuzzer.model.http import HttpMethod
 from fuzzer.model.parameter import Parameter
 from fuzzer.model.request_body import RequestBody
-from fuzzer.model.response import Response
+from fuzzer.model.schema import Schema
 
 
 @dataclass
@@ -13,7 +13,7 @@ class Endpoint:
     method: HttpMethod
     parameters: List[Parameter]
     request_body: Optional[RequestBody]
-    responses: dict[int, Response]
+    responses: dict[str, Schema]
     servers: Optional[List[str]] = None
 
     @property

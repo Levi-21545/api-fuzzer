@@ -221,4 +221,7 @@ __marimo__/
 # Output directories
 output/
 
+# Docs directories
+docs/descricao/
+
 *.DS_Store

@@ -64,10 +64,12 @@ auth:
 ```
 
 ## Saídas
-Os resultados são gravados no diretório `output/`:
+Cada execução cria uma pasta em `output/<timestamp>/` contendo:
 
-`execution_plan*.json`: plano de execução gerado
-`results*.json`: resultados da execução
+- `execution_plan.json`: plano de execução gerado
+- `results.json`: resultados brutos de execução
+- `analysis_report.md`: resumo leve dos achados (para desenvolvimento)
+- `analysis_findings.json`: lista de achados com campos principais
 
 ## Estrutura (resumo)
 `fuzzer/main.py`: fluxo principal da execução

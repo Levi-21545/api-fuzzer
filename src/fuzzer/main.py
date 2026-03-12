@@ -1,6 +1,11 @@
 import asyncio
 
-from fuzzer.utils.writer import write_results, write_results_jsonl, write_execution_plan
+from fuzzer.utils.writer import (
+    write_results,
+    write_results_jsonl,
+    write_execution_plan,
+    write_analysis_report,
+)
 
 from fuzzer.cli.args import parse_args
 from fuzzer.cli.select import select_endpoints
@@ -13,9 +18,17 @@ from fuzzer.parser.openapi_parser import parse_openapi
 from fuzzer.mutator.engine import MutationEngine
 from fuzzer.executor.executor import Executor
 
+from fuzzer.analysis.analyzer import Analyzer
+from fuzzer.utils.helpers import timestamp
+
 
 async def async_main():
     args = parse_args()
+
+    # 0. Define pasta da execução (por timestamp)
+    run_id = timestamp().lstrip("_")
+    run_dir = args.output_dir / run_id
+    print(f"Output directory for this run: {run_dir}")
 
     # 1. Parse do contrato OpenAPI
     api_spec = parse_openapi(args.schema)
@@ -36,14 +49,13 @@ async def async_main():
 
     # 3. Planejamento das execuções
     execution_plan = list(build_execution_plan(selected_endpoints, mutation_engine))
-    write_execution_plan(execution_plan, args.output_dir)
+    write_execution_plan(execution_plan, run_dir)
     print(f"Generated {len(execution_plan)} requests to be executed.")
+   
     print("Starting execution...")
 
     # Obtém headers adicionais, se houver
-    headers = {}
-    if args.auth:
-        headers = await resolve_auth_headers(args.auth)
+    headers = await resolve_auth_headers(args.auth) if args.auth else {}
 
     # 4. Executor + Orquestrador
     executor = Executor(
@@ -62,15 +74,19 @@ async def async_main():
 
     print("Execution completed.")
 
-    # Garantir que o diretório de saída existe
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    # 6. Análise dos Resultados
+    print("Analyzing results...")
+    analyzer = Analyzer(api_spec)
+    analysis_results = analyzer.analyze_all(results, execution_plan)
+    print(f"Found {len(analysis_results)} anomalies.")
 
-    write_results(results, args.output_dir)    
+    # 7. Relatório leve de análise
+    report_md, report_json = write_analysis_report(analysis_results, run_dir)
+    print(f"Analysis report saved: {report_md}")
+    print(f"Findings JSON saved: {report_json}")
+
+    write_results(results, run_dir)
     # write_results_jsonl(results, args.output_dir)    
-
-    # # 6. Saída bruta (análise vem depois)
-    # for result in results:
-    #     print(result)
 
 
 def main():

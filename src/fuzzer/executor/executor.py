@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 import httpx
 import time
@@ -24,14 +24,17 @@ class Executor:
         self,
         endpoint: Endpoint,
         path: str,
-        payload: str | None,
+        payload: Any | None,
         headers: dict[str, str],
     ) -> ExecutionResult:
         base_url = self._resolve_base_url(endpoint)
         url = f"{base_url.rstrip('/')}{path}"
 
+        final_headers: dict[str, str] = {}
+        if headers:
+            final_headers.update(headers)
         if self.override_headers:
-            headers = self.override_headers
+            final_headers.update(self.override_headers)
 
         start = time.perf_counter()
 
@@ -40,7 +43,7 @@ class Executor:
                 method=endpoint.method.value,
                 url=url,
                 json=payload,
-                headers=headers,
+                headers=final_headers,
             )
 
             elapsed_ms = (time.perf_counter() - start) * 1000
