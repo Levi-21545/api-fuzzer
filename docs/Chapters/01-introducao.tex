@@ -1,0 +1,40 @@
+% PCC – Introdução
+\section{Introdução}
+APIs REST tornaram-se parte essencial da infraestrutura de sistemas modernos, conectando serviços, aplicações
+web e dispositivos móveis. Nesse cenário, falhas de robustez e inconsistências entre o comportamento da API e o
+contrato publicado impactam diretamente a confiabilidade de integrações e o custo de manutenção. Embora testes
+funcionais tradicionais sejam eficazes para validar cenários felizes (happy path), eles frequentemente deixam de
+exercitar valores-limite, formatos inválidos e combinações pouco usuais de parâmetros, que são justamente as
+situações em que falhas sutis tendem a se manifestar.
+
+O uso de contratos formais, como a especificação OpenAPI (versões 3.0 e 3.1), viabiliza uma abordagem
+"guiada por contrato" para a geração de casos de teste: em vez de produzir entradas aleatórias, o processo explora
+estruturas, tipos e restrições descritas no schema para produzir mutações \emph{válidas e inválidas} de forma
+sistemática. Essa estratégia aumenta a probabilidade de revelar respostas inesperadas (por exemplo, códigos 5xx,
+mensagens de erro inconsistentes ou divergências estruturais entre a resposta e o contrato) sem exigir acesso ao
+código-fonte nem instrumentação interna da aplicação, isto é, em um contexto \emph{black-box}.
+
+Este trabalho propõe o desenvolvimento e a avaliação de uma ferramenta de \emph{fuzzing} automatizado para
+APIs REST baseada exclusivamente em contratos OpenAPI. A ferramenta implementa: (i) um parser capaz de extrair
+e interpretar parâmetros, corpos de requisição e restrições declaradas no contrato; (ii) um motor de mutações que
+gera sistematicamente casos de teste dirigidos por tipos e \emph{constraints} (por exemplo, tamanhos mínimos e
+máximos, enumerações, formatação e obrigatoriedade); (iii) um orquestrador e um executor de requisições com
+suporte à concorrência; e (iv) um analisador que registra evidências e classifica comportamentos anômalos à luz do
+contrato. Além disso, o estudo inclui uma comparação exploratória entre o \emph{fuzzing} guiado pelo contrato e uma
+linha de base não guiada, com o objetivo de discutir ganhos e limitações práticos da abordagem.
+
+O escopo delimita-se a APIs REST descritas em OpenAPI, não abrangendo cenários dependentes de
+sequenciamento complexo de requisições ou manutenção de estado entre chamadas, autenticação avançada (por
+exemplo, fluxos completos de OAuth2) nem avaliação de carga ou desempenho. Em contrapartida, busca-se integrá-la
+de forma simples a fluxos de integração contínua (CI), reduzindo o custo de adoção e favorecendo a detecção antecipada
+de inconsistências durante o ciclo de desenvolvimento.
+
+As contribuições deste trabalho incluem: (a) a especificação e implementação de uma ferramenta de \emph{fuzzing}
+guiado por contrato com foco em robustez e conformidade; (b) um conjunto de estratégias de mutação alinhadas às
+restrições declarativas do OpenAPI; (c) um pipeline de execução e análise com geração de artefatos de saída úteis ao
+desenvolvedor (p.\,ex., plano de execução, achados e resumo analítico); e (d) uma avaliação inicial comparativa entre
+abordagens guiadas e não guiadas. O restante deste artigo está organizado da seguinte forma: a Seção~\ref{sec:ref-teorico}
+apresenta o referencial teórico e trabalhos relacionados; a Seção~\ref{sec:metodologia} descreve a metodologia e o
+ambiente de avaliação; a Seção~\ref{sec:planejamento} discute planejamento e critérios; a Seção~\ref{sec:resultados}
+apresenta os resultados esperados e entregáveis; e a Seção~\ref{sec:conclusoes} traz as considerações finais.
+
