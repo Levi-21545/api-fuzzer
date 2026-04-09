@@ -1,7 +1,7 @@
 % PCC – Introdução
 \section{Introdução}
 APIs REST tornaram-se parte essencial da infraestrutura de sistemas modernos, conectando serviços, aplicações
-web e dispositivos móveis (REF). Nesse cenário, falhas de robustez e inconsistências entre o comportamento da API e o
+web e dispositivos móveis \cite{arcuri2026fuzzingrestapisindustry}. Nesse cenário, falhas de robustez e inconsistências entre o comportamento da API e o
 contrato publicado impactam diretamente a confiabilidade de integrações e o custo de manutenção. Embora testes
 funcionais tradicionais sejam eficazes para validar cenários felizes (happy path), eles frequentemente deixam de
 exercitar valores-limite, formatos inválidos e combinações pouco usuais de parâmetros, que são justamente as
@@ -12,7 +12,7 @@ O uso de contratos formais, como a especificação OpenAPI (versões 3.0 e 3.1),
 estruturas, tipos e restrições descritas no schema para produzir mutações \emph{válidas e inválidas} de forma
 sistemática. Essa estratégia aumenta a probabilidade de revelar respostas inesperadas (por exemplo, códigos 5xx,
 mensagens de erro inconsistentes ou divergências estruturais entre a resposta e o contrato) sem exigir acesso ao
-código-fonte nem instrumentação interna da aplicação, isto é, em um contexto \emph{black-box} (REF).
+código-fonte nem instrumentação interna da aplicação, isto é, em um contexto \emph{black-box} \cite{meyer1992designbycontract}.
 
 Este trabalho propõe o desenvolvimento e a avaliação de uma ferramenta de \emph{fuzzing} automatizado para
 APIs REST baseada exclusivamente em contratos OpenAPI. A ferramenta implementa: (i) um parser capaz de extrair
@@ -28,6 +28,3 @@ sequenciamento complexo de requisições ou manutenção de estado entre chamada
 exemplo, fluxos completos de OAuth2) nem avaliação de carga ou desempenho. Em contrapartida, busca-se integrá-la
 de forma simples a fluxos de integração contínua (CI), reduzindo o custo de adoção e favorecendo a detecção antecipada
 de inconsistências durante o ciclo de desenvolvimento.
-
-% Em síntese, este estudo investiga a viabilidade e a eficácia prática do \emph{fuzzing} guiado por contrato em APIs REST,
-% considerando sua aplicação no ciclo de desenvolvimento e em fluxos de integração contínua.
