@@ -104,16 +104,17 @@
 \pagestyle{plain2}
 
 \begin{abstract}
-This work presents a contract-guided fuzzing approach for REST APIs.
+The discrepancy between actual REST API implementations and their formal contracts (OpenAPI) is a frequent cause of robustness failures and internal server errors (5xx) in production environments. This work proposes a black-box fuzzing tool that leverages the semantic structure of the contract to guide the discovery of vulnerabilities and compliance inconsistencies. The solution automates schema parsing, payload generation based on type and constraint mutations, and response analysis against contract definitions. The effectiveness of this approach is validated through a comparative experimental analysis between contract-guided fuzzing and random data generation, focusing on the detection rate of anomalous behaviors and the feasibility of integration into continuous integration (CI/CD) pipelines.
+
 \end{abstract}
 
-\keywords{Word 1, Word 2, Word 3, Word 4, Word 5.}
+\keywords{REST APIs, OpenAPI, Fuzzing.}
      
-\begin{resumo} 
-  Este trabalho apresenta uma abordagem de fuzzing guiado por contrato para APIs REST.
+\begin{resumo}
+A divergência entre a implementação real de APIs REST e seus contratos formais (OpenAPI) é uma causa frequente de falhas de robustez e erros internos (5xx) em produção. Este trabalho propõe uma ferramenta de \textit{fuzzing} de caixa-preta (\textit{black-box}) que utiliza a estrutura semântica do contrato para guiar a descoberta de vulnerabilidades e inconsistências de conformidade. A solução automatiza o \textit{parsing} do \textit{schema}, a geração de \textit{payloads} baseada em mutações de tipos e restrições (\textit{constraints}), e a análise das respostas em relação às definições do contrato. A eficácia da abordagem é validada experimentalmente por meio de uma análise comparativa entre o \textit{fuzzing} guiado pelo contrato e a geração aleatória de dados, focando na taxa de detecção de comportamentos anômalos e na facilidade de integração em fluxos de integração contínua (CI/CD).
 \end{resumo}
 
-\palavraschave{Palavra 1, Palavra 2, Palavra 3, Palavra 4, Palavra 5.}
+\palavraschave{APIs REST, OpenAPI, Fuzzing.}
 
 % CAPITULOS DO ARTIGO
 

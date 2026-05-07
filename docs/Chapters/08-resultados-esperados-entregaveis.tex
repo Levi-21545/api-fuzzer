@@ -1,3 +1,14 @@
 % PCC – Resultados Esperados e Entregáveis
-\section{Resultados Esperados e Entregáveis}\label{sec:resultados}
-Liste resultados e entregas esperados (placeholder).
+\section{Resultados Esperados}\label{sec:resultados}
+
+Com a conclusão deste projeto, espera-se entregar uma ferramenta funcional de \textit{fuzzing} capaz de validar a conformidade de APIs REST em relação aos seus contratos formais. Através da execução de testes controlados e da análise diferencial entre abordagens, pretende-se validar a hipótese de que o conhecimento do contrato aumenta a eficácia na descoberta de falhas, observando indicadores como:
+
+\begin{itemize}
+    \item \textbf{Taxa de detecção de erros internos (5xx):} Identificação de cenários onde a API falha catastroficamente ao processar entradas que violam as restrições do contrato;
+    \item \textbf{Precisão na descoberta de inconsistências estruturais:} Detecção de divergências entre os tipos de dados e formatos retornados pelo servidor e o que foi definido no \textit{schema} OpenAPI;
+    \item \textbf{Eficiência na cobertura de endpoints:} Capacidade de exercitar o espaço de entrada de forma mais abrangente do que métodos de geração puramente aleatória;
+    \item \textbf{Automação do oráculo de teste:} Redução do esforço manual na classificação de erros, utilizando o módulo analisador para separar respostas de validação esperadas (4xx) de falhas reais de projeto;
+    \item \textbf{Documentação de limites práticos:} Mapeamento claro de cenários onde o \textit{fuzzing} de caixa-preta encontra limitações, como em fluxos dependentes de estado complexo ou autenticação dinâmica.
+\end{itemize}
+
+Além disso, o trabalho resultará em um catálogo de heurísticas de mutação baseadas em tipos (\textit{engine.py}) e em um conjunto de dados empíricos que servirá como referência para a implementação de testes de robustez automatizados em ambientes de desenvolvimento ágil.
