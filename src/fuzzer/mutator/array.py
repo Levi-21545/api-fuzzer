@@ -1,5 +1,3 @@
-from typing import Any
-
 from fuzzer.model.schema import Schema
 from fuzzer.generator.valid_generator import generate_valid_value
 from fuzzer.mutator.base import Mutator
@@ -19,8 +17,8 @@ class ArrayMutator(Mutator):
         if item_schema is None:
             return []
 
-        min_items = getattr(schema, "minItems", None)
-        max_items = getattr(schema, "maxItems", None)
+        min_items = schema.min_items
+        max_items = schema.max_items
 
         min_items = min_items if isinstance(min_items, int) else 0
 

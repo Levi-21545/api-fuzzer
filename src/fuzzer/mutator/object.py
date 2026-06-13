@@ -1,5 +1,3 @@
-from typing import Any
-
 from fuzzer.model.schema import Schema
 from fuzzer.mutator.mutation_operation import MutationOp
 from fuzzer.mutator.base import Mutator

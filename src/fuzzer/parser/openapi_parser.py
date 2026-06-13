@@ -115,6 +115,8 @@ class OpenAPIParser:
             constraints={},
             properties={},
             required=raw.get("required", []),
+            min_items=raw.get("minItems"),
+            max_items=raw.get("maxItems"),
         )
 
         for key in (
