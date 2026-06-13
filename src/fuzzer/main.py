@@ -2,7 +2,6 @@ import asyncio
 
 from fuzzer.utils.writer import (
     write_results,
-    write_results_jsonl,
     write_execution_plan,
     write_analysis_report,
 )
@@ -44,14 +43,14 @@ async def async_main():
     if not selected_endpoints:
         print("No endpoints selected. Exiting.")
         return
-    
+
     mutation_engine = MutationEngine(level=args.level, max_mutations=args.max)
 
     # 3. Planejamento das execuções
     execution_plan = list(build_execution_plan(selected_endpoints, mutation_engine))
     write_execution_plan(execution_plan, run_dir)
     print(f"Generated {len(execution_plan)} requests to be executed.")
-   
+
     print("Starting execution...")
 
     # Obtém headers adicionais, se houver
@@ -63,7 +62,7 @@ async def async_main():
         override_base_url=args.base_url,
         override_headers=headers,
     )
-    
+
     runner = ExecutionRunner(
         executor=executor,
         concurrency=args.concurrency,
@@ -86,7 +85,7 @@ async def async_main():
     print(f"Findings JSON saved: {report_json}")
 
     write_results(results, run_dir)
-    # write_results_jsonl(results, args.output_dir)    
+    # write_results_jsonl(results, args.output_dir)
 
 
 def main():

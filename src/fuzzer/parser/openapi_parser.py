@@ -64,7 +64,7 @@ class OpenAPIParser:
         if not servers:
             return []
         return [s["url"] for s in servers]
-    
+
     def _parse_parameters(self, data: Dict[str, Any]):
         params = []
         for p in data.get("parameters", []):
@@ -94,7 +94,7 @@ class OpenAPIParser:
             request_body = None
 
         return request_body
-    
+
     def _parse_responses(self, data: Dict[str, Any]):
         responses = {}
         for status, r in data.get("responses", {}).items():

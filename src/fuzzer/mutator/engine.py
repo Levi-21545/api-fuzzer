@@ -80,7 +80,7 @@ class MutationEngine:
 
             yield payload
 
-    def apply_mutation(self, payload: dict, mutation: MutationOp) -> dict:    
+    def apply_mutation(self, payload: dict, mutation: MutationOp) -> dict:
         # Caso especial: mutação na raiz
         if not mutation.path:
             if mutation.op == "replace":

@@ -11,7 +11,7 @@ def uuid4() -> str:
 	return str(uuid.uuid4())
 
 def email() -> str:
-	return f"user_email@example.com"
+	return "user_email@example.com"
 
 def datetime() -> str:
 	from datetime import datetime

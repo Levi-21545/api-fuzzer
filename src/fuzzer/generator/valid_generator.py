@@ -30,7 +30,7 @@ def generate_valid_value(schema: Schema) -> Any:
 def _string(schema: Schema) -> str:
     if schema.constraints and "enum" in schema.constraints:
         return schema.constraints["enum"][0]
-    
+
     if schema.format == "uuid":
         return uuid4()
     if schema.format == "email":

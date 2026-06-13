@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 from fuzzer.analysis.classification import Anomaly
-from fuzzer.executor.result import ExecutionResult 
+from fuzzer.executor.result import ExecutionResult
 
 @dataclass
 class AnalysisResult:

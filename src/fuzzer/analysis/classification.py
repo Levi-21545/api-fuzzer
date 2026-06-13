@@ -6,7 +6,7 @@ class Anomaly(Enum):
 
     # Categoria 2: Violação de Contrato em Resposta de Sucesso
     SUCCESS_CONTRADICTION = auto() # Status 2xx, mas o corpo da resposta não bate com o schema.
-    
+
     # Categoria 3: Sucesso Inesperado (Falha de Segurança/Robustez)
     UNEXPECTED_SUCCESS = auto() # Enviamos um payload inválido e recebemos 2xx. Perigoso!
 
