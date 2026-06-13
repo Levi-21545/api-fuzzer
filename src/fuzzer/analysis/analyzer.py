@@ -7,6 +7,7 @@ from fuzzer.model.endpoint import Endpoint
 from fuzzer.executor.result import ExecutionResult
 from fuzzer.analysis.classification import Anomaly
 from fuzzer.analysis.result import AnalysisResult
+from fuzzer.generator.valid_generator import generate_valid_value
 
 class Analyzer:
     def __init__(self, spec: APISpec):
@@ -74,7 +75,7 @@ class Analyzer:
                     request_headers=request_headers,
                     execution_result=result,
                 )
-            return None 
+            return None
 
         # 2. Análise de Respostas de Sucesso (2xx)
         if 200 <= result.status_code < 300:
@@ -90,12 +91,9 @@ class Analyzer:
                     request_headers=request_headers,
                     execution_result=result,
                 )
-            
+
             try:
                 validate(instance=response_body, schema=expected_schema.to_jsonschema())
-                # Se chegou aqui, está em conformidade.
-                # Poderíamos ter um `Anomaly.CONFORMANT_SUCCESS` se quiséssemos relatar sucessos também.
-                return None 
             except ValidationError as e:
                 return AnalysisResult(
                     classification=Anomaly.SUCCESS_CONTRADICTION,
@@ -108,6 +106,26 @@ class Analyzer:
                     execution_result=result,
                 )
 
+            baseline = (
+                generate_valid_value(endpoint.request_body.schema)
+                if endpoint.request_body and endpoint.request_body.schema
+                else None
+            )
+            if baseline is not None and request_payload != baseline:
+                return AnalysisResult(
+                    classification=Anomaly.UNEXPECTED_SUCCESS,
+                    description=(
+                        f"Server accepted a mutated payload and returned {result.status_code}. "
+                        f"The API should have rejected the invalid input."
+                    ),
+                    endpoint_id=endpoint.id,
+                    request_payload=request_payload,
+                    request_headers=request_headers,
+                    execution_result=result,
+                )
+
+            return None
+
         # 3. Análise de Respostas de Erro do Cliente (4xx)
         if 400 <= result.status_code < 500:
             if status_code_str not in endpoint.responses:
@@ -119,6 +137,29 @@ class Analyzer:
                     request_headers=request_headers,
                     execution_result=result,
                 )
-            # TODO: Adicionar lógica para validar o corpo do erro contra o schema de erro, similar à validação de sucesso.
-        
+
+            expected_schema = endpoint.responses[status_code_str]
+            try:
+                validate(instance=response_body, schema=expected_schema.to_jsonschema())
+                return AnalysisResult(
+                    classification=Anomaly.EXPECTED_FAILURE,
+                    description=f"API correctly rejected with documented {result.status_code} error.",
+                    endpoint_id=endpoint.id,
+                    request_payload=request_payload,
+                    request_headers=request_headers,
+                    execution_result=result,
+                )
+            except ValidationError as e:
+                return AnalysisResult(
+                    classification=Anomaly.ERROR_CONTRADICTION,
+                    description=(
+                        f"Error response body for {result.status_code} does not "
+                        f"match contract. Details: {e.message}"
+                    ),
+                    endpoint_id=endpoint.id,
+                    request_payload=request_payload,
+                    request_headers=request_headers,
+                    execution_result=result,
+                )
+
         return None
