@@ -13,7 +13,19 @@ Ferramenta de fuzzing guiada por contrato OpenAPI para APIs REST.
 python -m venv .venv
 source .venv/bin/activate
 pip install -U pip
-pip install -e .
+pip install -e ".[dev]"
+```
+
+### Testes
+
+```bash
+pytest -v
+```
+
+### Lint
+
+```bash
+ruff check src/ tests/
 ```
 
 ## Como executar

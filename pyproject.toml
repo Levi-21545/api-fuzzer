@@ -29,6 +29,17 @@ where = ["src"]
 [tool.black]
 line-length = 88
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.24",
+  "ruff>=0.6",
+]
+
 [tool.ruff]
 line-length = 88
 select = ["E", "F", "W"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

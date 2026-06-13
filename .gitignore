@@ -225,3 +225,5 @@ output/
 docs/descricao/
 
 *.DS_Store
+
+.agents/
