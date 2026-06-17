@@ -1,20 +1,25 @@
+# Static token — no login request made. Just injects headers as-is.
+# Remove or comment `enabled: false` to activate.
 auth:
-  enabled: true
-
-  request:
-    method: POST
-    url: http://localhost:3000/auth/login
+  enabled: false
+  inject:
     headers:
-      Content-Type: application/json
-    body:
-      email: test@example.com
-      password: secret123
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfbmFtZSI6ImF1dGVudGlxdWUtZGV2In0.fLelm-ESE2FBcItdUw_dDFJ4RppS4ctFRax96jcfyO4"
 
-  response:
-    extract:
-      token: ["access_token"]
-
-  inject: 
-    headers:
-      Authorization: "Bearer {token}"
-  
+# Dynamic auth — uncomment and fill to make a login request then inject the token.
+# auth:
+#   enabled: true
+#   request:
+#     method: POST
+#     url: http://localhost:3000/auth/login
+#     headers:
+#       Content-Type: application/json
+#     body:
+#       email: test@example.com
+#       password: secret123
+#   response:
+#     extract:
+#       token: ["access_token"]
+#   inject:
+#     headers:
+#       Authorization: "Bearer {token}"

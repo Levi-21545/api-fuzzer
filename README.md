@@ -57,6 +57,16 @@ python -m fuzzer.main biometrique.openapi.yaml \
 ```
 
 Formato esperado do `auth.yaml`:
+
+**Modo estático** (token fixo, sem login):
+```yaml
+auth:
+  inject:
+    headers:
+      Authorization: "Bearer eyJhbGciOi..."
+```
+
+**Modo dinâmico** (faz login e extrai token):
 ```yaml
 auth:
   request:
@@ -73,6 +83,15 @@ auth:
   inject:
     headers:
       Authorization: "Bearer {token}"
+```
+
+Para desabilitar autenticação sem remover o arquivo:
+```yaml
+auth:
+  enabled: false
+  inject:
+    headers:
+      Authorization: "Bearer ..."
 ```
 
 ## Saídas
