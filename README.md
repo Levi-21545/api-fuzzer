@@ -94,6 +94,19 @@ auth:
       Authorization: "Bearer ..."
 ```
 
+### Auto-auth (registro + login automáticos)
+Quando o schema OpenAPI declara `securitySchemes` e endpoints de registro/login,
+o fuzzer pode se autenticar automaticamente sem um `auth.yaml`:
+
+```bash
+python -m fuzzer.main schema.yaml --base-url http://localhost:5002 --all --auto-auth
+```
+
+Ele descobre os endpoints de register/login pelo path, cria credenciais aleatórias,
+obtém um token JWT e injeta `Authorization: Bearer` **apenas nos endpoints que
+declaram `security` no schema**.
+```
+
 ## Saídas
 Cada execução cria uma pasta em `output/<timestamp>/` contendo:
 
@@ -117,3 +130,41 @@ Cada execução cria uma pasta em `output/<timestamp>/` contendo:
 `fuzzer/executor/executor.py`: cliente de execução das requisições
 
 `fuzzer/analysis/analyzer.py`: análise dos resultados (em construção)
+
+`fuzzer/analysis/fuzzy_engine.py`: motor de lógica fuzzy para scoring de anomalias
+
+---
+
+## Comandos úteis — APIs mock para testes
+
+### VAmPI (API vulnerável com OpenAPI)
+
+```bash
+# Subir container vulnerável (porta 5002)
+docker run -d --name vampi-vuln -p 5002:5000 erev0s/vampi:latest
+
+# Inicializar banco de dados dummy
+curl -s http://localhost:5002/createdb
+
+# Executar fuzzer com auto-auth (registra + login automaticamente)
+python -m fuzzer.main <caminho-para-vampi>/openapi_specs/openapi3.yml \
+  --base-url http://localhost:5002 --all --auto-auth
+
+# Remover container
+docker rm -f vampi-vuln
+```
+
+### crAPI (API vulnerável completa)
+
+```bash
+# Subir (via docker-compose no diretório do projeto)
+cd <caminho-para-crAPI>/deploy
+docker compose up -d
+
+# Executar fuzzer
+python -m fuzzer.main <caminho-para-crAPI>/openapi_specs/openapi3.yml \
+  --base-url http://localhost:8000 --all --auto-auth
+
+# Derrubar
+docker compose down
+```
