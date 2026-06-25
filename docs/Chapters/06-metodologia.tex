@@ -17,8 +17,8 @@ O estudo será conduzido seguindo as sete etapas detalhadas abaixo:
 \begin{enumerate}
     \item \textbf{Revisão Teórica:} Estudo aprofundado sobre a especificação OpenAPI, fundamentos de \textit{fuzzing} e análise de ferramentas do estado da arte como Schemathesis e Dredd.
     \item \textbf{Modelagem do Contrato:} Desenvolvimento da lógica de extração de metadados do OpenAPI, convertendo definições estáticas em modelos de dados para teste.
-    \item \textbf{Implementação dos Mutadores:} Criação de um catálogo de heurísticas para mutação de strings, números, enums e objetos, focando em violações de limites e tipos.
-    \item \textbf{Desenvolvimento do Executor:} Implementação da engine de requisições com suporte a concorrência e tratamento de erros de rede.
+    \item \textbf{Implementação dos Mutadores:} Criação de um catálogo de heurísticas para mutação de \textit{strings}, números, \textit{enums} e objetos, focando em violações de limites e tipos.
+    \item \textbf{Desenvolvimento do Executor:} Implementação da \textit{engine} de requisições com suporte a concorrência e tratamento de erros de rede.
     \item \textbf{Módulo de Análise:} Desenvolvimento de heurísticas para identificar inconsistências (erros 5xx) e divergências estruturais entre a implementação e o contrato.
     \item \textbf{Avaliação Experimental:} Execução de testes em APIs de controle e cenários reais para medir a taxa de detecção de falhas e cobertura de \textit{endpoints}.
     \item \textbf{Discussão e Conclusão:} Análise crítica dos resultados obtidos, validação da hipótese de pesquisa e documentação de limitações da ferramenta.
