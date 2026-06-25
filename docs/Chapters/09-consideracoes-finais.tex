@@ -1,3 +1,10 @@
 % PCC – Considerações Finais
 \section{Considerações Finais}\label{sec:conclusoes}
-Síntese do projeto e próximos passos (placeholder).
+
+Este trabalho apresentou a proposta e o planejamento para o desenvolvimento de uma ferramenta de \textit{fuzzing} de caixa-preta guiada por contratos OpenAPI, visando mitigar falhas de robustez e o fenômeno de \textit{Contract Drift} em APIs REST. Durante esta fase inicial de projeto, os objetivos de pesquisa foram fundamentados através de uma revisão bibliográfica do estado da arte e da definição de uma arquitetura modular composta por componentes de \textit{parsing}, mutação, execução e análise.
+
+As contribuições efetivadas até o momento incluem a modelagem detalhada de um motor de mutações orientado a tipos, capaz de transformar restrições estáticas do \textit{schema} em estratégias dinâmicas de teste negativo. O projeto estabelece as bases teóricas e técnicas para demonstrar que o conhecimento semântico do contrato permite uma exploração do espaço de entradas mais eficiente do que métodos puramente aleatórios.
+
+Como este estudo encontra-se na fase de especificação e planejamento, os próximos passos consistem na implementação integral dos módulos de execução assíncrona e na construção do oráculo de conformidade no analisador. A etapa subsequente de TCC focará na realização de experimentos em APIs reais para validar quantitativamente a taxa de detecção de erros internos (5xx) e inconsistências estruturais.
+
+Para trabalhos futuros, além da execução do plano proposto, pretende-se explorar a inclusão de suporte a fluxos que exijam manutenção de estado entre requisições, a integração de mecanismos de autenticação dinâmica (OAuth2) e a expansão da ferramenta para suportar outros padrões de comunicação, como GraphQL e gRPC.
