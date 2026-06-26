@@ -32,8 +32,8 @@ def _find_ep(spec: APISpec, *keywords: str) -> Optional[Endpoint]:
     return None
 
 
-_IDENTITY_FIELDS = {"email", "username", "login", "user", "name"}
-_LOGIN_FIELDS = {"email", "username", "login", "user"}
+_IDENTITY_FIELDS = ["email", "username", "login", "user", "name"]
+_LOGIN_FIELDS = ["email", "username", "login", "user"]
 
 
 def _build_body_from_schema(
