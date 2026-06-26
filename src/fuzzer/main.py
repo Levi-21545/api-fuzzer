@@ -9,8 +9,12 @@ from fuzzer.utils.writer import (
 from fuzzer.cli.args import parse_args
 from fuzzer.cli.select import select_endpoints
 
-from fuzzer.orchestrator.execution_plan_builder import build_execution_plan
+from fuzzer.orchestrator.execution_plan_builder import (
+    build_execution_plan,
+    build_auth_probes,
+)
 from fuzzer.orchestrator.runner import ExecutionRunner
+from fuzzer.orchestrator.auto_auth import bootstrap_auth
 from fuzzer.orchestrator.auth_resolver import resolve_auth_headers
 
 from fuzzer.parser.openapi_parser import parse_openapi
@@ -19,6 +23,7 @@ from fuzzer.executor.executor import Executor
 
 from fuzzer.analysis.analyzer import Analyzer
 from fuzzer.utils.helpers import timestamp
+from fuzzer.types import Headers, AuthContext
 
 
 async def async_main():
@@ -44,33 +49,52 @@ async def async_main():
         print("No endpoints selected. Exiting.")
         return
 
+    auth_context: AuthContext = {}
+    headers: Headers = {}
+
+    if args.auth:
+        headers = await resolve_auth_headers(args.auth)
+    elif args.auto_auth:
+        base = (
+            args.base_url
+            or (api_spec.base_urls[0] if api_spec.base_urls else None)
+        )
+        if base:
+            headers, auth_context = await bootstrap_auth(api_spec, base)
+        else:
+            print("[ERROR] --auto-auth requires --base-url or a server in the spec.")
+            return
+
     mutation_engine = MutationEngine(level=args.level, max_mutations=args.max)
 
     # 3. Planejamento das execuções
-    execution_plan = list(build_execution_plan(selected_endpoints, mutation_engine))
+    execution_plan = list(
+        build_execution_plan(selected_endpoints, mutation_engine, auth_context, headers)
+    )
+
+    if headers and args.auth_probe:
+        probes = build_auth_probes(selected_endpoints, auth_context)
+        execution_plan = probes + execution_plan
+
     write_execution_plan(execution_plan, run_dir)
     print(f"Generated {len(execution_plan)} requests to be executed.")
 
     print("Starting execution...")
-
-    # Obtém headers adicionais, se houver
-    headers = await resolve_auth_headers(args.auth) if args.auth else {}
-
+    
     # 4. Executor + Orquestrador
     executor = Executor(
         spec=api_spec,
         override_base_url=args.base_url,
-        override_headers=headers,
+        timeout=args.timeout,
     )
-
     runner = ExecutionRunner(
         executor=executor,
         concurrency=args.concurrency,
+        delay_ms=args.delay,
     )
 
     # 5. Execução
     results = await runner.run(execution_plan)
-
     print("Execution completed.")
 
     # 6. Análise dos Resultados

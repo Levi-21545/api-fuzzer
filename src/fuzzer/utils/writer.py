@@ -1,10 +1,11 @@
 import json
 from pathlib import Path
 from typing import Any
+
 from collections import Counter, defaultdict
 from fuzzer.executor.result import ExecutionResult
-from fuzzer.model.endpoint import Endpoint
 from fuzzer.analysis.result import AnalysisResult
+from fuzzer.types import ExecutionPlanEntry
 
 def write_results(results: list[ExecutionResult], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -18,7 +19,7 @@ def write_results(results: list[ExecutionResult], output_dir: Path) -> None:
             ensure_ascii=False,
         )
 
-def write_results_jsonl(results, output_dir: Path):
+def write_results_jsonl(results: list[ExecutionResult], output_dir: Path):
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "results.jsonl"
 
@@ -27,7 +28,7 @@ def write_results_jsonl(results, output_dir: Path):
             f.write(json.dumps(result.to_dict(), ensure_ascii=False) + "\n")
 
 def write_execution_plan(
-    execution_plan: list[tuple[Endpoint, str, Any | None, dict[str, str]]],
+    execution_plan: list[ExecutionPlanEntry],
     output_dir: Path,
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)

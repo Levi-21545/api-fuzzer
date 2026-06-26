@@ -6,24 +6,30 @@ from fuzzer.model.api_spec import APISpec
 from fuzzer.model.endpoint import Endpoint
 from fuzzer.executor.result import ExecutionResult
 from fuzzer.analysis.classification import Anomaly
+from fuzzer.analysis.fuzzy_engine import FuzzyEngine
 from fuzzer.analysis.result import AnalysisResult
 from fuzzer.generator.valid_generator import generate_valid_value
+from fuzzer.types import ExecutionPlanEntry
 
 class Analyzer:
     def __init__(self, spec: APISpec):
         self.spec = spec
         self.endpoint_map = {ep.id: ep for ep in spec.endpoints}
+        self.fuzzy_engine = FuzzyEngine()
 
     def analyze_all(
         self,
         execution_results: list[ExecutionResult],
-        execution_plan: list[tuple[Endpoint, str, Any | None, dict[str, str]]],
+        execution_plan: list[ExecutionPlanEntry],
     ) -> list[AnalysisResult]:
 
         analyzed_results: list[AnalysisResult] = []
         for (endpoint, _path, payload, headers), result in zip(execution_plan, execution_results):
             analysis = self._analyze_single(endpoint, payload, headers, result)
             if analysis:
+                score, severity = self.fuzzy_engine.score(endpoint, result)
+                analysis.severity_score = score
+                analysis.severity = severity
                 analyzed_results.append(analysis)
 
         return analyzed_results

@@ -1,19 +1,21 @@
 import urllib.parse
 
-from collections.abc import Generator
-
 from fuzzer.model.endpoint import Endpoint
 from fuzzer.model.schema import Schema
 
 from fuzzer.generator.valid_generator import generate_valid_value
 from fuzzer.mutator.engine import MutationEngine
+from fuzzer.types import Headers, AuthContext, PayloadGenerator
+
+_KNOWN_USER_PARAMS = {"username", "user", "email", "userid", "user_id"}
 
 def generates_payloads(
     endpoint: Endpoint,
     mutation_engine: MutationEngine,
-) -> Generator[tuple[str, dict[str, str], dict | None], None, None]:
-    headers: dict[str, str] = {}
-    path = _resolve_path(endpoint)
+    auth_context: AuthContext | None = None,
+) -> PayloadGenerator:
+    headers: Headers = {}
+    path = _resolve_path(endpoint, auth_context)
 
     if endpoint.request_body:
         headers["Content-Type"] = endpoint.request_body.content_type
@@ -39,13 +41,17 @@ def generates_payloads(
 def _generate_header_value(schema: Schema) -> str:
     return str(generate_valid_value(schema))
 
-def _resolve_path(endpoint: Endpoint) -> str:
+def _resolve_path(endpoint: Endpoint, auth_context: AuthContext | None = None) -> str:
     path = endpoint.path
     query_parts: list[str] = []
 
     for param in endpoint.parameters:
         if param.location == "path":
-            value = generate_valid_value(param.schema)
+            key = param.name.lower()
+            if auth_context and key in _KNOWN_USER_PARAMS and key in auth_context:
+                value = auth_context[key]
+            else:
+                value = generate_valid_value(param.schema)
             path = path.replace(f"{{{param.name}}}", str(value))
         elif param.location == "query":
             value = str(generate_valid_value(param.schema))
