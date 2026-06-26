@@ -6,16 +6,23 @@ if TYPE_CHECKING:
     from fuzzer.model.endpoint import Endpoint
 
 
-SecurityRequirement = list[dict[str, list[str]]]
-SecuritySchemes = dict[str, dict[str, Any]]
+StatusCode = int
+ResponseTimeMs = float
+ResponseSize = int
+SchemeName = str
+Scope = str
 
-Headers = dict[str, str]
-AuthContext = dict[str, str]
-
-PayloadEntry = tuple[str, Headers, dict | None]
-PayloadGenerator = Generator[PayloadEntry, None, None]
-
+Headers = dict[str, str] # nome → valor
+AuthContext = dict[str, str] # email, username, password → valor
 AuthResult = tuple[Headers, AuthContext]
 
-ExecutionPlanEntry = tuple["Endpoint", str, Any | None, Headers]
+# Alternativas (OR): [{"bearerAuth": ["admin"]}, {"apiKey": []}]
+SecurityRequirement = list[dict[SchemeName, list[Scope]]]
+
+# {"bearerAuth": {"type": "http", "scheme": "bearer"}}
+SecuritySchemes = dict[SchemeName, dict[str, Any]]
+
+PayloadEntry = tuple[str, Headers, dict | None] # (path, headers, body)
+PayloadGenerator = Generator[PayloadEntry, None, None]
+ExecutionPlanEntry = tuple["Endpoint", str, Any | None, Headers]  # (endpoint, path, payload, headers)
 ExecutionPlan = Iterable[ExecutionPlanEntry]

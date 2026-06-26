@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 from fuzzer.model.http import HttpMethod
+from fuzzer.utils.types import StatusCode, ResponseTimeMs, ResponseSize
 
 
 @dataclass(slots=True)
@@ -9,9 +10,9 @@ class ExecutionResult:
     method: HttpMethod
     url: str
 
-    status_code: Optional[int]
-    response_time_ms: float
-    response_size: Optional[int]
+    status_code: Optional[StatusCode]
+    response_time_ms: ResponseTimeMs
+    response_size: Optional[ResponseSize]
 
     raw_response: Optional[str]
     error: Optional[str]
