@@ -2,7 +2,7 @@ from fuzzer.model.endpoint import Endpoint
 from fuzzer.mutator.engine import MutationEngine
 from fuzzer.payloads.generator import generates_payloads
 from fuzzer.generator.valid_generator import generate_valid_value
-from fuzzer.types import Headers, AuthContext, ExecutionPlanEntry, ExecutionPlan
+from fuzzer.utils.types import Headers, AuthContext, ExecutionPlanEntry, ExecutionPlan
 
 
 def build_execution_plan(

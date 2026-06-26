@@ -5,7 +5,7 @@ from fuzzer.model.schema import Schema
 
 from fuzzer.generator.valid_generator import generate_valid_value
 from fuzzer.mutator.engine import MutationEngine
-from fuzzer.types import Headers, AuthContext, PayloadGenerator
+from fuzzer.utils.types import Headers, AuthContext, PayloadGenerator
 
 _KNOWN_USER_PARAMS = {"username", "user", "email", "userid", "user_id"}
 

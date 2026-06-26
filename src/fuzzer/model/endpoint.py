@@ -5,7 +5,7 @@ from fuzzer.model.http import HttpMethod
 from fuzzer.model.parameter import Parameter
 from fuzzer.model.request_body import RequestBody
 from fuzzer.model.schema import Schema
-from fuzzer.types import SecurityRequirement
+from fuzzer.utils.types import SecurityRequirement
 
 
 @dataclass

@@ -9,7 +9,7 @@ from fuzzer.analysis.classification import Anomaly
 from fuzzer.analysis.fuzzy_engine import FuzzyEngine
 from fuzzer.analysis.result import AnalysisResult
 from fuzzer.generator.valid_generator import generate_valid_value
-from fuzzer.types import ExecutionPlanEntry
+from fuzzer.utils.types import ExecutionPlanEntry
 
 class Analyzer:
     def __init__(self, spec: APISpec):

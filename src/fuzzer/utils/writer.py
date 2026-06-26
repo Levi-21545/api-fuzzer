@@ -5,7 +5,7 @@ from typing import Any
 from collections import Counter, defaultdict
 from fuzzer.executor.result import ExecutionResult
 from fuzzer.analysis.result import AnalysisResult
-from fuzzer.types import ExecutionPlanEntry
+from fuzzer.utils.types import ExecutionPlanEntry
 
 def write_results(results: list[ExecutionResult], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)

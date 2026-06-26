@@ -3,7 +3,7 @@ import asyncio
 from fuzzer.executor.executor import Executor
 from fuzzer.executor.result import ExecutionResult
 from fuzzer.model.endpoint import Endpoint
-from fuzzer.types import Headers, ExecutionPlan
+from fuzzer.utils.types import Headers, ExecutionPlan
 
 
 class ExecutionRunner:

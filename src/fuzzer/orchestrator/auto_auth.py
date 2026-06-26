@@ -9,7 +9,7 @@ from fuzzer.model.endpoint import Endpoint
 from fuzzer.model.http import HttpMethod
 from fuzzer.model.schema import Schema
 from fuzzer.generator.valid_generator import generate_valid_value
-from fuzzer.types import Headers, AuthContext, AuthResult
+from fuzzer.utils.types import Headers, AuthContext, AuthResult
 
 
 def _random_suffix() -> str:

@@ -23,7 +23,7 @@ from fuzzer.executor.executor import Executor
 
 from fuzzer.analysis.analyzer import Analyzer
 from fuzzer.utils.helpers import timestamp
-from fuzzer.types import Headers, AuthContext
+from fuzzer.utils.types import Headers, AuthContext
 
 
 async def async_main():
