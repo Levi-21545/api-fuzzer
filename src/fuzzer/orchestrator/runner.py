@@ -8,9 +8,10 @@ from fuzzer.model.endpoint import Endpoint
 
 
 class ExecutionRunner:
-    def __init__(self, executor: Executor, concurrency: int):
+    def __init__(self, executor: Executor, concurrency: int, delay_ms: int = 0):
         self.executor = executor
         self.semaphore = asyncio.Semaphore(concurrency)
+        self.delay = delay_ms / 1000
 
     async def _run_one(
         self,
@@ -20,12 +21,15 @@ class ExecutionRunner:
         headers: dict[str, str],
     ) -> ExecutionResult:
         async with self.semaphore:
-            return await self.executor.execute(
+            result = await self.executor.execute(
                 endpoint=endpoint,
                 path=path,
                 payload=payload,
                 headers=headers,
             )
+            if self.delay > 0:
+                await asyncio.sleep(self.delay)
+            return result
 
     async def run(
         self,

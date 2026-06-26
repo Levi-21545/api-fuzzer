@@ -9,14 +9,14 @@ from fuzzer.mutator.mutation_operation import MutationOp
 
 
 class MutationEngine:
-    def __init__(self, level: int, max_mutations: Optional[int] = 20):
+    def __init__(self, level: int, max_mutations: Optional[int] = 10):
         self.level = level
         self.max_mutations: Optional[int] = max_mutations
 
     def generate(self, target_schema: Schema) -> list[Any]:
         baseline = generate_valid_value(target_schema)
 
-        # Level 0
+        # Level 0: apenas baseline
         if self.level == 0:
             return [baseline]
 
@@ -26,19 +26,20 @@ class MutationEngine:
 
         # Level 1 — mutações unitárias
         for op in level1_ops:
+            if self.max_mutations is not None and len(payloads) >= self.max_mutations:
+                break
             payloads.append(
                 self.apply_mutation(baseline, op)
             )
 
         if self.level == 1:
-            return payloads[: self.max_mutations]
+            return payloads
 
         # Level 2 — combinações explícitas
         for payload in self.generate_level2_payloads(baseline, level1_ops):
-            payloads.append(payload)
-
             if self.max_mutations is not None and len(payloads) >= self.max_mutations:
                 break
+            payloads.append(payload)
 
         return payloads
 

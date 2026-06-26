@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Any
-from fuzzer.analysis.classification import Anomaly
+from fuzzer.analysis.classification import Anomaly, AnomalySeverity
 from fuzzer.executor.result import ExecutionResult
 
 @dataclass
@@ -11,3 +11,5 @@ class AnalysisResult:
     request_payload: Any | None
     request_headers: dict
     execution_result: ExecutionResult
+    severity_score: float = 0.0
+    severity: AnomalySeverity = AnomalySeverity.LOW

@@ -28,6 +28,8 @@ class OpenAPIParser:
 
     def parse(self) -> APISpec:
         base_urls = self._parse_servers(self.raw)
+        security_schemes = self.raw.get("components", {}).get("securitySchemes", {})
+        global_security = self.raw.get("security")
         endpoints = []
 
         for path, methods in self.raw.get("paths", {}).items():
@@ -38,6 +40,7 @@ class OpenAPIParser:
                     continue
 
                 operation_servers = self._parse_servers(data)
+                operation_security = data.get("security")
 
                 servers = (
                     operation_servers
@@ -45,6 +48,10 @@ class OpenAPIParser:
                     or None
                 )
 
+                # operation_security pode ser [] (público explícito) ou None (herda global)
+                resolved_security = (
+                    operation_security if operation_security is not None else global_security
+                )
                 endpoints.append(
                     Endpoint(
                         path=path,
@@ -53,10 +60,16 @@ class OpenAPIParser:
                         request_body=self._parse_request_body(data),
                         responses=self._parse_responses(data),
                         servers=servers,
+                        security=resolved_security,
                     )
                 )
 
-        return APISpec(base_urls=base_urls, endpoints=endpoints)
+        return APISpec(
+            base_urls=base_urls,
+            endpoints=endpoints,
+            security_schemes=security_schemes,
+            global_security=global_security,
+        )
 
     @staticmethod
     def _parse_servers(data: Dict[str, Any]) -> list[str]:

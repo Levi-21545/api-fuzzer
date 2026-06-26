@@ -27,13 +27,14 @@ def parse_args() -> argparse.Namespace:
         "--level",
         type=int,
         default=1,
-        help="Fuzzing level (0 for no mutations, higher for more aggressive fuzzing)"
+        help="Fuzzing level (0=baseline only, 1=single mutations, 2=combined mutations)"
     )
 
     parser.add_argument(
         "--max",
         type=int,
-        help="Maximum number of mutations per payload"
+        default=10,
+        help="Maximum number of mutations per payload (default: 10)"
     )
 
     parser.add_argument(
@@ -65,7 +66,33 @@ def parse_args() -> argparse.Namespace:
         "--concurrency",
         type=int,
         default=5,
-        help="Maximum number of concurrent requests"
+        help="Maximum number of concurrent requests (default: 5)"
+    )
+
+    parser.add_argument(
+        "--delay",
+        type=int,
+        default=0,
+        help="Delay in milliseconds between requests to avoid DoS (default: 0)"
+    )
+
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=10,
+        help="Request timeout in seconds (default: 10)"
+    )
+
+    parser.add_argument(
+        "--auto-auth",
+        action="store_true",
+        help="Automatically register and login to obtain auth token from the target API"
+    )
+
+    parser.add_argument(
+        "--auth-probe",
+        action="store_true",
+        help="Probe authenticated endpoints without token and with invalid token"
     )
 
     return parser.parse_args()

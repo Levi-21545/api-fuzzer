@@ -5,7 +5,10 @@ from fuzzer.model.schema import Schema
 from fuzzer.utils.helpers import uuid4, email, datetime
 
 
-def generate_valid_value(schema: Schema) -> Any:
+def generate_valid_value(schema: Schema | None) -> Any:
+    if not schema:
+        return None
+
     if schema.type == "string":
         return _string(schema)
 

@@ -13,12 +13,11 @@ class Executor:
         self,
         spec: APISpec,
         override_base_url: Optional[str] = None,
-        override_headers: Optional[dict[str, str]] = None,
+        timeout: float = 10.0,
     ):
         self.spec = spec
         self.override_base_url = override_base_url
-        self.override_headers = override_headers
-        self.client = httpx.AsyncClient()
+        self.client = httpx.AsyncClient(timeout=httpx.Timeout(timeout))
 
     async def execute(
         self,
@@ -30,12 +29,6 @@ class Executor:
         base_url = self._resolve_base_url(endpoint)
         url = f"{base_url.rstrip('/')}{path}"
 
-        final_headers: dict[str, str] = {}
-        if headers:
-            final_headers.update(headers)
-        if self.override_headers:
-            final_headers.update(self.override_headers)
-
         start = time.perf_counter()
 
         try:
@@ -43,7 +36,7 @@ class Executor:
                 method=endpoint.method.value,
                 url=url,
                 json=payload,
-                headers=final_headers,
+                headers=headers,
             )
 
             elapsed_ms = (time.perf_counter() - start) * 1000
@@ -70,7 +63,7 @@ class Executor:
                 response_time_ms=elapsed_ms,
                 response_size=None,
                 raw_response=None,
-                error=str(exc),
+                error=str(exc) or type(exc).__name__,
             )
 
     def _resolve_base_url(self, endpoint: Endpoint) -> str:

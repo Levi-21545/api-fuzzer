@@ -63,6 +63,7 @@ def write_analysis_report(
 
     # Aggregate summary
     by_class = Counter(ar.classification.name for ar in analysis_results)
+    by_severity = Counter(ar.severity.name for ar in analysis_results)
     by_endpoint = defaultdict(int)
     for ar in analysis_results:
         by_endpoint[ar.endpoint_id] += 1
@@ -77,6 +78,12 @@ def write_analysis_report(
     lines.append("")
     lines.append("## Por classificação")
     for name, count in sorted(by_class.items(), key=lambda x: (-x[1], x[0])):
+        lines.append(f"- {name}: {count}")
+
+    lines.append("")
+    lines.append("## Por severidade")
+    for name in ("HIGH", "MEDIUM", "LOW"):
+        count = by_severity.get(name, 0)
         lines.append(f"- {name}: {count}")
 
     lines.append("")
@@ -99,7 +106,8 @@ def write_analysis_report(
         for ar in findings_by_class.get(name, [])[:50]:
             status = ar.execution_result.status_code
             lines.append(
-                f"- [{ar.classification.name}] {ar.endpoint_id} → {status} — {ar.description}"
+                f"- [{ar.classification.name}] {ar.endpoint_id} → {status} "
+                f"— score={ar.severity_score} severity={ar.severity.name} — {ar.description}"
             )
 
     md_path = output_dir / "analysis_report.md"
@@ -119,6 +127,8 @@ def write_analysis_report(
                 "request_payload": ar.request_payload,
                 "request_headers": ar.request_headers,
                 "url": ar.execution_result.url,
+                "severity_score": ar.severity_score,
+                "severity": ar.severity.name,
             }
         )
 
