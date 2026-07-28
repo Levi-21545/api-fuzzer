@@ -218,6 +218,28 @@ __marimo__/
 # Input files
 *.openapi.yaml
 
+# LaTeX build artifacts
+docs/build/
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
 # Output directories
 output/
 

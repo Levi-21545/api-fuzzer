@@ -1,0 +1,49 @@
+{
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "latex-workshop.latex.autoClean.run": "onSucceeded",
+  "latex-workshop.latex.clean.subfolder.enabled": true,
+  "latex-workshop.latex.clean.fileTypes": [
+    "%DOCFILE%.aux",
+    "%DOCFILE%.bbl",
+    "%DOCFILE%.bcf",
+    "%DOCFILE%.blg",
+    "%DOCFILE%.fdb_latexmk",
+    "%DOCFILE%.fls",
+    "%DOCFILE%.log",
+    "%DOCFILE%.out",
+    "%DOCFILE%.run.xml",
+    "%DOCFILE%.toc"
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk-build-dir",
+      "command": "/Library/TeX/texbin/latexmk",
+      "args": [
+        "-pdf",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk: build dedicado",
+      "tools": [
+        "latexmk-build-dir"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "first",
+  "files.exclude": {
+    "docs/build": true
+  },
+  "search.exclude": {
+    "docs/build/**": true
+  },
+  "files.watcherExclude": {
+    "docs/build/**": true
+  }
+}
