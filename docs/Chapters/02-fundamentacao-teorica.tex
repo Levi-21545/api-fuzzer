@@ -1,0 +1,49 @@
+% TCC — Fundamentação Teórica
+\section{Fundamentação Teórica}\label{sec:fundamentacao}
+
+Esta seção reúne os conceitos necessários para compreender a geração de testes
+guiada por contratos e o mecanismo de priorização empregado pela ferramenta.
+A redação definitiva deverá manter apenas a teoria utilizada na metodologia e
+na interpretação dos resultados.
+
+\subsection{APIs REST e Especificação OpenAPI}
+
+Esta subseção abordará os elementos de OpenAPI efetivamente interpretados pela
+ferramenta, incluindo operações, parâmetros, corpos de requisição, esquemas,
+restrições, respostas e mecanismos de segurança. Também discutirá o contrato
+como fonte de geração e como oráculo parcial, reconhecendo que uma especificação
+incompleta não representa todas as regras de negócio da implementação.
+
+% TODO(TCC): converter as fontes verificadas em .agents/references/01-rest-http-openapi.md
+% para entradas BibTeX e redigir esta subseção com citações primárias.
+
+\subsection{Teste Negativo e Fuzzing}
+
+Serão apresentados teste negativo, robustez, oráculos de teste e as distinções
+entre \textit{fuzzing} geracional e mutacional, bem como entre abordagens de
+caixa-preta, caixa-cinza e caixa-branca. AFL e libFuzzer serão utilizados apenas
+para contextualizar o \textit{fuzzing} tradicional guiado por cobertura, pois
+não constituem concorrentes experimentais diretos do presente trabalho.
+
+% TODO(TCC): usar .agents/references/02-fundamentos-fuzzing.md como mapa de fontes.
+
+\subsection{Fuzzing de APIs REST Guiado por Contrato}
+
+O \textit{fuzzing} de APIs REST introduz desafios relacionados a dados
+estruturados, autenticação, dependências entre operações, estado e qualidade do
+contrato. Nesta subseção serão discutidos o uso de OpenAPI para gerar entradas
+válidas e inválidas, os principais oráculos contratuais e os limites de uma
+avaliação exclusivamente \textit{black-box}.
+
+% TODO(TCC): usar .agents/references/03-fuzzing-apis-rest.md e os fichamentos
+% centrais, priorizando artigos IEEE/ACM e fontes primárias.
+
+\subsection{Lógica Fuzzy e Sistemas de Inferência}
+
+Esta subseção apresentará conjuntos fuzzy, funções de pertinência, regras
+linguísticas, inferência Mamdani, agregação e desfuzzificação. A fundamentação
+deve distinguir a detecção de uma divergência da estimativa de sua severidade e
+deixar explícito quais parâmetros do sistema foram definidos heuristicamente.
+
+% TODO(TCC): converter as fontes de .agents/references/05-logica-fuzzy-fis.md
+% e .agents/references/08-fuzzy-priorizacao-severidade.md para BibTeX.

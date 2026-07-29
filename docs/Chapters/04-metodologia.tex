@@ -1,0 +1,62 @@
+% TCC — Metodologia
+\section{Metodologia}\label{sec:metodologia}
+
+\subsection{Delineamento da Pesquisa}
+
+A pesquisa é aplicada e experimental, com análise quantitativa das campanhas e
+um componente qualitativo de inspeção dos achados. O objeto de estudo compreende
+o \textit{fuzzer} e seu mecanismo de priorização. São mantidos quatro níveis de
+análise: requisição, achado bruto, achado único operacional e campanha.
+
+A avaliação foi organizada em três questões: caracterizar os tipos de achado
+produzidos em APIs distintas; verificar a coerência da severidade atribuída
+pelo sistema fuzzy em relação a rótulos humanos independentes; e observar a
+estabilidade dos achados e escores entre campanhas repetidas.
+
+\subsection{Seleção das APIs e Configuração das Campanhas}
+
+As APIs-alvo serão selecionadas em um piloto de compatibilidade anterior à
+coleta definitiva. Os critérios incluem disponibilidade de código e contrato,
+execução local reiniciável, predominância de respostas JSON e compatibilidade
+com o subconjunto de OpenAPI interpretado pelo protótipo. A quantidade de
+achados não será usada para incluir ou excluir uma API.
+
+O protocolo prevê cinco repetições por API, ambiente reiniciado entre campanhas
+e uma configuração congelada de nível de mutação, limite de casos, concorrência
+e \textit{timeout}. Versões do \textit{fuzzer}, contratos, APIs e dependências
+serão registradas em manifestos.
+
+\subsection{Deduplicação, Reprodução e Rotulagem}
+
+Achados brutos serão agrupados por uma assinatura operacional composta pela API,
+operação, classificação, status e resposta normalizada. O agrupamento evita que
+múltiplas entradas que ativem o mesmo comportamento sejam apresentadas como
+defeitos independentes. Casos representativos serão reexecutados em ambiente
+limpo para medir sua reprodução.
+
+A severidade humana será atribuída sem exibir previamente o escore do sistema
+fuzzy. A rubrica considerará divergência contratual, aceitação indevida,
+robustez, disponibilidade, exposição e efeito observado. Quando não houver
+segundo avaliador, essa limitação será registrada explicitamente.
+
+\subsection{Métricas e Análise}
+
+Para geração e detecção, serão coletados operações suportadas e exercitadas,
+requisições executadas, comportamentos esperados, achados brutos, achados únicos
+e casos reproduzíveis. Para avaliar a priorização, o FIS será comparado com um
+baseline discreto baseado apenas no tipo de achado, utilizando matriz de
+confusão, macro-F1, erro ordinal e métricas do topo do ranking quando a amostra
+permitir.
+
+A análise de estabilidade observará a frequência de cada assinatura entre
+campanhas, a variação do tempo de resposta, do escore e da faixa de severidade.
+Não será utilizada cobertura de código como métrica principal; quando o termo
+``cobertura'' aparecer, ele será qualificado como cobertura de operações do
+contrato.
+
+\subsection{Ameaças à Validade}
+
+As principais ameaças incluem o uso do contrato como oráculo parcial, suporte
+limitado a OpenAPI, estado residual, variabilidade de latência, deduplicação
+black-box, quantidade restrita de APIs e subjetividade dos rótulos humanos. A
+conclusão será limitada aos contratos, APIs, versões e configurações avaliados.

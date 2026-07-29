@@ -1,0 +1,41 @@
+% TCC — Trabalhos Relacionados
+\section{Trabalhos Relacionados}\label{sec:relacionados}
+
+O uso de OpenAPI para geração automática de testes já está estabelecido por
+ferramentas com estratégias e objetivos distintos. A comparação desta seção
+não busca determinar uma ferramenta universalmente superior, mas posicionar a
+proposta quanto à geração de casos negativos, exploração de estado, oráculos,
+reprodução e priorização dos achados.
+
+\begin{table}[ht]
+\centering
+\scalefont{0.78}
+\caption{Papel das principais ferramentas na análise comparativa}
+\label{tab:ferramentas-relacionadas}
+\begin{tabular}{|p{2.2cm}|p{3.2cm}|p{2.0cm}|p{6.0cm}|}
+\hline
+\textbf{Ferramenta} & \textbf{Abordagem principal} & \textbf{Estado} & \textbf{Papel no TCC} \\ \hline
+Schemathesis & Testes baseados em propriedades a partir de OpenAPI & Parcialmente stateful & Comparação mais próxima e possível baseline experimental \\ \hline
+RESTler & Gramática e sequências derivadas do contrato & Stateful & Referência para dependências, deduplicação e reprodução \\ \hline
+RESTest & Geração black-box aleatória e baseada em restrições & Suporte condicionado & Referência para casos nominais, inválidos e oráculos \\ \hline
+RestTestGen & Framework extensível de teste black-box & Extensível & Comparação arquitetural com parser, mutadores e oráculos \\ \hline
+EvoMaster & Geração orientada por busca & Black-box e white-box & Contraste com técnicas search-based e feedback interno \\ \hline
+Dredd & Execução de exemplos e teste de conformidade & Hooks manuais & Antecedente de teste por contrato, não baseline de fuzzing \\ \hline
+\end{tabular}
+\end{table}
+
+A análise detalhada deverá comparar as versões efetivamente consultadas e
+referenciar as fontes primárias de cada ferramenta. Em particular, Schemathesis
+é o candidato mais compatível para uma comparação experimental limitada.
+RESTler é cientificamente relevante, mas seu foco em sequências stateful reduz
+a equivalência direta. Dredd será mantido como antecedente de teste de contrato,
+enquanto AFL e libFuzzer permanecem na fundamentação conceitual.
+
+No corpus bibliográfico levantado, não foi identificado um mecanismo
+diretamente equivalente ao sistema proposto para combinar sinais da execução e
+da divergência contratual em um escore fuzzy de severidade. Essa observação não
+constitui uma alegação de inexistência: a contribuição investigada é a
+integração e a avaliação desse mecanismo no pipeline desenvolvido.
+
+% TODO(TCC): substituir esta tabela de posicionamento pela matriz reduzida e
+% citada de .agents/references/11-matriz-comparativa-verificada.md.

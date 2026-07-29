@@ -104,30 +104,33 @@
 \pagestyle{plain2}
 
 \begin{abstract}
-The discrepancy between actual REST API implementations and their formal contracts (OpenAPI) is a frequent cause of robustness failures and internal server errors (5xx) in production environments. This work proposes a black-box fuzzing tool that leverages the semantic structure of the contract to guide the discovery of vulnerabilities and compliance inconsistencies. The solution automates schema parsing, payload generation based on type and constraint mutations, and response analysis against contract definitions. The effectiveness of this approach is validated through a comparative experimental analysis between contract-guided fuzzing and random data generation, focusing on the detection rate of anomalous behaviors and the feasibility of integration into continuous integration (CI/CD) pipelines.
-
+\textbf{Introduction:} Divergences between REST API implementations and their OpenAPI contracts can compromise integration reliability and make robustness defects harder to identify.
+\textbf{Objective:} This work develops and evaluates a black-box, contract-guided fuzzer for REST APIs, including a fuzzy inference system for prioritizing reported findings.
+\textbf{Methodology or Steps:} The tool parses a supported subset of OpenAPI, generates baseline inputs and mutations, executes HTTP requests, compares responses with the contract, and assigns a continuous severity score. Its evaluation is organized as repeated campaigns against locally controlled APIs, followed by deduplication, reproduction, and human labeling of findings.
+\textbf{Results:} The implementation currently provides the end-to-end execution pipeline and automated unit tests. Quantitative results and the final assessment of severity ranking will be incorporated after the experimental campaigns.
 \end{abstract}
 
-\keywords{REST APIs, OpenAPI, Fuzzing.}
+\keywords{REST APIs, OpenAPI, Fuzzing, Contract Testing, Fuzzy Logic.}
      
 \begin{resumo}
-A divergência entre a implementação real de APIs REST e seus contratos formais (OpenAPI) é uma causa frequente de falhas de robustez e erros internos (5xx) em produção. Este trabalho propõe uma ferramenta de \textit{fuzzing} de caixa-preta (\textit{black-box}) que utiliza a estrutura semântica do contrato para guiar a descoberta de vulnerabilidades e inconsistências de conformidade. A solução automatiza o \textit{parsing} do \textit{schema}, a geração de \textit{payloads} baseada em mutações de tipos e restrições (\textit{constraints}), e a análise das respostas em relação às definições do contrato. A eficácia da abordagem é validada experimentalmente por meio de uma análise comparativa entre o \textit{fuzzing} guiado pelo contrato e a geração aleatória de dados, focando na taxa de detecção de comportamentos anômalos e na facilidade de integração em fluxos de integração contínua (CI/CD).
+\textbf{Introdução:} Divergências entre implementações de APIs REST e seus contratos OpenAPI podem comprometer a confiabilidade das integrações e dificultar a identificação de falhas de robustez.
+\textbf{Objetivo:} Este trabalho desenvolve e avalia um \textit{fuzzer} de caixa-preta guiado por contrato para APIs REST, incluindo um sistema de inferência fuzzy para priorizar os achados reportados.
+\textbf{Metodologia ou Etapas:} A ferramenta interpreta um subconjunto suportado de OpenAPI, gera entradas-base e mutações, executa requisições HTTP, compara as respostas com o contrato e atribui um escore contínuo de severidade. A avaliação é organizada em campanhas repetidas contra APIs controladas localmente, seguidas de deduplicação, reprodução e rotulagem humana dos achados.
+\textbf{Resultados:} A implementação atual oferece o fluxo completo de execução e testes unitários automatizados. Os resultados quantitativos e a avaliação final do ordenamento de severidade serão incorporados após as campanhas experimentais.
 \end{resumo}
 
-\palavraschave{APIs REST, OpenAPI, Fuzzing.}
+\palavraschave{APIs REST, OpenAPI, Fuzzing, Teste de Contrato, Lógica Fuzzy.}
 
 % CAPITULOS DO ARTIGO
 
-% Estrutura do PCC
+% Estrutura do TCC
 \input{Chapters/01-introducao}
-\input{Chapters/02-justificativa}
-\input{Chapters/03-objetivos}
-% \input{Chapters/04-referencial-teorico}
-% \input{Chapters/05-trabalhos-relacionados}
-\input{Chapters/06-metodologia}
-\input{Chapters/07-planejamento-cronograma}
-\input{Chapters/08-resultados-esperados-entregaveis}
-\input{Chapters/09-consideracoes-finais}
+\input{Chapters/02-fundamentacao-teorica}
+\input{Chapters/03-trabalhos-relacionados}
+\input{Chapters/04-metodologia}
+\input{Chapters/05-desenvolvimento}
+\input{Chapters/06-resultados-discussao}
+\input{Chapters/07-conclusao}
 
 \section{Referências}
 

@@ -1,0 +1,64 @@
+% TCC — Desenvolvimento
+\section{Desenvolvimento da Ferramenta}\label{sec:desenvolvimento}
+
+\subsection{Arquitetura e Fluxo Operacional}
+
+O OpenAPI Contract Fuzzer foi implementado em Python como um pipeline modular.
+O contrato é convertido em um modelo interno; esse modelo orienta a geração de
+valores-base e mutações; um plano materializa as requisições; o executor envia
+as chamadas à API; e o analisador confronta as respostas com o contrato antes
+de encaminhar os resultados reportáveis ao sistema fuzzy e ao gerador de
+relatórios.
+
+% TODO(TCC): inserir diagrama editável:
+% OpenAPI -> Parser -> Modelo -> Geração/Mutação -> Plano/Runner -> API
+% -> Analisador Contratual -> FIS -> Relatório.
+
+\subsection{Interpretação do Contrato e Geração de Entradas}
+
+O parser atual aceita documentos YAML ou JSON e representa operações,
+parâmetros, corpos JSON, respostas e mecanismos de segurança dentro de um
+subconjunto de OpenAPI. A partir do modelo, o gerador produz valores-base e o
+motor aplica operações de substituição ou remoção sobre tipos primitivos,
+objetos e arrays.
+
+O suporte não é integral: referências e composições de schema, diferentes
+\textit{media types} e parte das regras de serialização ainda não são
+interpretados. Além disso, o catálogo existente é predominantemente orientado
+por tipos. O texto e a avaliação deverão distinguir restrições efetivamente
+usadas de capacidades ainda não implementadas.
+
+\subsection{Planejamento e Execução}
+
+O plano de execução associa operação, caminho resolvido, corpo e cabeçalhos.
+Autenticação pode ser fornecida por configuração ou obtida por um procedimento
+automático baseado no contrato. A execução utiliza um cliente HTTP assíncrono e
+um semáforo para limitar a concorrência, preservando a ordem lógica entre plano
+e resultados.
+
+\subsection{Detecção de Divergências}
+
+O analisador identifica respostas sem status, erros de servidor, status não
+documentados, incompatibilidades de schema e aceitação de entradas mutadas.
+Uma rejeição 4xx documentada e compatível com o schema é comportamento esperado
+e não deve ser contabilizada como anomalia candidata.
+
+Um achado reportado não equivale automaticamente a defeito ou vulnerabilidade.
+A confirmação exige reprodução e inspeção das condições do contrato, da entrada
+e do ambiente.
+
+\subsection{Priorização por Lógica Fuzzy}
+
+Após a classificação contratual, o sistema Mamdani combina desvio de status,
+tempo de resposta e tamanho da resposta para produzir um escore contínuo,
+posteriormente dividido nas faixas LOW, MEDIUM e HIGH. As funções de
+pertinência, regras e limiares atuais são escolhas heurísticas do autor; sua
+coerência constitui objeto da avaliação, não uma propriedade presumida.
+
+\subsection{Artefatos e Rastreabilidade}
+
+Cada campanha produz plano, resultados brutos, achados estruturados e relatório
+em Markdown. Antes da coleta definitiva, os artefatos deverão incluir
+identificador de caso, mutação aplicada, versão do contrato, configuração e
+seed, permitindo deduplicação, reexecução e rastreabilidade dos números
+apresentados no artigo.
