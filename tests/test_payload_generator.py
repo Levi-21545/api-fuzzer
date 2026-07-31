@@ -17,8 +17,9 @@ def test_resolve_path_no_params():
     engine = MutationEngine(level=0, max_mutations=1)
     results = list(generates_payloads(ep, engine))
     assert len(results) == 1
-    path, headers, payload = results[0]
+    path, headers, payload, case = results[0]
     assert path == "/users"
+    assert case["kind"] == "baseline"
 
 
 def test_resolve_path_param():
@@ -34,7 +35,7 @@ def test_resolve_path_param():
     engine = MutationEngine(level=0, max_mutations=1)
     results = list(generates_payloads(ep, engine))
     assert len(results) == 1
-    path, headers, payload = results[0]
+    path, headers, payload, _case = results[0]
     assert path.startswith("/users/")
     assert path != "/users/{id}"
     # integer path param should be numeric
@@ -55,7 +56,7 @@ def test_resolve_path_string_param():
     engine = MutationEngine(level=0, max_mutations=1)
     results = list(generates_payloads(ep, engine))
     assert len(results) == 1
-    path, headers, payload = results[0]
+    path, headers, payload, _case = results[0]
     assert path.startswith("/users/")
     param_value = path.split("/")[-1]
     assert isinstance(param_value, str)
@@ -75,7 +76,7 @@ def test_query_params():
     engine = MutationEngine(level=0, max_mutations=1)
     results = list(generates_payloads(ep, engine))
     assert len(results) == 1
-    path, headers, payload = results[0]
+    path, headers, payload, _case = results[0]
     assert path.startswith("/search?")
     assert "q=" in path
     assert "page=" in path
@@ -95,7 +96,7 @@ def test_mixed_path_and_query_params():
     engine = MutationEngine(level=0, max_mutations=1)
     results = list(generates_payloads(ep, engine))
     assert len(results) == 1
-    path, headers, payload = results[0]
+    path, headers, payload, _case = results[0]
     assert path.startswith("/users/")
     assert "/posts?" in path or "/posts" in path
     assert "sort=" in path

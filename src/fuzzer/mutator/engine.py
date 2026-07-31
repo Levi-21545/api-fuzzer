@@ -5,7 +5,7 @@ from copy import deepcopy
 from fuzzer.model.schema import Schema, walk_schema
 from fuzzer.generator.valid_generator import generate_valid_value
 from fuzzer.mutator.registry import get_mutators_for_schema
-from fuzzer.mutator.mutation_operation import MutationOp
+from fuzzer.mutator.mutation_operation import MutationCase, MutationOp
 
 
 class MutationEngine:
@@ -14,34 +14,52 @@ class MutationEngine:
         self.max_mutations: Optional[int] = max_mutations
 
     def generate(self, target_schema: Schema) -> list[Any]:
+        return [case.payload for case in self.generate_cases(target_schema)]
+
+    def generate_cases(self, target_schema: Schema) -> list[MutationCase]:
         baseline = generate_valid_value(target_schema)
 
-        # Level 0: apenas baseline
+        # Level 0: baseline only.
         if self.level == 0:
-            return [baseline]
+            return [MutationCase(payload=baseline, kind="baseline")]
 
         level1_ops = self.generate_level1_mutations(target_schema)
 
-        payloads: list[Any] = []
+        cases: list[MutationCase] = [
+            MutationCase(payload=baseline, kind="baseline"),
+        ]
+        mutation_count = 0
 
-        # Level 1 — mutações unitárias
+        # Level 1: one mutation per case.
         for op in level1_ops:
-            if self.max_mutations is not None and len(payloads) >= self.max_mutations:
+            if (
+                self.max_mutations is not None
+                and mutation_count >= self.max_mutations
+            ):
                 break
-            payloads.append(
-                self.apply_mutation(baseline, op)
+            cases.append(
+                MutationCase(
+                    payload=self.apply_mutation(baseline, op),
+                    kind="mutation",
+                    operations=(op,),
+                )
             )
+            mutation_count += 1
 
         if self.level == 1:
-            return payloads
+            return cases
 
-        # Level 2 — combinações explícitas
-        for payload in self.generate_level2_payloads(baseline, level1_ops):
-            if self.max_mutations is not None and len(payloads) >= self.max_mutations:
+        # Level 2: explicit pairs of compatible mutations.
+        for case in self.generate_level2_cases(baseline, level1_ops):
+            if (
+                self.max_mutations is not None
+                and mutation_count >= self.max_mutations
+            ):
                 break
-            payloads.append(payload)
+            cases.append(case)
+            mutation_count += 1
 
-        return payloads
+        return cases
 
     def generate_level1_mutations(self, schema: Schema) -> list[MutationOp]:
         mutations: list[MutationOp] = []
@@ -54,22 +72,22 @@ class MutationEngine:
 
         return mutations
 
-    def generate_level2_payloads(
+    def generate_level2_cases(
         self,
-        baseline: dict,
+        baseline: Any,
         mutations: list[MutationOp],
-    ) -> Iterable[Any]:
+    ) -> Iterable[MutationCase]:
 
         for m1, m2 in combinations(mutations, 2):
 
             if not m1.path or not m2.path:
-                continue  # ignora mutações de raiz em combinações
+                continue  # Root mutations cannot be combined safely.
 
-            # caminhos iguais → ignora
+            # Skip mutations targeting the same path.
             if m1.path == m2.path:
                 continue
 
-            # evita conflitos estruturais diretos
+            # Avoid direct parent-child structural conflicts.
             if (
                 m1.path[: len(m2.path)] == m2.path
                 or m2.path[: len(m1.path)] == m1.path
@@ -79,14 +97,18 @@ class MutationEngine:
             payload = self.apply_mutation(baseline, m1)
             payload = self.apply_mutation(payload, m2)
 
-            yield payload
+            yield MutationCase(
+                payload=payload,
+                kind="mutation",
+                operations=(m1, m2),
+            )
 
-    def apply_mutation(self, payload: dict, mutation: MutationOp) -> dict:
-        # Caso especial: mutação na raiz
+    def apply_mutation(self, payload: Any, mutation: MutationOp) -> Any:
+        # Root replacement is the only meaningful root mutation.
         if not mutation.path:
             if mutation.op == "replace":
                 return mutation.value
-            return payload  # delete na raiz não faz sentido
+            return payload  # Deleting the root payload is not meaningful.
 
         data = deepcopy(payload)
         current = data

@@ -76,20 +76,20 @@ class FuzzyEngine:
 
     def _compute_payload_input(self, endpoint: Endpoint, result: ExecutionResult) -> float:
         """
-        Mapeia o tamanho da resposta (bytes) para o universo [0, 3] do
-        FIS (payload_ratio). Quanto maior o valor, mais anômala a resposta.
-        - 0: resposta vazia
-        - 0.5 ~ 1.5: faixa "esperada" para o status retornado
-        - > 1.5: resposta grande (potencial vazamento de dados)
+        Map response size in bytes to the FIS payload_ratio universe [0, 3].
+        Larger values represent increasingly anomalous responses:
+        - 0: empty response
+        - 0.5 to 1.5: expected range for the returned status
+        - above 1.5: large response and potential data exposure
         """
         if result.response_size is None or result.response_size == 0:
             return 0.0
         size_kb = result.response_size / 1024
 
-        # Se o status retornado é documentado, escala normal
+        # Documented statuses use the regular size scale.
         if str(result.status_code) in endpoint.responses:
             return min(size_kb, 3.0)
-        # Status não documentado: qualquer conteúdo é mais suspeito
+        # Content returned with an undocumented status is more suspicious.
         return min(size_kb * 2, 3.0)
 
     def score(self, endpoint: Endpoint, result: ExecutionResult) -> tuple[float, AnomalySeverity]:

@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from collections.abc import Iterable, Generator
-from typing import Any, TYPE_CHECKING
+from dataclasses import dataclass, field
+from typing import Any, TYPE_CHECKING, Literal
 
 
 if TYPE_CHECKING:
@@ -9,20 +12,30 @@ if TYPE_CHECKING:
 StatusCode = int
 ResponseTimeMs = float
 ResponseSize = int
-SchemeName = str
-Scope = str
 
-Headers = dict[str, str] # nome → valor
-AuthContext = dict[str, str] # email, username, password → valor
+Headers = dict[str, str]
+AuthContext = dict[str, str]
 AuthResult = tuple[Headers, AuthContext]
 
-# Alternativas (OR): [{"bearerAuth": ["admin"]}, {"apiKey": []}]
-SecurityRequirement = list[dict[SchemeName, list[Scope]]]
-
-# {"bearerAuth": {"type": "http", "scheme": "bearer"}}
-SecuritySchemes = dict[SchemeName, dict[str, Any]]
-
-PayloadEntry = tuple[str, Headers, dict | None] # (path, headers, body)
+PayloadEntry = tuple[str, Headers, Any | None, dict[str, Any]]
 PayloadGenerator = Generator[PayloadEntry, None, None]
-ExecutionPlanEntry = tuple["Endpoint", str, Any | None, Headers]  # (endpoint, path, payload, headers)
+
+
+@dataclass(slots=True)
+class ExecutionPlanEntry:
+    endpoint: Endpoint
+    path: str
+    payload: Any | None
+    headers: Headers
+    case_id: str
+    case_kind: Literal["baseline", "mutation", "auth_probe"]
+    mutations: list[dict[str, Any]] = field(default_factory=list)
+
+    @property
+    def expects_rejection(self) -> bool:
+        return bool(self.mutations) and any(
+            not mutation.get("expected_valid", False) for mutation in self.mutations
+        )
+
+
 ExecutionPlan = Iterable[ExecutionPlanEntry]

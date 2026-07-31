@@ -28,7 +28,7 @@ class AsyncHttpClient:
                 response.status_code,
                 elapsed,
                 len(response.content),
-                response.text[:10_000],  # limite defensivo
+                response.text[:10_000],  # Defensive response-size limit.
             )
 
         except Exception as exc:

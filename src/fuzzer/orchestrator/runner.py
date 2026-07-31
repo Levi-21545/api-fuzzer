@@ -14,6 +14,7 @@ class ExecutionRunner:
 
     async def _run_one(
         self,
+        case_id: str,
         endpoint: Endpoint,
         path: str,
         payload: object,
@@ -21,6 +22,7 @@ class ExecutionRunner:
     ) -> ExecutionResult:
         async with self.semaphore:
             result = await self.executor.execute(
+                case_id=case_id,
                 endpoint=endpoint,
                 path=path,
                 payload=payload,
@@ -35,8 +37,14 @@ class ExecutionRunner:
         tasks: ExecutionPlan,
     ) -> list[ExecutionResult]:
         coroutines = [
-            self._run_one(endpoint, path, payload, headers)
-            for endpoint, path, payload, headers in tasks
+            self._run_one(
+                entry.case_id,
+                entry.endpoint,
+                entry.path,
+                entry.payload,
+                entry.headers,
+            )
+            for entry in tasks
         ]
 
         results = await asyncio.gather(*coroutines)

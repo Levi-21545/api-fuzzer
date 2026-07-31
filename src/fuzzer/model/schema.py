@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
+from fuzzer.utils.patterns import compile_openapi_pattern
 
 @dataclass
 class Schema:
@@ -23,9 +24,22 @@ class Schema:
             js["format"] = self.format
 
         # Copy scalar constraints directly
-        for key in ("minLength", "maxLength", "minimum", "maximum", "enum", "pattern"):
+        for key in (
+            "minLength",
+            "maxLength",
+            "minimum",
+            "maximum",
+            "exclusiveMinimum",
+            "exclusiveMaximum",
+            "multipleOf",
+            "enum",
+            "pattern",
+        ):
             if key in self.constraints:
-                js[key] = self.constraints[key]
+                value = self.constraints[key]
+                if key == "pattern" and isinstance(value, str):
+                    value = compile_openapi_pattern(value).pattern
+                js[key] = value
 
         if self.type == "object":
             props: Dict[str, Any] = {}

@@ -16,9 +16,11 @@ class ExecutionResult:
 
     raw_response: Optional[str]
     error: Optional[str]
+    case_id: str = "case-unassigned"
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, object]:
         return {
+            "case_id": self.case_id,
             "endpoint_id": self.endpoint_id,
             "method": self.method.value,
             "url": self.url,

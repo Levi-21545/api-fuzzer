@@ -36,14 +36,17 @@ def write_execution_plan(
 
     serialized = []
 
-    for endpoint, path, payload, headers in execution_plan:
+    for entry in execution_plan:
         serialized.append(
             {
-                "endpoint_id": f"{endpoint.method.value} {endpoint.path}",
-                "method": endpoint.method.value,
-                "path": path,
-                "payload": payload,
-                "headers": headers,
+                "case_id": entry.case_id,
+                "case_kind": entry.case_kind,
+                "endpoint_id": entry.endpoint.id,
+                "method": entry.endpoint.method.value,
+                "path": entry.path,
+                "payload": entry.payload,
+                "headers": entry.headers,
+                "mutations": entry.mutations,
             }
         )
 
@@ -75,7 +78,7 @@ def write_analysis_report(
     lines: list[str] = []
     lines.append("# Relatório de Análise")
     lines.append("")
-    lines.append(f"Total de anomalias: {total}")
+    lines.append(f"Total de resultados classificados: {total}")
     lines.append("")
     lines.append("## Por classificação")
     for name, count in sorted(by_class.items(), key=lambda x: (-x[1], x[0])):
@@ -121,6 +124,7 @@ def write_analysis_report(
     for ar in analysis_results:
         serializable.append(
             {
+                "case_id": ar.case_id,
                 "classification": ar.classification.name,
                 "endpoint_id": ar.endpoint_id,
                 "status_code": ar.execution_result.status_code,

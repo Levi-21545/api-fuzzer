@@ -1,14 +1,11 @@
 import json
-from typing import Any
 from jsonschema import validate, ValidationError
 
 from fuzzer.model.api_spec import APISpec
-from fuzzer.model.endpoint import Endpoint
 from fuzzer.executor.result import ExecutionResult
 from fuzzer.analysis.classification import Anomaly
 from fuzzer.analysis.fuzzy_engine import FuzzyEngine
 from fuzzer.analysis.result import AnalysisResult
-from fuzzer.generator.valid_generator import generate_valid_value
 from fuzzer.utils.types import ExecutionPlanEntry
 
 class Analyzer:
@@ -24,10 +21,10 @@ class Analyzer:
     ) -> list[AnalysisResult]:
 
         analyzed_results: list[AnalysisResult] = []
-        for (endpoint, _path, payload, headers), result in zip(execution_plan, execution_results):
-            analysis = self._analyze_single(endpoint, payload, headers, result)
+        for entry, result in zip(execution_plan, execution_results):
+            analysis = self._analyze_single(entry, result)
             if analysis:
-                score, severity = self.fuzzy_engine.score(endpoint, result)
+                score, severity = self.fuzzy_engine.score(entry.endpoint, result)
                 analysis.severity_score = score
                 analysis.severity = severity
                 analyzed_results.append(analysis)
@@ -36,14 +33,16 @@ class Analyzer:
 
     def _analyze_single(
         self,
-        endpoint: Endpoint,
-        request_payload: Any | None,
-        request_headers: dict[str, str],
+        plan_entry: ExecutionPlanEntry,
         result: ExecutionResult,
     ) -> AnalysisResult | None:
+        endpoint = plan_entry.endpoint
+        request_payload = plan_entry.payload
+        request_headers = plan_entry.headers
 
         if result.status_code is None:
             return AnalysisResult(
+                case_id=plan_entry.case_id,
                 classification=Anomaly.UNEXPECTED_ERROR_STATUS,
                 description=f"Request failed before receiving a response: {result.error}",
                 endpoint_id=endpoint.id,
@@ -54,9 +53,10 @@ class Analyzer:
 
         status_code_str = str(result.status_code)
 
-        # 1. Prioridade Máxima: Erro de servidor (5xx)
+        # 1. Server errors have the highest analysis priority.
         if 500 <= result.status_code < 600:
             return AnalysisResult(
+                case_id=plan_entry.case_id,
                 classification=Anomaly.SERVER_ERROR,
                 description=f"Server returned a {result.status_code} error.",
                 endpoint_id=endpoint.id,
@@ -65,13 +65,14 @@ class Analyzer:
                 execution_result=result,
             )
 
-        # Tenta parsear a resposta como JSON. Se falhar, é uma anomalia por si só.
+        # Parse JSON before validating the response against the contract.
         try:
             response_body = json.loads(result.raw_response or "null")
         except json.JSONDecodeError:
-            # Se o contrato ESPERAVA JSON e não veio, é uma contradição.
+            # Non-JSON content contradicts an endpoint with JSON responses.
             if any(str(s).startswith("2") for s in endpoint.responses.keys()):
                 return AnalysisResult(
+                    case_id=plan_entry.case_id,
                     classification=Anomaly.SUCCESS_CONTRADICTION,
                     description=(
                         f"Status {result.status_code} was returned, but the response was not valid JSON."
@@ -83,11 +84,12 @@ class Analyzer:
                 )
             return None
 
-        # 2. Análise de Respostas de Sucesso (2xx)
+        # 2. Analyze successful responses.
         if 200 <= result.status_code < 300:
             expected_schema = endpoint.responses.get(status_code_str)
             if not expected_schema:
                 return AnalysisResult(
+                    case_id=plan_entry.case_id,
                     classification=Anomaly.SUCCESS_CONTRADICTION,
                     description=(
                         f"API returned undocumented success status code {result.status_code}."
@@ -102,6 +104,7 @@ class Analyzer:
                 validate(instance=response_body, schema=expected_schema.to_jsonschema())
             except ValidationError as e:
                 return AnalysisResult(
+                    case_id=plan_entry.case_id,
                     classification=Anomaly.SUCCESS_CONTRADICTION,
                     description=(
                         f"Response body for {result.status_code} does not match the contract. Details: {e.message}"
@@ -112,13 +115,9 @@ class Analyzer:
                     execution_result=result,
                 )
 
-            baseline = (
-                generate_valid_value(endpoint.request_body.schema)
-                if endpoint.request_body and endpoint.request_body.schema
-                else None
-            )
-            if baseline is not None and request_payload != baseline:
+            if plan_entry.expects_rejection:
                 return AnalysisResult(
+                    case_id=plan_entry.case_id,
                     classification=Anomaly.UNEXPECTED_SUCCESS,
                     description=(
                         f"Server accepted a mutated payload and returned {result.status_code}. "
@@ -132,10 +131,11 @@ class Analyzer:
 
             return None
 
-        # 3. Análise de Respostas de Erro do Cliente (4xx)
+        # 3. Analyze client-error responses.
         if 400 <= result.status_code < 500:
             if status_code_str not in endpoint.responses:
                 return AnalysisResult(
+                    case_id=plan_entry.case_id,
                     classification=Anomaly.UNEXPECTED_ERROR_STATUS,
                     description=f"API returned an undocumented error status code: {result.status_code}.",
                     endpoint_id=endpoint.id,
@@ -148,6 +148,7 @@ class Analyzer:
             try:
                 validate(instance=response_body, schema=expected_schema.to_jsonschema())
                 return AnalysisResult(
+                    case_id=plan_entry.case_id,
                     classification=Anomaly.EXPECTED_FAILURE,
                     description=f"API correctly rejected with documented {result.status_code} error.",
                     endpoint_id=endpoint.id,
@@ -157,6 +158,7 @@ class Analyzer:
                 )
             except ValidationError as e:
                 return AnalysisResult(
+                    case_id=plan_entry.case_id,
                     classification=Anomaly.ERROR_CONTRADICTION,
                     description=(
                         f"Error response body for {result.status_code} does not "

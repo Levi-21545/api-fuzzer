@@ -21,6 +21,7 @@ class Executor:
 
     async def execute(
         self,
+        case_id: str,
         endpoint: Endpoint,
         path: str,
         payload: Any | None,
@@ -42,6 +43,7 @@ class Executor:
             elapsed_ms = (time.perf_counter() - start) * 1000
 
             return ExecutionResult(
+                case_id=case_id,
                 endpoint_id=endpoint.id,
                 method=endpoint.method,
                 url=url,
@@ -56,6 +58,7 @@ class Executor:
             elapsed_ms = (time.perf_counter() - start) * 1000
 
             return ExecutionResult(
+                case_id=case_id,
                 endpoint_id=endpoint.id,
                 method=endpoint.method,
                 url=url,

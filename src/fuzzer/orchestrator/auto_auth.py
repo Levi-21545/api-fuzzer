@@ -64,6 +64,19 @@ def _extract_identity(body: object) -> str:
     return str(body)
 
 
+def _login_identity_values(
+    registration_body: object,
+    credentials: dict[str, str],
+) -> dict[str, str]:
+    values = dict(credentials)
+    if isinstance(registration_body, dict):
+        for field in _LOGIN_FIELDS:
+            value = registration_body.get(field)
+            if value is not None:
+                values[field] = str(value)
+    return values
+
+
 async def bootstrap_auth(spec: APISpec, base_url: str) -> AuthResult:
     register_ep = _find_ep(spec, "register", "signup")
     login_ep = _find_ep(spec, "login", "signin", "token")
@@ -129,10 +142,13 @@ async def _try_login(
         {"password": creds["password"]},
     )
     if isinstance(login_body, dict):
-        identity = _extract_identity(reg_body)
+        identity_values = _login_identity_values(reg_body, creds)
         for field in _LOGIN_FIELDS:
             if field in login_body:
-                login_body[field] = identity
+                login_body[field] = identity_values.get(
+                    field,
+                    identity_values.get("username", creds["username"]),
+                )
                 break
 
     login_resp = await client.request(
@@ -170,13 +186,13 @@ def _build_scheme_headers(spec: APISpec, token: str) -> Headers:
 
 
 def _build_auth_context(reg_body: object, creds: dict[str, str]) -> AuthContext:
-    identity = _extract_identity(reg_body)
+    identity_values = _login_identity_values(reg_body, creds)
     ctx: AuthContext = {
-        "email": identity if "@" in identity else creds["email"],
+        "email": identity_values.get("email", creds["email"]),
+        "username": identity_values.get("username", creds["username"]),
         "password": creds["password"],
     }
-    if "@" in identity:
-        ctx["username"] = identity.split("@")[0]
-    else:
-        ctx["username"] = identity
+    ctx["user"] = ctx["username"]
+    ctx["userid"] = ctx["username"]
+    ctx["user_id"] = ctx["username"]
     return ctx

@@ -2,11 +2,16 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from fuzzer.model.schema import Schema
+from fuzzer.mutator.mutation_operation import MutationOp
 
 
 class Mutator(ABC):
     @abstractmethod
-    def mutate(self, baseline: Any, schema: Schema) -> list[Any]:
+    def mutate(
+        self,
+        path: tuple[str, ...],
+        schema: Schema,
+    ) -> list[MutationOp]:
         ...
 
     def _invalid_value_for(self, schema: Schema) -> Any:

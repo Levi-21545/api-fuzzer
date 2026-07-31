@@ -25,17 +25,20 @@ def generates_payloads(
             headers[param.name] = _generate_header_value(param.schema)
 
     if endpoint.request_body is None:
-        yield path, headers, None
+        yield path, headers, None, {"kind": "baseline", "mutations": []}
         return
 
     print("Generating mutated payloads...")
 
-    payloads = mutation_engine.generate(endpoint.request_body.schema)
+    cases = mutation_engine.generate_cases(endpoint.request_body.schema)
 
-    print(f"Generated {len(payloads)} payloads for endpoint {endpoint.path} [{endpoint.method}]")
+    print(f"Generated {len(cases)} payloads for endpoint {endpoint.path} [{endpoint.method}]")
 
-    for payload in payloads:
-        yield path, dict(headers), payload
+    for case in cases:
+        yield path, dict(headers), case.payload, {
+            "kind": case.kind,
+            "mutations": [operation.to_dict() for operation in case.operations],
+        }
 
 
 def _generate_header_value(schema: Schema) -> str:

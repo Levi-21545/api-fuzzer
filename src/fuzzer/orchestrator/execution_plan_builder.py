@@ -12,18 +12,28 @@ def build_execution_plan(
         auth_headers: Headers | None = None,
     ) -> ExecutionPlan:
     """
-    Transforma endpoints em uma sequência de
-    (endpoint, path, payload, headers)
+    Convert endpoints into executable request cases.
 
-    Se auth_headers for fornecido e o endpoint exigir autenticação,
-    os headers de auth são mesclados nos headers da requisição.
+    Authentication headers are merged only into endpoints that require them.
     """
+    case_number = 0
     for endpoint in endpoints:
-        for path, headers, payload in generates_payloads(endpoint, mutation_engine, auth_context):
+        for path, headers, payload, case in generates_payloads(
+            endpoint, mutation_engine, auth_context
+        ):
             merged_headers = headers
             if auth_headers and endpoint.requires_auth:
                 merged_headers = {**headers, **auth_headers}
-            yield endpoint, path, payload, merged_headers
+            case_number += 1
+            yield ExecutionPlanEntry(
+                endpoint=endpoint,
+                path=path,
+                payload=payload,
+                headers=merged_headers,
+                case_id=f"case-{case_number:06d}",
+                case_kind=case["kind"],
+                mutations=case["mutations"],
+            )
 
 
 def build_auth_probes(
@@ -31,12 +41,11 @@ def build_auth_probes(
     auth_context: AuthContext | None = None,
 ) -> list[ExecutionPlanEntry]:
     """
-    Gera probes de autenticação para endpoints que exigem security:
-    1. Sem token (apenas headers básicos)
-    2. Token inválido (Authorization: Bearer invalid_token)
+    Generate authentication probes for secured endpoints:
+    1. Request without a token
+    2. Request with an invalid bearer token
 
-    Os probes são inseridos no início do plano para executar
-    antes das mutações lentas em servidores single-thread.
+    Probes are placed before slower mutations for single-threaded targets.
     """
     probe_plan: list[ExecutionPlanEntry] = []
     for endpoint in endpoints:
@@ -56,8 +65,28 @@ def build_auth_probes(
         else:
             body = None
 
-        probe_plan.append((endpoint, path, body, dict(probe_headers)))
+        probe_number = len(probe_plan) + 1
         probe_plan.append(
-            (endpoint, path, body, {**probe_headers, "Authorization": "Bearer invalid_token"})
+            ExecutionPlanEntry(
+                endpoint=endpoint,
+                path=path,
+                payload=body,
+                headers=dict(probe_headers),
+                case_id=f"auth-probe-{probe_number:06d}",
+                case_kind="auth_probe",
+                mutations=[],
+            )
+        )
+        probe_number = len(probe_plan) + 1
+        probe_plan.append(
+            ExecutionPlanEntry(
+                endpoint=endpoint,
+                path=path,
+                payload=body,
+                headers={**probe_headers, "Authorization": "Bearer invalid_token"},
+                case_id=f"auth-probe-{probe_number:06d}",
+                case_kind="auth_probe",
+                mutations=[],
+            )
         )
     return probe_plan

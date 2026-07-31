@@ -48,7 +48,7 @@ class OpenAPIParser:
                     or None
                 )
 
-                # operation_security pode ser [] (público explícito) ou None (herda global)
+                # [] means explicitly public; None inherits global security.
                 resolved_security = (
                     operation_security if operation_security is not None else global_security
                 )
@@ -113,9 +113,10 @@ class OpenAPIParser:
         for status, r in data.get("responses", {}).items():
             content = r.get("content", {})
             if "application/json" not in content:
+                responses[str(status)] = Schema(type=None)
                 continue
             schema = content["application/json"].get("schema", {})
-            responses[status] = self._parse_schema(schema)
+            responses[str(status)] = self._parse_schema(schema)
         return responses
 
     def _parse_schema(self, raw: Dict[str, Any]) -> Schema:
@@ -137,11 +138,27 @@ class OpenAPIParser:
             "maxLength",
             "minimum",
             "maximum",
+            "multipleOf",
             "enum",
             "pattern",
         ):
             if key in raw:
                 schema.constraints[key] = raw.get(key)
+
+        # OpenAPI 3.0 represents exclusive bounds as booleans beside
+        # minimum/maximum. OpenAPI 3.1 uses the JSON Schema numeric form.
+        for exclusive_key, bound_key in (
+            ("exclusiveMinimum", "minimum"),
+            ("exclusiveMaximum", "maximum"),
+        ):
+            exclusive_value = raw.get(exclusive_key)
+            if exclusive_value is True and bound_key in raw:
+                schema.constraints[exclusive_key] = raw[bound_key]
+            elif (
+                isinstance(exclusive_value, (int, float))
+                and not isinstance(exclusive_value, bool)
+            ):
+                schema.constraints[exclusive_key] = exclusive_value
 
         if schema.type == "object":
             for prop, sub in raw.get("properties", {}).items():

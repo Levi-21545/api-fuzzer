@@ -1,5 +1,4 @@
 import yaml
-from pathlib import Path
 
 from fuzzer.orchestrator.auth_resolver import _build_headers_from_config, resolve_auth_headers
 

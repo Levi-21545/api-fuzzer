@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 
 from fuzzer.model.endpoint import Endpoint
-from fuzzer.utils.types import SecurityRequirement, SecuritySchemes
+from fuzzer.model.security import SecurityRequirement, SecuritySchemes
 
 
 @dataclass

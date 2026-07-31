@@ -2,7 +2,9 @@ from fuzzer.analysis.classification import AnomalySeverity
 from fuzzer.analysis.fuzzy_engine import FuzzyEngine
 from fuzzer.model.endpoint import Endpoint
 from fuzzer.model.http import HttpMethod
+from fuzzer.model.schema import Schema
 from fuzzer.executor.result import ExecutionResult
+from fuzzer.utils.types import ExecutionPlanEntry
 
 
 def _engine() -> FuzzyEngine:
@@ -36,7 +38,7 @@ def test_no_response_scores_high():
 def test_documented_4xx_fast_scores_low():
     ep = Endpoint(
         path="/test", method=HttpMethod.POST, parameters=[], request_body=None,
-        responses={"403": None},
+        responses={"403": Schema(type=None)},
     )
     result = ExecutionResult(
         endpoint_id="POST /test", method=HttpMethod.POST, url="http://localhost/test",
@@ -63,7 +65,7 @@ def test_undocumented_4xx_scores_medium():
 def test_slow_response_escalates_severity():
     ep = Endpoint(
         path="/test", method=HttpMethod.POST, parameters=[], request_body=None,
-        responses={"403": None},
+        responses={"403": Schema(type=None)},
     )
     result = ExecutionResult(
         endpoint_id="POST /test", method=HttpMethod.POST, url="http://localhost/test",
@@ -86,7 +88,15 @@ def test_analyzer_integrates_fuzzy():
         status_code=500, response_time_ms=100, response_size=100,
         raw_response='{"error":"internal"}', error=None,
     )
-    analysis = analyzer._analyze_single(ep, None, {}, result)
+    plan_entry = ExecutionPlanEntry(
+        endpoint=ep,
+        path=ep.path,
+        payload=None,
+        headers={},
+        case_id="case-test",
+        case_kind="baseline",
+    )
+    analysis = analyzer._analyze_single(plan_entry, result)
     assert analysis is not None
     score, severity = analyzer.fuzzy_engine.score(ep, result)
     assert 0.0 <= score <= 1.0
