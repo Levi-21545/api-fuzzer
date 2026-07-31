@@ -12,9 +12,10 @@ class Schema:
     required: List[str] = field(default_factory=list)
     min_items: Optional[int] = None
     max_items: Optional[int] = None
+    read_only: bool = False
 
     def to_jsonschema(self) -> Dict[str, Any]:
-        """Convert this Schema into a JSON Schema dict compatible with jsonschema.validate."""
+        """Convert this schema to a dict accepted by jsonschema.validate."""
         if self.type is None:
             return {}
 
@@ -22,6 +23,8 @@ class Schema:
 
         if self.format:
             js["format"] = self.format
+        if self.read_only:
+            js["readOnly"] = True
 
         # Copy scalar constraints directly
         for key in (

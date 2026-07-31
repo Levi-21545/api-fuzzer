@@ -97,3 +97,22 @@ def test_nested_array_item_mutation_changes_the_generated_payload():
     assert item_type_case.payload["tags"] == [123]
     with pytest.raises(ValidationError):
         validate(item_type_case.payload, schema.to_jsonschema())
+
+
+def test_read_only_properties_are_not_generated_or_mutated_in_requests():
+    schema = Schema(
+        type="object",
+        properties={
+            "name": Schema(type="string"),
+            "id": Schema(type="integer", read_only=True),
+        },
+        required=["name", "id"],
+    )
+
+    cases = MutationEngine(level=1, max_mutations=None).generate_cases(schema)
+
+    assert cases[0].payload == {"name": "A"}
+    assert all(
+        not case.operations or case.operations[0].path != ("id",)
+        for case in cases
+    )

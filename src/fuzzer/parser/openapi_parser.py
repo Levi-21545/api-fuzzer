@@ -51,7 +51,9 @@ class OpenAPIParser:
 
                 # [] means explicitly public; None inherits global security.
                 resolved_security = (
-                    operation_security if operation_security is not None else global_security
+                    operation_security
+                    if operation_security is not None
+                    else global_security
                 )
                 endpoints.append(
                     Endpoint(
@@ -102,7 +104,9 @@ class OpenAPIParser:
         if reference is None:
             return raw
         if not isinstance(reference, str) or not reference.startswith("#/"):
-            raise ValueError(f"Only local OpenAPI references are supported: {reference}")
+            raise ValueError(
+                f"Only local OpenAPI references are supported: {reference}"
+            )
 
         resolved: Any = self.raw
         for raw_token in reference[2:].split("/"):
@@ -112,7 +116,9 @@ class OpenAPIParser:
             resolved = resolved[token]
 
         if not isinstance(resolved, dict):
-            raise ValueError(f"OpenAPI reference does not point to an object: {reference}")
+            raise ValueError(
+                f"OpenAPI reference does not point to an object: {reference}"
+            )
 
         siblings = {key: value for key, value in raw.items() if key != "$ref"}
         return {**resolved, **siblings}
@@ -149,10 +155,36 @@ class OpenAPIParser:
         if not raw:
             return Schema(type=None)
         raw = self._resolve_local_ref(raw)
+        if "allOf" in raw:
+            parts = [
+                self._parse_schema(part)
+                for part in raw["allOf"]
+            ]
+            siblings = {
+                key: value
+                for key, value in raw.items()
+                if key != "allOf"
+            }
+            if any(
+                key in siblings
+                for key in (
+                    "type",
+                    "format",
+                    "properties",
+                    "items",
+                    "required",
+                    "readOnly",
+                    "minItems",
+                    "maxItems",
+                )
+            ):
+                parts.append(self._parse_schema(siblings))
+            return self._merge_all_of(parts)
 
         schema = Schema(
             type=raw.get("type"),
             format=raw.get("format"),
+            read_only=raw.get("readOnly", False),
             constraints={},
             properties={},
             required=raw.get("required", []),
@@ -195,3 +227,40 @@ class OpenAPIParser:
             schema.items = self._parse_schema(raw.get("items", {}))
 
         return schema
+
+    @staticmethod
+    def _merge_all_of(parts: list[Schema]) -> Schema:
+        merged = Schema(type=None)
+        for part in parts:
+            if part.type is not None:
+                if merged.type is not None and merged.type != part.type:
+                    raise ValueError(
+                        "Incompatible schema types in allOf: "
+                        f"{merged.type} and {part.type}"
+                    )
+                merged.type = part.type
+            if part.format is not None:
+                merged.format = part.format
+            merged.read_only = merged.read_only or part.read_only
+            merged.constraints.update(part.constraints)
+            merged.properties.update(part.properties)
+            merged.required.extend(
+                name
+                for name in part.required
+                if name not in merged.required
+            )
+            if part.items is not None:
+                merged.items = part.items
+            if part.min_items is not None:
+                merged.min_items = max(
+                    value
+                    for value in (merged.min_items, part.min_items)
+                    if value is not None
+                )
+            if part.max_items is not None:
+                merged.max_items = min(
+                    value
+                    for value in (merged.max_items, part.max_items)
+                    if value is not None
+                )
+        return merged

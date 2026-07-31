@@ -65,6 +65,8 @@ class MutationEngine:
         mutations: list[MutationOp] = []
 
         for path, sub_schema in walk_schema(schema):
+            if sub_schema.read_only:
+                continue
             for mutator in get_mutators_for_schema(sub_schema):
                 mutations.extend(
                     mutator.mutate(path, sub_schema)

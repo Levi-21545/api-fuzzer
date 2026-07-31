@@ -41,6 +41,8 @@ def _string(schema: Schema) -> str:
         return uuid4()
     if schema.format == "email":
         return email()
+    if schema.format == "date":
+        return "2000-01-01"
     if schema.format == "date-time":
         return datetime()
 
@@ -119,6 +121,8 @@ def _array_item(schema: Schema):
 def _object(schema: Schema) -> dict[str, Any]:
     obj = {}
     for prop, prop_schema in (schema.properties or {}).items():
+        if prop_schema.read_only:
+            continue
         # With required declared, omit optional properties from the baseline.
         if schema.required and prop not in schema.required:
             continue

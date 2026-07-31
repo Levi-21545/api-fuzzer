@@ -5,6 +5,12 @@ from fuzzer.mutator.base import Mutator
 
 class ObjectMutator(Mutator):
     def mutate(self, path: tuple[str, ...], schema: Schema) -> list[MutationOp]:
+        writable_required = [
+            field
+            for field in schema.required
+            if field not in schema.properties
+            or not schema.properties[field].read_only
+        ]
         ops = [
             MutationOp(
                 path,
@@ -18,12 +24,12 @@ class ObjectMutator(Mutator):
                 "replace",
                 {},
                 operator="empty_object",
-                constraint="required" if schema.required else None,
-                expected_valid=not bool(schema.required),
+                constraint="required" if writable_required else None,
+                expected_valid=not bool(writable_required),
             ),
         ]
 
-        for field in schema.required or []:
+        for field in writable_required:
             ops.append(
                 MutationOp(
                     path + (field,),

@@ -93,3 +93,68 @@ def test_local_schema_references_and_path_parameters_are_resolved(tmp_path):
     }
     response_request = endpoint.responses["200"].properties["request"]
     assert response_request.required == ["quantity"]
+
+
+def test_all_of_object_schemas_are_merged(tmp_path):
+    contract = {
+        "openapi": "3.0.1",
+        "paths": {
+            "/pets": {
+                "post": {
+                    "requestBody": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Pet"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {"204": {"description": "Updated"}},
+                }
+            }
+        },
+        "components": {
+            "schemas": {
+                "PetFields": {
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "minLength": 1,
+                        }
+                    },
+                },
+                "Pet": {
+                    "allOf": [
+                        {"$ref": "#/components/schemas/PetFields"},
+                        {
+                            "type": "object",
+                            "required": ["id"],
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "readOnly": True,
+                                }
+                            },
+                        },
+                    ]
+                },
+            }
+        },
+    }
+    contract_path = tmp_path / "openapi.yaml"
+    contract_path.write_text(yaml.safe_dump(contract), encoding="utf-8")
+
+    endpoint = OpenAPIParser(str(contract_path)).parse().endpoints[0]
+    assert endpoint.request_body is not None
+    schema = endpoint.request_body.schema
+
+    assert schema.type == "object"
+    assert schema.required == ["name", "id"]
+    assert set(schema.properties) == {"name", "id"}
+    assert schema.properties["name"].constraints == {"minLength": 1}
+    assert schema.properties["id"].constraints == {"minimum": 0}
+    assert schema.properties["id"].read_only is True

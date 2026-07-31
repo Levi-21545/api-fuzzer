@@ -1,3 +1,5 @@
+from datetime import date
+
 from fuzzer.generator.valid_generator import generate_valid_value
 from fuzzer.model.schema import Schema
 
@@ -25,6 +27,12 @@ def test_string_email_format():
     s = Schema(type="string", format="email")
     val = generate_valid_value(s)
     assert "@" in val
+
+
+def test_string_date_format():
+    s = Schema(type="string", format="date")
+    val = generate_valid_value(s)
+    assert date.fromisoformat(val) == date(2000, 1, 1)
 
 
 def test_integer():
@@ -72,6 +80,19 @@ def test_object():
     assert isinstance(val, dict)
     assert "name" in val
     assert "age" not in val
+
+
+def test_object_omits_read_only_properties_from_request_baseline():
+    s = Schema(
+        type="object",
+        properties={
+            "name": Schema(type="string"),
+            "id": Schema(type="integer", read_only=True),
+        },
+        required=["name", "id"],
+    )
+
+    assert generate_valid_value(s) == {"name": "A"}
 
 
 def test_none_type():
