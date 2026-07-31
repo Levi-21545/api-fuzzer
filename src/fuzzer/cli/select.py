@@ -10,6 +10,7 @@ def select_endpoints(
     limit: int | None = None,
     all: bool = False,
     path_filter: str | None = None,
+    excluded_paths: list[str] | None = None,
 ) -> list[Endpoint]:
     if not all and limit is None and path_filter is None:
         limit = 10
@@ -21,6 +22,12 @@ def select_endpoints(
             ep for ep in selected
             if fnmatch.fnmatch(ep.path, path_filter)
         )
+
+    for excluded_path in excluded_paths or []:
+        selected = [
+            ep for ep in selected
+            if not fnmatch.fnmatch(ep.path, excluded_path)
+        ]
 
     selected = list(selected)
 

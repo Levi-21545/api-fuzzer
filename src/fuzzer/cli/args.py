@@ -56,10 +56,39 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--exclude-path",
+        dest="excluded_paths",
+        action="append",
+        default=[],
+        help="Glob pattern to exclude; may be specified more than once",
+    )
+
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path("output"),
         help="Diretório onde os resultados serão salvos",
+    )
+
+    parser.add_argument(
+        "--run-id",
+        help="Identificador explícito da execução (a pasta não pode existir)",
+    )
+
+    parser.add_argument(
+        "--experiment-id",
+        help="Identificador do experimento ao qual esta execução pertence",
+    )
+
+    parser.add_argument(
+        "--target-id",
+        help="Identificador estável da aplicação alvo",
+    )
+
+    parser.add_argument(
+        "--run-number",
+        type=int,
+        help="Número da repetição dentro do experimento",
     )
 
     parser.add_argument(
