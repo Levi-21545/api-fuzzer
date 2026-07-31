@@ -1,4 +1,5 @@
-from jsonschema import validate
+import pytest
+from jsonschema import ValidationError, validate
 
 from fuzzer.generator.valid_generator import generate_valid_value
 from fuzzer.model.schema import Schema
@@ -69,3 +70,30 @@ def test_mutation_level_always_includes_a_baseline_case():
     assert cases[0].kind == "baseline"
     assert cases[0].operations == ()
     assert cases[1].kind == "mutation"
+
+
+def test_nested_array_item_mutation_changes_the_generated_payload():
+    schema = Schema(
+        type="object",
+        properties={
+            "tags": Schema(
+                type="array",
+                items=Schema(type="string"),
+                min_items=1,
+            ),
+        },
+        required=["tags"],
+    )
+
+    cases = MutationEngine(level=1, max_mutations=None).generate_cases(schema)
+    item_type_case = next(
+        case
+        for case in cases
+        if case.operations
+        and case.operations[0].path == ("tags", "*")
+        and case.operations[0].operator == "wrong_type"
+    )
+
+    assert item_type_case.payload["tags"] == [123]
+    with pytest.raises(ValidationError):
+        validate(item_type_case.payload, schema.to_jsonschema())

@@ -114,18 +114,26 @@ class MutationEngine:
         current = data
 
         for key in mutation.path[:-1]:
-            if not isinstance(current, dict) or key not in current:
-                return data
-            current = current[key]
+            if isinstance(current, dict) and key in current:
+                current = current[key]
+                continue
+            if isinstance(current, list) and key == "*" and current:
+                current = current[0]
+                continue
+            return data
 
         leaf = mutation.path[-1]
 
         if mutation.op == "delete":
             if isinstance(current, dict):
                 current.pop(leaf, None)
+            elif isinstance(current, list) and leaf == "*" and current:
+                current.pop(0)
 
         elif mutation.op == "replace":
             if isinstance(current, dict):
                 current[leaf] = mutation.value
+            elif isinstance(current, list) and leaf == "*" and current:
+                current[0] = mutation.value
 
         return data
