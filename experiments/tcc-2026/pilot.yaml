@@ -1,0 +1,39 @@
+manifest_version: 1
+experiment_id: TCC-PILOT-001
+status: pilot
+purpose: >-
+  Validate the experimental pipeline, contract-aware mutation metadata and
+  artifact collection before freezing the definitive TCC experiment.
+
+fuzzer:
+  git_ref: master
+  runner: scripts/experiments/run_experiment.sh
+  level: 1
+  max_mutations_per_payload: 20
+  all_endpoints: true
+  excluded_paths:
+    - /createdb
+  concurrency: 1
+  delay_ms: 250
+  timeout_seconds: 10
+
+targets:
+  - id: vampi
+    role: vulnerable API and pipeline smoke test
+    source_commit: f16052d
+    schema_from_repository_root: ../mock-projects/VAmPI/openapi_specs/openapi3.yml
+    container_image: >-
+      erev0s/vampi@sha256:0a5a224b6e14ae7da6a6ea265178ff71286ff903aec74adee98f660bb0e4ca12
+    note: Image digest resolved and validated during the controlled pilot.
+
+artifacts_per_run:
+  - run_manifest.json
+  - execution_plan.json
+  - results.json
+  - analysis_findings.json
+  - analysis_report.md
+  - target_container.log
+
+repetitions:
+  pilot: 1
+  definitive: to_be_decided_after_pilot
