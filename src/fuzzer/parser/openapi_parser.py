@@ -34,6 +34,7 @@ class OpenAPIParser:
 
         for path, methods in self.raw.get("paths", {}).items():
             path_servers = self._parse_servers(methods)
+            path_parameters = methods.get("parameters", [])
 
             for method, data in methods.items():
                 if method.lower() not in {"get", "post", "put", "patch", "delete"}:
@@ -56,7 +57,10 @@ class OpenAPIParser:
                     Endpoint(
                         path=path,
                         method=HttpMethod(method.upper()),
-                        parameters=self._parse_parameters(data),
+                        parameters=self._parse_parameters(
+                            path_parameters,
+                            data.get("parameters", []),
+                        ),
                         request_body=self._parse_request_body(data),
                         responses=self._parse_responses(data),
                         servers=servers,
@@ -78,18 +82,40 @@ class OpenAPIParser:
             return []
         return [s["url"] for s in servers]
 
-    def _parse_parameters(self, data: Dict[str, Any]):
-        params = []
-        for p in data.get("parameters", []):
-            params.append(
-                Parameter(
-                    name=p["name"],
-                    location=p["in"],
-                    required=p.get("required", False),
-                    schema=self._parse_schema(p.get("schema", {})),
+    def _parse_parameters(self, *parameter_groups: list[Dict[str, Any]]):
+        parsed_by_identity: dict[tuple[str, str], Parameter] = {}
+        for parameters in parameter_groups:
+            for raw_parameter in parameters:
+                parameter = self._resolve_local_ref(raw_parameter)
+                parsed_by_identity[(parameter["name"], parameter["in"])] = (
+                    Parameter(
+                        name=parameter["name"],
+                        location=parameter["in"],
+                        required=parameter.get("required", False),
+                        schema=self._parse_schema(parameter.get("schema", {})),
+                    )
                 )
-            )
-        return params
+        return list(parsed_by_identity.values())
+
+    def _resolve_local_ref(self, raw: Dict[str, Any]) -> Dict[str, Any]:
+        reference = raw.get("$ref")
+        if reference is None:
+            return raw
+        if not isinstance(reference, str) or not reference.startswith("#/"):
+            raise ValueError(f"Only local OpenAPI references are supported: {reference}")
+
+        resolved: Any = self.raw
+        for raw_token in reference[2:].split("/"):
+            token = raw_token.replace("~1", "/").replace("~0", "~")
+            if not isinstance(resolved, dict) or token not in resolved:
+                raise ValueError(f"Unresolvable OpenAPI reference: {reference}")
+            resolved = resolved[token]
+
+        if not isinstance(resolved, dict):
+            raise ValueError(f"OpenAPI reference does not point to an object: {reference}")
+
+        siblings = {key: value for key, value in raw.items() if key != "$ref"}
+        return {**resolved, **siblings}
 
     def _parse_request_body(self, data: Dict[str, Any]):
         body = data.get("requestBody")
@@ -122,6 +148,7 @@ class OpenAPIParser:
     def _parse_schema(self, raw: Dict[str, Any]) -> Schema:
         if not raw:
             return Schema(type=None)
+        raw = self._resolve_local_ref(raw)
 
         schema = Schema(
             type=raw.get("type"),
