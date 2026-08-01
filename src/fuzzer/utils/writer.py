@@ -5,6 +5,7 @@ from typing import Any
 from collections import Counter, defaultdict
 from fuzzer.executor.result import ExecutionResult
 from fuzzer.analysis.result import AnalysisResult
+from fuzzer.utils.redaction import redact_headers, redact_text, redact_value
 from fuzzer.utils.types import ExecutionPlanEntry
 
 def write_results(results: list[ExecutionResult], output_dir: Path) -> None:
@@ -13,7 +14,7 @@ def write_results(results: list[ExecutionResult], output_dir: Path) -> None:
 
     with output_file.open("w", encoding="utf-8") as f:
         json.dump(
-            [r.to_dict() for r in results],
+            [redact_value(r.to_dict()) for r in results],
             f,
             indent=2,
             ensure_ascii=False,
@@ -25,7 +26,10 @@ def write_results_jsonl(results: list[ExecutionResult], output_dir: Path):
 
     with output_file.open("w", encoding="utf-8") as f:
         for result in results:
-            f.write(json.dumps(result.to_dict(), ensure_ascii=False) + "\n")
+            f.write(
+                json.dumps(redact_value(result.to_dict()), ensure_ascii=False)
+                + "\n"
+            )
 
 def write_execution_plan(
     execution_plan: list[ExecutionPlanEntry],
@@ -45,7 +49,7 @@ def write_execution_plan(
                 "method": entry.endpoint.method.value,
                 "path": entry.path,
                 "payload": entry.payload,
-                "headers": entry.headers,
+                "headers": redact_headers(entry.headers),
                 "mutations": entry.mutations,
             }
         )
@@ -111,7 +115,8 @@ def write_analysis_report(
             status = ar.execution_result.status_code
             lines.append(
                 f"- [{ar.classification.name}] {ar.endpoint_id} → {status} "
-                f"— score={ar.severity_score} severity={ar.severity.name} — {ar.description}"
+                f"— score={ar.severity_score} severity={ar.severity.name} — "
+                f"{redact_text(ar.description)}"
             )
 
     md_path = output_dir / "analysis_report.md"
@@ -130,7 +135,7 @@ def write_analysis_report(
                 "status_code": ar.execution_result.status_code,
                 "description": ar.description,
                 "request_payload": ar.request_payload,
-                "request_headers": ar.request_headers,
+                "request_headers": redact_headers(ar.request_headers),
                 "url": ar.execution_result.url,
                 "severity_score": ar.severity_score,
                 "severity": ar.severity.name,
@@ -138,6 +143,6 @@ def write_analysis_report(
         )
 
     with json_path.open("w", encoding="utf-8") as f:
-        json.dump(serializable, f, indent=2, ensure_ascii=False)
+        json.dump(redact_value(serializable), f, indent=2, ensure_ascii=False)
 
     return md_path, json_path

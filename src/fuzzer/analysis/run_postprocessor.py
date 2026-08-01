@@ -10,6 +10,11 @@ from fuzzer.analysis.deduplication import (
     CorrelatedFinding,
     deduplicate_findings,
 )
+from fuzzer.utils.redaction import redact_text, redact_value
+
+
+_REPORT_FINDING_LIMIT = 50
+_EXCERPT_LIMIT = 600
 
 
 class CorrelationError(ValueError):
@@ -118,6 +123,8 @@ def _build_metrics(
         for item in results
     )
     expected = raw_classes[EXPECTED_CLASSIFICATION]
+    raw_candidates = len(findings) - expected
+    unique_count = len(unique)
     return {
         "api_id": api_id,
         "counts": {
@@ -125,8 +132,8 @@ def _build_metrics(
             "executed_requests": len(results),
             "classified_observations": len(findings),
             "expected_failures": expected,
-            "candidate_findings_raw": len(findings) - expected,
-            "findings_unique_operational": len(unique),
+            "candidate_findings_raw": raw_candidates,
+            "findings_unique_operational": unique_count,
             "candidate_endpoints": len(
                 {
                     item["endpoint_id"]
@@ -139,44 +146,175 @@ def _build_metrics(
         "candidate_by_classification": dict(sorted(candidate_classes.items())),
         "unique_by_classification": dict(sorted(unique_classes.items())),
         "executed_by_http_status_class": dict(sorted(status_classes.items())),
+        "rates": {
+            "execution_completion_ratio": _ratio(len(results), len(plans)),
+            "candidate_per_executed_ratio": _ratio(
+                raw_candidates, len(results)
+            ),
+            "deduplication_reduction_ratio": (
+                round(1 - _ratio(unique_count, raw_candidates), 4)
+                if raw_candidates
+                else 0.0
+            ),
+        },
     }
 
 
-def _report(metrics: dict[str, Any]) -> str:
+def _ratio(numerator: int, denominator: int) -> float:
+    return round(numerator / denominator, 4) if denominator else 0.0
+
+
+def _percentage(value: float) -> str:
+    return f"{value * 100:.1f}%"
+
+
+def _mutation_summary(item: dict[str, Any]) -> str:
+    mutations = item["representative"]["plan"].get("mutations") or []
+    if not mutations:
+        return "baseline request"
+    summaries: list[str] = []
+    for mutation in mutations:
+        operator = mutation.get("operator", "unknown")
+        constraint = mutation.get("constraint") or "unspecified"
+        raw_path = mutation.get("path") or []
+        path = "/" + "/".join(str(part) for part in raw_path)
+        summaries.append(f"`{operator}` on `{path}` ({constraint})")
+    return "; ".join(summaries)
+
+
+def _excerpt(value: Any, *, serialized: bool = False) -> str:
+    if serialized and isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError:
+            pass
+    rendered = json.dumps(
+        redact_value(value),
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+    if len(rendered) <= _EXCERPT_LIMIT:
+        return rendered
+    return rendered[: _EXCERPT_LIMIT - 1] + "…"
+
+
+def _severity_key(item: dict[str, Any]) -> tuple[int, float, str, str]:
+    finding = item["representative"]["finding"]
+    severity_rank = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
+    return (
+        severity_rank.get(finding.get("severity"), 3),
+        -float(finding.get("severity_score") or 0),
+        finding.get("endpoint_id") or "",
+        item["signature"]["id"],
+    )
+
+
+def _report(metrics: dict[str, Any], unique: list[dict[str, Any]]) -> str:
     counts = metrics["counts"]
-    return "\n".join(
+    rates = metrics["rates"]
+    lines = [
+        "# Deduplication report",
+        "",
+        f"API: `{metrics['api_id']}`",
+        "",
+        "## Summary",
+        "",
+        f"- Planned requests: {counts['planned_requests']}",
+        f"- Executed requests: {counts['executed_requests']} "
+        f"({_percentage(rates['execution_completion_ratio'])})",
+        f"- Classified observations: {counts['classified_observations']}",
+        f"- Expected failures: {counts['expected_failures']}",
+        f"- Raw candidate findings: {counts['candidate_findings_raw']}",
+        f"- Unique operational findings: "
+        f"{counts['findings_unique_operational']}",
+        f"- Deduplication reduction: "
+        f"{_percentage(rates['deduplication_reduction_ratio'])}",
+        f"- Candidate endpoints: {counts['candidate_endpoints']}",
+        "",
+        "`EXPECTED_FAILURE` remains an execution metric and is excluded before "
+        "deduplication. A unique operational finding is a strict black-box "
+        "signature, not a confirmed bug, vulnerability, or root cause.",
+        "",
+        "## Candidate classifications",
+        "",
+        "| Classification | Raw | Unique |",
+        "| --- | ---: | ---: |",
+    ]
+    candidate_classes = metrics["candidate_by_classification"]
+    unique_classes = metrics["unique_by_classification"]
+    for classification in sorted(candidate_classes):
+        lines.append(
+            f"| `{classification}` | {candidate_classes[classification]} | "
+            f"{unique_classes.get(classification, 0)} |"
+        )
+
+    endpoint_counts = Counter(
+        item["representative"]["finding"]["endpoint_id"] for item in unique
+    )
+    lines.extend(["", "## Endpoints with unique findings", ""])
+    for endpoint, count in endpoint_counts.most_common(10):
+        lines.append(f"- `{endpoint}`: {count}")
+
+    ordered = sorted(unique, key=_severity_key)
+    displayed = ordered[:_REPORT_FINDING_LIMIT]
+    lines.extend(
         [
-            "# Deduplication report",
             "",
-            f"API: `{metrics['api_id']}`",
+            "## Prioritized unique findings",
             "",
-            "## Counts",
-            "",
-            f"- Planned requests: {counts['planned_requests']}",
-            f"- Executed requests: {counts['executed_requests']}",
-            f"- Classified observations: {counts['classified_observations']}",
-            f"- Expected failures: {counts['expected_failures']}",
-            f"- Raw candidate findings: {counts['candidate_findings_raw']}",
-            f"- Unique operational findings: "
-            f"{counts['findings_unique_operational']}",
-            "",
-            "## Interpretation",
-            "",
-            "`EXPECTED_FAILURE` remains an execution metric and is excluded "
-            "before deduplication.",
-            "",
-            "The strict signature represents a black-box operational finding, "
-            "not a confirmed bug, vulnerability, or root cause.",
-            "",
+            f"Showing {len(displayed)} of {len(ordered)} unique findings. The "
+            "complete machine-readable set is available in "
+            "`findings_unique.json`.",
         ]
     )
+    for position, item in enumerate(displayed, start=1):
+        representative = item["representative"]
+        finding = representative["finding"]
+        result = representative["result"]
+        signature_id = item["signature"]["id"][:12]
+        lines.extend(
+            [
+                "",
+                f"### {position}. {finding.get('severity', 'UNKNOWN')} · "
+                f"{finding['classification']}",
+                "",
+                f"- Endpoint: `{finding['endpoint_id']}`",
+                f"- HTTP status: `{result.get('status_code')}`",
+                f"- Score: `{finding.get('severity_score')}`",
+                f"- Occurrences in this run: `{item['occurrence_count']}`",
+                f"- Representative case: `{representative['plan']['case_id']}`",
+                f"- Signature: `{signature_id}`",
+                f"- Mutation: {_mutation_summary(item)}",
+                f"- Interpretation: {redact_text(finding['description'])}",
+                "- Request payload: `"
+                f"{_excerpt(representative['plan'].get('payload'))}`",
+                "- Response excerpt: `"
+                f"{_excerpt(result.get('raw_response'), serialized=True)}`",
+            ]
+        )
+    return "\n".join(lines) + "\n"
 
 
 def _write_json(path: Path, value: Any) -> None:
     path.write_text(
-        json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+        json.dumps(
+            redact_value(value),
+            indent=2,
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
+
+
+def _redact_text_artifacts(run_dir: Path) -> None:
+    for directory in (run_dir / "data", run_dir / "analysis"):
+        for path in directory.iterdir():
+            if path.is_file() and path.suffix in {".log", ".md"}:
+                text = path.read_text(encoding="utf-8")
+                path.write_text(redact_text(text), encoding="utf-8")
 
 
 def _artifact_paths(run_dir: Path) -> list[str]:
@@ -195,11 +333,20 @@ def _record_failure(
     manifest: dict[str, Any],
     error: Exception,
 ) -> None:
-    manifest["postprocessing"]["deduplication"] = {
+    _postprocessing(manifest)["deduplication"] = {
         "status": "failed",
         "error": {"type": type(error).__name__, "message": str(error)},
     }
     _write_json(manifest_path, manifest)
+
+
+def _postprocessing(manifest: dict[str, Any]) -> dict[str, Any]:
+    value = manifest.get("postprocessing")
+    if isinstance(value, dict):
+        return value
+    value = {}
+    manifest["postprocessing"] = value
+    return value
 
 
 def process_run(run_dir: Path) -> dict[str, Any]:
@@ -216,17 +363,24 @@ def process_run(run_dir: Path) -> dict[str, Any]:
         findings = _load_records(
             run_dir / "analysis" / "analysis_findings.json"
         )
+        plans = redact_value(plans)
+        results = redact_value(results)
+        findings = redact_value(findings)
         correlated = correlate_records(plans, results, findings)
         unique = deduplicate_findings(api_id, correlated)
         metrics = _build_metrics(api_id, plans, results, findings, unique)
         analysis_dir = run_dir / "analysis"
+        _write_json(run_dir / "data" / "execution_plan.json", plans)
+        _write_json(run_dir / "data" / "results.json", results)
+        _write_json(analysis_dir / "analysis_findings.json", findings)
         _write_json(analysis_dir / "findings_unique.json", unique)
         _write_json(analysis_dir / "metrics.json", metrics)
         (analysis_dir / "deduplication_report.md").write_text(
-            _report(metrics), encoding="utf-8"
+            _report(metrics, unique), encoding="utf-8"
         )
+        _redact_text_artifacts(run_dir)
         manifest["artifacts"] = _artifact_paths(run_dir)
-        manifest["postprocessing"]["deduplication"] = {
+        _postprocessing(manifest)["deduplication"] = {
             "status": "completed",
             "counts": metrics["counts"],
             "error": None,
