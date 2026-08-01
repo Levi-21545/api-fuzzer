@@ -30,6 +30,7 @@ class ExecutionPlanEntry:
     case_id: str
     case_kind: Literal["baseline", "mutation", "auth_probe"]
     mutations: list[dict[str, Any]] = field(default_factory=list)
+    auth_probe_kind: Literal["missing_credential", "invalid_credential"] | None = None
 
     @property
     def expects_rejection(self) -> bool:

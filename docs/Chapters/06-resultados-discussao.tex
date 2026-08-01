@@ -1,26 +1,93 @@
 % TCC — Resultados e Discussão
 \section{Resultados e Discussão}\label{sec:resultados}
 
-Esta seção será preenchida somente com dados rastreáveis às campanhas
-experimentais. Resultados zero, campanhas inválidas e casos que contradigam as
-hipóteses também serão preservados e discutidos.
+Esta seção registra inicialmente os resultados do piloto usados para auditar e
+revisar o mecanismo de priorização. Os números ainda não constituem a avaliação
+externa final do FIS revisado. Resultados negativos e casos que contradigam as
+hipóteses são preservados porque explicam as decisões posteriores do projeto.
 
-\subsection{Caracterização das Campanhas}
+\subsection{Caracterização do Piloto}
 
-% TODO(TCC): versões, ambiente, APIs, operações, configuração e duração.
+Foram executadas campanhas de nível 2 contra VAmPI, Spring Petclinic REST,
+crAPI e RealWorld. No conjunto canônico, 958 requisições planejadas foram
+executadas, das quais 284 continham combinações de duas mutações. A
+deduplicação estrita produziu 265 assinaturas: 7 na VAmPI, 47 na Petclinic, 198
+na crAPI e 13 na RealWorld. Para a avaliação de prioridade, essas assinaturas
+foram reunidas em 161 famílias de comportamento.
 
-\subsection{Achados e Reprodutibilidade}
+O nível 2 ampliou a variedade das manifestações observadas, especialmente na
+crAPI, onde 37 assinaturas novas envolveram combinações L2. No entanto, o
+piloto não produziu uma nova família de anomalia de prioridade alta exclusiva
+desse nível. O resultado não torna o L2 irrelevante: divergências de contrato,
+respostas combinadas e variações de robustez também fazem parte do objeto de
+estudo, mesmo quando não indicam vulnerabilidade grave.
 
-% TODO(TCC): achados brutos/únicos, classificações, endpoints e estabilidade.
+\subsection{Construção da Referência Cega}
+
+Três julgadores agentes avaliaram as 161 famílias sem acesso ao rótulo do
+analisador ou aos resultados do FIS. Houve concordância exata sobre validade em
+144 famílias (89,4\%). As mesmas 144 foram consideradas suportadas pelos três
+julgadores, com concordância exata de prioridade em 136 casos (94,4\%). Sete
+casos sem maioria de prioridade foram submetidos a um quarto julgador. A
+referência final manteve todas as famílias como suportadas e distribuiu-as em
+99 LOW, 59 MEDIUM e 3 HIGH.
+
+As três famílias HIGH corresponderam a duas falhas 500 repetidas em baselines
+válidos da Petclinic e a uma operação autenticada da crAPI que aceitou
+credencial ausente e retornou conteúdo funcional. A referência é descrita como
+operacional e assistida por agentes, não como verdade humana absoluta.
 
 \subsection{Avaliação da Priorização Fuzzy}
 
-% TODO(TCC): distribuição de scores, baseline discreto, rótulos e métricas.
+A auditoria do FIS v2 mostrou que o status HTTP dominava a decisão. A ablação
+do tempo e a ablação do sinal de tamanho não alteraram a faixa de nenhuma das
+161 famílias. O v2 e o baseline baseado apenas em status obtiveram a mesma
+acurácia, 0,298, o mesmo macro-F1, 0,254, e o mesmo erro ordinal médio, 0,702.
+O v2 apresentou correlação de Spearman de 0,710 com a referência.
+
+A matriz de confusão explicou a baixa acurácia: 67 famílias LOW foram elevadas
+a MEDIUM e 43 famílias MEDIUM foram elevadas a HIGH. O modelo
+superpriorizava rejeições seguras, status 4xx não documentados e falhas 5xx
+localizadas. Em particular, uma resposta 4xx não documentada pode representar
+contract drift e ainda assim constituir rejeição segura da entrada exercitada;
+as duas propriedades precisam ser preservadas sem receber automaticamente a
+mesma prioridade de uma operação válida indisponível.
+
+Esse resultado motivou o FIS v3. Seus antecedentes são contradição
+comportamental, força da evidência e exposição de controle de acesso. Tempo e
+tamanho deixaram de integrar o núcleo da decisão. Repetição após deduplicação
+fortalece a evidência de falhas de servidor; credencial ausente e inválida são
+tratadas separadamente; e a conformidade da resposta é recalculada contra o
+contrato, sem usar o rótulo final do analisador como antecedente.
+
+Aplicado às mesmas 161 famílias de desenvolvimento, o código do v3 reproduziu
+todas as faixas da referência, com macro-F1 1,000 e erro ordinal zero. Esse
+resultado comprova que a implementação expressa a rubrica formulada, mas não
+estima generalização: as regras foram definidas depois da análise desta
+amostra. Uma quinta API ou um conjunto futuro congelado antes da rotulagem é
+necessário para a avaliação confirmatória.
 
 \subsection{Casos Representativos e Falsos Positivos}
 
-% TODO(TCC): payloads, respostas, relatórios e análise causal limitada.
+Os desacordos do v2 mostraram três padrões importantes. Primeiro, rejeições
+404 de identificadores gerados não comprovam falha da operação e tendem a LOW.
+Segundo, um baseline POST cujo corpo satisfaz o schema OpenAPI, mas recebe 400
+por restrições não declaradas pelo contrato, evidencia contract drift de
+entrada e tende a MEDIUM. Terceiro, um erro 500 isolado possui evidência mais
+fraca que o mesmo comportamento repetido em diferentes casos; por isso, a
+recorrência atua como modificador de prioridade no v3.
 
 \subsection{Discussão Geral}
 
-% TODO(TCC): responder às questões, relacionar à literatura e registrar ameaças.
+O principal resultado do piloto não é que o FIS v2 tenha superado um baseline,
+mas que a instrumentação permitiu demonstrar por que ele não o superava. A
+revisão substituiu sinais fáceis de medir, porém pouco discriminativos, por
+fatos mais próximos do construto. A contribuição deve ser apresentada como um
+processo auditável de priorização de anomalias técnicas, incluindo contract
+drift e robustez, e não como estimador de impacto real ou gravidade de
+segurança.
+
+Permanecem como ameaças a quantidade de APIs, a dependência do OpenAPI como
+oráculo parcial, a correlação entre julgadores agentes e o ajuste do v3 no
+mesmo conjunto usado para diagnosticar o v2. As campanhas definitivas devem
+congelar código, regras e protocolo antes da coleta confirmatória.

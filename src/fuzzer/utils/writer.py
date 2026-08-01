@@ -47,6 +47,7 @@ def write_execution_plan(
             {
                 "case_id": entry.case_id,
                 "case_kind": entry.case_kind,
+                "auth_probe_kind": getattr(entry, "auth_probe_kind", None),
                 "endpoint_id": entry.endpoint.id,
                 "method": entry.endpoint.method.value,
                 "path": entry.path,

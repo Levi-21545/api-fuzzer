@@ -46,7 +46,13 @@ def _engine() -> MutationEngine:
 def test_injects_auth_headers_on_auth_endpoints():
     ep_pub = _ep(path="/public", security=False, has_body=True)
     ep_auth = _ep(path="/secret", security=True, has_body=True)
-    plan = list(build_execution_plan([ep_pub, ep_auth], _engine(), auth_headers={"Authorization": "Bearer x"}))
+    plan = list(
+        build_execution_plan(
+            [ep_pub, ep_auth],
+            _engine(),
+            auth_headers={"Authorization": "Bearer x"},
+        )
+    )
 
     pub_entry = [e for e in plan if e.endpoint.path == "/public"]
     assert len(pub_entry) == 1
@@ -118,6 +124,15 @@ def test_auth_probe_invalid_token():
     assert hdrs.get("Authorization") == "Bearer invalid_token"
 
 
+def test_auth_probe_records_credential_condition():
+    ep = _ep(path="/secret", security=True)
+
+    probes = build_auth_probes([ep])
+
+    assert probes[0].auth_probe_kind == "missing_credential"
+    assert probes[1].auth_probe_kind == "invalid_credential"
+
+
 def test_auth_probe_preserves_configured_header_and_scheme():
     ep = _ep(path="/secret", security=True)
 
@@ -141,7 +156,14 @@ def test_auth_probe_resolves_path_params():
     ep = _ep(
         path="/users/{userId}/items",
         security=True,
-        params=[Parameter(name="userId", location="path", required=True, schema=Schema(type="string"))],
+        params=[
+            Parameter(
+                name="userId",
+                location="path",
+                required=True,
+                schema=Schema(type="string"),
+            )
+        ],
     )
     ctx: AuthContext = {"username": "myuser"}
     probes = build_auth_probes([ep], ctx)

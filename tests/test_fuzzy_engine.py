@@ -1,9 +1,12 @@
+from dataclasses import replace
+
 from fuzzer.analysis.classification import AnomalySeverity
 from fuzzer.analysis.fuzzy_engine import FuzzyEngine
+from fuzzer.executor.result import ExecutionResult
 from fuzzer.model.endpoint import Endpoint
 from fuzzer.model.http import HttpMethod
+from fuzzer.model.request_body import RequestBody
 from fuzzer.model.schema import Schema
-from fuzzer.executor.result import ExecutionResult
 from fuzzer.utils.types import ExecutionPlanEntry
 
 
@@ -11,297 +14,278 @@ def _engine() -> FuzzyEngine:
     return FuzzyEngine()
 
 
-def test_server_error_scores_high():
-    ep = Endpoint(
+def _endpoint(
+    responses: dict[str, Schema] | None = None,
+    *,
+    body: bool = False,
+    requires_authentication: bool = False,
+) -> Endpoint:
+    request_body = None
+    if body:
+        request_body = RequestBody(
+            content_type="application/json",
+            schema=Schema(
+                type="object",
+                properties={"name": Schema(type="string")},
+                required=["name"],
+            ),
+        )
+    return Endpoint(
         path="/test",
-        method=HttpMethod.GET,
+        method=HttpMethod.POST,
         parameters=[],
-        request_body=None,
-        responses={},
+        request_body=request_body,
+        responses=responses or {},
+        security=[{"bearerAuth": []}] if requires_authentication else None,
     )
-    result = ExecutionResult(
-        endpoint_id="GET /test",
-        method=HttpMethod.GET,
+
+
+def _result(
+    status: int | None,
+    *,
+    raw_response: str | None = "{}",
+    response_time_ms: float = 10,
+    response_size: int | None = 100,
+) -> ExecutionResult:
+    return ExecutionResult(
+        endpoint_id="POST /test",
+        method=HttpMethod.POST,
         url="http://localhost/test",
-        status_code=500,
-        response_time_ms=10,
-        response_size=100,
-        raw_response='{"error":"internal"}',
-        error=None,
-    )
-    score, severity = _engine().score(ep, result)
-    assert severity == AnomalySeverity.HIGH
-    assert score >= 0.5
-
-
-def test_assessment_exposes_inputs_memberships_and_activated_rules():
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.GET,
-        parameters=[],
-        request_body=None,
-        responses={},
-    )
-    result = ExecutionResult(
-        endpoint_id="GET /test",
-        method=HttpMethod.GET,
-        url="http://localhost/test",
-        status_code=500,
-        response_time_ms=10,
-        response_size=100,
-        raw_response='{"error":"internal"}',
-        error=None,
+        status_code=status,
+        response_time_ms=response_time_ms,
+        response_size=response_size,
+        raw_response=raw_response,
+        error="timeout" if status is None else None,
     )
 
-    assessment = _engine().assess(ep, result)
+
+def test_isolated_server_error_scores_medium():
+    assessment = _engine().assess(_endpoint(), _result(500))
+
+    assert assessment.score == 0.5
+    assert assessment.severity == AnomalySeverity.MEDIUM
+    assert assessment.inputs["behavior_contradiction"] == 1.0
+    assert assessment.inputs["evidence_strength"] == 0.5
+    assert [rule["id"] for rule in assessment.activated_rules] == [
+        "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE"
+    ]
+
+
+def test_repeated_server_error_scores_high_with_strong_evidence():
+    assessment = _engine().assess(
+        _endpoint(),
+        _result(500),
+        evidence_strength=1.0,
+    )
 
     assert assessment.score == 0.84
-    assert assessment.model_id == "mamdani-status-time-response-size-v2"
     assert assessment.severity == AnomalySeverity.HIGH
-    assert assessment.inputs == {
-        "status_deviation": 1.0,
-        "response_time_ms": 10.0,
-        "response_size_signal": 100 / 1024 * 2,
-    }
-    assert assessment.memberships["status_deviation"]["high"] == 1.0
     assert [rule["id"] for rule in assessment.activated_rules] == [
-        "R1_HIGH_DEVIATION_OR_TIMEOUT",
+        "R4_HIGH_CONTRADICTION_STRONG_EVIDENCE"
     ]
+
+
+def test_transport_failure_uses_evidence_strength():
+    engine = _engine()
+
+    isolated = engine.assess(_endpoint(), _result(None, raw_response=None))
+    repeated = engine.assess(
+        _endpoint(),
+        _result(None, raw_response=None),
+        evidence_strength=1.0,
+    )
+
+    assert isolated.severity == AnomalySeverity.MEDIUM
+    assert repeated.severity == AnomalySeverity.HIGH
+
+
+def test_safe_rejection_expected_scores_low_even_with_contract_drift():
+    assessment = _engine().assess(
+        _endpoint(),
+        _result(403, raw_response='{"error":"forbidden"}'),
+        expects_rejection=True,
+    )
+
+    assert assessment.inputs["behavior_contradiction"] == 0.15
+    assert assessment.severity == AnomalySeverity.LOW
     assert assessment.fallback_used is False
 
 
-def test_no_response_scores_high():
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.GET,
-        parameters=[],
-        request_body=None,
-        responses={},
+def test_generated_resource_rejection_scores_low():
+    assessment = _engine().assess(
+        _endpoint(),
+        _result(404, raw_response='{"error":"not found"}'),
     )
-    result = ExecutionResult(
-        endpoint_id="GET /test",
-        method=HttpMethod.GET,
-        url="http://localhost/test",
-        status_code=None,
-        response_time_ms=5000,
-        response_size=None,
-        raw_response=None,
-        error="timeout",
-    )
-    score, severity = _engine().score(ep, result)
-    assert severity == AnomalySeverity.HIGH
-    assert score >= 0.5
+
+    assert assessment.inputs["behavior_contradiction"] == 0.2
+    assert assessment.severity == AnomalySeverity.LOW
 
 
-def test_documented_4xx_fast_scores_low():
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.POST,
-        parameters=[],
-        request_body=None,
-        responses={"403": Schema(type=None)},
+def test_undocumented_400_for_generated_body_scores_medium():
+    assessment = _engine().assess(
+        _endpoint({"200": Schema(type="object")}, body=True),
+        _result(400, raw_response='{"error":"size must be at least 3"}'),
     )
-    result = ExecutionResult(
-        endpoint_id="POST /test",
-        method=HttpMethod.POST,
-        url="http://localhost/test",
-        status_code=403,
-        response_time_ms=30,
-        response_size=50,
-        raw_response='{"error":"forbidden"}',
-        error=None,
-    )
-    score, severity = _engine().score(ep, result)
-    assert severity == AnomalySeverity.LOW
-    assert score < 0.4
 
-
-def test_undocumented_4xx_scores_medium():
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.POST,
-        parameters=[],
-        request_body=None,
-        responses={},
-    )
-    result = ExecutionResult(
-        endpoint_id="POST /test",
-        method=HttpMethod.POST,
-        url="http://localhost/test",
-        status_code=403,
-        response_time_ms=30,
-        response_size=50,
-        raw_response='{"error":"forbidden"}',
-        error=None,
-    )
-    score, severity = _engine().score(ep, result)
-    assert severity == AnomalySeverity.MEDIUM
-    assert 0.3 <= score <= 0.7
+    assert assessment.inputs["behavior_contradiction"] == 0.6
+    assert assessment.severity == AnomalySeverity.MEDIUM
 
 
 def test_expected_rejection_accepted_scores_medium():
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.POST,
-        parameters=[],
-        request_body=None,
-        responses={"200": Schema(type="object")},
-    )
-    result = ExecutionResult(
-        endpoint_id="POST /test",
-        method=HttpMethod.POST,
-        url="http://localhost/test",
-        status_code=200,
-        response_time_ms=30,
-        response_size=50,
-        raw_response="{}",
-        error=None,
+    assessment = _engine().assess(
+        _endpoint({"200": Schema(type="object")}),
+        _result(200),
+        expects_rejection=True,
     )
 
-    assessment = _engine().assess(ep, result, expects_rejection=True)
-
-    assert assessment.inputs["status_deviation"] == 0.6
+    assert assessment.inputs["behavior_contradiction"] == 0.7
     assert assessment.severity == AnomalySeverity.MEDIUM
     assert assessment.fallback_used is False
 
 
-def test_rule_base_covers_representative_input_grid():
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.GET,
-        parameters=[],
-        request_body=None,
-        responses={"200": Schema(type="object")},
+def test_missing_credential_accepted_scores_high():
+    assessment = _engine().assess(
+        _endpoint(
+            {"200": Schema(type="object")},
+            requires_authentication=True,
+        ),
+        _result(200),
+        expects_rejection=True,
+        case_kind="auth_probe",
+        auth_probe_kind="missing_credential",
     )
 
-    for status in (200, 403, 500):
-        for response_time in (10, 800, 3000):
-            for response_size in (0, 512, 2048):
-                result = ExecutionResult(
-                    endpoint_id="GET /test",
-                    method=HttpMethod.GET,
-                    url="http://localhost/test",
-                    status_code=status,
-                    response_time_ms=response_time,
-                    response_size=response_size,
-                    raw_response="{}",
-                    error=None,
-                )
-
-                assessment = _engine().assess(ep, result)
-
-                assert assessment.fallback_used is False
-
-
-def test_rule_base_covers_every_status_deviation_category():
-    documented = Endpoint(
-        path="/test",
-        method=HttpMethod.GET,
-        parameters=[],
-        request_body=None,
-        responses={"200": Schema(type="object")},
+    assert assessment.inputs["access_control_exposure"] == 1.0
+    assert assessment.severity == AnomalySeverity.HIGH
+    assert any(
+        rule["id"] == "R6_CLEAR_ACCESS_EXPOSURE"
+        for rule in assessment.activated_rules
     )
-    no_reference = Endpoint(
-        path="/test",
-        method=HttpMethod.GET,
-        parameters=[],
-        request_body=None,
-        responses={},
+
+
+def test_invalid_credential_accepted_scores_medium():
+    assessment = _engine().assess(
+        _endpoint(
+            {"200": Schema(type="object")},
+            requires_authentication=True,
+        ),
+        _result(200),
+        expects_rejection=True,
+        case_kind="auth_probe",
+        auth_probe_kind="invalid_credential",
     )
+
+    assert assessment.inputs["access_control_exposure"] == 0.6
+    assert assessment.severity == AnomalySeverity.MEDIUM
+
+
+def test_success_response_schema_contradiction_scores_medium():
+    assessment = _engine().assess(
+        _endpoint({"200": Schema(type="object")}),
+        _result(200, raw_response='["not", "an", "object"]'),
+    )
+
+    assert assessment.inputs["behavior_contradiction"] == 0.65
+    assert assessment.severity == AnomalySeverity.MEDIUM
+
+
+def test_undocumented_success_status_without_stronger_contradiction_scores_low():
+    assessment = _engine().assess(
+        _endpoint({"200": Schema(type="object")}),
+        _result(201),
+    )
+
+    assert assessment.inputs["behavior_contradiction"] == 0.25
+    assert assessment.severity == AnomalySeverity.LOW
+
+
+def test_time_and_size_do_not_change_v3_assessment():
+    engine = _engine()
+    endpoint = _endpoint({"200": Schema(type="object")})
+    result = _result(200, raw_response='["wrong"]')
+
+    baseline = engine.assess(endpoint, result)
+    changed = engine.assess(
+        endpoint,
+        replace(result, response_time_ms=5000, response_size=3_000_000),
+    )
+
+    assert baseline.score == changed.score
+    assert baseline.severity == changed.severity
+    assert baseline.inputs == changed.inputs
+
+
+def test_rule_base_covers_representative_fact_grid():
+    engine = _engine()
+    endpoint = _endpoint({"200": Schema(type="object")}, body=True)
     cases = [
-        (documented, None, False, 1.0),
-        (documented, 500, False, 1.0),
-        (documented, 200, False, 0.0),
-        (no_reference, 200, False, 0.5),
-        (documented, 403, False, 0.6),
-        (documented, 302, False, 0.4),
-        (documented, 200, True, 0.6),
+        (None, False, "baseline", None, 0.5),
+        (500, False, "baseline", None, 1.0),
+        (200, False, "baseline", None, 0.5),
+        (201, False, "baseline", None, 0.5),
+        (400, False, "baseline", None, 0.5),
+        (403, True, "mutation", None, 0.5),
+        (200, True, "mutation", None, 0.5),
+        (200, True, "auth_probe", "missing_credential", 0.5),
+        (200, True, "auth_probe", "invalid_credential", 0.5),
     ]
 
-    for endpoint, status, expects_rejection, expected_deviation in cases:
-        result = ExecutionResult(
-            endpoint_id="GET /test",
-            method=HttpMethod.GET,
-            url="http://localhost/test",
-            status_code=status,
-            response_time_ms=10,
-            response_size=100,
-            raw_response="{}" if status is not None else None,
-            error="timeout" if status is None else None,
-        )
-
-        assessment = _engine().assess(
+    for status, rejects, case_kind, auth_kind, evidence in cases:
+        assessment = engine.assess(
             endpoint,
-            result,
-            expects_rejection=expects_rejection,
+            _result(status, raw_response=None if status is None else "{}"),
+            expects_rejection=rejects,
+            case_kind=case_kind,
+            auth_probe_kind=auth_kind,
+            evidence_strength=evidence,
         )
 
-        assert assessment.inputs["status_deviation"] == expected_deviation
         assert assessment.fallback_used is False
+        assert assessment.activated_rules
 
 
-def test_slow_response_escalates_severity():
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.POST,
-        parameters=[],
-        request_body=None,
-        responses={"403": Schema(type=None)},
-    )
-    result = ExecutionResult(
-        endpoint_id="POST /test",
-        method=HttpMethod.POST,
-        url="http://localhost/test",
-        status_code=403,
-        response_time_ms=3000,
-        response_size=50,
-        raw_response='{"error":"forbidden"}',
-        error=None,
-    )
-    _, severity = _engine().score(ep, result)
-    assert severity in (AnomalySeverity.MEDIUM, AnomalySeverity.HIGH)
+def test_assessment_exposes_v3_inputs_and_memberships():
+    assessment = _engine().assess(_endpoint(), _result(500))
+
+    assert assessment.model_id == "mamdani-behavior-evidence-access-v3"
+    assert assessment.inputs == {
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5,
+        "access_control_exposure": 0.0,
+    }
+    assert assessment.memberships["behavior_contradiction"]["high"] == 1.0
 
 
-def test_analyzer_integrates_fuzzy():
+def test_analyzer_integrates_fuzzy_v3_context():
     from fuzzer.analysis.analyzer import Analyzer
     from fuzzer.model.api_spec import APISpec
 
-    ep = Endpoint(
-        path="/test",
-        method=HttpMethod.GET,
-        parameters=[],
-        request_body=None,
-        responses={},
+    endpoint = _endpoint(
+        {"200": Schema(type="object")},
+        requires_authentication=True,
     )
-    spec = APISpec(base_urls=["http://localhost"], endpoints=[ep])
-    analyzer = Analyzer(spec)
-    result = ExecutionResult(
-        endpoint_id="GET /test",
-        method=HttpMethod.GET,
-        url="http://localhost/test",
-        status_code=500,
-        response_time_ms=100,
-        response_size=100,
-        raw_response='{"error":"internal"}',
-        error=None,
-    )
+    analyzer = Analyzer(APISpec(base_urls=["http://localhost"], endpoints=[endpoint]))
     plan_entry = ExecutionPlanEntry(
-        endpoint=ep,
-        path=ep.path,
+        endpoint=endpoint,
+        path=endpoint.path,
         payload=None,
         headers={},
         case_id="case-test",
-        case_kind="baseline",
+        case_kind="auth_probe",
+        auth_probe_kind="missing_credential",
     )
-    analyses = analyzer.analyze_all([result], [plan_entry])
+
+    analyses = analyzer.analyze_all([_result(200)], [plan_entry])
 
     assert len(analyses) == 1
     analysis = analyses[0]
-    assert 0.0 <= analysis.severity_score <= 1.0
-    assert analysis.severity in AnomalySeverity
+    assert analysis.severity == AnomalySeverity.HIGH
     assert analysis.severity_assessment is not None
     assert (
         analysis.severity_assessment["model_id"]
-        == "mamdani-status-time-response-size-v2"
+        == "mamdani-behavior-evidence-access-v3"
     )
-    assert analysis.severity_assessment["inputs"]["status_deviation"] == 1.0
+    assert (
+        analysis.severity_assessment["inputs"]["access_control_exposure"]
+        == 1.0
+    )

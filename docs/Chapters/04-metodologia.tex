@@ -9,9 +9,11 @@ o \textit{fuzzer} e seu mecanismo de priorização. São mantidos quatro níveis
 análise: requisição, achado bruto, achado único operacional e campanha.
 
 A avaliação foi organizada em três questões: caracterizar os tipos de achado
-produzidos em APIs distintas; verificar a coerência da severidade atribuída
-pelo sistema fuzzy em relação a rótulos humanos independentes; e observar a
-estabilidade dos achados e escores entre campanhas repetidas.
+produzidos em APIs distintas; verificar a coerência da prioridade atribuída
+pelo sistema fuzzy em relação a uma referência operacional cega; e observar a
+estabilidade dos achados e escores entre campanhas repetidas. O construto do
+FIS é a prioridade técnica da anomalia, não sua explorabilidade nem o impacto
+de segurança demonstrado.
 
 \subsection{Seleção das APIs e Configuração das Campanhas}
 
@@ -34,19 +36,29 @@ múltiplas entradas que ativem o mesmo comportamento sejam apresentadas como
 defeitos independentes. Casos representativos serão reexecutados em ambiente
 limpo para medir sua reprodução.
 
-A severidade humana será atribuída sem exibir previamente o escore do sistema
-fuzzy. A rubrica considerará divergência contratual, aceitação indevida,
-robustez, disponibilidade, exposição e efeito observado. Quando não houver
-segundo avaliador, essa limitação será registrada explicitamente.
+Para o piloto, os achados únicos foram agrupados em famílias de comportamento
+por API, operação, tipo de divergência, status observado e contexto factual da
+requisição. As fichas exibiram somente contrato, plano redigido e resposta
+observada; classificação do analisador, severidade, escore, antecedentes,
+pertinências e regras do FIS foram ocultados.
+
+A referência operacional foi produzida por três agentes em contextos isolados,
+seguida de adjudicação cega nos casos sem maioria. A rubrica considerou
+divergência contratual, aceitação indevida, robustez, disponibilidade, controle
+de acesso e efeito observado. Esse procedimento reduz a influência direta do
+FIS sobre os rótulos, mas não equivale a avaliação por especialistas humanos:
+os julgadores podem compartilhar vieses de treinamento e dois deles pertencem
+à mesma família principal de modelos.
 
 \subsection{Métricas e Análise}
 
 Para geração e detecção, serão coletados operações suportadas e exercitadas,
 requisições executadas, comportamentos esperados, achados brutos, achados únicos
 e casos reproduzíveis. Para avaliar a priorização, o FIS será comparado com um
-baseline discreto baseado apenas no tipo de achado, utilizando matriz de
-confusão, macro-F1, erro ordinal e métricas do topo do ranking quando a amostra
-permitir.
+baseline discreto baseado no desvio de status, utilizando matriz de confusão,
+macro-F1, erro ordinal e correlação de Spearman quando a amostra permitir.
+Ablações dos antecedentes serão usadas para verificar se cada sinal altera o
+ranking ou a faixa produzida.
 
 A análise de estabilidade observará a frequência de cada assinatura entre
 campanhas, a variação do tempo de resposta, do escore e da faixa de severidade.
@@ -58,5 +70,8 @@ contrato.
 
 As principais ameaças incluem o uso do contrato como oráculo parcial, suporte
 limitado a OpenAPI, estado residual, variabilidade de latência, deduplicação
-black-box, quantidade restrita de APIs e subjetividade dos rótulos humanos. A
-conclusão será limitada aos contratos, APIs, versões e configurações avaliados.
+black-box, quantidade restrita de APIs e correlação entre julgadores agentes.
+As famílias usadas para formular uma revisão do FIS constituem conjunto de
+desenvolvimento e não serão apresentadas como teste independente dessa revisão.
+A conclusão será limitada aos contratos, APIs, versões e configurações
+avaliados.

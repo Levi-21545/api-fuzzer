@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from collections import Counter
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from fuzzer.analysis.deduplication import (
     EXPECTED_CLASSIFICATION,
@@ -20,6 +20,8 @@ from fuzzer.utils.redaction import redact_text, redact_value
 
 _REPORT_FINDING_LIMIT = 50
 _EXCERPT_LIMIT = 600
+CaseKind = Literal["baseline", "mutation", "auth_probe"]
+AuthProbeKind = Literal["missing_credential", "invalid_credential"]
 
 
 class CorrelationError(ValueError):
@@ -142,7 +144,78 @@ def _enrich_severity_assessments(
             endpoint,
             result,
             expects_rejection=expects_rejection,
+            case_kind=_case_kind(plan_record),
+            auth_probe_kind=_auth_probe_kind(plan_record),
         )
+        finding["severity_score"] = assessment.score
+        finding["severity"] = assessment.severity.name
+        finding["severity_assessment"] = assessment.to_dict()
+
+
+def _case_kind(plan: dict[str, Any]) -> CaseKind:
+    value = plan.get("case_kind")
+    if value == "mutation":
+        return "mutation"
+    if value == "auth_probe":
+        return "auth_probe"
+    return "baseline"
+
+
+def _auth_probe_kind(plan: dict[str, Any]) -> AuthProbeKind | None:
+    value = plan.get("auth_probe_kind")
+    if value == "missing_credential":
+        return "missing_credential"
+    if value == "invalid_credential":
+        return "invalid_credential"
+    if plan.get("case_kind") != "auth_probe":
+        return None
+    headers = {
+        str(name).casefold()
+        for name in (plan.get("headers") or {})
+        if str(name).casefold() not in {"accept", "content-type"}
+    }
+    return "invalid_credential" if headers else "missing_credential"
+
+
+def _apply_repetition_evidence(
+    manifest: dict[str, Any],
+    unique: list[dict[str, Any]],
+) -> None:
+    schema_value = manifest.get("inputs", {}).get("schema")
+    if not isinstance(schema_value, str) or not Path(schema_value).is_file():
+        return
+    spec = parse_openapi(schema_value)
+    endpoint_by_id = {endpoint.id: endpoint for endpoint in spec.endpoints}
+    engine = FuzzyEngine()
+    for item in unique:
+        if int(item.get("occurrence_count") or 0) < 3:
+            continue
+        representative = item["representative"]
+        plan = representative["plan"]
+        result_record = representative["result"]
+        status = result_record.get("status_code")
+        if status is not None and (
+            not isinstance(status, int) or isinstance(status, bool)
+        ):
+            continue
+        mutations = plan.get("mutations") or []
+        expects_rejection = plan.get("case_kind") == "auth_probe" or any(
+            not mutation.get("expected_valid", False) for mutation in mutations
+        )
+        if expects_rejection or not (status is None or 500 <= status < 600):
+            continue
+        endpoint = endpoint_by_id.get(plan.get("endpoint_id"))
+        if endpoint is None:
+            continue
+        result = _execution_result(result_record, endpoint.method)
+        assessment = engine.assess(
+            endpoint,
+            result,
+            expects_rejection=False,
+            case_kind=_case_kind(plan),
+            evidence_strength=1.0,
+        )
+        finding = representative["finding"]
         finding["severity_score"] = assessment.score
         finding["severity"] = assessment.severity.name
         finding["severity_assessment"] = assessment.to_dict()
@@ -404,12 +477,12 @@ def _assessment_lines(finding: dict[str, Any]) -> list[str]:
     lines = [
         f"- FIS model: `{assessment.get('model_id', 'unknown')}`",
         "- FIS inputs: "
-        f"status deviation "
-        f"`{_format_fis_input(inputs.get('status_deviation'))}`, "
-        f"response time "
-        f"`{_format_fis_input(inputs.get('response_time_ms'), ' ms')}`, "
-        f"response-size signal "
-        f"`{_format_fis_input(inputs.get('response_size_signal'))}`",
+        f"behavior contradiction "
+        f"`{_format_fis_input(inputs.get('behavior_contradiction'))}`, "
+        f"evidence strength "
+        f"`{_format_fis_input(inputs.get('evidence_strength'))}`, "
+        f"access-control exposure "
+        f"`{_format_fis_input(inputs.get('access_control_exposure'))}`",
         f"- Dominant fuzzy terms: {_dominant_terms(assessment.get('memberships', {}))}",
     ]
     if isinstance(strongest, dict):
@@ -629,6 +702,7 @@ def process_run(run_dir: Path) -> dict[str, Any]:
         _enrich_severity_assessments(manifest, plans, results, findings)
         correlated = correlate_records(plans, results, findings)
         unique = deduplicate_findings(api_id, correlated)
+        _apply_repetition_evidence(manifest, unique)
         metrics = _build_metrics(api_id, plans, results, findings, unique)
         analysis_dir = run_dir / "analysis"
         _write_json(run_dir / "data" / "execution_plan.json", plans)

@@ -29,6 +29,8 @@ class Analyzer:
                     entry.endpoint,
                     result,
                     expects_rejection=entry.expects_rejection,
+                    case_kind=entry.case_kind,
+                    auth_probe_kind=entry.auth_probe_kind,
                 )
                 analysis.severity_score = assessment.score
                 analysis.severity = assessment.severity

@@ -1,10 +1,39 @@
 import json
+from typing import Any
 
-from fuzzer.analysis.run_postprocessor import process_run
+from fuzzer.analysis.run_postprocessor import (
+    _apply_repetition_evidence,
+    _auth_probe_kind,
+    _case_kind,
+    process_run,
+)
 
 
 def _write_json(path, value):
     path.write_text(json.dumps(value), encoding="utf-8")
+
+
+def test_plan_context_normalizes_untyped_json_values():
+    assert _case_kind({"case_kind": "mutation"}) == "mutation"
+    assert _case_kind({"case_kind": "unknown"}) == "baseline"
+    assert (
+        _auth_probe_kind(
+            {
+                "case_kind": "auth_probe",
+                "auth_probe_kind": "missing_credential",
+            }
+        )
+        == "missing_credential"
+    )
+    assert (
+        _auth_probe_kind(
+            {
+                "case_kind": "auth_probe",
+                "headers": {"Authorization": "<REDACTED>"},
+            }
+        )
+        == "invalid_credential"
+    )
 
 
 def test_process_run_writes_analysis_and_updates_manifest(tmp_path):
@@ -55,7 +84,7 @@ paths:
         "raw_response": '{"error":"failure","token":"response-secret"}',
         "error": None,
     }
-    finding = {
+    finding: dict[str, Any] = {
         "case_id": "case-000001",
         "endpoint_id": "GET /items",
         "status_code": 500,
@@ -96,7 +125,9 @@ paths:
         "classified_fallbacks": 0,
         "unique_with_assessment": 1,
         "unique_fallbacks": 0,
-        "unique_by_strongest_rule": {"R1_HIGH_DEVIATION_OR_TIMEOUT": 1},
+        "unique_by_strongest_rule": {
+            "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE": 1
+        },
     }
     assert updated["status"] == "completed"
     assert updated["postprocessing"]["deduplication"]["status"] == "completed"
@@ -115,7 +146,7 @@ paths:
     assert "wrong_type" in report
     assert "Server returned a 500 error." in report
     assert 'Response excerpt: `{"error":"failure","token":"<REDACTED>"}`' in report
-    assert "R1_HIGH_DEVIATION_OR_TIMEOUT" in report
+    assert "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE" in report
     assert "## Findings by execution level" in report
     assert "| L1 | `mutation=1` | 1 | 1 | 1 | 1 | 1 |" in report
     assert "## Potentially actionable findings" in report
@@ -124,11 +155,58 @@ paths:
         (analysis / "analysis_findings.json").read_text(encoding="utf-8")
     )
     assert persisted_findings[0]["severity_assessment"]["inputs"] == {
-        "response_size_signal": 0.0,
-        "response_time_ms": 0.0,
-        "status_deviation": 1.0,
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5,
     }
     assert (
         persisted_findings[0]["severity_assessment"]["model_id"]
-        == "mamdani-status-time-response-size-v2"
+        == "mamdani-behavior-evidence-access-v3"
     )
+
+
+def test_repetition_evidence_promotes_repeated_valid_server_failure(tmp_path):
+    schema = tmp_path / "schema.yaml"
+    schema.write_text(
+        """
+openapi: 3.0.0
+paths:
+  /items:
+    get:
+      responses:
+        '200':
+          description: ok
+""".strip(),
+        encoding="utf-8",
+    )
+    finding: dict[str, Any] = {
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "GET /items",
+    }
+    unique = [
+        {
+            "occurrence_count": 3,
+            "representative": {
+                "plan": {
+                    "case_id": "case-000001",
+                    "case_kind": "baseline",
+                    "endpoint_id": "GET /items",
+                    "mutations": [],
+                },
+                "result": {
+                    "case_id": "case-000001",
+                    "endpoint_id": "GET /items",
+                    "status_code": 500,
+                    "raw_response": '{"error":"failure"}',
+                    "error": None,
+                },
+                "finding": finding,
+            },
+        }
+    ]
+
+    _apply_repetition_evidence({"inputs": {"schema": str(schema)}}, unique)
+
+    assert finding["severity"] == "HIGH"
+    assert finding["severity_score"] == 0.84
+    assert finding["severity_assessment"]["inputs"]["evidence_strength"] == 1.0

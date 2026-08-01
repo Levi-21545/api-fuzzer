@@ -80,6 +80,7 @@ def build_auth_probes(
                 case_id=f"auth-probe-{probe_number:06d}",
                 case_kind="auth_probe",
                 mutations=[],
+                auth_probe_kind="missing_credential",
             )
         )
         probe_number = len(probe_plan) + 1
@@ -92,6 +93,7 @@ def build_auth_probes(
                 case_id=f"auth-probe-{probe_number:06d}",
                 case_kind="auth_probe",
                 mutations=[],
+                auth_probe_kind="invalid_credential",
             )
         )
     return probe_plan
