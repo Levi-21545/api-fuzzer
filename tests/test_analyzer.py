@@ -1,4 +1,6 @@
 
+from typing import Literal
+
 from fuzzer.analysis.analyzer import Analyzer
 from fuzzer.analysis.classification import Anomaly
 from fuzzer.model.api_spec import APISpec
@@ -19,6 +21,7 @@ def _plan_entry(
     endpoint: Endpoint,
     payload=None,
     mutations: list[dict[str, object]] | None = None,
+    case_kind: Literal["baseline", "mutation", "auth_probe"] | None = None,
 ) -> ExecutionPlanEntry:
     return ExecutionPlanEntry(
         endpoint=endpoint,
@@ -26,7 +29,7 @@ def _plan_entry(
         payload=payload,
         headers={},
         case_id="case-test",
-        case_kind="mutation" if mutations else "baseline",
+        case_kind=case_kind or ("mutation" if mutations else "baseline"),
         mutations=mutations or [],
     )
 
@@ -106,6 +109,35 @@ def test_unexpected_success_with_mutation():
     )
     assert analysis is not None
     assert analysis.classification == Anomaly.UNEXPECTED_SUCCESS
+
+
+def test_successful_auth_probe_is_reported_as_unexpected_success():
+    ep = Endpoint(
+        path="/secret",
+        method=HttpMethod.GET,
+        parameters=[],
+        request_body=None,
+        responses={"200": Schema(type="object")},
+    )
+    result = ExecutionResult(
+        endpoint_id="GET /secret",
+        method=HttpMethod.GET,
+        url="http://localhost/secret",
+        status_code=200,
+        response_time_ms=10,
+        response_size=2,
+        raw_response="{}",
+        error=None,
+    )
+
+    analysis = _analyzer_for_endpoint(ep)._analyze_single(
+        _plan_entry(ep, case_kind="auth_probe"),
+        result,
+    )
+
+    assert analysis is not None
+    assert analysis.classification == Anomaly.UNEXPECTED_SUCCESS
+    assert "no valid credentials" in analysis.description
 
 
 def test_success_conformant_return_none():

@@ -96,7 +96,11 @@ async def async_main():
         )
 
         if headers and args.auth_probe:
-            probes = build_auth_probes(selected_endpoints, auth_context)
+            probes = build_auth_probes(
+                selected_endpoints,
+                auth_context,
+                headers,
+            )
             execution_plan = probes + execution_plan
 
         manifest["counts"]["planned_requests"] = len(execution_plan)

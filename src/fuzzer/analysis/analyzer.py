@@ -92,6 +92,20 @@ class Analyzer:
 
         # 2. Analyze successful responses.
         if 200 <= result.status_code < 300:
+            if plan_entry.case_kind == "auth_probe":
+                return AnalysisResult(
+                    case_id=plan_entry.case_id,
+                    classification=Anomaly.UNEXPECTED_SUCCESS,
+                    description=(
+                        "Authentication probe was accepted with status "
+                        f"{result.status_code}; the request used no valid credentials."
+                    ),
+                    endpoint_id=endpoint.id,
+                    request_payload=request_payload,
+                    request_headers=request_headers,
+                    execution_result=result,
+                )
+
             expected_schema = endpoint.responses.get(status_code_str)
             if not expected_schema:
                 return AnalysisResult(

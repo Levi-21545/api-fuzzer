@@ -39,6 +39,7 @@ def build_execution_plan(
 def build_auth_probes(
     endpoints: list[Endpoint],
     auth_context: AuthContext | None = None,
+    auth_headers: Headers | None = None,
 ) -> list[ExecutionPlanEntry]:
     """
     Generate authentication probes for secured endpoints:
@@ -66,6 +67,10 @@ def build_auth_probes(
             body = None
 
         probe_number = len(probe_plan) + 1
+        invalid_auth_headers = {
+            name: _invalid_credential(value)
+            for name, value in (auth_headers or {}).items()
+        } or {"Authorization": "Bearer invalid_token"}
         probe_plan.append(
             ExecutionPlanEntry(
                 endpoint=endpoint,
@@ -83,10 +88,15 @@ def build_auth_probes(
                 endpoint=endpoint,
                 path=path,
                 payload=body,
-                headers={**probe_headers, "Authorization": "Bearer invalid_token"},
+                headers={**probe_headers, **invalid_auth_headers},
                 case_id=f"auth-probe-{probe_number:06d}",
                 case_kind="auth_probe",
                 mutations=[],
             )
         )
     return probe_plan
+
+
+def _invalid_credential(value: str) -> str:
+    scheme, separator, _credential = value.partition(" ")
+    return f"{scheme} invalid_token" if separator else "invalid_token"

@@ -6,6 +6,7 @@ from fuzzer.model.schema import Schema
 from fuzzer.mutator.numeric import NumericMutator
 from fuzzer.mutator.string import StringMutator
 from fuzzer.mutator.engine import MutationEngine
+from fuzzer.mutator.mutation_operation import MutationOp
 
 
 def test_string_baseline_honors_length_and_numeric_pattern():
@@ -97,6 +98,66 @@ def test_nested_array_item_mutation_changes_the_generated_payload():
     assert item_type_case.payload["tags"] == [123]
     with pytest.raises(ValidationError):
         validate(item_type_case.payload, schema.to_jsonschema())
+
+
+def test_mutations_that_do_not_change_the_baseline_are_discarded():
+    schema = Schema(
+        type="object",
+        properties={
+            "tags": Schema(
+                type="array",
+                items=Schema(type="string"),
+                min_items=1,
+            ),
+        },
+        required=["tags"],
+    )
+
+    cases = MutationEngine(level=1, max_mutations=None).generate_cases(schema)
+
+    assert cases[0].kind == "baseline"
+    assert all(case.payload != cases[0].payload for case in cases[1:])
+    assert all(
+        not case.operations
+        or case.operations[0].operator != "minimum_valid_size"
+        for case in cases
+    )
+
+
+def test_level_two_cases_apply_two_effective_mutations():
+    schema = Schema(
+        type="object",
+        properties={
+            "name": Schema(type="string"),
+            "tags": Schema(
+                type="array",
+                items=Schema(type="string"),
+                min_items=1,
+            ),
+        },
+        required=["name"],
+    )
+
+    cases = MutationEngine(level=2, max_mutations=None).generate_cases(schema)
+
+    assert all(len(case.operations) in {0, 1, 2} for case in cases)
+    assert all(
+        not case.operations or case.payload != cases[0].payload
+        for case in cases
+    )
+
+
+def test_level_two_discards_pairs_with_an_ineffective_operation():
+    engine = MutationEngine(level=2, max_mutations=None)
+    baseline = {"name": "A"}
+    operations = [
+        MutationOp(("name",), "replace", 123, operator="wrong_type"),
+        MutationOp(("missing", "value"), "replace", 456, operator="wrong_type"),
+    ]
+
+    cases = list(engine.generate_level2_cases(baseline, operations))
+
+    assert cases == []
 
 
 def test_read_only_properties_are_not_generated_or_mutated_in_requests():

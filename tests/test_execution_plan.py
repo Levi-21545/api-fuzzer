@@ -118,6 +118,25 @@ def test_auth_probe_invalid_token():
     assert hdrs.get("Authorization") == "Bearer invalid_token"
 
 
+def test_auth_probe_preserves_configured_header_and_scheme():
+    ep = _ep(path="/secret", security=True)
+
+    probes = build_auth_probes(
+        [ep],
+        auth_headers={"Authorization": "Token valid.jwt.value"},
+    )
+
+    assert probes[1].headers["Authorization"] == "Token invalid_token"
+
+
+def test_auth_probes_expect_rejection():
+    ep = _ep(path="/secret", security=True)
+
+    probes = build_auth_probes([ep])
+
+    assert all(entry.expects_rejection for entry in probes)
+
+
 def test_auth_probe_resolves_path_params():
     ep = _ep(
         path="/users/{userId}/items",

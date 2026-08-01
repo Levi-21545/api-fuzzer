@@ -37,12 +37,11 @@ class MutationEngine:
                 and mutation_count >= self.max_mutations
             ):
                 break
+            payload = self.apply_mutation(baseline, op)
+            if payload == baseline:
+                continue
             cases.append(
-                MutationCase(
-                    payload=self.apply_mutation(baseline, op),
-                    kind="mutation",
-                    operations=(op,),
-                )
+                MutationCase(payload=payload, kind="mutation", operations=(op,))
             )
             mutation_count += 1
 
@@ -97,10 +96,14 @@ class MutationEngine:
                 continue
 
             payload = self.apply_mutation(baseline, m1)
-            payload = self.apply_mutation(payload, m2)
+            if payload == baseline:
+                continue
+            combined_payload = self.apply_mutation(payload, m2)
+            if combined_payload == payload:
+                continue
 
             yield MutationCase(
-                payload=payload,
+                payload=combined_payload,
                 kind="mutation",
                 operations=(m1, m2),
             )

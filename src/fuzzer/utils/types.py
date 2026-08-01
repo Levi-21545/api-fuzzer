@@ -33,8 +33,12 @@ class ExecutionPlanEntry:
 
     @property
     def expects_rejection(self) -> bool:
-        return bool(self.mutations) and any(
-            not mutation.get("expected_valid", False) for mutation in self.mutations
+        return self.case_kind == "auth_probe" or (
+            bool(self.mutations)
+            and any(
+                not mutation.get("expected_valid", False)
+                for mutation in self.mutations
+            )
         )
 
 
