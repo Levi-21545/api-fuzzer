@@ -127,6 +127,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
   "${RUN_NUMBER:-0}" \
   --all \
   --auto-auth \
+  --auth-probe \
   --no-deduplicate
 
 cleanup

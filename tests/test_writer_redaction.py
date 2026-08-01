@@ -48,3 +48,26 @@ def test_results_redact_token_fields_in_response_body(tmp_path):
     assert "secret-token" not in persisted["raw_response"]
     assert "<REDACTED>" in persisted["raw_response"]
     assert "ok" in persisted["raw_response"]
+
+
+def test_results_redact_password_fields_in_nested_response_body(tmp_path):
+    result = ExecutionResult(
+        endpoint_id="GET /users",
+        method=HttpMethod.GET,
+        url="http://localhost/users",
+        status_code=200,
+        response_time_ms=1.0,
+        response_size=42,
+        raw_response=(
+            '{"users":[{"username":"alice","password":"secret-password"}]}'
+        ),
+        error=None,
+        case_id="case-000001",
+    )
+
+    write_results([result], tmp_path)
+
+    persisted = json.loads((tmp_path / "results.json").read_text())[0]
+    assert "secret-password" not in persisted["raw_response"]
+    assert '"password":"<REDACTED>"' in persisted["raw_response"]
+    assert '"username":"alice"' in persisted["raw_response"]

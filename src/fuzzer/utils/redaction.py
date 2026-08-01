@@ -15,6 +15,7 @@ _SENSITIVE_KEYS = {
     "cookie",
     "id_token",
     "jwt",
+    "password",
     "proxy_authorization",
     "refresh_token",
     "set_cookie",

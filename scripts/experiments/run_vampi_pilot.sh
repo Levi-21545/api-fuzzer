@@ -88,6 +88,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
   --all \
   --exclude-path /createdb \
   --auto-auth \
+  --auth-probe \
   --no-deduplicate
 
 cleanup
