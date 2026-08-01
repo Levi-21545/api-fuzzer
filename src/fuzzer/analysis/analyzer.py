@@ -70,26 +70,6 @@ class Analyzer:
                 execution_result=result,
             )
 
-        # Parse JSON before validating the response against the contract.
-        try:
-            response_body = json.loads(result.raw_response or "null")
-        except json.JSONDecodeError:
-            # Non-JSON content contradicts an endpoint with JSON responses.
-            if any(str(s).startswith("2") for s in endpoint.responses.keys()):
-                return AnalysisResult(
-                    case_id=plan_entry.case_id,
-                    classification=Anomaly.SUCCESS_CONTRADICTION,
-                    description=(
-                        f"Status {result.status_code} was returned, but the "
-                        "response was not valid JSON."
-                    ),
-                    endpoint_id=endpoint.id,
-                    request_payload=request_payload,
-                    request_headers=request_headers,
-                    execution_result=result,
-                )
-            return None
-
         # 2. Analyze successful responses.
         if 200 <= result.status_code < 300:
             if plan_entry.case_kind == "auth_probe":
@@ -99,6 +79,22 @@ class Analyzer:
                     description=(
                         "Authentication probe was accepted with status "
                         f"{result.status_code}; the request used no valid credentials."
+                    ),
+                    endpoint_id=endpoint.id,
+                    request_payload=request_payload,
+                    request_headers=request_headers,
+                    execution_result=result,
+                )
+
+            try:
+                response_body = json.loads(result.raw_response or "null")
+            except json.JSONDecodeError:
+                return AnalysisResult(
+                    case_id=plan_entry.case_id,
+                    classification=Anomaly.SUCCESS_CONTRADICTION,
+                    description=(
+                        f"Status {result.status_code} was returned, but the "
+                        "response was not valid JSON."
                     ),
                     endpoint_id=endpoint.id,
                     request_payload=request_payload,
@@ -171,6 +167,22 @@ class Analyzer:
                 )
 
             expected_schema = endpoint.responses[status_code_str]
+            try:
+                response_body = json.loads(result.raw_response or "null")
+            except json.JSONDecodeError:
+                return AnalysisResult(
+                    case_id=plan_entry.case_id,
+                    classification=Anomaly.ERROR_CONTRADICTION,
+                    description=(
+                        f"Status {result.status_code} was returned, but the "
+                        "error response was not valid JSON."
+                    ),
+                    endpoint_id=endpoint.id,
+                    request_payload=request_payload,
+                    request_headers=request_headers,
+                    execution_result=result,
+                )
+
             try:
                 validate(instance=response_body, schema=expected_schema.to_jsonschema())
                 return AnalysisResult(

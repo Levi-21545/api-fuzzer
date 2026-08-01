@@ -88,6 +88,59 @@ def test_documented_4xx_error_contradiction():
     assert analysis.classification == Anomaly.ERROR_CONTRADICTION
 
 
+def test_documented_4xx_non_json_body_is_error_contradiction():
+    ep = Endpoint(
+        path="/test", method=HttpMethod.POST, parameters=[], request_body=None,
+        responses={"200": Schema(type="object"), "401": Schema(type="object")},
+    )
+    result = ExecutionResult(
+        endpoint_id="POST /test", method=HttpMethod.POST, url="http://localhost/test",
+        status_code=401, response_time_ms=10, response_size=50,
+        raw_response="Invalid token", error=None,
+    )
+
+    analysis = _analyzer_for_endpoint(ep)._analyze_single(
+        _plan_entry(ep, case_kind="auth_probe"), result
+    )
+
+    assert analysis is not None
+    assert analysis.classification == Anomaly.ERROR_CONTRADICTION
+
+
+def test_undocumented_4xx_non_json_body_is_unexpected_error_status():
+    ep = Endpoint(
+        path="/test", method=HttpMethod.POST, parameters=[], request_body=None,
+        responses={"200": Schema(type="object")},
+    )
+    result = ExecutionResult(
+        endpoint_id="POST /test", method=HttpMethod.POST, url="http://localhost/test",
+        status_code=401, response_time_ms=10, response_size=50,
+        raw_response="Invalid token", error=None,
+    )
+
+    analysis = _analyzer_for_endpoint(ep)._analyze_single(_plan_entry(ep), result)
+
+    assert analysis is not None
+    assert analysis.classification == Anomaly.UNEXPECTED_ERROR_STATUS
+
+
+def test_2xx_non_json_body_is_success_contradiction():
+    ep = Endpoint(
+        path="/test", method=HttpMethod.GET, parameters=[], request_body=None,
+        responses={"200": Schema(type="object")},
+    )
+    result = ExecutionResult(
+        endpoint_id="GET /test", method=HttpMethod.GET, url="http://localhost/test",
+        status_code=200, response_time_ms=10, response_size=50,
+        raw_response="not json", error=None,
+    )
+
+    analysis = _analyzer_for_endpoint(ep)._analyze_single(_plan_entry(ep), result)
+
+    assert analysis is not None
+    assert analysis.classification == Anomaly.SUCCESS_CONTRADICTION
+
+
 def test_unexpected_success_with_mutation():
     ep = Endpoint(
         path="/test", method=HttpMethod.POST, parameters=[],
@@ -126,7 +179,7 @@ def test_successful_auth_probe_is_reported_as_unexpected_success():
         status_code=200,
         response_time_ms=10,
         response_size=2,
-        raw_response="{}",
+        raw_response="not json",
         error=None,
     )
 
