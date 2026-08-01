@@ -108,3 +108,25 @@ def test_shortest_serialized_payload_is_representative_then_case_id():
     assert len(unique) == 1
     assert unique[0]["occurrence_count"] == 3
     assert unique[0]["representative"]["plan"]["case_id"] == "case-000001"
+    assert unique[0]["execution_levels"] == ["level_0"]
+    assert unique[0]["case_kinds"] == ["baseline"]
+
+
+def test_deduplication_preserves_all_levels_for_one_signature():
+    baseline = _records("case-000001", payload=None)
+    baseline[0]["case_kind"] = "baseline"
+    baseline[0]["mutations"] = []
+    mutation = _records("case-000002", payload=None)
+    mutation[0]["case_kind"] = "mutation"
+    mutation[0]["mutations"] = [{"operator": "wrong_type"}]
+    correlated = correlate_records(
+        [baseline[0], mutation[0]],
+        [baseline[1], mutation[1]],
+        [baseline[2], mutation[2]],
+    )
+
+    unique = deduplicate_findings("petclinic", correlated)
+
+    assert len(unique) == 1
+    assert unique[0]["execution_levels"] == ["level_0", "level_1"]
+    assert unique[0]["case_kinds"] == ["baseline", "mutation"]

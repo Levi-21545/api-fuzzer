@@ -9,6 +9,7 @@ from fuzzer.analysis.deduplication import (
     EXPECTED_CLASSIFICATION,
     CorrelatedFinding,
     deduplicate_findings,
+    execution_level,
 )
 from fuzzer.analysis.fuzzy_engine import FUZZY_MODEL_ID, FuzzyEngine
 from fuzzer.executor.result import ExecutionResult
@@ -192,6 +193,29 @@ def _build_metrics(
     expected = raw_classes[EXPECTED_CLASSIFICATION]
     raw_candidates = len(findings) - expected
     unique_count = len(unique)
+    plan_by_id = {item["case_id"]: item for item in plans}
+    result_case_ids = {item["case_id"] for item in results}
+    findings_by_level: dict[str, Counter[str]] = {}
+    case_kinds_by_level: dict[str, Counter[str]] = {}
+    for plan in plans:
+        level = execution_level(plan)
+        level_counts = findings_by_level.setdefault(level, Counter())
+        case_kind = str(plan.get("case_kind") or "baseline")
+        case_kinds_by_level.setdefault(level, Counter())[case_kind] += 1
+        level_counts["planned_requests"] += 1
+        if plan["case_id"] in result_case_ids:
+            level_counts["executed_requests"] += 1
+    for finding in findings:
+        level = execution_level(plan_by_id[finding["case_id"]])
+        level_counts = findings_by_level.setdefault(level, Counter())
+        level_counts["classified_observations"] += 1
+        if finding["classification"] != EXPECTED_CLASSIFICATION:
+            level_counts["candidate_findings_raw"] += 1
+    for item in unique:
+        for level in item.get("execution_levels", []):
+            findings_by_level.setdefault(level, Counter())[
+                "unique_findings_involving_level"
+            ] += 1
     return {
         "api_id": api_id,
         "counts": {
@@ -217,6 +241,24 @@ def _build_metrics(
             sorted(unique_scores.items(), key=lambda item: float(item[0]))
         ),
         "executed_by_http_status_class": dict(sorted(status_classes.items())),
+        "by_execution_level": {
+            level: {
+                "planned_by_case_kind": dict(
+                    sorted(case_kinds_by_level.get(level, {}).items())
+                ),
+                **{
+                    key: counts.get(key, 0)
+                    for key in (
+                        "planned_requests",
+                        "executed_requests",
+                        "classified_observations",
+                        "candidate_findings_raw",
+                        "unique_findings_involving_level",
+                    )
+                },
+            }
+            for level, counts in sorted(findings_by_level.items())
+        },
         "fuzzy_assessment": {
             "classified_with_assessment": len(findings_with_assessment),
             "classified_fallbacks": sum(
@@ -251,8 +293,11 @@ def _percentage(value: float) -> str:
 
 
 def _mutation_summary(item: dict[str, Any]) -> str:
-    mutations = item["representative"]["plan"].get("mutations") or []
+    plan = item["representative"]["plan"]
+    mutations = plan.get("mutations") or []
     if not mutations:
+        if plan.get("case_kind") == "auth_probe":
+            return "authentication probe with no valid credentials"
         return "baseline request"
     summaries: list[str] = []
     for mutation in mutations:
@@ -281,14 +326,38 @@ def _excerpt(value: Any, *, serialized: bool = False) -> str:
     return rendered[: _EXCERPT_LIMIT - 1] + "…"
 
 
-def _severity_key(item: dict[str, Any]) -> tuple[int, float, str, str]:
+def _item_levels(item: dict[str, Any]) -> list[str]:
+    levels = item.get("execution_levels")
+    if isinstance(levels, list) and levels:
+        return [str(level) for level in levels]
+    return [execution_level(item["representative"]["plan"])]
+
+
+def _level_rank(level: str) -> int:
+    try:
+        return int(level.rsplit("_", maxsplit=1)[1])
+    except (IndexError, ValueError):
+        return 99
+
+
+def _severity_key(item: dict[str, Any]) -> tuple[int, int, float, str, str]:
     finding = item["representative"]["finding"]
     severity_rank = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
     return (
+        min(_level_rank(level) for level in _item_levels(item)),
         severity_rank.get(finding.get("severity"), 3),
         -float(finding.get("severity_score") or 0),
         finding.get("endpoint_id") or "",
         item["signature"]["id"],
+    )
+
+
+def _is_actionable(item: dict[str, Any]) -> bool:
+    finding = item["representative"]["finding"]
+    result = item["representative"]["result"]
+    return (
+        finding.get("classification") in {"SERVER_ERROR", "UNEXPECTED_SUCCESS"}
+        or result.get("status_code") is None
     )
 
 
@@ -337,6 +406,38 @@ def _assessment_lines(finding: dict[str, Any]) -> list[str]:
     return lines
 
 
+def _finding_lines(position: int, item: dict[str, Any]) -> list[str]:
+    representative = item["representative"]
+    finding = representative["finding"]
+    result = representative["result"]
+    signature_id = item["signature"]["id"][:12]
+    levels = ", ".join(
+        f"L{_level_rank(level)}" for level in _item_levels(item)
+    )
+    lines = [
+        "",
+        f"### {position}. {finding.get('severity', 'UNKNOWN')} · "
+        f"{finding['classification']}",
+        "",
+        f"- Execution level(s): `{levels}`",
+        f"- Case kind(s): `{', '.join(item.get('case_kinds', [])) or 'unknown'}`",
+        f"- Endpoint: `{finding['endpoint_id']}`",
+        f"- HTTP status: `{result.get('status_code')}`",
+        f"- Score: `{finding.get('severity_score')}`",
+        f"- Occurrences in this run: `{item['occurrence_count']}`",
+        f"- Representative case: `{representative['plan']['case_id']}`",
+        f"- Signature: `{signature_id}`",
+        f"- Input strategy: {_mutation_summary(item)}",
+        f"- Interpretation: {redact_text(finding['description'])}",
+        "- Request payload: `"
+        f"{_excerpt(representative['plan'].get('payload'))}`",
+        "- Response excerpt: `"
+        f"{_excerpt(result.get('raw_response'), serialized=True)}`",
+    ]
+    lines.extend(_assessment_lines(finding))
+    return lines
+
+
 def _report(metrics: dict[str, Any], unique: list[dict[str, Any]]) -> str:
     counts = metrics["counts"]
     rates = metrics["rates"]
@@ -368,11 +469,36 @@ def _report(metrics: dict[str, Any], unique: list[dict[str, Any]]) -> str:
         "deduplication. A unique operational finding is a strict black-box "
         "signature, not a confirmed bug, vulnerability, or root cause.",
         "",
+        "## Findings by execution level",
+        "",
+        "A signature may involve more than one level, so the final column can "
+        "overlap across rows.",
+        "",
+        "| Level | Case mix | Planned | Executed | Classified | Raw candidates | "
+        "Unique signatures involved |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for level, level_counts in metrics["by_execution_level"].items():
+        case_mix = ", ".join(
+            f"{kind}={count}"
+            for kind, count in level_counts["planned_by_case_kind"].items()
+        )
+        lines.append(
+            f"| L{_level_rank(level)} | `{case_mix}` | "
+            f"{level_counts['planned_requests']} | "
+            f"{level_counts['executed_requests']} | "
+            f"{level_counts['classified_observations']} | "
+            f"{level_counts['candidate_findings_raw']} | "
+            f"{level_counts['unique_findings_involving_level']} |"
+        )
+
+    lines.extend([
+        "",
         "## Candidate classifications",
         "",
         "| Classification | Raw | Unique |",
         "| --- | ---: | ---: |",
-    ]
+    ])
     candidate_classes = metrics["candidate_by_classification"]
     unique_classes = metrics["unique_by_classification"]
     for classification in sorted(candidate_classes):
@@ -390,42 +516,28 @@ def _report(metrics: dict[str, Any], unique: list[dict[str, Any]]) -> str:
 
     ordered = sorted(unique, key=_severity_key)
     displayed = ordered[:_REPORT_FINDING_LIMIT]
+    actionable = [item for item in displayed if _is_actionable(item)]
+    fidelity = [item for item in displayed if not _is_actionable(item)]
     lines.extend(
         [
             "",
-            "## Prioritized unique findings",
+            "## Potentially actionable findings",
             "",
             f"Showing {len(displayed)} of {len(ordered)} unique findings. The "
             "complete machine-readable set is available in "
             "`findings_unique.json`.",
         ]
     )
-    for position, item in enumerate(displayed, start=1):
-        representative = item["representative"]
-        finding = representative["finding"]
-        result = representative["result"]
-        signature_id = item["signature"]["id"][:12]
-        lines.extend(
-            [
-                "",
-                f"### {position}. {finding.get('severity', 'UNKNOWN')} · "
-                f"{finding['classification']}",
-                "",
-                f"- Endpoint: `{finding['endpoint_id']}`",
-                f"- HTTP status: `{result.get('status_code')}`",
-                f"- Score: `{finding.get('severity_score')}`",
-                f"- Occurrences in this run: `{item['occurrence_count']}`",
-                f"- Representative case: `{representative['plan']['case_id']}`",
-                f"- Signature: `{signature_id}`",
-                f"- Mutation: {_mutation_summary(item)}",
-                f"- Interpretation: {redact_text(finding['description'])}",
-                "- Request payload: `"
-                f"{_excerpt(representative['plan'].get('payload'))}`",
-                "- Response excerpt: `"
-                f"{_excerpt(result.get('raw_response'), serialized=True)}`",
-            ]
-        )
-        lines.extend(_assessment_lines(finding))
+    if not actionable:
+        lines.extend(["", "No potentially actionable findings in this run."])
+    for position, item in enumerate(actionable, start=1):
+        lines.extend(_finding_lines(position, item))
+
+    lines.extend(["", "## Contract fidelity observations", ""])
+    if not fidelity:
+        lines.append("No contract fidelity observations in this run.")
+    for position, item in enumerate(fidelity, start=1):
+        lines.extend(_finding_lines(position, item))
     return "\n".join(lines) + "\n"
 
 

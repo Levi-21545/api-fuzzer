@@ -33,6 +33,7 @@ paths:
     }
     plan = {
         "case_id": "case-000001",
+        "case_kind": "mutation",
         "endpoint_id": "GET /items",
         "payload": None,
         "headers": {
@@ -80,6 +81,16 @@ paths:
     assert metrics["counts"]["findings_unique_operational"] == 1
     assert metrics["rates"]["execution_completion_ratio"] == 1.0
     assert metrics["rates"]["deduplication_reduction_ratio"] == 0.0
+    assert metrics["by_execution_level"] == {
+        "level_1": {
+            "planned_by_case_kind": {"mutation": 1},
+            "planned_requests": 1,
+            "executed_requests": 1,
+            "classified_observations": 1,
+            "candidate_findings_raw": 1,
+            "unique_findings_involving_level": 1,
+        }
+    }
     assert metrics["fuzzy_assessment"] == {
         "classified_with_assessment": 1,
         "classified_fallbacks": 0,
@@ -107,6 +118,10 @@ paths:
     assert "Server returned a 500 error." in report
     assert 'Response excerpt: `{"error":"failure","token":"<REDACTED>"}`' in report
     assert "R1_HIGH_DEVIATION_OR_TIMEOUT" in report
+    assert "## Findings by execution level" in report
+    assert "| L1 | `mutation=1` | 1 | 1 | 1 | 1 | 1 |" in report
+    assert "## Potentially actionable findings" in report
+    assert "## Contract fidelity observations" in report
     persisted_findings = json.loads(
         (analysis / "analysis_findings.json").read_text(encoding="utf-8")
     )

@@ -50,6 +50,15 @@ class CorrelatedFinding:
         }
 
 
+def execution_level(plan: dict[str, Any]) -> str:
+    """Return the effective campaign level for one planned request."""
+    case_kind = plan.get("case_kind")
+    if case_kind in {"baseline", "auth_probe"}:
+        return "level_0"
+    mutations = plan.get("mutations") or []
+    return f"level_{len(mutations)}" if mutations else "level_0"
+
+
 def _redact_text(value: str) -> str:
     value = BEARER_PATTERN.sub("Bearer <TOKEN>", value)
     value = JWT_PATTERN.sub("<TOKEN>", value)
@@ -164,6 +173,15 @@ def deduplicate_findings(
                 "signature": signatures[signature_id],
                 "occurrence_count": len(items),
                 "case_ids": sorted(item.case_id for item in items),
+                "execution_levels": sorted(
+                    {execution_level(item.plan) for item in items}
+                ),
+                "case_kinds": sorted(
+                    {
+                        str(item.plan.get("case_kind") or "baseline")
+                        for item in items
+                    }
+                ),
                 "representative": representative.to_dict(),
             }
         )
