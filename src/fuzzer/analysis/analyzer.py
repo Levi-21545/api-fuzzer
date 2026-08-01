@@ -8,6 +8,7 @@ from fuzzer.analysis.fuzzy_engine import FuzzyEngine
 from fuzzer.analysis.result import AnalysisResult
 from fuzzer.utils.types import ExecutionPlanEntry
 
+
 class Analyzer:
     def __init__(self, spec: APISpec):
         self.spec = spec
@@ -24,9 +25,10 @@ class Analyzer:
         for entry, result in zip(execution_plan, execution_results):
             analysis = self._analyze_single(entry, result)
             if analysis:
-                score, severity = self.fuzzy_engine.score(entry.endpoint, result)
-                analysis.severity_score = score
-                analysis.severity = severity
+                assessment = self.fuzzy_engine.assess(entry.endpoint, result)
+                analysis.severity_score = assessment.score
+                analysis.severity = assessment.severity
+                analysis.severity_assessment = assessment.to_dict()
                 analyzed_results.append(analysis)
 
         return analyzed_results
@@ -44,7 +46,10 @@ class Analyzer:
             return AnalysisResult(
                 case_id=plan_entry.case_id,
                 classification=Anomaly.UNEXPECTED_ERROR_STATUS,
-                description=f"Request failed before receiving a response: {result.error}",
+                description=(
+                    "Request failed before receiving a response: "
+                    f"{result.error}"
+                ),
                 endpoint_id=endpoint.id,
                 request_payload=request_payload,
                 request_headers=request_headers,
@@ -75,7 +80,8 @@ class Analyzer:
                     case_id=plan_entry.case_id,
                     classification=Anomaly.SUCCESS_CONTRADICTION,
                     description=(
-                        f"Status {result.status_code} was returned, but the response was not valid JSON."
+                        f"Status {result.status_code} was returned, but the "
+                        "response was not valid JSON."
                     ),
                     endpoint_id=endpoint.id,
                     request_payload=request_payload,
@@ -92,7 +98,8 @@ class Analyzer:
                     case_id=plan_entry.case_id,
                     classification=Anomaly.SUCCESS_CONTRADICTION,
                     description=(
-                        f"API returned undocumented success status code {result.status_code}."
+                        "API returned undocumented success status code "
+                        f"{result.status_code}."
                     ),
                     endpoint_id=endpoint.id,
                     request_payload=request_payload,
@@ -107,7 +114,8 @@ class Analyzer:
                     case_id=plan_entry.case_id,
                     classification=Anomaly.SUCCESS_CONTRADICTION,
                     description=(
-                        f"Response body for {result.status_code} does not match the contract. Details: {e.message}"
+                        f"Response body for {result.status_code} does not match "
+                        f"the contract. Details: {e.message}"
                     ),
                     endpoint_id=endpoint.id,
                     request_payload=request_payload,
@@ -120,7 +128,8 @@ class Analyzer:
                     case_id=plan_entry.case_id,
                     classification=Anomaly.UNEXPECTED_SUCCESS,
                     description=(
-                        f"Server accepted a mutated payload and returned {result.status_code}. "
+                        "Server accepted a mutated payload and returned "
+                        f"{result.status_code}. "
                         f"The API should have rejected the invalid input."
                     ),
                     endpoint_id=endpoint.id,
@@ -137,7 +146,10 @@ class Analyzer:
                 return AnalysisResult(
                     case_id=plan_entry.case_id,
                     classification=Anomaly.UNEXPECTED_ERROR_STATUS,
-                    description=f"API returned an undocumented error status code: {result.status_code}.",
+                    description=(
+                        "API returned an undocumented error status code: "
+                        f"{result.status_code}."
+                    ),
                     endpoint_id=endpoint.id,
                     request_payload=request_payload,
                     request_headers=request_headers,
@@ -150,7 +162,10 @@ class Analyzer:
                 return AnalysisResult(
                     case_id=plan_entry.case_id,
                     classification=Anomaly.EXPECTED_FAILURE,
-                    description=f"API correctly rejected with documented {result.status_code} error.",
+                    description=(
+                        "API correctly rejected with documented "
+                        f"{result.status_code} error."
+                    ),
                     endpoint_id=endpoint.id,
                     request_payload=request_payload,
                     request_headers=request_headers,

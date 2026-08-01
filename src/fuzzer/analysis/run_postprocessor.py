@@ -10,6 +10,10 @@ from fuzzer.analysis.deduplication import (
     CorrelatedFinding,
     deduplicate_findings,
 )
+from fuzzer.analysis.fuzzy_engine import FUZZY_MODEL_ID, FuzzyEngine
+from fuzzer.executor.result import ExecutionResult
+from fuzzer.model.http import HttpMethod
+from fuzzer.parser.openapi_parser import parse_openapi
 from fuzzer.utils.redaction import redact_text, redact_value
 
 
@@ -42,13 +46,9 @@ def _index(
     for position, record in enumerate(records):
         case_id = record.get("case_id")
         if not isinstance(case_id, str) or not case_id:
-            raise CorrelationError(
-                f"{artifact_name}[{position}] has no valid case_id"
-            )
+            raise CorrelationError(f"{artifact_name}[{position}] has no valid case_id")
         if case_id in indexed:
-            raise CorrelationError(
-                f"duplicate case_id {case_id!r} in {artifact_name}"
-            )
+            raise CorrelationError(f"duplicate case_id {case_id!r} in {artifact_name}")
         indexed[case_id] = record
     return indexed
 
@@ -91,13 +91,57 @@ def _validate_consistency(item: CorrelatedFinding) -> None:
     }
     if len(endpoints) != 1:
         values = sorted(str(value) for value in endpoints)
-        raise CorrelationError(
-            f"inconsistent endpoint_id for {item.case_id}: {values}"
-        )
+        raise CorrelationError(f"inconsistent endpoint_id for {item.case_id}: {values}")
     if item.finding.get("status_code") != item.result.get("status_code"):
         raise CorrelationError(f"inconsistent status_code for {item.case_id}")
     if item.finding.get("request_payload") != item.plan.get("payload"):
         raise CorrelationError(f"inconsistent request payload for {item.case_id}")
+
+
+def _enrich_severity_assessments(
+    manifest: dict[str, Any],
+    results: list[dict[str, Any]],
+    findings: list[dict[str, Any]],
+) -> None:
+    if all(
+        isinstance(item.get("severity_assessment"), dict)
+        and item["severity_assessment"].get("model_id") == FUZZY_MODEL_ID
+        for item in findings
+    ):
+        return
+    schema_value = manifest.get("inputs", {}).get("schema")
+    if not isinstance(schema_value, str) or not Path(schema_value).is_file():
+        return
+
+    spec = parse_openapi(schema_value)
+    endpoint_by_id = {endpoint.id: endpoint for endpoint in spec.endpoints}
+    result_by_id = _index(results, "results.json")
+    engine = FuzzyEngine()
+    for finding in findings:
+        existing = finding.get("severity_assessment")
+        if isinstance(existing, dict) and existing.get("model_id") == FUZZY_MODEL_ID:
+            continue
+        endpoint = endpoint_by_id.get(finding.get("endpoint_id"))
+        result_record = result_by_id.get(finding.get("case_id"))
+        if endpoint is None or result_record is None:
+            continue
+        result = _execution_result(result_record, endpoint.method)
+        assessment = engine.assess(endpoint, result)
+        finding["severity_assessment"] = assessment.to_dict()
+
+
+def _execution_result(record: dict[str, Any], method: HttpMethod) -> ExecutionResult:
+    return ExecutionResult(
+        case_id=record["case_id"],
+        endpoint_id=record["endpoint_id"],
+        method=method,
+        url=record.get("url") or "",
+        status_code=record.get("status_code"),
+        response_time_ms=float(record.get("response_time_ms") or 0),
+        response_size=record.get("response_size"),
+        raw_response=record.get("raw_response"),
+        error=record.get("error"),
+    )
 
 
 def _build_metrics(
@@ -116,6 +160,29 @@ def _build_metrics(
     unique_classes = Counter(
         item["signature"]["components"]["classification"] for item in unique
     )
+    unique_severities = Counter(
+        item["representative"]["finding"].get("severity", "UNKNOWN") for item in unique
+    )
+    unique_scores = Counter(
+        str(item["representative"]["finding"].get("severity_score")) for item in unique
+    )
+    findings_with_assessment = [
+        item for item in findings if item.get("severity_assessment") is not None
+    ]
+    unique_findings = [item["representative"]["finding"] for item in unique]
+    unique_with_assessment = [
+        item for item in unique_findings if item.get("severity_assessment") is not None
+    ]
+    strongest_rules = Counter()
+    for finding in unique_with_assessment:
+        assessment = finding["severity_assessment"]
+        activated = assessment.get("activated_rules", [])
+        if assessment.get("fallback_used"):
+            strongest_rules["FALLBACK_STATUS_DEVIATION"] += 1
+        elif activated:
+            strongest_rules[activated[0]["id"]] += 1
+        else:
+            strongest_rules["NO_ACTIVE_RULE"] += 1
     status_classes = Counter(
         "network_error"
         if item.get("status_code") is None
@@ -145,12 +212,27 @@ def _build_metrics(
         "raw_by_classification": dict(sorted(raw_classes.items())),
         "candidate_by_classification": dict(sorted(candidate_classes.items())),
         "unique_by_classification": dict(sorted(unique_classes.items())),
+        "unique_by_severity": dict(sorted(unique_severities.items())),
+        "unique_by_score": dict(
+            sorted(unique_scores.items(), key=lambda item: float(item[0]))
+        ),
         "executed_by_http_status_class": dict(sorted(status_classes.items())),
+        "fuzzy_assessment": {
+            "classified_with_assessment": len(findings_with_assessment),
+            "classified_fallbacks": sum(
+                item["severity_assessment"].get("fallback_used", False)
+                for item in findings_with_assessment
+            ),
+            "unique_with_assessment": len(unique_with_assessment),
+            "unique_fallbacks": sum(
+                item["severity_assessment"].get("fallback_used", False)
+                for item in unique_with_assessment
+            ),
+            "unique_by_strongest_rule": dict(sorted(strongest_rules.items())),
+        },
         "rates": {
             "execution_completion_ratio": _ratio(len(results), len(plans)),
-            "candidate_per_executed_ratio": _ratio(
-                raw_candidates, len(results)
-            ),
+            "candidate_per_executed_ratio": _ratio(raw_candidates, len(results)),
             "deduplication_reduction_ratio": (
                 round(1 - _ratio(unique_count, raw_candidates), 4)
                 if raw_candidates
@@ -210,9 +292,55 @@ def _severity_key(item: dict[str, Any]) -> tuple[int, float, str, str]:
     )
 
 
+def _dominant_terms(memberships: dict[str, Any]) -> str:
+    dominant: list[str] = []
+    for variable, raw_terms in memberships.items():
+        if not isinstance(raw_terms, dict) or not raw_terms:
+            continue
+        term, degree = max(raw_terms.items(), key=lambda item: item[1])
+        dominant.append(f"{variable}={term} ({float(degree):.2f})")
+    return "; ".join(dominant) or "unavailable"
+
+
+def _format_fis_input(value: Any, suffix: str = "") -> str:
+    if not isinstance(value, (int, float)):
+        return "unavailable"
+    return f"{float(value):.4g}{suffix}"
+
+
+def _assessment_lines(finding: dict[str, Any]) -> list[str]:
+    assessment = finding.get("severity_assessment")
+    if not isinstance(assessment, dict):
+        return ["- FIS rationale: unavailable for this artifact"]
+    inputs = assessment.get("inputs", {})
+    activated = assessment.get("activated_rules", [])
+    strongest = activated[0] if activated else None
+    lines = [
+        f"- FIS model: `{assessment.get('model_id', 'unknown')}`",
+        "- FIS inputs: "
+        f"status deviation "
+        f"`{_format_fis_input(inputs.get('status_deviation'))}`, "
+        f"response time "
+        f"`{_format_fis_input(inputs.get('response_time_ms'), ' ms')}`, "
+        f"response-size signal "
+        f"`{_format_fis_input(inputs.get('response_size_signal'))}`",
+        f"- Dominant fuzzy terms: {_dominant_terms(assessment.get('memberships', {}))}",
+    ]
+    if isinstance(strongest, dict):
+        lines.append(
+            f"- Strongest activated rule: `{strongest.get('id')}` "
+            f"(strength `{strongest.get('strength')}`) — "
+            f"{strongest.get('description')}"
+        )
+    if assessment.get("fallback_used"):
+        lines.append("- FIS fallback: crisp status deviation was used")
+    return lines
+
+
 def _report(metrics: dict[str, Any], unique: list[dict[str, Any]]) -> str:
     counts = metrics["counts"]
     rates = metrics["rates"]
+    fuzzy_assessment = metrics["fuzzy_assessment"]
     lines = [
         "# Deduplication report",
         "",
@@ -226,11 +354,15 @@ def _report(metrics: dict[str, Any], unique: list[dict[str, Any]]) -> str:
         f"- Classified observations: {counts['classified_observations']}",
         f"- Expected failures: {counts['expected_failures']}",
         f"- Raw candidate findings: {counts['candidate_findings_raw']}",
-        f"- Unique operational findings: "
-        f"{counts['findings_unique_operational']}",
+        f"- Unique operational findings: {counts['findings_unique_operational']}",
         f"- Deduplication reduction: "
         f"{_percentage(rates['deduplication_reduction_ratio'])}",
         f"- Candidate endpoints: {counts['candidate_endpoints']}",
+        f"- FIS rationale coverage: "
+        f"{fuzzy_assessment['unique_with_assessment']}/"
+        f"{counts['findings_unique_operational']} unique findings",
+        f"- FIS fallbacks among unique findings: "
+        f"{fuzzy_assessment['unique_fallbacks']}",
         "",
         "`EXPECTED_FAILURE` remains an execution metric and is excluded before "
         "deduplication. A unique operational finding is a strict black-box "
@@ -293,6 +425,7 @@ def _report(metrics: dict[str, Any], unique: list[dict[str, Any]]) -> str:
                 f"{_excerpt(result.get('raw_response'), serialized=True)}`",
             ]
         )
+        lines.extend(_assessment_lines(finding))
     return "\n".join(lines) + "\n"
 
 
@@ -360,12 +493,11 @@ def process_run(run_dir: Path) -> dict[str, Any]:
             raise CorrelationError("run_manifest.json has no valid target_id")
         plans = _load_records(run_dir / "data" / "execution_plan.json")
         results = _load_records(run_dir / "data" / "results.json")
-        findings = _load_records(
-            run_dir / "analysis" / "analysis_findings.json"
-        )
+        findings = _load_records(run_dir / "analysis" / "analysis_findings.json")
         plans = redact_value(plans)
         results = redact_value(results)
         findings = redact_value(findings)
+        _enrich_severity_assessments(manifest, results, findings)
         correlated = correlate_records(plans, results, findings)
         unique = deduplicate_findings(api_id, correlated)
         metrics = _build_metrics(api_id, plans, results, findings, unique)

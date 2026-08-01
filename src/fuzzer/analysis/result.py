@@ -4,6 +4,7 @@ from fuzzer.analysis.classification import Anomaly, AnomalySeverity
 from fuzzer.executor.result import ExecutionResult
 from fuzzer.utils.types import Headers
 
+
 @dataclass
 class AnalysisResult:
     classification: Anomaly
@@ -14,4 +15,5 @@ class AnalysisResult:
     execution_result: ExecutionResult
     severity_score: float = 0.0
     severity: AnomalySeverity = AnomalySeverity.LOW
+    severity_assessment: dict[str, Any] | None = None
     case_id: str = "case-unassigned"

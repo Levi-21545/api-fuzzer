@@ -8,6 +8,7 @@ from fuzzer.analysis.result import AnalysisResult
 from fuzzer.utils.redaction import redact_headers, redact_text, redact_value
 from fuzzer.utils.types import ExecutionPlanEntry
 
+
 def write_results(results: list[ExecutionResult], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "results.json"
@@ -20,6 +21,7 @@ def write_results(results: list[ExecutionResult], output_dir: Path) -> None:
             ensure_ascii=False,
         )
 
+
 def write_results_jsonl(results: list[ExecutionResult], output_dir: Path):
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "results.jsonl"
@@ -27,9 +29,9 @@ def write_results_jsonl(results: list[ExecutionResult], output_dir: Path):
     with output_file.open("w", encoding="utf-8") as f:
         for result in results:
             f.write(
-                json.dumps(redact_value(result.to_dict()), ensure_ascii=False)
-                + "\n"
+                json.dumps(redact_value(result.to_dict()), ensure_ascii=False) + "\n"
             )
+
 
 def write_execution_plan(
     execution_plan: list[ExecutionPlanEntry],
@@ -56,6 +58,7 @@ def write_execution_plan(
 
     with output_file.open("w", encoding="utf-8") as f:
         json.dump(serialized, f, indent=2, ensure_ascii=False)
+
 
 def write_analysis_report(
     analysis_results: list[AnalysisResult],
@@ -139,6 +142,7 @@ def write_analysis_report(
                 "url": ar.execution_result.url,
                 "severity_score": ar.severity_score,
                 "severity": ar.severity.name,
+                "severity_assessment": ar.severity_assessment,
             }
         )
 

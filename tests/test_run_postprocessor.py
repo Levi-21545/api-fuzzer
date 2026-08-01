@@ -12,10 +12,24 @@ def test_process_run_writes_analysis_and_updates_manifest(tmp_path):
     analysis = tmp_path / "analysis"
     data.mkdir()
     analysis.mkdir()
+    schema = tmp_path / "schema.yaml"
+    schema.write_text(
+        """
+openapi: 3.0.0
+paths:
+  /items:
+    get:
+      responses:
+        '200':
+          description: ok
+""".strip(),
+        encoding="utf-8",
+    )
     manifest = {
         "target_id": "sample-api",
         "status": "completed",
         "artifacts": [],
+        "inputs": {"schema": str(schema)},
     }
     plan = {
         "case_id": "case-000001",
@@ -62,12 +76,19 @@ def test_process_run_writes_analysis_and_updates_manifest(tmp_path):
 
     metrics = process_run(tmp_path)
 
-    updated = json.loads(
-        (tmp_path / "run_manifest.json").read_text(encoding="utf-8")
-    )
+    updated = json.loads((tmp_path / "run_manifest.json").read_text(encoding="utf-8"))
     assert metrics["counts"]["findings_unique_operational"] == 1
     assert metrics["rates"]["execution_completion_ratio"] == 1.0
     assert metrics["rates"]["deduplication_reduction_ratio"] == 0.0
+    assert metrics["fuzzy_assessment"] == {
+        "classified_with_assessment": 1,
+        "classified_fallbacks": 0,
+        "unique_with_assessment": 1,
+        "unique_fallbacks": 0,
+        "unique_by_strongest_rule": {
+            "R1_HIGH_DEVIATION_OR_TIMEOUT": 1,
+        },
+    }
     assert updated["status"] == "completed"
     assert updated["postprocessing"]["deduplication"]["status"] == "completed"
     assert (analysis / "findings_unique.json").is_file()
@@ -75,12 +96,8 @@ def test_process_run_writes_analysis_and_updates_manifest(tmp_path):
     assert (analysis / "deduplication_report.md").is_file()
     persisted_plan = (data / "execution_plan.json").read_text(encoding="utf-8")
     persisted_results = (data / "results.json").read_text(encoding="utf-8")
-    persisted_unique = (analysis / "findings_unique.json").read_text(
-        encoding="utf-8"
-    )
-    report = (analysis / "deduplication_report.md").read_text(
-        encoding="utf-8"
-    )
+    persisted_unique = (analysis / "findings_unique.json").read_text(encoding="utf-8")
+    report = (analysis / "deduplication_report.md").read_text(encoding="utf-8")
     for artifact in (persisted_plan, persisted_results, persisted_unique, report):
         assert "secret-token" not in artifact
         assert "response-secret" not in artifact
@@ -89,3 +106,16 @@ def test_process_run_writes_analysis_and_updates_manifest(tmp_path):
     assert "wrong_type" in report
     assert "Server returned a 500 error." in report
     assert 'Response excerpt: `{"error":"failure","token":"<REDACTED>"}`' in report
+    assert "R1_HIGH_DEVIATION_OR_TIMEOUT" in report
+    persisted_findings = json.loads(
+        (analysis / "analysis_findings.json").read_text(encoding="utf-8")
+    )
+    assert persisted_findings[0]["severity_assessment"]["inputs"] == {
+        "response_size_signal": 0.0,
+        "response_time_ms": 0.0,
+        "status_deviation": 1.0,
+    }
+    assert (
+        persisted_findings[0]["severity_assessment"]["model_id"]
+        == "mamdani-status-time-response-size-v1"
+    )

@@ -146,10 +146,11 @@ Cada execução cria uma pasta em `output/<timestamp>/` contendo:
 A deduplicação é executada automaticamente após uma campanha bem-sucedida e
 produz `analysis/findings_unique.json`, `analysis/metrics.json` e
 `analysis/deduplication_report.md`. O relatório prioriza até 50 achados únicos;
-o JSON preserva o conjunto completo. Tokens e cabeçalhos de autenticação são
-redigidos dos artefatos persistidos. Use `--no-deduplicate` para preservar
-somente os dados de execução e a análise original, que também são escritos com
-redação.
+o JSON preserva o conjunto completo. Cada achado classificado inclui os inputs,
+graus de pertinência e regras ativadas pelo sistema fuzzy. Tokens e cabeçalhos
+de autenticação são redigidos dos artefatos persistidos. Use
+`--no-deduplicate` para preservar somente os dados de execução e a análise
+original, que também são escritos com redação.
 
 Um run também pode ser pós-processado novamente, sem reexecutar a API:
 
