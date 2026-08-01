@@ -83,7 +83,11 @@ async def async_main():
                     "--auto-auth requires --base-url or a server in the spec."
                 )
 
-        mutation_engine = MutationEngine(level=args.level, max_mutations=args.max)
+        mutation_engine = MutationEngine(
+            level=args.level,
+            max_mutations=args.max,
+            max_pairs=args.max_pairs,
+        )
 
         # 3. Build the execution plan.
         execution_plan = list(

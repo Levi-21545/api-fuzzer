@@ -41,7 +41,8 @@ python -m fuzzer.main <schema.yaml>
 - `--auto-auth`: registro + login automáticos (descobre endpoints no schema)
 - `--auth-probe`: envia probes de autenticação (sem token + token inválido) nos endpoints que exigem `security`
 - `--level <int>`: nível de fuzzing (default: 1)
-- `--max <int>`: máximo de mutações por payload (default: 10)
+- `--max <int>`: máximo de mutações individuais por payload (default: 10)
+- `--max-pairs <int>`: máximo adicional de pares L2 por payload (default: 10)
 - `--limit <int>`: limita quantidade de endpoints executados
 - `--all`: executa todos os endpoints
 - `--path <glob>`: filtra endpoints por padrão de path (ex.: /users/*)
@@ -58,7 +59,7 @@ Observação: se você não usar `--all`, `--limit` ou `--path`, o projeto execu
 python -m fuzzer.main spec.yaml \
   --base-url http://localhost:8888 \
   --auto-auth --auth-probe \
-  --level 1 --max 10 \
+  --level 2 --max 10 --max-pairs 10 \
   --delay 100 --timeout 15 \
   --concurrency 5 --all
 ```

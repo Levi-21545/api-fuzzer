@@ -96,9 +96,7 @@ paths:
         "classified_fallbacks": 0,
         "unique_with_assessment": 1,
         "unique_fallbacks": 0,
-        "unique_by_strongest_rule": {
-            "R1_HIGH_DEVIATION_OR_TIMEOUT": 1,
-        },
+        "unique_by_strongest_rule": {"R1_HIGH_DEVIATION_OR_TIMEOUT": 1},
     }
     assert updated["status"] == "completed"
     assert updated["postprocessing"]["deduplication"]["status"] == "completed"
@@ -132,5 +130,5 @@ paths:
     }
     assert (
         persisted_findings[0]["severity_assessment"]["model_id"]
-        == "mamdani-status-time-response-size-v1"
+        == "mamdani-status-time-response-size-v2"
     )

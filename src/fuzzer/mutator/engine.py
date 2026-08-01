@@ -1,3 +1,4 @@
+import json
 from typing import Any, Iterable, Optional
 from itertools import combinations
 from copy import deepcopy
@@ -9,9 +10,15 @@ from fuzzer.mutator.mutation_operation import MutationCase, MutationOp
 
 
 class MutationEngine:
-    def __init__(self, level: int, max_mutations: Optional[int] = 10):
+    def __init__(
+        self,
+        level: int,
+        max_mutations: Optional[int] = 10,
+        max_pairs: Optional[int] = None,
+    ):
         self.level = level
         self.max_mutations: Optional[int] = max_mutations
+        self.max_pairs: Optional[int] = max_pairs
 
     def generate(self, target_schema: Schema) -> list[Any]:
         return [case.payload for case in self.generate_cases(target_schema)]
@@ -48,17 +55,90 @@ class MutationEngine:
         if self.level == 1:
             return cases
 
-        # Level 2: explicit pairs of compatible mutations.
-        for case in self.generate_level2_cases(baseline, level1_ops):
-            if (
-                self.max_mutations is not None
-                and mutation_count >= self.max_mutations
-            ):
-                break
+        # Level 2: an independent budget of compatible mutation pairs.
+        pair_cases = self._select_diverse_level2_cases(
+            self.generate_level2_cases(baseline, level1_ops),
+            self.max_pairs,
+        )
+        for case in pair_cases:
             cases.append(case)
-            mutation_count += 1
 
         return cases
+
+    def _select_diverse_level2_cases(
+        self,
+        cases: Iterable[MutationCase],
+        limit: Optional[int],
+    ) -> list[MutationCase]:
+        unique_cases: list[MutationCase] = []
+        seen_payloads: set[str] = set()
+        for case in cases:
+            payload_key = json.dumps(
+                case.payload,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+            if payload_key in seen_payloads:
+                continue
+            seen_payloads.add(payload_key)
+            unique_cases.append(case)
+
+        if limit is None or len(unique_cases) <= limit:
+            return unique_cases
+        if limit <= 0:
+            return []
+
+        selected: list[MutationCase] = []
+        remaining = list(unique_cases)
+        covered_paths: set[tuple[str, ...]] = set()
+        covered_operators: set[str] = set()
+        covered_path_pairs: set[tuple[tuple[str, ...], ...]] = set()
+        covered_operator_pairs: set[tuple[str, ...]] = set()
+
+        while remaining and len(selected) < limit:
+            best_index = max(
+                range(len(remaining)),
+                key=lambda index: self._diversity_score(
+                    remaining[index],
+                    covered_paths,
+                    covered_operators,
+                    covered_path_pairs,
+                    covered_operator_pairs,
+                    index,
+                ),
+            )
+            case = remaining.pop(best_index)
+            selected.append(case)
+            paths = {operation.path for operation in case.operations}
+            operators = {operation.operator for operation in case.operations}
+            covered_paths.update(paths)
+            covered_operators.update(operators)
+            covered_path_pairs.add(tuple(sorted(paths)))
+            covered_operator_pairs.add(tuple(sorted(operators)))
+
+        return selected
+
+    @staticmethod
+    def _diversity_score(
+        case: MutationCase,
+        covered_paths: set[tuple[str, ...]],
+        covered_operators: set[str],
+        covered_path_pairs: set[tuple[tuple[str, ...], ...]],
+        covered_operator_pairs: set[tuple[str, ...]],
+        index: int,
+    ) -> tuple[int, int, int, int, int]:
+        paths = {operation.path for operation in case.operations}
+        operators = {operation.operator for operation in case.operations}
+        path_pair = tuple(sorted(paths))
+        operator_pair = tuple(sorted(operators))
+        return (
+            int(path_pair not in covered_path_pairs),
+            len(paths - covered_paths),
+            int(operator_pair not in covered_operator_pairs),
+            len(operators - covered_operators),
+            -index,
+        )
 
     def generate_level1_mutations(self, schema: Schema) -> list[MutationOp]:
         mutations: list[MutationOp] = []

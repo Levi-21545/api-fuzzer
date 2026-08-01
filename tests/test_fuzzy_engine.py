@@ -56,7 +56,7 @@ def test_assessment_exposes_inputs_memberships_and_activated_rules():
     assessment = _engine().assess(ep, result)
 
     assert assessment.score == 0.84
-    assert assessment.model_id == "mamdani-status-time-response-size-v1"
+    assert assessment.model_id == "mamdani-status-time-response-size-v2"
     assert assessment.severity == AnomalySeverity.HIGH
     assert assessment.inputs == {
         "status_deviation": 1.0,
@@ -66,7 +66,6 @@ def test_assessment_exposes_inputs_memberships_and_activated_rules():
     assert assessment.memberships["status_deviation"]["high"] == 1.0
     assert [rule["id"] for rule in assessment.activated_rules] == [
         "R1_HIGH_DEVIATION_OR_TIMEOUT",
-        "R6_HIGH_DEVIATION",
     ]
     assert assessment.fallback_used is False
 
@@ -140,6 +139,107 @@ def test_undocumented_4xx_scores_medium():
     assert 0.3 <= score <= 0.7
 
 
+def test_expected_rejection_accepted_scores_medium():
+    ep = Endpoint(
+        path="/test",
+        method=HttpMethod.POST,
+        parameters=[],
+        request_body=None,
+        responses={"200": Schema(type="object")},
+    )
+    result = ExecutionResult(
+        endpoint_id="POST /test",
+        method=HttpMethod.POST,
+        url="http://localhost/test",
+        status_code=200,
+        response_time_ms=30,
+        response_size=50,
+        raw_response="{}",
+        error=None,
+    )
+
+    assessment = _engine().assess(ep, result, expects_rejection=True)
+
+    assert assessment.inputs["status_deviation"] == 0.6
+    assert assessment.severity == AnomalySeverity.MEDIUM
+    assert assessment.fallback_used is False
+
+
+def test_rule_base_covers_representative_input_grid():
+    ep = Endpoint(
+        path="/test",
+        method=HttpMethod.GET,
+        parameters=[],
+        request_body=None,
+        responses={"200": Schema(type="object")},
+    )
+
+    for status in (200, 403, 500):
+        for response_time in (10, 800, 3000):
+            for response_size in (0, 512, 2048):
+                result = ExecutionResult(
+                    endpoint_id="GET /test",
+                    method=HttpMethod.GET,
+                    url="http://localhost/test",
+                    status_code=status,
+                    response_time_ms=response_time,
+                    response_size=response_size,
+                    raw_response="{}",
+                    error=None,
+                )
+
+                assessment = _engine().assess(ep, result)
+
+                assert assessment.fallback_used is False
+
+
+def test_rule_base_covers_every_status_deviation_category():
+    documented = Endpoint(
+        path="/test",
+        method=HttpMethod.GET,
+        parameters=[],
+        request_body=None,
+        responses={"200": Schema(type="object")},
+    )
+    no_reference = Endpoint(
+        path="/test",
+        method=HttpMethod.GET,
+        parameters=[],
+        request_body=None,
+        responses={},
+    )
+    cases = [
+        (documented, None, False, 1.0),
+        (documented, 500, False, 1.0),
+        (documented, 200, False, 0.0),
+        (no_reference, 200, False, 0.5),
+        (documented, 403, False, 0.6),
+        (documented, 302, False, 0.4),
+        (documented, 200, True, 0.6),
+    ]
+
+    for endpoint, status, expects_rejection, expected_deviation in cases:
+        result = ExecutionResult(
+            endpoint_id="GET /test",
+            method=HttpMethod.GET,
+            url="http://localhost/test",
+            status_code=status,
+            response_time_ms=10,
+            response_size=100,
+            raw_response="{}" if status is not None else None,
+            error="timeout" if status is None else None,
+        )
+
+        assessment = _engine().assess(
+            endpoint,
+            result,
+            expects_rejection=expects_rejection,
+        )
+
+        assert assessment.inputs["status_deviation"] == expected_deviation
+        assert assessment.fallback_used is False
+
+
 def test_slow_response_escalates_severity():
     ep = Endpoint(
         path="/test",
@@ -202,6 +302,6 @@ def test_analyzer_integrates_fuzzy():
     assert analysis.severity_assessment is not None
     assert (
         analysis.severity_assessment["model_id"]
-        == "mamdani-status-time-response-size-v1"
+        == "mamdani-status-time-response-size-v2"
     )
     assert analysis.severity_assessment["inputs"]["status_deviation"] == 1.0

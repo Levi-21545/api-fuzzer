@@ -101,6 +101,7 @@ def _validate_consistency(item: CorrelatedFinding) -> None:
 
 def _enrich_severity_assessments(
     manifest: dict[str, Any],
+    plans: list[dict[str, Any]],
     results: list[dict[str, Any]],
     findings: list[dict[str, Any]],
 ) -> None:
@@ -116,18 +117,34 @@ def _enrich_severity_assessments(
 
     spec = parse_openapi(schema_value)
     endpoint_by_id = {endpoint.id: endpoint for endpoint in spec.endpoints}
+    plan_by_id = _index(plans, "execution_plan.json")
     result_by_id = _index(results, "results.json")
     engine = FuzzyEngine()
     for finding in findings:
         existing = finding.get("severity_assessment")
         if isinstance(existing, dict) and existing.get("model_id") == FUZZY_MODEL_ID:
             continue
-        endpoint = endpoint_by_id.get(finding.get("endpoint_id"))
-        result_record = result_by_id.get(finding.get("case_id"))
-        if endpoint is None or result_record is None:
+        endpoint_id = finding.get("endpoint_id")
+        case_id = finding.get("case_id")
+        if not isinstance(endpoint_id, str) or not isinstance(case_id, str):
+            continue
+        endpoint = endpoint_by_id.get(endpoint_id)
+        plan_record = plan_by_id.get(case_id)
+        result_record = result_by_id.get(case_id)
+        if endpoint is None or plan_record is None or result_record is None:
             continue
         result = _execution_result(result_record, endpoint.method)
-        assessment = engine.assess(endpoint, result)
+        mutations = plan_record.get("mutations") or []
+        expects_rejection = plan_record.get("case_kind") == "auth_probe" or any(
+            not mutation.get("expected_valid", False) for mutation in mutations
+        )
+        assessment = engine.assess(
+            endpoint,
+            result,
+            expects_rejection=expects_rejection,
+        )
+        finding["severity_score"] = assessment.score
+        finding["severity"] = assessment.severity.name
         finding["severity_assessment"] = assessment.to_dict()
 
 
@@ -609,7 +626,7 @@ def process_run(run_dir: Path) -> dict[str, Any]:
         plans = redact_value(plans)
         results = redact_value(results)
         findings = redact_value(findings)
-        _enrich_severity_assessments(manifest, results, findings)
+        _enrich_severity_assessments(manifest, plans, results, findings)
         correlated = correlate_records(plans, results, findings)
         unique = deduplicate_findings(api_id, correlated)
         metrics = _build_metrics(api_id, plans, results, findings, unique)

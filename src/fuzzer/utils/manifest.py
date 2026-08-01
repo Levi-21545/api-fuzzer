@@ -107,6 +107,7 @@ def build_run_manifest(args: Any, run_id: str) -> dict[str, Any]:
             "configuration": {
                 "level": args.level,
                 "max_mutations_per_payload": args.max,
+                "max_pairs_per_payload": args.max_pairs,
                 "endpoint_limit": args.limit,
                 "all_endpoints": args.all,
                 "path_filter": args.path_filter,

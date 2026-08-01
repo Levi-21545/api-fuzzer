@@ -34,7 +34,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--max",
         type=int,
         default=10,
-        help="Maximum number of mutations per payload (default: 10)"
+        help="Maximum number of individual mutations per payload (default: 10)"
+    )
+
+    parser.add_argument(
+        "--max-pairs",
+        type=int,
+        default=10,
+        help="Maximum number of level-2 mutation pairs per payload (default: 10)",
     )
 
     parser.add_argument(

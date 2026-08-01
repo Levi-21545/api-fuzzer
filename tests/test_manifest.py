@@ -42,6 +42,7 @@ def test_manifest_uses_run_data_and_analysis_directories(tmp_path, monkeypatch):
             "base_url": "http://localhost",
             "level": 1,
             "max": 20,
+            "max_pairs": 10,
             "limit": None,
             "all": True,
             "path_filter": None,
@@ -67,6 +68,7 @@ def test_manifest_uses_run_data_and_analysis_directories(tmp_path, monkeypatch):
         "analysis/analysis_report.md",
     ]
     assert manifest["fuzzer"]["configuration"]["deduplicate"] is True
+    assert manifest["fuzzer"]["configuration"]["max_pairs_per_payload"] == 10
     assert manifest["postprocessing"]["deduplication"]["status"] == "pending"
 
 
@@ -84,6 +86,7 @@ def test_manifest_derives_target_id_from_schema_name(tmp_path, monkeypatch):
             "base_url": "http://localhost",
             "level": 1,
             "max": 10,
+            "max_pairs": 10,
             "limit": None,
             "all": False,
             "path_filter": None,

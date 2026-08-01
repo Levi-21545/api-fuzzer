@@ -19,36 +19,20 @@ _DEVIATION_EXPECTED = 0.0
 _DEVIATION_NO_REFERENCE = 0.5
 _DEVIATION_CLIENT_ERROR = 0.6
 _DEVIATION_OTHER = 0.4
+_DEVIATION_UNEXPECTED_ACCEPTANCE = 0.6
 
 _HIGH_THRESHOLD = 0.66
 _MEDIUM_THRESHOLD = 0.33
-FUZZY_MODEL_ID = "mamdani-status-time-response-size-v1"
+FUZZY_MODEL_ID = "mamdani-status-time-response-size-v2"
 
 _RULE_DESCRIPTIONS = {
     "R1_HIGH_DEVIATION_OR_TIMEOUT": (
         "high status deviation or timeout response -> high severity"
     ),
-    "R2_MEDIUM_DEVIATION_AND_SLOW": (
-        "medium status deviation and slow response -> medium severity"
-    ),
-    "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE": (
-        "low status deviation, normal response time, and expected response "
-        "size -> low severity"
-    ),
-    "R4_MEDIUM_DEVIATION_NORMAL_LARGE_RESPONSE": (
-        "medium status deviation, normal response time, and large response -> "
-        "medium severity"
-    ),
-    "R5_LOW_DEVIATION_EMPTY_RESPONSE": (
-        "low status deviation and empty response -> medium severity"
-    ),
-    "R6_HIGH_DEVIATION": "high status deviation -> high severity",
-    "R7_LARGE_RESPONSE_AND_TIMEOUT": ("large response and timeout -> high severity"),
-    "R8_LOW_DEVIATION_LARGE_RESPONSE": (
-        "low status deviation and large response -> medium severity"
-    ),
-    "R9_LOW_DEVIATION_SLOW_RESPONSE": (
-        "low status deviation and slow response -> medium severity"
+    "R2_MEDIUM_DEVIATION": "medium status deviation -> medium severity",
+    "R3_LOW_DEVIATION": "low status deviation -> low severity",
+    "R4_LOW_DEVIATION_WITH_RESPONSE_SIGNAL": (
+        "low status deviation with slow, empty, or large response -> medium severity"
     ),
 }
 
@@ -106,55 +90,38 @@ class FuzzyEngine:
                 label="R1_HIGH_DEVIATION_OR_TIMEOUT",
             ),
             ctrl.Rule(
-                dev["medium"] & rtime["slow"],
+                dev["medium"],
                 ascore["medium"],
-                label="R2_MEDIUM_DEVIATION_AND_SLOW",
+                label="R2_MEDIUM_DEVIATION",
             ),
             ctrl.Rule(
-                dev["low"] & rtime["normal"] & rsize["expected"],
+                dev["low"],
                 ascore["low"],
-                label="R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+                label="R3_LOW_DEVIATION",
             ),
             ctrl.Rule(
-                dev["medium"] & rtime["normal"] & rsize["large"],
+                dev["low"]
+                & (rtime["slow"] | rsize["empty"] | rsize["large"]),
                 ascore["medium"],
-                label="R4_MEDIUM_DEVIATION_NORMAL_LARGE_RESPONSE",
-            ),
-            ctrl.Rule(
-                dev["low"] & rsize["empty"],
-                ascore["medium"],
-                label="R5_LOW_DEVIATION_EMPTY_RESPONSE",
-            ),
-            ctrl.Rule(
-                dev["high"],
-                ascore["high"],
-                label="R6_HIGH_DEVIATION",
-            ),
-            ctrl.Rule(
-                rsize["large"] & rtime["timeout"],
-                ascore["high"],
-                label="R7_LARGE_RESPONSE_AND_TIMEOUT",
-            ),
-            ctrl.Rule(
-                dev["low"] & rsize["large"],
-                ascore["medium"],
-                label="R8_LOW_DEVIATION_LARGE_RESPONSE",
-            ),
-            ctrl.Rule(
-                dev["low"] & rtime["slow"],
-                ascore["medium"],
-                label="R9_LOW_DEVIATION_SLOW_RESPONSE",
+                label="R4_LOW_DEVIATION_WITH_RESPONSE_SIGNAL",
             ),
         ]
 
         return ctrl.ControlSystem(rules)
 
-    def _compute_deviation(self, endpoint: Endpoint, result: ExecutionResult) -> float:
+    def _compute_deviation(
+        self,
+        endpoint: Endpoint,
+        result: ExecutionResult,
+        expects_rejection: bool = False,
+    ) -> float:
         if result.status_code is None:
             return _DEVIATION_NO_STATUS
         actual = result.status_code
         if 500 <= actual < 600:
             return _DEVIATION_SERVER_ERROR
+        if expects_rejection and 200 <= actual < 300:
+            return _DEVIATION_UNEXPECTED_ACCEPTANCE
         expected = {int(s) for s in endpoint.responses if s.isdigit()}
         if actual in expected:
             return _DEVIATION_EXPECTED
@@ -189,8 +156,13 @@ class FuzzyEngine:
         # Content returned with an undocumented status is more suspicious.
         return min(size_kb * 2, 3.0)
 
-    def assess(self, endpoint: Endpoint, result: ExecutionResult) -> FuzzyAssessment:
-        deviation = self._compute_deviation(endpoint, result)
+    def assess(
+        self,
+        endpoint: Endpoint,
+        result: ExecutionResult,
+        expects_rejection: bool = False,
+    ) -> FuzzyAssessment:
+        deviation = self._compute_deviation(endpoint, result, expects_rejection)
         response_time = max(0.0, min(float(result.response_time_ms), 5000.0))
         response_size_signal = self._compute_response_size_signal(endpoint, result)
         inputs = {
@@ -243,10 +215,13 @@ class FuzzyEngine:
         )
 
     def score(
-        self, endpoint: Endpoint, result: ExecutionResult
+        self,
+        endpoint: Endpoint,
+        result: ExecutionResult,
+        expects_rejection: bool = False,
     ) -> tuple[float, AnomalySeverity]:
         """Return the legacy score tuple while assessment consumers migrate."""
-        assessment = self.assess(endpoint, result)
+        assessment = self.assess(endpoint, result, expects_rejection)
         return assessment.score, assessment.severity
 
     def _memberships(self, inputs: dict[str, float]) -> dict[str, dict[str, float]]:

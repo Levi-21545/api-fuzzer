@@ -44,6 +44,7 @@ PYTHONPATH="${REPO_ROOT}/src" \
   --base-url "${BASE_URL}" \
   --level "${LEVEL:-1}" \
   --max "${MAX_MUTATIONS:-20}" \
+  --max-pairs "${MAX_PAIRS:-10}" \
   --concurrency "${CONCURRENCY:-1}" \
   --delay "${DELAY_MS:-250}" \
   --timeout "${TIMEOUT_SECONDS:-10}" \

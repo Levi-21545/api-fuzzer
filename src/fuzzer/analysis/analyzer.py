@@ -25,7 +25,11 @@ class Analyzer:
         for entry, result in zip(execution_plan, execution_results):
             analysis = self._analyze_single(entry, result)
             if analysis:
-                assessment = self.fuzzy_engine.assess(entry.endpoint, result)
+                assessment = self.fuzzy_engine.assess(
+                    entry.endpoint,
+                    result,
+                    expects_rejection=entry.expects_rejection,
+                )
                 analysis.severity_score = assessment.score
                 analysis.severity = assessment.severity
                 analysis.severity_assessment = assessment.to_dict()

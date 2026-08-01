@@ -11,3 +11,9 @@ def test_deduplication_can_be_disabled():
     args = parse_args(["schema.yaml", "--no-deduplicate"])
 
     assert args.no_deduplicate is True
+
+
+def test_level_two_pair_budget_defaults_to_ten():
+    args = parse_args(["schema.yaml"])
+
+    assert args.max_pairs == 10

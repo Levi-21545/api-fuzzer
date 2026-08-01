@@ -160,6 +160,53 @@ def test_level_two_discards_pairs_with_an_ineffective_operation():
     assert cases == []
 
 
+def test_level_two_uses_an_independent_pair_budget():
+    schema = Schema(
+        type="object",
+        properties={
+            "name": Schema(type="string"),
+            "code": Schema(type="string"),
+            "enabled": Schema(type="boolean"),
+        },
+        required=["name", "code", "enabled"],
+    )
+
+    cases = MutationEngine(
+        level=2,
+        max_mutations=1,
+        max_pairs=2,
+    ).generate_cases(schema)
+
+    assert sum(len(case.operations) == 1 for case in cases) == 1
+    assert sum(len(case.operations) == 2 for case in cases) == 2
+
+
+def test_level_two_pair_selection_prioritizes_distinct_paths():
+    schema = Schema(
+        type="object",
+        properties={
+            "name": Schema(type="string"),
+            "code": Schema(type="string"),
+            "enabled": Schema(type="boolean"),
+        },
+        required=["name", "code", "enabled"],
+    )
+
+    cases = MutationEngine(
+        level=2,
+        max_mutations=1,
+        max_pairs=2,
+    ).generate_cases(schema)
+    pair_paths = {
+        operation.path
+        for case in cases
+        if len(case.operations) == 2
+        for operation in case.operations
+    }
+
+    assert len(pair_paths) == 3
+
+
 def test_read_only_properties_are_not_generated_or_mutated_in_requests():
     schema = Schema(
         type="object",
