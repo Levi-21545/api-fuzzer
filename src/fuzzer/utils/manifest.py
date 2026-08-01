@@ -90,7 +90,7 @@ def build_run_manifest(args: Any, run_id: str) -> dict[str, Any]:
         "manifest_version": 1,
         "run_id": run_id,
         "experiment_id": args.experiment_id,
-        "target_id": args.target_id,
+        "target_id": args.target_id or schema.stem,
         "run_number": args.run_number,
         "status": "running",
         "started_at": utc_now(),
@@ -113,6 +113,7 @@ def build_run_manifest(args: Any, run_id: str) -> dict[str, Any]:
                 "excluded_paths": args.excluded_paths,
                 "auto_auth": args.auto_auth,
                 "auth_probe": args.auth_probe,
+                "deduplicate": not args.no_deduplicate,
                 "concurrency": args.concurrency,
                 "delay_ms": args.delay,
                 "timeout_seconds": args.timeout,
@@ -129,12 +130,18 @@ def build_run_manifest(args: Any, run_id: str) -> dict[str, Any]:
             "findings": None,
         },
         "artifacts": [
-            "execution_plan.json",
-            "results.json",
-            "analysis_findings.json",
-            "analysis_report.md",
             "run_manifest.json",
+            "data/execution_plan.json",
+            "data/results.json",
+            "analysis/analysis_findings.json",
+            "analysis/analysis_report.md",
         ],
+        "postprocessing": {
+            "deduplication": {
+                "status": "skipped" if args.no_deduplicate else "pending",
+                "error": None,
+            }
+        },
         "error": None,
     }
 

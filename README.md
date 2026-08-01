@@ -137,10 +137,25 @@ corretamente) ou `ERROR_CONTRADICTION` (resposta fora do contrato).
 ## Saídas
 Cada execução cria uma pasta em `output/<timestamp>/` contendo:
 
-- `execution_plan.json`: plano de execução gerado
-- `results.json`: resultados brutos de execução
-- `analysis_report.md`: resumo leve dos achados (para desenvolvimento)
-- `analysis_findings.json`: lista de achados com campos principais
+- `run_manifest.json`: configuração, proveniência, contagens e artefatos
+- `data/execution_plan.json`: plano de execução gerado
+- `data/results.json`: resultados brutos de execução
+- `analysis/analysis_report.md`: resumo leve dos achados (para desenvolvimento)
+- `analysis/analysis_findings.json`: lista de achados com campos principais
+
+A deduplicação é executada automaticamente após uma campanha bem-sucedida e
+produz `analysis/findings_unique.json`, `analysis/metrics.json` e
+`analysis/deduplication_report.md`. Use `--no-deduplicate` para preservar
+somente os artefatos brutos e a análise original.
+
+Um run também pode ser pós-processado novamente, sem reexecutar a API:
+
+```bash
+PYTHONPATH=src python scripts/experiments/deduplicate_run.py output/<run>
+```
+
+Sua assinatura estrita representa um achado operacional black-box, não uma
+causa raiz, um bug confirmado ou uma vulnerabilidade.
 
 Cada anomalia é classificada por severidade via **motor de lógica fuzzy**:
 - **LOW** — resposta de erro documentada e rápida (comportamento esperado)

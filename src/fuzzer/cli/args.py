@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Contract-guided API fuzzer based on OpenAPI schemas"
     )
@@ -124,4 +124,10 @@ def parse_args() -> argparse.Namespace:
         help="Probe authenticated endpoints without token and with invalid token"
     )
 
-    return parser.parse_args()
+    parser.add_argument(
+        "--no-deduplicate",
+        action="store_true",
+        help="Skip automatic deduplication after a successful run",
+    )
+
+    return parser.parse_args(argv)

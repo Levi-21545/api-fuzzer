@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
 RUNNER="${SCRIPT_DIR}/run_experiment.sh"
+DEDUPLICATOR="${SCRIPT_DIR}/deduplicate_run.py"
+PYTHON_BIN="${PYTHON_BIN:-${REPO_ROOT}/.venv/bin/python}"
 
 CRAPI_ROOT="${CRAPI_ROOT:-${REPO_ROOT}/../mock-projects/crAPI}"
 DEPLOY_DIR="${CRAPI_ROOT}/deploy/docker"
@@ -53,13 +55,14 @@ compose() {
 
 cleanup() {
   if [[ -d "${RUN_DIR}" ]]; then
-    compose logs --no-color >"${RUN_DIR}/target_stack.log" 2>&1 || true
+    compose logs --no-color >"${RUN_DIR}/data/target_stack.log" 2>&1 || true
     compose images --quiet \
       | sort -u \
-      | xargs docker image inspect >"${RUN_DIR}/target_images.json" 2>/dev/null \
+      | xargs docker image inspect \
+        >"${RUN_DIR}/data/target_images.json" 2>/dev/null \
       || true
     if [[ -f "${BOOTSTRAP_LOG}" ]]; then
-      mv "${BOOTSTRAP_LOG}" "${RUN_DIR}/bootstrap.log"
+      mv "${BOOTSTRAP_LOG}" "${RUN_DIR}/data/bootstrap.log"
     fi
   fi
   compose down --volumes --remove-orphans >/dev/null 2>&1 || true
@@ -123,6 +126,11 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
   crapi \
   "${RUN_NUMBER:-0}" \
   --all \
-  --auto-auth
+  --auto-auth \
+  --no-deduplicate
+
+cleanup
+trap - EXIT
+PYTHONPATH="${REPO_ROOT}/src" "${PYTHON_BIN}" "${DEDUPLICATOR}" "${RUN_DIR}"
 
 echo "crAPI pilot completed: ${RUN_DIR}"

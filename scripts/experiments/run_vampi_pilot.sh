@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
 RUNNER="${SCRIPT_DIR}/run_experiment.sh"
+DEDUPLICATOR="${SCRIPT_DIR}/deduplicate_run.py"
+PYTHON_BIN="${PYTHON_BIN:-${REPO_ROOT}/.venv/bin/python}"
 SCHEMA="${MOCK_ROOT:-${REPO_ROOT}/../mock-projects}/VAmPI/openapi_specs/openapi3.yml"
 
 IMAGE="erev0s/vampi@sha256:0a5a224b6e14ae7da6a6ea265178ff71286ff903aec74adee98f660bb0e4ca12"
@@ -25,7 +27,8 @@ fi
 
 cleanup() {
   if [[ -d "${RUN_DIR}" ]]; then
-    docker logs "${CONTAINER}" >"${RUN_DIR}/target_container.log" 2>&1 || true
+    docker logs "${CONTAINER}" >"${RUN_DIR}/data/target_container.log" 2>&1 \
+      || true
   fi
   docker rm -f "${CONTAINER}" >/dev/null 2>&1 || true
 }
@@ -84,6 +87,11 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
   "${RUN_NUMBER:-0}" \
   --all \
   --exclude-path /createdb \
-  --auto-auth
+  --auto-auth \
+  --no-deduplicate
+
+cleanup
+trap - EXIT
+PYTHONPATH="${REPO_ROOT}/src" "${PYTHON_BIN}" "${DEDUPLICATOR}" "${RUN_DIR}"
 
 echo "Pilot completed: ${RUN_DIR}"

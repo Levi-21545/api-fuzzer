@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
 RUNNER="${SCRIPT_DIR}/run_experiment.sh"
+DEDUPLICATOR="${SCRIPT_DIR}/deduplicate_run.py"
+PYTHON_BIN="${PYTHON_BIN:-${REPO_ROOT}/.venv/bin/python}"
 
 PETCLINIC_ROOT="${PETCLINIC_ROOT:-${REPO_ROOT}/../mock-projects/spring-petclinic-rest}"
 SCHEMA="${PETCLINIC_ROOT}/src/main/resources/openapi.yml"
@@ -28,11 +30,12 @@ fi
 
 cleanup() {
   if [[ -d "${RUN_DIR}" ]]; then
-    docker logs "${CONTAINER}" >"${RUN_DIR}/target_container.log" 2>&1 || true
+    docker logs "${CONTAINER}" >"${RUN_DIR}/data/target_container.log" 2>&1 \
+      || true
     image_id="$(docker inspect --format '{{.Image}}' "${CONTAINER}" 2>/dev/null || true)"
     if [[ -n "${image_id}" ]]; then
-      docker image inspect "${image_id}" >"${RUN_DIR}/target_image.json" 2>/dev/null \
-        || true
+      docker image inspect "${image_id}" \
+        >"${RUN_DIR}/data/target_image.json" 2>/dev/null || true
     fi
   fi
   docker rm -f "${CONTAINER}" >/dev/null 2>&1 || true
@@ -87,6 +90,11 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
   petclinic \
   "${RUN_NUMBER:-0}" \
   --all \
-  --exclude-path /oops
+  --exclude-path /oops \
+  --no-deduplicate
+
+cleanup
+trap - EXIT
+PYTHONPATH="${REPO_ROOT}/src" "${PYTHON_BIN}" "${DEDUPLICATOR}" "${RUN_DIR}"
 
 echo "Spring Petclinic pilot completed: ${RUN_DIR}"

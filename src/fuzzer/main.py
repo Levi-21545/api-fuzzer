@@ -23,6 +23,7 @@ from fuzzer.mutator.engine import MutationEngine
 from fuzzer.executor.executor import Executor
 
 from fuzzer.analysis.analyzer import Analyzer
+from fuzzer.analysis.run_postprocessor import process_run
 from fuzzer.utils.helpers import timestamp
 from fuzzer.utils.manifest import build_run_manifest, utc_now, write_run_manifest
 from fuzzer.utils.types import Headers, AuthContext
@@ -39,6 +40,11 @@ async def async_main():
             f"Output directory already exists; refusing to overwrite: {run_dir}"
         )
     print(f"Output directory for this run: {run_dir}")
+
+    data_dir = run_dir / "data"
+    analysis_dir = run_dir / "analysis"
+    data_dir.mkdir(parents=True)
+    analysis_dir.mkdir()
 
     manifest = build_run_manifest(args, run_id)
     write_run_manifest(manifest, run_dir)
@@ -94,7 +100,7 @@ async def async_main():
             execution_plan = probes + execution_plan
 
         manifest["counts"]["planned_requests"] = len(execution_plan)
-        write_execution_plan(execution_plan, run_dir)
+        write_execution_plan(execution_plan, data_dir)
         write_run_manifest(manifest, run_dir)
         print(f"Generated {len(execution_plan)} requests to be executed.")
 
@@ -125,14 +131,21 @@ async def async_main():
         print(f"Produced {len(analysis_results)} classified findings.")
 
         # 7. Write the lightweight analysis report.
-        report_md, report_json = write_analysis_report(analysis_results, run_dir)
+        report_md, report_json = write_analysis_report(
+            analysis_results, analysis_dir
+        )
         print(f"Analysis report saved: {report_md}")
         print(f"Findings JSON saved: {report_json}")
 
-        write_results(results, run_dir)
+        write_results(results, data_dir)
         manifest["status"] = "completed"
     except Exception as error:
         manifest["status"] = "failed"
+        manifest["postprocessing"]["deduplication"] = {
+            "status": "not_run",
+            "reason": "campaign_failed",
+            "error": None,
+        }
         manifest["error"] = {
             "type": type(error).__name__,
             "message": str(error),
@@ -142,6 +155,12 @@ async def async_main():
     finally:
         manifest["finished_at"] = utc_now()
         write_run_manifest(manifest, run_dir)
+
+    if not args.no_deduplicate:
+        print("Deduplicating findings...")
+        metrics = process_run(run_dir)
+        unique_count = metrics["counts"]["findings_unique_operational"]
+        print(f"Produced {unique_count} unique operational findings.")
 
 
 def main():
