@@ -127,6 +127,7 @@ class OpenAPIParser:
         body = data.get("requestBody")
         if not body:
             return None
+        body = self._resolve_local_ref(body)
 
         content = body.get("content", {})
 
@@ -143,6 +144,7 @@ class OpenAPIParser:
     def _parse_responses(self, data: Dict[str, Any]):
         responses = {}
         for status, r in data.get("responses", {}).items():
+            r = self._resolve_local_ref(r)
             content = r.get("content", {})
             if "application/json" not in content:
                 responses[str(status)] = Schema(type=None)

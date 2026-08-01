@@ -95,6 +95,66 @@ def test_local_schema_references_and_path_parameters_are_resolved(tmp_path):
     assert response_request.required == ["quantity"]
 
 
+def test_local_request_body_and_response_references_are_resolved(tmp_path):
+    contract = {
+        "openapi": "3.1.0",
+        "paths": {
+            "/users": {
+                "post": {
+                    "requestBody": {
+                        "$ref": "#/components/requestBodies/NewUserRequest"
+                    },
+                    "responses": {
+                        "201": {"$ref": "#/components/responses/UserResponse"}
+                    },
+                }
+            }
+        },
+        "components": {
+            "schemas": {
+                "NewUser": {
+                    "type": "object",
+                    "required": ["username"],
+                    "properties": {"username": {"type": "string"}},
+                },
+                "User": {
+                    "type": "object",
+                    "required": ["username"],
+                    "properties": {"username": {"type": "string"}},
+                },
+            },
+            "requestBodies": {
+                "NewUserRequest": {
+                    "required": True,
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/NewUser"}
+                        }
+                    },
+                }
+            },
+            "responses": {
+                "UserResponse": {
+                    "description": "Created user",
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/User"}
+                        }
+                    },
+                }
+            },
+        },
+    }
+    contract_path = tmp_path / "openapi.yaml"
+    contract_path.write_text(yaml.safe_dump(contract), encoding="utf-8")
+
+    endpoint = OpenAPIParser(str(contract_path)).parse().endpoints[0]
+
+    assert endpoint.request_body is not None
+    assert endpoint.request_body.schema.required == ["username"]
+    assert endpoint.responses["201"].required == ["username"]
+
+
 def test_all_of_object_schemas_are_merged(tmp_path):
     contract = {
         "openapi": "3.0.1",
