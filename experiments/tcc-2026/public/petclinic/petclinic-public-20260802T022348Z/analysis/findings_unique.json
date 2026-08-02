@@ -1,0 +1,4952 @@
+[
+  {
+    "case_ids": [
+      "case-000127",
+      "case-000131",
+      "case-000136",
+      "case-000140",
+      "case-000141",
+      "case-000142"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000127",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /owners/{ownerId}/pets/{petId}/visits",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0/visits"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000127",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /owners/{ownerId}/pets/{petId}/visits",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/owners/0/pets/0/visits",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000127",
+        "endpoint_id": "POST /owners/{ownerId}/pets/{petId}/visits",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0/pets/0/visits\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:30.483530727Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0/pets/0/visits\"}",
+        "response_size": 318,
+        "response_time_ms": 33.96,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0/visits"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /owners/{ownerId}/pets/{petId}/visits",
+        "normalized_response_sha256": "e329875e6388571ba5a10875d1dbe9afe661f4a1b3867bd87eb195a67947c5ca",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "043a17a33230f00aa39dabff8029ac14a97c28fce08491e97e148dfc2ea311ee",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0/pets/0/visits\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0/pets/0/visits\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000066"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000066",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "DELETE /owners/{ownerId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000066",
+        "case_kind": "baseline",
+        "endpoint_id": "DELETE /owners/{ownerId}",
+        "headers": {},
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/owners/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000066",
+        "endpoint_id": "DELETE /owners/{ownerId}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 44.81,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "DELETE /owners/{ownerId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "06f34c9f00cabd554f874b9b113b59ad0bf40cd1888293a892948a9da47138dc",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000175"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000175",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "GET /pets/{petId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000175",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /pets/{petId}",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/pets/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000175",
+        "endpoint_id": "GET /pets/{petId}",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 36.0,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "GET /pets/{petId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "072fdf5744340a1abbb8be0f22ffee577a60902786a0904289e44b7a1967498e",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000266"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000266",
+        "classification": "SUCCESS_CONTRADICTION",
+        "description": "API returned undocumented success status code 201.",
+        "endpoint_id": "POST /vets",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            {
+              "name": "A"
+            }
+          ]
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 0.75
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.25,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 0.75,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.17,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000266",
+        "case_kind": "baseline",
+        "endpoint_id": "POST /vets",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/vets",
+        "payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            {
+              "name": "A"
+            }
+          ]
+        }
+      },
+      "result": {
+        "case_id": "case-000266",
+        "endpoint_id": "POST /vets",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"firstName\":\"A\",\"id\":7,\"lastName\":\"A\",\"specialties\":[{\"id\":4,\"name\":\"A\"}]}",
+        "response_size": 75,
+        "response_time_ms": 215.11,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SUCCESS_CONTRADICTION",
+        "endpoint_id": "POST /vets",
+        "normalized_response_sha256": "4faddec7ea655fcfc7ebab1acbad0d2a1daf341ff0930aec7c0c9b6e7a4606e2",
+        "status_code": 201,
+        "validation_error_path": null
+      },
+      "id": "19bd3aa6c1a1c8883efda8cfffa68556b23e0183251a2bf41efbe99b6e0dc80c",
+      "normalized_response": "{\"firstName\":\"A\",\"id\":\"<ID>\",\"lastName\":\"A\",\"specialties\":[{\"id\":\"<ID>\",\"name\":\"A\"}]}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000231",
+      "case-000235",
+      "case-000240",
+      "case-000244",
+      "case-000245",
+      "case-000246"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000231",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000231",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/visits/0",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000231",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/visits/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:00.013435621Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/visits/0\"}",
+        "response_size": 290,
+        "response_time_ms": 29.37,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "normalized_response_sha256": "0212e0557ad4fe2fba9334daa03ecde4d1f636f81908f8f66b989f32d6b21985",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "1e486bc266d02896332ae8e8f09750f00fbde49418b8193bb324348e2e9b5400",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/visits/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/visits/0\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000144"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000144",
+        "classification": "SUCCESS_CONTRADICTION",
+        "description": "API returned undocumented success status code 201.",
+        "endpoint_id": "POST /pettypes",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "name": "A"
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 0.75
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.25,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 0.75,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.17,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000144",
+        "case_kind": "baseline",
+        "endpoint_id": "POST /pettypes",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/pettypes",
+        "payload": {
+          "name": "A"
+        }
+      },
+      "result": {
+        "case_id": "case-000144",
+        "endpoint_id": "POST /pettypes",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"id\":7,\"name\":\"A\"}",
+        "response_size": 19,
+        "response_time_ms": 68.5,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SUCCESS_CONTRADICTION",
+        "endpoint_id": "POST /pettypes",
+        "normalized_response_sha256": "9af54b35dfeaf5d4f4f04f82853b0ae208b8f5fedf7a08fae68cd9253c9a06ae",
+        "status_code": 201,
+        "validation_error_path": null
+      },
+      "id": "2676459b402891a0ca26667d973752160e377f114f2f64cf5e5866ebd88d0d99",
+      "normalized_response": "{\"id\":\"<ID>\",\"name\":\"A\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000148"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000148",
+        "classification": "SUCCESS_CONTRADICTION",
+        "description": "API returned undocumented success status code 201.",
+        "endpoint_id": "POST /pettypes",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "name": 123
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "medium behavioral contradiction -> medium priority",
+              "id": "R2_MEDIUM_CONTRADICTION",
+              "strength": 0.4
+            },
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.7,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 0.0,
+              "medium": 0.4
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000148",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /pettypes",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [
+              "name"
+            ],
+            "value": 123
+          }
+        ],
+        "path": "/pettypes",
+        "payload": {
+          "name": 123
+        }
+      },
+      "result": {
+        "case_id": "case-000148",
+        "endpoint_id": "POST /pettypes",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"id\":8,\"name\":\"123\"}",
+        "response_size": 21,
+        "response_time_ms": 32.5,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SUCCESS_CONTRADICTION",
+        "endpoint_id": "POST /pettypes",
+        "normalized_response_sha256": "4449c3e5e7abe38bdbf34e27f3705900d421be4c5d98ef7b04862f55f83b1859",
+        "status_code": 201,
+        "validation_error_path": null
+      },
+      "id": "27c5ee4a85d409b054f4b6cac091f7d53b552ad7b52e6f6f74c47613ed0f587a",
+      "normalized_response": "{\"id\":\"<ID>\",\"name\":\"123\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000067",
+      "case-000073",
+      "case-000081"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 3,
+    "representative": {
+      "finding": {
+        "case_id": "case-000067",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "birthDate": "2000-01-01",
+          "name": "A",
+          "type": {
+            "id": 0,
+            "name": "A"
+          }
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000067",
+        "case_kind": "baseline",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/owners/0/pets",
+        "payload": {
+          "birthDate": "2000-01-01",
+          "name": "A",
+          "type": {
+            "id": 0,
+            "name": "A"
+          }
+        }
+      },
+      "result": {
+        "case_id": "case-000067",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "error": null,
+        "method": "POST",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 157.61,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "3753d722c9d632fea2a06f1c407c939e6dbf7bf7e1ac894d9c43616da0e911a6",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000230",
+      "case-000234",
+      "case-000236",
+      "case-000241"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 4,
+    "representative": {
+      "finding": {
+        "case_id": "case-000230",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "description": "A"
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000230",
+        "case_kind": "baseline",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/visits/0",
+        "payload": {
+          "description": "A"
+        }
+      },
+      "result": {
+        "case_id": "case-000230",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 31.86,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "PUT /visits/{visitId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "43dc38bb92243ea5d027f849d97654e0b65a18f576ff33c3faede328c8660523",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000247"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000247",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "DELETE /visits/{visitId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000247",
+        "case_kind": "baseline",
+        "endpoint_id": "DELETE /visits/{visitId}",
+        "headers": {},
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/visits/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000247",
+        "endpoint_id": "DELETE /visits/{visitId}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 29.4,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "DELETE /visits/{visitId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "4a3d849421b2d341af57503c380857ba5a48d88b800b1251ed68f7da1c1135a2",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000299",
+      "case-000312",
+      "case-000314",
+      "case-000315",
+      "case-000320",
+      "case-000327"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000299",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000299",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/vets/0",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000299",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/vets/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:19.329677012Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/vets/0\"}",
+        "response_size": 286,
+        "response_time_ms": 15.97,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "normalized_response_sha256": "73aaa43f8937b30d2939ec7d656231b8117f2df048d41e4c875c0c0a3dd29733",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "524271566781a90ac88d2d7eb2837af5a7b9b87a6436a18adbc6f118c6dc7142",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/vets/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/vets/0\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000177",
+      "case-000185",
+      "case-000186",
+      "case-000193",
+      "case-000198",
+      "case-000202"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000177",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /pets/{petId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000177",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /pets/{petId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/pets/0",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000177",
+        "endpoint_id": "PUT /pets/{petId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/pets/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:44.854519956Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/pets/0\"}",
+        "response_size": 286,
+        "response_time_ms": 27.03,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /pets/{petId}",
+        "normalized_response_sha256": "44abcddd718fdeeb9fabde3da0335e3796ac100830ee1d819d65ae4fb293b6ab",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "540750d5a215292f4440fc0335ad613f53edaac26c8e2f66045caaf01609c6ab",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/pets/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/pets/0\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000256"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000256",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "GET /specialties/{specialtyId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000256",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /specialties/{specialtyId}",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/specialties/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000256",
+        "endpoint_id": "GET /specialties/{specialtyId}",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 43.91,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "GET /specialties/{specialtyId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "583767bb384154e6c0599a7391860fa0fefe7e80f2eed3c7f803a2f6f8cd99ba",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000249"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000249",
+        "classification": "SUCCESS_CONTRADICTION",
+        "description": "API returned undocumented success status code 201.",
+        "endpoint_id": "POST /specialties",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "name": "A"
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 0.75
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.25,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 0.75,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.17,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000249",
+        "case_kind": "baseline",
+        "endpoint_id": "POST /specialties",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/specialties",
+        "payload": {
+          "name": "A"
+        }
+      },
+      "result": {
+        "case_id": "case-000249",
+        "endpoint_id": "POST /specialties",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"id\":4,\"name\":\"A\"}",
+        "response_size": 19,
+        "response_time_ms": 59.4,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SUCCESS_CONTRADICTION",
+        "endpoint_id": "POST /specialties",
+        "normalized_response_sha256": "9af54b35dfeaf5d4f4f04f82853b0ae208b8f5fedf7a08fae68cd9253c9a06ae",
+        "status_code": 201,
+        "validation_error_path": null
+      },
+      "id": "5b8c5601b520048d3da1feafee6cb58d42418c60ea66ffb4b624ac579679ac09",
+      "normalized_response": "{\"id\":\"<ID>\",\"name\":\"A\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000151"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000151",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "GET /pettypes/{petTypeId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000151",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /pettypes/{petTypeId}",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/pettypes/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000151",
+        "endpoint_id": "GET /pettypes/{petTypeId}",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 41.49,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "GET /pettypes/{petTypeId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "60eda12a70310f36ddacb74fd07eaae43bdc1a1193be83eb6acbf6d46a1826ca",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000032"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000032",
+        "classification": "UNEXPECTED_ERROR_STATUS",
+        "description": "API returned an undocumented error status code: 404.",
+        "endpoint_id": "GET /owners",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners?lastName=A"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000032",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /owners",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/owners?lastName=A",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000032",
+        "endpoint_id": "GET /owners",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 266.24,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners?lastName=A"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "UNEXPECTED_ERROR_STATUS",
+        "endpoint_id": "GET /owners",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "73ba1edf4fedd4f8e22f0ae208a2054d7ec5ff7a623a27a39f0d9df0dfb698c7",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000297"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000297",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "GET /vets/{vetId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000297",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /vets/{vetId}",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/vets/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000297",
+        "endpoint_id": "GET /vets/{vetId}",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 38.86,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "GET /vets/{vetId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "762e16a59117c833e53392b2dec0c7b4ba3287b8cee99a0c0b8dee5bd744aaf3",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000345",
+      "case-000351"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 2,
+    "representative": {
+      "finding": {
+        "case_id": "case-000345",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /users",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "roles": [
+            null
+          ],
+          "username": "A"
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/users"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000345",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /users",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "items.type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "null_item",
+            "path": [
+              "roles"
+            ],
+            "value": [
+              null
+            ]
+          }
+        ],
+        "path": "/users",
+        "payload": {
+          "roles": [
+            null
+          ],
+          "username": "A"
+        }
+      },
+      "result": {
+        "case_id": "case-000345",
+        "endpoint_id": "POST /users",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/users\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:32.156628678Z\",\"title\":\"NullPointerException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/users\"}",
+        "response_size": 273,
+        "response_time_ms": 25.12,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/users"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /users",
+        "normalized_response_sha256": "9fda87f49837758c71722f32601240bd03e265ae94589e413477409f95f42930",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "831a9d237c63767a9cd6bc0c29ac63d01940751da79671492d64faeeceb5d8b8",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/users\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"NullPointerException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/users\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000035",
+      "case-000051",
+      "case-000054"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 3,
+    "representative": {
+      "finding": {
+        "case_id": "case-000035",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "address": "A",
+          "city": "A",
+          "firstName": "A",
+          "lastName": "A",
+          "telephone": "0"
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000035",
+        "case_kind": "baseline",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/owners/0",
+        "payload": {
+          "address": "A",
+          "city": "A",
+          "firstName": "A",
+          "lastName": "A",
+          "telephone": "0"
+        }
+      },
+      "result": {
+        "case_id": "case-000035",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 42.06,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "8515e8bd0828f696a0719b54e9eba979211c29441387b50701027367e3578a7c",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000330",
+      "case-000334",
+      "case-000337",
+      "case-000340",
+      "case-000341",
+      "case-000352"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000330",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /users",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "username": "A"
+        },
+        "severity": "HIGH",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with strong evidence -> high priority",
+              "id": "R4_HIGH_CONTRADICTION_STRONG_EVIDENCE",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 1.0
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.0,
+              "strong": 1.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.84,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/users"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000330",
+        "case_kind": "baseline",
+        "endpoint_id": "POST /users",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/users",
+        "payload": {
+          "username": "A"
+        }
+      },
+      "result": {
+        "case_id": "case-000330",
+        "endpoint_id": "POST /users",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/users\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:27.967556340Z\",\"title\":\"IllegalArgumentException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/users\"}",
+        "response_size": 277,
+        "response_time_ms": 78.81,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/users"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /users",
+        "normalized_response_sha256": "887f78f9a34141127adfa4658dde0f310002cff6be59faaa6949c00d6206cf92",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "8553c660fece11b463cd54ad73aa6c306bd16d58991e76a703326298bb084b79",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/users\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"IllegalArgumentException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/users\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000001",
+      "case-000017",
+      "case-000020"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 3,
+    "representative": {
+      "finding": {
+        "case_id": "case-000001",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /owners",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "address": "A",
+          "city": "A",
+          "firstName": "A",
+          "lastName": "A",
+          "telephone": "0"
+        },
+        "severity": "HIGH",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with strong evidence -> high priority",
+              "id": "R4_HIGH_CONTRADICTION_STRONG_EVIDENCE",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 1.0
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.0,
+              "strong": 1.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.84,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000001",
+        "case_kind": "baseline",
+        "endpoint_id": "POST /owners",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/owners",
+        "payload": {
+          "address": "A",
+          "city": "A",
+          "firstName": "A",
+          "lastName": "A",
+          "telephone": "0"
+        }
+      },
+      "result": {
+        "case_id": "case-000001",
+        "endpoint_id": "POST /owners",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:24:53.852843851Z\",\"title\":\"ConstraintViolationException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners\"}",
+        "response_size": 283,
+        "response_time_ms": 451.85,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /owners",
+        "normalized_response_sha256": "dc68e934a9976b0240130df4d437075b93acc8060d92f815745c6ad9bf2e45ce",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "8bd992e08c48400f3f62620b6797f0e4a49290a0b2ec12064184da49bdce5d30",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"ConstraintViolationException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000329"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000329",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "DELETE /vets/{vetId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000329",
+        "case_kind": "baseline",
+        "endpoint_id": "DELETE /vets/{vetId}",
+        "headers": {},
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/vets/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000329",
+        "endpoint_id": "DELETE /vets/{vetId}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 28.3,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "DELETE /vets/{vetId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "90e5add03acbe20f726929ca1f69aab814578abb61cdec1a4a83b57d8e8989db",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000286"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000286",
+        "classification": "SUCCESS_CONTRADICTION",
+        "description": "API returned undocumented success status code 201.",
+        "endpoint_id": "POST /vets",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            {
+              "name": 123
+            }
+          ]
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "medium behavioral contradiction -> medium priority",
+              "id": "R2_MEDIUM_CONTRADICTION",
+              "strength": 0.4
+            },
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.7,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 0.0,
+              "medium": 0.4
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000286",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /vets",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [
+              "specialties",
+              "*",
+              "name"
+            ],
+            "value": 123
+          }
+        ],
+        "path": "/vets",
+        "payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            {
+              "name": 123
+            }
+          ]
+        }
+      },
+      "result": {
+        "case_id": "case-000286",
+        "endpoint_id": "POST /vets",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"firstName\":\"A\",\"id\":8,\"lastName\":\"A\",\"specialties\":[{\"id\":5,\"name\":\"123\"}]}",
+        "response_size": 77,
+        "response_time_ms": 41.02,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SUCCESS_CONTRADICTION",
+        "endpoint_id": "POST /vets",
+        "normalized_response_sha256": "42badb455f9654d46fda183c049df142ea0f8cff52a531ad2cc8d892c4d6bddf",
+        "status_code": 201,
+        "validation_error_path": null
+      },
+      "id": "96bb6f0391da774ddce004dc5a1f9957372ea15304444fd3519c05f0e5917530",
+      "normalized_response": "{\"firstName\":\"A\",\"id\":\"<ID>\",\"lastName\":\"A\",\"specialties\":[{\"id\":\"<ID>\",\"name\":\"123\"}]}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000002"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000002",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /owners",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000002",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /owners",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/owners",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000002",
+        "endpoint_id": "POST /owners",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:24:54.202405085Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners\"}",
+        "response_size": 286,
+        "response_time_ms": 44.53,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /owners",
+        "normalized_response_sha256": "bdd8bb0db13b59a32c4fd8313aff2d0179a3a28d6fb3326410730f16b69d3466",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "9981fef4dff86bbf4eb9b409beb8ab89f738e0bbde41023efe32248e90ead51b",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000264"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000264",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "DELETE /specialties/{specialtyId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000264",
+        "case_kind": "baseline",
+        "endpoint_id": "DELETE /specialties/{specialtyId}",
+        "headers": {},
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/specialties/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000264",
+        "endpoint_id": "DELETE /specialties/{specialtyId}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 26.83,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "DELETE /specialties/{specialtyId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "9b36cbfe2022353822d4f60ade883cdc57dccfdac6692b6b5438437129ee678b",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000097",
+      "case-000103",
+      "case-000111"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 3,
+    "representative": {
+      "finding": {
+        "case_id": "case-000097",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "birthDate": "2000-01-01",
+          "name": "A",
+          "type": {
+            "id": 0,
+            "name": "A"
+          }
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000097",
+        "case_kind": "baseline",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/owners/0/pets/0",
+        "payload": {
+          "birthDate": "2000-01-01",
+          "name": "A",
+          "type": {
+            "id": 0,
+            "name": "A"
+          }
+        }
+      },
+      "result": {
+        "case_id": "case-000097",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 36.14,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "9df5040d3f6325418ba30ac0379ede2ea11149317e5479061221a0123b59281e",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000298",
+      "case-000313",
+      "case-000318"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 3,
+    "representative": {
+      "finding": {
+        "case_id": "case-000313",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            null
+          ]
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.15,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000313",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "items.type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "null_item",
+            "path": [
+              "specialties"
+            ],
+            "value": [
+              null
+            ]
+          }
+        ],
+        "path": "/vets/0",
+        "payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            null
+          ]
+        }
+      },
+      "result": {
+        "case_id": "case-000313",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 32.6,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "PUT /vets/{vetId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "a0cf3b2e8486a32e96fd50657e189bc71855cb09318c2f1f6692db49b970dc13",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000257",
+      "case-000261"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 2,
+    "representative": {
+      "finding": {
+        "case_id": "case-000257",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "name": "A"
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000257",
+        "case_kind": "baseline",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/specialties/0",
+        "payload": {
+          "name": "A"
+        }
+      },
+      "result": {
+        "case_id": "case-000257",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 38.64,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "b438e3e2aaad96919708bb011fcb589f7a6c5440fd3368c0a2cf0ae5f064542f",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000281"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000281",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /vets",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            null
+          ]
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000281",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /vets",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "items.type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "null_item",
+            "path": [
+              "specialties"
+            ],
+            "value": [
+              null
+            ]
+          }
+        ],
+        "path": "/vets",
+        "payload": {
+          "firstName": "A",
+          "lastName": "A",
+          "specialties": [
+            null
+          ]
+        }
+      },
+      "result": {
+        "case_id": "case-000281",
+        "endpoint_id": "POST /vets",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/vets\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:14.279280878Z\",\"title\":\"NullPointerException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/vets\"}",
+        "response_size": 271,
+        "response_time_ms": 32.92,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /vets",
+        "normalized_response_sha256": "e3578c360e256191f95444cb596d043dcb7f49c45f0045ab947f96cf6a9693bb",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "b4e63503470fb34f93da76a4872ffea8a7d650bde79f58a04cb809edf99f0290",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/vets\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"NullPointerException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/vets\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000229"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000229",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "GET /visits/{visitId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000229",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /visits/{visitId}",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/visits/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000229",
+        "endpoint_id": "GET /visits/{visitId}",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 54.17,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "GET /visits/{visitId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "b91af1ff1a28e2eda21f5030aa180b2c1ed378444505af00cb2e3b840d75b345",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000034"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000034",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "GET /owners/{ownerId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000034",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /owners/{ownerId}",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/owners/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000034",
+        "endpoint_id": "GET /owners/{ownerId}",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 52.38,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "GET /owners/{ownerId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "c3c6cd08edbe018a2d283fae6d6f00598211f3ddb01a0d94ff27b1d07d82b7f7",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000176",
+      "case-000182",
+      "case-000190"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 3,
+    "representative": {
+      "finding": {
+        "case_id": "case-000176",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "PUT /pets/{petId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "birthDate": "2000-01-01",
+          "name": "A",
+          "type": {
+            "id": 0,
+            "name": "A"
+          }
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000176",
+        "case_kind": "baseline",
+        "endpoint_id": "PUT /pets/{petId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/pets/0",
+        "payload": {
+          "birthDate": "2000-01-01",
+          "name": "A",
+          "type": {
+            "id": 0,
+            "name": "A"
+          }
+        }
+      },
+      "result": {
+        "case_id": "case-000176",
+        "endpoint_id": "PUT /pets/{petId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 109.32,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "PUT /pets/{petId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "c579df9565691ba7455f4080620403fd6e87380b3e89f531dd4b1d7bc053e482",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000172"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000172",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "DELETE /pettypes/{petTypeId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000172",
+        "case_kind": "baseline",
+        "endpoint_id": "DELETE /pettypes/{petTypeId}",
+        "headers": {},
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/pettypes/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000172",
+        "endpoint_id": "DELETE /pettypes/{petTypeId}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 30.05,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "DELETE /pettypes/{petTypeId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "c64a3ed3b47ead00924a6a27d6ec59c275953682e8f4d69bc122ead3f4d6f37c",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000036"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000036",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000036",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/owners/0",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000036",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:04.310824118Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0\"}",
+        "response_size": 290,
+        "response_time_ms": 32.32,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /owners/{ownerId}",
+        "normalized_response_sha256": "188a076654e5774e8f34a70f8602c8967e5f9ec916c6569b56ff676612985c1e",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "c92e0768469d1c65a0459f0683bb31566edad33454d0dc1f65729d30d0c1688e",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000331",
+      "case-000342",
+      "case-000344",
+      "case-000346",
+      "case-000350"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 5,
+    "representative": {
+      "finding": {
+        "case_id": "case-000331",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /users",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/users"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000331",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /users",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/users",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000331",
+        "endpoint_id": "POST /users",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/users\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:28.235278159Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/users\"}",
+        "response_size": 284,
+        "response_time_ms": 18.69,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/users"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /users",
+        "normalized_response_sha256": "08a5cbd3c11ca65baf0df146fc33a9b7fcab2f353f6b54e414c92d12f27bc0f8",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "cae28c1ebc757a40c0243c04f6601553e36cab8f8e97a834c090443bcc210857",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/users\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/users\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000267",
+      "case-000280",
+      "case-000282",
+      "case-000283",
+      "case-000288",
+      "case-000295"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000267",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /vets",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000267",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /vets",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/vets",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000267",
+        "endpoint_id": "POST /vets",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/vets\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:10.387563863Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/vets\"}",
+        "response_size": 282,
+        "response_time_ms": 8.77,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/vets"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /vets",
+        "normalized_response_sha256": "a01093cbe807064687f08d04d64ea22b9abc23507e0cd9ce22a4fc9e7683ceaa",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "cdb092d8e699759915533cee4af27f3adf8919ae30fd2db81f768e1a63cf9ff6",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/vets\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/vets\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000208",
+      "case-000213",
+      "case-000217",
+      "case-000220",
+      "case-000224"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 5,
+    "representative": {
+      "finding": {
+        "case_id": "case-000208",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /visits",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000208",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /visits",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/visits",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000208",
+        "endpoint_id": "POST /visits",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/visits\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:53.518310984Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/visits\"}",
+        "response_size": 286,
+        "response_time_ms": 17.63,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/visits"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /visits",
+        "normalized_response_sha256": "b77e2249456cf2f8fe31c7cb990e71cda5ae6d7c684871db861b3d181281b987",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "ce37a9c98dfa5205e3cb7bb10071d4d4b4e80578f5474e83370196f506d843b3",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/visits\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/visits\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000145"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000145",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /pettypes",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000145",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /pettypes",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/pettypes",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000145",
+        "endpoint_id": "POST /pettypes",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/pettypes\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:35.810600058Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/pettypes\"}",
+        "response_size": 290,
+        "response_time_ms": 34.14,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /pettypes",
+        "normalized_response_sha256": "0942e48efd8bb460e822b7ebeac2a05d07ecb115840a68eff8a50bd0c2d0b185",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "d5e01797bfcce99fe671a8a5f4f8372d7a592532210b3ff8723b24b0d09dda42",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/pettypes\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/pettypes\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000068",
+      "case-000076",
+      "case-000077",
+      "case-000084",
+      "case-000089",
+      "case-000093"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000068",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000068",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/owners/0/pets",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000068",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0/pets\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:13.475708671Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0/pets\"}",
+        "response_size": 300,
+        "response_time_ms": 29.86,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /owners/{ownerId}/pets",
+        "normalized_response_sha256": "a52234a54fddecdd686bf14cc1c4a2cb40f76501183030055b0f00bb4ee08b17",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "dd7e1dc9246fe9ff8346ea891ebbf9fd952ef901bb539dad4e57ef4de22f5afb",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0/pets\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0/pets\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000096"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000096",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "GET /owners/{ownerId}/pets/{petId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000096",
+        "case_kind": "baseline",
+        "endpoint_id": "GET /owners/{ownerId}/pets/{petId}",
+        "headers": {},
+        "method": "GET",
+        "mutations": [],
+        "path": "/owners/0/pets/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000096",
+        "endpoint_id": "GET /owners/{ownerId}/pets/{petId}",
+        "error": null,
+        "method": "GET",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 50.41,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "GET /owners/{ownerId}/pets/{petId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "e35d26abb397f1187cabcff2ec8c0edb947e0d175a9e141fa717b2a5e07fa393",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000250"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000250",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /specialties",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000250",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /specialties",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/specialties",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000250",
+        "endpoint_id": "POST /specialties",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/specialties\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:05.406847788Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/specialties\"}",
+        "response_size": 296,
+        "response_time_ms": 26.21,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /specialties",
+        "normalized_response_sha256": "1df27d5ccf6824c5d39e833a0468e52ab4b5a8787af3e2fab10d512428e0655b",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "e5782635852cac356f770f074f50905eacdf58e1d9edf8f2997a9ac3604e1143",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/specialties\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/specialties\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000098",
+      "case-000106",
+      "case-000107",
+      "case-000114",
+      "case-000119",
+      "case-000123"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000098",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000098",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/owners/0/pets/0",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000098",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0/pets/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:21.925824154Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0/pets/0\"}",
+        "response_size": 304,
+        "response_time_ms": 28.77,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/owners/0/pets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /owners/{ownerId}/pets/{petId}",
+        "normalized_response_sha256": "3d07ab3023c7058594f94d541f43a4e3dff8300a1cd8cf7f43d8873f48e38a32",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "ea69b4788f9fb979318719303725cbdc7192ebea214d803ae3b15a460fe1c813",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/owners/0/pets/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/owners/0/pets/0\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000205"
+    ],
+    "case_kinds": [
+      "baseline"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000205",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "DELETE /pets/{petId}",
+        "request_headers": {},
+        "request_payload": null,
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000205",
+        "case_kind": "baseline",
+        "endpoint_id": "DELETE /pets/{petId}",
+        "headers": {},
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/pets/0",
+        "payload": null
+      },
+      "result": {
+        "case_id": "case-000205",
+        "endpoint_id": "DELETE /pets/{petId}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 49.21,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pets/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "DELETE /pets/{petId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "eb676a9dfa2f03c63e6d9fd6c48e3e1738632d010b5df0c9b664991a1e4bf195",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000253"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000253",
+        "classification": "SUCCESS_CONTRADICTION",
+        "description": "API returned undocumented success status code 201.",
+        "endpoint_id": "POST /specialties",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "name": 123
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "medium behavioral contradiction -> medium priority",
+              "id": "R2_MEDIUM_CONTRADICTION",
+              "strength": 0.4
+            },
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.7,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 0.0,
+              "medium": 0.4
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000253",
+        "case_kind": "mutation",
+        "endpoint_id": "POST /specialties",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [
+              "name"
+            ],
+            "value": 123
+          }
+        ],
+        "path": "/specialties",
+        "payload": {
+          "name": 123
+        }
+      },
+      "result": {
+        "case_id": "case-000253",
+        "endpoint_id": "POST /specialties",
+        "error": null,
+        "method": "POST",
+        "raw_response": "{\"id\":5,\"name\":\"123\"}",
+        "response_size": 21,
+        "response_time_ms": 33.43,
+        "status_code": 201,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SUCCESS_CONTRADICTION",
+        "endpoint_id": "POST /specialties",
+        "normalized_response_sha256": "4449c3e5e7abe38bdbf34e27f3705900d421be4c5d98ef7b04862f55f83b1859",
+        "status_code": 201,
+        "validation_error_path": null
+      },
+      "id": "ec4711b08dd7c8aa7507e7bd962107aaa3bc9cf15c36631fd5105d81c02ece11",
+      "normalized_response": "{\"id\":\"<ID>\",\"name\":\"123\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000258"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000258",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000258",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/specialties/0",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000258",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/specialties/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:26:07.661773446Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/specialties/0\"}",
+        "response_size": 300,
+        "response_time_ms": 30.26,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/specialties/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /specialties/{specialtyId}",
+        "normalized_response_sha256": "624b66bf73ebd6885d09503b62f62eb36fa01052358e92a868cce1f9e963a398",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "f05ef875174459cb51da1309f96f2cd694ed9e3e57961f7f5b9ff1818cd7d2ed",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/specialties/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/specialties/0\"}"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000152",
+      "case-000157"
+    ],
+    "case_kinds": [
+      "baseline",
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_0",
+      "level_1"
+    ],
+    "occurrence_count": 2,
+    "representative": {
+      "finding": {
+        "case_id": "case-000152",
+        "classification": "ERROR_CONTRADICTION",
+        "description": "Error response body for 404 does not match contract. Details: None is not of type 'object'",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "id": 0,
+          "name": "A"
+        },
+        "severity": "LOW",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "low behavioral contradiction -> low priority",
+              "id": "R1_LOW_CONTRADICTION",
+              "strength": 1.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.2,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 1.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.16,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000152",
+        "case_kind": "baseline",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/pettypes/0",
+        "payload": {
+          "id": 0,
+          "name": "A"
+        }
+      },
+      "result": {
+        "case_id": "case-000152",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "",
+        "response_size": 0,
+        "response_time_ms": 24.32,
+        "status_code": 404,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "ERROR_CONTRADICTION",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "normalized_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_code": 404,
+        "validation_error_path": null
+      },
+      "id": "f2aeaf043e5f199bbefac9a780023554a6a8fbb0d9bfd5a9989f94f62d86ab50",
+      "normalized_response": ""
+    }
+  },
+  {
+    "case_ids": [
+      "case-000153",
+      "case-000160",
+      "case-000162",
+      "case-000168",
+      "case-000170",
+      "case-000171"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1",
+      "level_2"
+    ],
+    "occurrence_count": 6,
+    "representative": {
+      "finding": {
+        "case_id": "case-000153",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "request_headers": {
+          "Content-Type": "application/json"
+        },
+        "request_payload": "not-an-object",
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000153",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/pettypes/0",
+        "payload": "not-an-object"
+      },
+      "result": {
+        "case_id": "case-000153",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/pettypes/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"2026-08-02T02:25:38.028428420Z\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/pettypes/0\"}",
+        "response_size": 294,
+        "response_time_ms": 26.7,
+        "status_code": 500,
+        "url": "http://127.0.0.1:9966/petclinic/api/pettypes/0"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "petclinic",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /pettypes/{petTypeId}",
+        "normalized_response_sha256": "5277fdf5cc48fed2cd851e9ca692dabdc27fb4c64832357039f7624c6ceedf4d",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "f7bf0f82a682fa99309bfa94a92f3dc4935a8e6b155e353d4503829fb9d51056",
+      "normalized_response": "{\"detail\":\"An unexpected error occurred while processing your request\",\"instance\":\"/petclinic/api/pettypes/0\",\"schemaValidationErrors\":[],\"status\":500,\"timestamp\":\"<TIMESTAMP>\",\"title\":\"HttpMessageNotReadableException\",\"type\":\"http://127.0.0.1:9966/petclinic/api/pettypes/0\"}"
+    }
+  }
+]

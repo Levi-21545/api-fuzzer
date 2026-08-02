@@ -1,0 +1,86 @@
+{
+  "api_id": "meilisearch",
+  "by_execution_level": {
+    "level_0": {
+      "candidate_findings_raw": 101,
+      "classified_observations": 185,
+      "executed_requests": 253,
+      "planned_by_case_kind": {
+        "auth_probe": 168,
+        "baseline": 85
+      },
+      "planned_requests": 253,
+      "unique_findings_involving_level": 101
+    },
+    "level_1": {
+      "candidate_findings_raw": 151,
+      "classified_observations": 151,
+      "executed_requests": 158,
+      "planned_by_case_kind": {
+        "mutation": 158
+      },
+      "planned_requests": 158,
+      "unique_findings_involving_level": 125
+    },
+    "level_2": {
+      "candidate_findings_raw": 66,
+      "classified_observations": 66,
+      "executed_requests": 66,
+      "planned_by_case_kind": {
+        "mutation": 66
+      },
+      "planned_requests": 66,
+      "unique_findings_involving_level": 40
+    }
+  },
+  "candidate_by_classification": {
+    "SUCCESS_CONTRADICTION": 14,
+    "UNEXPECTED_ERROR_STATUS": 304
+  },
+  "counts": {
+    "candidate_endpoints": 84,
+    "candidate_findings_raw": 318,
+    "classified_observations": 402,
+    "executed_requests": 477,
+    "expected_failures": 84,
+    "findings_unique_operational": 228,
+    "planned_requests": 477
+  },
+  "executed_by_http_status_class": {
+    "2xx": 89,
+    "4xx": 388
+  },
+  "fuzzy_assessment": {
+    "classified_fallbacks": 0,
+    "classified_with_assessment": 402,
+    "unique_by_strongest_rule": {
+      "R1_LOW_CONTRADICTION": 204,
+      "R2_MEDIUM_CONTRADICTION": 24
+    },
+    "unique_fallbacks": 0,
+    "unique_with_assessment": 228
+  },
+  "rates": {
+    "candidate_per_executed_ratio": 0.6667,
+    "deduplication_reduction_ratio": 0.283,
+    "execution_completion_ratio": 1.0
+  },
+  "raw_by_classification": {
+    "EXPECTED_FAILURE": 84,
+    "SUCCESS_CONTRADICTION": 14,
+    "UNEXPECTED_ERROR_STATUS": 304
+  },
+  "unique_by_classification": {
+    "SUCCESS_CONTRADICTION": 14,
+    "UNEXPECTED_ERROR_STATUS": 214
+  },
+  "unique_by_score": {
+    "0.16": 203,
+    "0.17": 1,
+    "0.5": 24
+  },
+  "unique_by_severity": {
+    "LOW": 204,
+    "MEDIUM": 24
+  }
+}

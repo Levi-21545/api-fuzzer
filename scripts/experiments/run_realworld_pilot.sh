@@ -17,8 +17,9 @@ COMPOSE_FILE="${BACKEND_ROOT}/docker-compose.yml"
 
 PORT="${HOST_PORT:-18080}"
 BASE_URL="http://127.0.0.1:${PORT}/api"
+EXPERIMENT_ID="${EXPERIMENT_ID:-TCC-PILOT-001}"
 RUN_ID="${RUN_ID:-realworld-pilot-$(date -u +%Y%m%dT%H%M%SZ)}"
-OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/TCC-PILOT-001/realworld}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/${EXPERIMENT_ID}/realworld}"
 RUN_DIR="${OUTPUT_ROOT}/${RUN_ID}"
 PROJECT_SUFFIX="$(printf '%s' "${RUN_ID}" | tr '[:upper:]_' '[:lower:]-' | tr -cd 'a-z0-9-')"
 COMPOSE_PROJECT="${COMPOSE_PROJECT:-api-fuzzer-realworld-${PROJECT_SUFFIX}}"
@@ -214,7 +215,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
 "${RUNNER}" \
   "${SCHEMA}" \
   "${BASE_URL}" \
-  TCC-PILOT-001 \
+  "${EXPERIMENT_ID}" \
   realworld \
   "${RUN_NUMBER:-0}" \
   --all \

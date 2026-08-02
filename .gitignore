@@ -249,3 +249,6 @@ docs/descricao/
 *.DS_Store
 
 .agents/
+
+# Generated public experiment samples keep their target provenance logs.
+!experiments/tcc-2026/public/**/data/*.log

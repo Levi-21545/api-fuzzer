@@ -17,8 +17,9 @@ CRAPI_SOURCE_VERSION="$(tr -d '[:space:]' <"${CRAPI_ROOT}/VERSION")"
 CRAPI_IMAGE_TAG="${CRAPI_IMAGE_TAG:-main}"
 COMPOSE_PROJECT="api-fuzzer-crapi-pilot"
 BASE_URL="http://127.0.0.1:8888"
+EXPERIMENT_ID="${EXPERIMENT_ID:-TCC-PILOT-001}"
 RUN_ID="${RUN_ID:-crapi-pilot-$(date -u +%Y%m%dT%H%M%SZ)}"
-OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/TCC-PILOT-001/crapi}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/${EXPERIMENT_ID}/crapi}"
 RUN_DIR="${OUTPUT_ROOT}/${RUN_ID}"
 BOOTSTRAP_LOG="${OUTPUT_ROOT}/${RUN_ID}-bootstrap.log"
 
@@ -122,7 +123,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
 "${RUNNER}" \
   "${SCHEMA}" \
   "${BASE_URL}" \
-  TCC-PILOT-001 \
+  "${EXPERIMENT_ID}" \
   crapi \
   "${RUN_NUMBER:-0}" \
   --all \

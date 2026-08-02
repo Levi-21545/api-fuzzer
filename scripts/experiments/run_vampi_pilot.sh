@@ -11,8 +11,9 @@ SCHEMA="${MOCK_ROOT:-${REPO_ROOT}/../mock-projects}/VAmPI/openapi_specs/openapi3
 IMAGE="erev0s/vampi@sha256:0a5a224b6e14ae7da6a6ea265178ff71286ff903aec74adee98f660bb0e4ca12"
 CONTAINER="api-fuzzer-vampi-pilot"
 PORT="${HOST_PORT:-5002}"
+EXPERIMENT_ID="${EXPERIMENT_ID:-TCC-PILOT-001}"
 RUN_ID="${RUN_ID:-vampi-pilot-$(date -u +%Y%m%dT%H%M%SZ)}"
-OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/TCC-PILOT-001/vampi}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/${EXPERIMENT_ID}/vampi}"
 RUN_DIR="${OUTPUT_ROOT}/${RUN_ID}"
 
 if [[ ! -f "${SCHEMA}" ]]; then
@@ -82,7 +83,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
 "${RUNNER}" \
   "${SCHEMA}" \
   "http://127.0.0.1:${PORT}" \
-  TCC-PILOT-001 \
+  "${EXPERIMENT_ID}" \
   vampi \
   "${RUN_NUMBER:-0}" \
   --all \

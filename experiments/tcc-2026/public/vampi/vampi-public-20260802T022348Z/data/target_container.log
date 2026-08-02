@@ -1,0 +1,82 @@
+ * Serving Flask app 'config'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.215.2:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 808-668-166
+192.168.215.1 - - [02/Aug/2026 02:24:09] "GET / HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:09] "GET /createdb HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:10] "POST /users/v1/register HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:10] "POST /users/v1/login HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:10] "[31m[1mGET /me HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:10] "[31m[1mGET /me HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:11] "[31m[1mDELETE /users/v1/username_ljaovduf HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:11] "[31m[1mDELETE /users/v1/username_ljaovduf HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:11] "[31m[1mPUT /users/v1/username_ljaovduf/email HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:11] "[31m[1mPUT /users/v1/username_ljaovduf/email HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:12] "[31m[1mPUT /users/v1/username_ljaovduf/password HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:12] "[31m[1mPUT /users/v1/username_ljaovduf/password HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:12] "[31m[1mPOST /books/v1 HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:12] "[31m[1mPOST /books/v1 HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:13] "[31m[1mGET /books/v1/A HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:13] "[31m[1mGET /books/v1/A HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:13] "GET / HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:13] "GET /users/v1 HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:14] "GET /users/v1/_debug HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:14] "POST /users/v1/register HTTP/1.1" 200 -
+http://127.0.0.1:5002/users/v1/register validation error: 'not-an-object' is not of type 'object'
+192.168.215.1 - - [02/Aug/2026 02:24:14] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:14] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/register validation error: 123 is not of type 'string' - 'username'
+192.168.215.1 - - [02/Aug/2026 02:24:15] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/register validation error: 123 is not of type 'string' - 'password'
+192.168.215.1 - - [02/Aug/2026 02:24:15] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/register validation error: 123 is not of type 'string' - 'email'
+192.168.215.1 - - [02/Aug/2026 02:24:15] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/register validation error: 123 is not of type 'string' - 'username'
+192.168.215.1 - - [02/Aug/2026 02:24:16] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/register validation error: 123 is not of type 'string' - 'username'
+192.168.215.1 - - [02/Aug/2026 02:24:16] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/register validation error: 123 is not of type 'string' - 'password'
+192.168.215.1 - - [02/Aug/2026 02:24:16] "[31m[1mPOST /users/v1/register HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:16] "POST /users/v1/login HTTP/1.1" 200 -
+http://127.0.0.1:5002/users/v1/login validation error: 'not-an-object' is not of type 'object'
+192.168.215.1 - - [02/Aug/2026 02:24:17] "[31m[1mPOST /users/v1/login HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:17] "[31m[1mPOST /users/v1/login HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/login validation error: 123 is not of type 'string' - 'username'
+192.168.215.1 - - [02/Aug/2026 02:24:17] "[31m[1mPOST /users/v1/login HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/login validation error: 123 is not of type 'string' - 'password'
+192.168.215.1 - - [02/Aug/2026 02:24:17] "[31m[1mPOST /users/v1/login HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/login validation error: 123 is not of type 'string' - 'username'
+192.168.215.1 - - [02/Aug/2026 02:24:18] "[31m[1mPOST /users/v1/login HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:18] "GET /me HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:18] "GET /users/v1/username_ljaovduf HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:18] "[31m[1mDELETE /users/v1/username_ljaovduf HTTP/1.1[0m" 401 -
+192.168.215.1 - - [02/Aug/2026 02:24:19] "[31m[1mPUT /users/v1/username_ljaovduf/email HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/username_ljaovduf/email validation error: 'not-an-object' is not of type 'object'
+192.168.215.1 - - [02/Aug/2026 02:24:19] "[31m[1mPUT /users/v1/username_ljaovduf/email HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:19] "[31m[1mPUT /users/v1/username_ljaovduf/email HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/username_ljaovduf/email validation error: 123 is not of type 'string' - 'email'
+192.168.215.1 - - [02/Aug/2026 02:24:19] "[31m[1mPUT /users/v1/username_ljaovduf/email HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:20] "[35m[1mPUT /users/v1/username_ljaovduf/password HTTP/1.1[0m" 204 -
+http://127.0.0.1:5002/users/v1/username_ljaovduf/password validation error: 'not-an-object' is not of type 'object'
+192.168.215.1 - - [02/Aug/2026 02:24:20] "[31m[1mPUT /users/v1/username_ljaovduf/password HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:20] "[31m[1mPUT /users/v1/username_ljaovduf/password HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/users/v1/username_ljaovduf/password validation error: 123 is not of type 'string' - 'password'
+192.168.215.1 - - [02/Aug/2026 02:24:20] "[31m[1mPUT /users/v1/username_ljaovduf/password HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:21] "GET /books/v1 HTTP/1.1" 200 -
+192.168.215.1 - - [02/Aug/2026 02:24:21] "POST /books/v1 HTTP/1.1" 200 -
+http://127.0.0.1:5002/books/v1 validation error: 'not-an-object' is not of type 'object'
+192.168.215.1 - - [02/Aug/2026 02:24:21] "[31m[1mPOST /books/v1 HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:22] "[31m[1mPOST /books/v1 HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/books/v1 validation error: 123 is not of type 'string' - 'book_title'
+192.168.215.1 - - [02/Aug/2026 02:24:22] "[31m[1mPOST /books/v1 HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/books/v1 validation error: 123 is not of type 'string' - 'secret'
+192.168.215.1 - - [02/Aug/2026 02:24:22] "[31m[1mPOST /books/v1 HTTP/1.1[0m" 400 -
+http://127.0.0.1:5002/books/v1 validation error: 123 is not of type 'string' - 'book_title'
+192.168.215.1 - - [02/Aug/2026 02:24:22] "[31m[1mPOST /books/v1 HTTP/1.1[0m" 400 -
+192.168.215.1 - - [02/Aug/2026 02:24:23] "GET /books/v1/A HTTP/1.1" 200 -

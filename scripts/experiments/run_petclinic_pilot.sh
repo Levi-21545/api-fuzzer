@@ -14,8 +14,9 @@ CONTAINER="api-fuzzer-petclinic-pilot"
 PORT="${HOST_PORT:-9966}"
 BASE_URL="http://127.0.0.1:${PORT}/petclinic/api"
 HEALTH_URL="http://127.0.0.1:${PORT}/petclinic/actuator/health"
+EXPERIMENT_ID="${EXPERIMENT_ID:-TCC-PILOT-001}"
 RUN_ID="${RUN_ID:-petclinic-pilot-$(date -u +%Y%m%dT%H%M%SZ)}"
-OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/TCC-PILOT-001/petclinic}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/${EXPERIMENT_ID}/petclinic}"
 RUN_DIR="${OUTPUT_ROOT}/${RUN_ID}"
 
 if [[ ! -f "${SCHEMA}" ]]; then
@@ -86,7 +87,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT}" \
 "${RUNNER}" \
   "${SCHEMA}" \
   "${BASE_URL}" \
-  TCC-PILOT-001 \
+  "${EXPERIMENT_ID}" \
   petclinic \
   "${RUN_NUMBER:-0}" \
   --all \

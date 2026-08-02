@@ -1,0 +1,1867 @@
+[
+  {
+    "case_id": "auth-probe-000001",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "GET /me",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/me"
+  },
+  {
+    "case_id": "auth-probe-000002",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "GET /me",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/me"
+  },
+  {
+    "case_id": "auth-probe-000003",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf"
+  },
+  {
+    "case_id": "auth-probe-000004",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf"
+  },
+  {
+    "case_id": "auth-probe-000005",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/email"
+  },
+  {
+    "case_id": "auth-probe-000006",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/email"
+  },
+  {
+    "case_id": "auth-probe-000007",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/password"
+  },
+  {
+    "case_id": "auth-probe-000008",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/password"
+  },
+  {
+    "case_id": "auth-probe-000009",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": "A",
+      "secret": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "auth-probe-000010",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": "A",
+      "secret": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "auth-probe-000011",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1/A"
+  },
+  {
+    "case_id": "auth-probe-000012",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1/A"
+  },
+  {
+    "case_id": "case-000005",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000006",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000007",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000008",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000009",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": 123,
+      "password": "<REDACTED>",
+      "username": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000010",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000011",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": 123,
+      "password": "<REDACTED>",
+      "username": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000012",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": 123,
+      "password": "<REDACTED>",
+      "username": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000014",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000015",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000016",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>",
+      "username": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000017",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>",
+      "username": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000018",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>",
+      "username": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000021",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf"
+  },
+  {
+    "case_id": "case-000022",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/email"
+  },
+  {
+    "case_id": "case-000023",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/email"
+  },
+  {
+    "case_id": "case-000024",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/email"
+  },
+  {
+    "case_id": "case-000025",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/email"
+  },
+  {
+    "case_id": "case-000027",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/password"
+  },
+  {
+    "case_id": "case-000028",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/password"
+  },
+  {
+    "case_id": "case-000029",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_ljaovduf/password"
+  },
+  {
+    "case_id": "case-000032",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000033",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000034",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": 123,
+      "secret": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000035",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": "A",
+      "secret": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000036",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": 123,
+      "secret": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000037",
+    "classification": "SUCCESS_CONTRADICTION",
+    "description": "Response body for 200 does not match the contract. Details: {'book_title': 'A', 'owner': 'username_ljaovduf', 'secret': 'A'} is not of type 'array'",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "medium behavioral contradiction -> medium priority",
+          "id": "R2_MEDIUM_CONTRADICTION",
+          "strength": 0.6
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.65,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 0.0,
+          "medium": 0.6
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 200,
+    "url": "http://127.0.0.1:5002/books/v1/A"
+  }
+]

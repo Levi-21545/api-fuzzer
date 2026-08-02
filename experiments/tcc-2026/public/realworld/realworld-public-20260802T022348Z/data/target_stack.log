@@ -1,0 +1,241 @@
+realword-app-1  | No changes detected
+realword-app-1  | Operations to perform:
+realword-app-1  |   Apply all migrations: accounts, admin, articles, auth, comments, contenttypes, jwt_ninja, sessions
+realword-app-1  | Running migrations:
+realword-app-1  |   Applying contenttypes.0001_initial... OK
+realword-app-1  |   Applying contenttypes.0002_remove_content_type_name... OK
+realword-app-1  |   Applying auth.0001_initial... OK
+realword-app-1  |   Applying auth.0002_alter_permission_name_max_length... OK
+realword-app-1  |   Applying auth.0003_alter_user_email_max_length... OK
+realword-app-1  |   Applying auth.0004_alter_user_username_opts... OK
+realword-app-1  |   Applying auth.0005_alter_user_last_login_null... OK
+realword-app-1  |   Applying auth.0006_require_contenttypes_0002... OK
+realword-app-1  |   Applying auth.0007_alter_validators_add_error_messages... OK
+realword-app-1  |   Applying auth.0008_alter_user_username_max_length... OK
+realword-app-1  |   Applying auth.0009_alter_user_last_name_max_length... OK
+realword-app-1  |   Applying auth.0010_alter_group_name_max_length... OK
+realword-app-1  |   Applying auth.0011_update_proxy_permissions... OK
+realword-app-1  |   Applying auth.0012_alter_user_first_name_max_length... OK
+realword-app-1  |   Applying accounts.0001_initial... OK
+realword-app-1  |   Applying accounts.0002_rename_name_user_username... OK
+realword-app-1  |   Applying accounts.0003_alter_user_username... OK
+realword-app-1  |   Applying admin.0001_initial... OK
+realword-app-1  |   Applying admin.0002_logentry_remove_auto_add... OK
+realword-app-1  |   Applying admin.0003_logentry_add_action_flag_choices... OK
+realword-app-1  |   Applying articles.0001_initial... OK
+realword-app-1  |   Applying articles.0002_alter_article_updated... OK
+realword-app-1  |   Applying articles.0003_replace_taggit_with_tags... OK
+realword-app-1  |   Applying articles.0004_drop_taggit_tables... OK
+realword-app-1  |   Applying comments.0001_initial... OK
+realword-app-1  |   Applying jwt_ninja.0001_initial... OK
+realword-app-1  |   Applying sessions.0001_initial... OK
+realword-app-1  | Performing system checks...
+realword-app-1  |
+realword-app-1  | System check identified no issues (0 silenced).
+realword-app-1  | August 02, 2026 - 02:30:47
+realword-app-1  | Django version 5.2.1, using settings 'config.settings'
+realword-app-1  | Starting development server at http://0.0.0.0:8000/
+realword-app-1  | Quit the server with CONTROL-C.
+realword-app-1  |
+realword-app-1  | WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+realword-app-1  | For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+realword-app-1  | [02/Aug/2026 02:30:47] "GET /api/tags HTTP/1.1" 200 12
+realword-app-1  | [02/Aug/2026 02:30:47] "POST /api/users HTTP/1.1" 201 364
+realword-app-1  | [02/Aug/2026 02:30:48] "POST /api/users/login HTTP/1.1" 200 364
+realword-app-1  | [02/Aug/2026 02:30:48] "GET /api/user HTTP/1.1" 200 364
+realword-app-1  | [02/Aug/2026 02:30:48] "GET /api/user HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:49] "GET /api/user HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:49] "PUT /api/user HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:49] "PUT /api/user HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:49] "POST /api/profiles/A/follow HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:50] "POST /api/profiles/A/follow HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:50] "DELETE /api/profiles/A/follow HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:50] "DELETE /api/profiles/A/follow HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:50] "GET /api/articles/feed HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:51] "GET /api/articles/feed HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:51] "POST /api/articles HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:51] "POST /api/articles HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:51] "PUT /api/articles/A HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:52] "PUT /api/articles/A HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:52] "DELETE /api/articles/A HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:52] "DELETE /api/articles/A HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:52] "POST /api/articles/A/comments HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:53] "POST /api/articles/A/comments HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:53] "DELETE /api/articles/A/comments/A HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:53] "DELETE /api/articles/A/comments/A HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:53] "POST /api/articles/A/favorite HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:54] "POST /api/articles/A/favorite HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:54] "DELETE /api/articles/A/favorite HTTP/1.1" 401 37
+realword-app-1  | [02/Aug/2026 02:30:54] "DELETE /api/articles/A/favorite HTTP/1.1" 500 145
+realword-app-1  | [02/Aug/2026 02:30:55] "POST /api/users/login HTTP/1.1" 401 40
+realword-app-1  | [02/Aug/2026 02:30:55] "POST /api/users/login HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:30:55] "POST /api/users/login HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:30:56] "POST /api/users/login HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:30:56] "POST /api/users/login HTTP/1.1" 422 73
+realword-app-1  | [02/Aug/2026 02:30:56] "POST /api/users/login HTTP/1.1" 422 73
+realword-app-1  | [02/Aug/2026 02:30:56] "POST /api/users/login HTTP/1.1" 422 41
+realword-app-1  | [02/Aug/2026 02:30:57] "POST /api/users/login HTTP/1.1" 422 44
+realword-app-1  | [02/Aug/2026 02:30:57] "POST /api/users/login HTTP/1.1" 422 57
+realword-app-1  | [02/Aug/2026 02:30:57] "POST /api/users/login HTTP/1.1" 422 60
+realword-app-1  | [02/Aug/2026 02:30:57] "POST /api/users/login HTTP/1.1" 422 73
+realword-app-1  | [02/Aug/2026 02:30:58] "POST /api/users/login HTTP/1.1" 422 89
+realword-app-1  | [02/Aug/2026 02:30:58] "POST /api/users/login HTTP/1.1" 422 89
+realword-app-1  | [02/Aug/2026 02:30:58] "POST /api/users/login HTTP/1.1" 422 105
+realword-app-1  | [02/Aug/2026 02:30:58] "POST /api/users HTTP/1.1" 422 127
+realword-app-1  | [02/Aug/2026 02:30:59] "POST /api/users HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:30:59] "POST /api/users HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:30:59] "POST /api/users HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:30:59] "POST /api/users HTTP/1.1" 422 105
+realword-app-1  | [02/Aug/2026 02:31:00] "POST /api/users HTTP/1.1" 422 105
+realword-app-1  | [02/Aug/2026 02:31:00] "POST /api/users HTTP/1.1" 422 41
+realword-app-1  | [02/Aug/2026 02:31:00] "POST /api/users HTTP/1.1" 422 159
+realword-app-1  | [02/Aug/2026 02:31:00] "POST /api/users HTTP/1.1" 422 159
+realword-app-1  | [02/Aug/2026 02:31:01] "POST /api/users HTTP/1.1" 422 175
+realword-app-1  | [02/Aug/2026 02:31:01] "POST /api/users HTTP/1.1" 422 57
+realword-app-1  | [02/Aug/2026 02:31:01] "POST /api/users HTTP/1.1" 422 175
+realword-app-1  | [02/Aug/2026 02:31:01] "POST /api/users HTTP/1.1" 422 89
+realword-app-1  | [02/Aug/2026 02:31:02] "POST /api/users HTTP/1.1" 422 73
+realword-app-1  | [02/Aug/2026 02:31:02] "POST /api/users HTTP/1.1" 422 223
+realword-app-1  | [02/Aug/2026 02:31:02] "POST /api/users HTTP/1.1" 422 73
+realword-app-1  | [02/Aug/2026 02:31:02] "POST /api/users HTTP/1.1" 422 89
+realword-app-1  | [02/Aug/2026 02:31:03] "POST /api/users HTTP/1.1" 422 191
+realword-app-1  | [02/Aug/2026 02:31:03] "POST /api/users HTTP/1.1" 422 207
+realword-app-1  | [02/Aug/2026 02:31:03] "POST /api/users HTTP/1.1" 422 89
+realword-app-1  | [02/Aug/2026 02:31:03] "POST /api/users HTTP/1.1" 422 89
+realword-app-1  | [02/Aug/2026 02:31:04] "POST /api/users HTTP/1.1" 422 207
+realword-app-1  | [02/Aug/2026 02:31:04] "GET /api/user HTTP/1.1" 200 364
+realword-app-1  | [02/Aug/2026 02:31:04] "PUT /api/user HTTP/1.1" 422 278
+realword-app-1  | [02/Aug/2026 02:31:05] "PUT /api/user HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:31:05] "PUT /api/user HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:31:05] "PUT /api/user HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:31:05] "PUT /api/user HTTP/1.1" 200 364
+realword-app-1  | [02/Aug/2026 02:31:06] "PUT /api/user HTTP/1.1" 200 364
+realword-app-1  | [02/Aug/2026 02:31:06] "PUT /api/user HTTP/1.1" 422 208
+realword-app-1  | [02/Aug/2026 02:31:06] "PUT /api/user HTTP/1.1" 422 329
+realword-app-1  | [02/Aug/2026 02:31:07] "PUT /api/user HTTP/1.1" 422 381
+realword-app-1  | [02/Aug/2026 02:31:07] "PUT /api/user HTTP/1.1" 422 259
+realword-app-1  | [02/Aug/2026 02:31:07] "PUT /api/user HTTP/1.1" 422 311
+realword-app-1  | [02/Aug/2026 02:31:07] "PUT /api/user HTTP/1.1" 422 423
+realword-app-1  | [02/Aug/2026 02:31:08] "GET /api/profiles/A HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:08] "POST /api/profiles/A/follow HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:08] "DELETE /api/profiles/A/follow HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:08] "GET /api/articles/feed?offset=0&limit=1 HTTP/1.1" 200 36
+realword-app-1  | [02/Aug/2026 02:31:09] "GET /api/articles?tag=A&author=A&favorited=A&offset=0&limit=1 HTTP/1.1" 200 36
+realword-app-1  | [02/Aug/2026 02:31:09] "POST /api/articles HTTP/1.1" 201 314
+realword-app-1  | [02/Aug/2026 02:31:09] "POST /api/articles HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:10] "POST /api/articles HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:10] "POST /api/articles HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:10] "POST /api/articles HTTP/1.1" 422 75
+realword-app-1  | [02/Aug/2026 02:31:10] "POST /api/articles HTTP/1.1" 422 104
+realword-app-1  | [02/Aug/2026 02:31:11] "POST /api/articles HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:31:11] "POST /api/articles HTTP/1.1" 422 47
+realword-app-1  | [02/Aug/2026 02:31:11] "POST /api/articles HTTP/1.1" 422 41
+realword-app-1  | [02/Aug/2026 02:31:11] "POST /api/articles HTTP/1.1" 422 57
+realword-app-1  | [02/Aug/2026 02:31:12] "POST /api/articles HTTP/1.1" 422 63
+realword-app-1  | [02/Aug/2026 02:31:12] "POST /api/articles HTTP/1.1" 422 56
+realword-app-1  | [02/Aug/2026 02:31:12] "POST /api/articles HTTP/1.1" 201 326
+realword-app-1  | [02/Aug/2026 02:31:13] "POST /api/articles HTTP/1.1" 422 53
+realword-app-1  | [02/Aug/2026 02:31:13] "POST /api/articles HTTP/1.1" 422 53
+realword-app-1  | [02/Aug/2026 02:31:13] "POST /api/articles HTTP/1.1" 422 57
+realword-app-1  | [02/Aug/2026 02:31:13] "POST /api/articles HTTP/1.1" 422 85
+realword-app-1  | [02/Aug/2026 02:31:14] "POST /api/articles HTTP/1.1" 422 47
+realword-app-1  | [02/Aug/2026 02:31:14] "POST /api/articles HTTP/1.1" 422 81
+realword-app-1  | [02/Aug/2026 02:31:14] "POST /api/articles HTTP/1.1" 422 82
+realword-app-1  | [02/Aug/2026 02:31:14] "POST /api/articles HTTP/1.1" 422 75
+realword-app-1  | [02/Aug/2026 02:31:15] "POST /api/articles HTTP/1.1" 422 108
+realword-app-1  | [02/Aug/2026 02:31:15] "POST /api/articles HTTP/1.1" 422 57
+realword-app-1  | [02/Aug/2026 02:31:15] "POST /api/articles HTTP/1.1" 422 98
+realword-app-1  | [02/Aug/2026 02:31:16] "POST /api/articles HTTP/1.1" 422 98
+realword-app-1  | [02/Aug/2026 02:31:16] "POST /api/articles HTTP/1.1" 422 69
+realword-app-1  | [02/Aug/2026 02:31:16] "GET /api/articles/A HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:16] "PUT /api/articles/A HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:17] "PUT /api/articles/A HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:17] "PUT /api/articles/A HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:17] "PUT /api/articles/A HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:17] "PUT /api/articles/A HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:18] "PUT /api/articles/A HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:18] "PUT /api/articles/A HTTP/1.1" 422 57
+realword-app-1  | [02/Aug/2026 02:31:18] "PUT /api/articles/A HTTP/1.1" 422 63
+realword-app-1  | [02/Aug/2026 02:31:19] "PUT /api/articles/A HTTP/1.1" 422 56
+realword-app-1  | [02/Aug/2026 02:31:19] "PUT /api/articles/A HTTP/1.1" 422 53
+realword-app-1  | [02/Aug/2026 02:31:19] "PUT /api/articles/A HTTP/1.1" 422 53
+realword-app-1  | [02/Aug/2026 02:31:19] "PUT /api/articles/A HTTP/1.1" 422 57
+realword-app-1  | [02/Aug/2026 02:31:20] "PUT /api/articles/A HTTP/1.1" 422 53
+realword-app-1  | [02/Aug/2026 02:31:20] "PUT /api/articles/A HTTP/1.1" 422 98
+realword-app-1  | [02/Aug/2026 02:31:20] "PUT /api/articles/A HTTP/1.1" 422 107
+realword-app-1  | [02/Aug/2026 02:31:20] "PUT /api/articles/A HTTP/1.1" 422 104
+realword-app-1  | [02/Aug/2026 02:31:21] "PUT /api/articles/A HTTP/1.1" 422 108
+realword-app-1  | [02/Aug/2026 02:31:21] "PUT /api/articles/A HTTP/1.1" 422 101
+realword-app-1  | [02/Aug/2026 02:31:21] "PUT /api/articles/A HTTP/1.1" 422 97
+realword-app-1  | [02/Aug/2026 02:31:22] "PUT /api/articles/A HTTP/1.1" 422 98
+realword-app-1  | [02/Aug/2026 02:31:22] "PUT /api/articles/A HTTP/1.1" 422 102
+realword-app-1  | [02/Aug/2026 02:31:22] "PUT /api/articles/A HTTP/1.1" 422 104
+realword-app-1  | [02/Aug/2026 02:31:22] "PUT /api/articles/A HTTP/1.1" 422 108
+realword-app-1  | [02/Aug/2026 02:31:23] "DELETE /api/articles/A HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:23] "GET /api/articles/A/comments HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:23] "POST /api/articles/A/comments HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:23] "POST /api/articles/A/comments HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:24] "POST /api/articles/A/comments HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:24] "POST /api/articles/A/comments HTTP/1.1" 422 43
+realword-app-1  | [02/Aug/2026 02:31:24] "POST /api/articles/A/comments HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:31:25] "POST /api/articles/A/comments HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:31:25] "POST /api/articles/A/comments HTTP/1.1" 422 40
+realword-app-1  | [02/Aug/2026 02:31:25] "POST /api/articles/A/comments HTTP/1.1" 422 56
+realword-app-1  | [02/Aug/2026 02:31:25] "DELETE /api/articles/A/comments/0 HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:26] "POST /api/articles/A/favorite HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:26] "DELETE /api/articles/A/favorite HTTP/1.1" 404 38
+realword-app-1  | [02/Aug/2026 02:31:26] "GET /api/tags HTTP/1.1" 200 15
+db-1            | The files belonging to this database system will be owned by user "postgres".
+db-1            | This user must also own the server process.
+db-1            |
+db-1            | The database cluster will be initialized with locale "en_US.utf8".
+db-1            | The default database encoding has accordingly been set to "UTF8".
+db-1            | The default text search configuration will be set to "english".
+db-1            |
+db-1            | Data page checksums are enabled.
+db-1            |
+db-1            | fixing permissions on existing directory /var/lib/postgresql/18/docker ... ok
+db-1            | creating subdirectories ... ok
+db-1            | selecting dynamic shared memory implementation ... posix
+db-1            | selecting default "max_connections" ... 100
+db-1            | selecting default "shared_buffers" ... 128MB
+db-1            | selecting default time zone ... Etc/UTC
+db-1            | creating configuration files ... ok
+db-1            | running bootstrap script ... ok
+db-1            | performing post-bootstrap initialization ... ok
+db-1            | syncing data to disk ... ok
+db-1            |
+db-1            | initdb: warning: enabling "trust" authentication for local connections
+db-1            | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+db-1            |
+db-1            | Success. You can now start the database server using:
+db-1            |
+db-1            |     pg_ctl -D /var/lib/postgresql/18/docker -l logfile start
+db-1            |
+db-1            | waiting for server to start....2026-08-02 02:30:41.900 UTC [58] LOG:  starting PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+db-1            | 2026-08-02 02:30:41.903 UTC [58] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1            | 2026-08-02 02:30:41.907 UTC [64] LOG:  database system was shut down at 2026-08-02 02:30:41 UTC
+db-1            | 2026-08-02 02:30:41.909 UTC [58] LOG:  database system is ready to accept connections
+db-1            |  done
+db-1            | server started
+db-1            |
+db-1            | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+db-1            |
+db-1            | waiting for server to shut down....2026-08-02 02:30:42.020 UTC [58] LOG:  received fast shutdown request
+db-1            | 2026-08-02 02:30:42.022 UTC [58] LOG:  aborting any active transactions
+db-1            | 2026-08-02 02:30:42.023 UTC [58] LOG:  background worker "logical replication launcher" (PID 67) exited with exit code 1
+db-1            | 2026-08-02 02:30:42.023 UTC [62] LOG:  shutting down
+db-1            | 2026-08-02 02:30:42.024 UTC [62] LOG:  checkpoint starting: shutdown immediate
+db-1            | 2026-08-02 02:30:42.032 UTC [62] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.002 s, total=0.009 s; sync files=2, longest=0.002 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/175F8E8, redo lsn=0/175F8E8
+db-1            | 2026-08-02 02:30:42.037 UTC [58] LOG:  database system is shut down
+db-1            |  done
+db-1            | server stopped
+db-1            |
+db-1            | PostgreSQL init process complete; ready for start up.
+db-1            |
+db-1            | 2026-08-02 02:30:42.143 UTC [1] LOG:  starting PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+db-1            | 2026-08-02 02:30:42.144 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db-1            | 2026-08-02 02:30:42.144 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db-1            | 2026-08-02 02:30:42.147 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1            | 2026-08-02 02:30:42.153 UTC [78] LOG:  database system was shut down at 2026-08-02 02:30:42 UTC
+db-1            | 2026-08-02 02:30:42.156 UTC [1] LOG:  database system is ready to accept connections
