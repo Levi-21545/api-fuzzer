@@ -38,7 +38,7 @@
   ],
   "latex-workshop.latex.recipe.default": "first",
   "files.exclude": {
-    "docs/build": true
+    "docs/build": false
   },
   "search.exclude": {
     "docs/build/**": true
