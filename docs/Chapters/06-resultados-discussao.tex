@@ -1,93 +1,114 @@
 % TCC — Resultados e Discussão
 \section{Resultados e Discussão}\label{sec:resultados}
 
-Esta seção registra inicialmente os resultados do piloto usados para auditar e
-revisar o mecanismo de priorização. Os números ainda não constituem a avaliação
-externa final do FIS revisado. Resultados negativos e casos que contradigam as
-hipóteses são preservados porque explicam as decisões posteriores do projeto.
+Os resultados disponíveis descrevem uma trajetória experimental: os pilotos
+caracterizaram o funcionamento do pipeline e expuseram limitações do mecanismo
+de priorização; a auditoria orientou uma revisão; e o modelo congelado foi
+aplicado posteriormente a uma API que não participou de seu desenvolvimento.
+Essa sequência permite apresentar evidências parciais sem confundir corpus de
+desenvolvimento, confirmação externa e uma futura coleta final.
 
-\subsection{Caracterização do Piloto}
+\subsection{Caracterização dos Pilotos e dos Níveis de Mutação}
 
-Foram executadas campanhas de nível 2 contra VAmPI, Spring Petclinic REST,
-crAPI e RealWorld. No conjunto canônico, 958 requisições planejadas foram
-executadas, das quais 284 continham combinações de duas mutações. A
-deduplicação estrita produziu 265 assinaturas: 7 na VAmPI, 47 na Petclinic, 198
-na crAPI e 13 na RealWorld. Para a avaliação de prioridade, essas assinaturas
-foram reunidas em 161 famílias de comportamento.
+As campanhas de Nível 2 contra VAmPI, Spring Petclinic REST, crAPI e RealWorld
+executaram 958 de 958 requisições. Desse total, 284 eram casos L2 com duas
+mutações; os demais preservaram baselines e mutações isoladas. A deduplicação
+produziu 265 assinaturas estritas, reunidas em 161 famílias comportamentais.
+A referência cega distribuiu essas famílias em 99 LOW, 59 MEDIUM e 3 HIGH.
 
-O nível 2 ampliou a variedade das manifestações observadas, especialmente na
-crAPI, onde 37 assinaturas novas envolveram combinações L2. No entanto, o
-piloto não produziu uma nova família de anomalia de prioridade alta exclusiva
-desse nível. O resultado não torna o L2 irrelevante: divergências de contrato,
-respostas combinadas e variações de robustez também fazem parte do objeto de
-estudo, mesmo quando não indicam vulnerabilidade grave.
+O Nível 0 forneceu a observação nominal das operações; o Nível 1 isolou o efeito
+dos operadores; e o Nível 2 ampliou a variedade de manifestações, especialmente
+na crAPI. Entretanto, as combinações não produziram uma nova família HIGH
+exclusiva. O resultado não torna L2 irrelevante: interações entre entradas,
+contract drift, respostas incompatíveis e variações de robustez também fazem
+parte do objeto, mesmo quando não indicam vulnerabilidade grave.
 
-\subsection{Construção da Referência Cega}
+\subsection{Auditoria e Revisão do Modelo de Priorização}
+\label{sec:revisao-fis}
 
-Três julgadores agentes avaliaram as 161 famílias sem acesso ao rótulo do
-analisador ou aos resultados do FIS. Houve concordância exata sobre validade em
-144 famílias (89,4\%). As mesmas 144 foram consideradas suportadas pelos três
-julgadores, com concordância exata de prioridade em 136 casos (94,4\%). Sete
-casos sem maioria de prioridade foram submetidos a um quarto julgador. A
-referência final manteve todas as famílias como suportadas e distribuiu-as em
-99 LOW, 59 MEDIUM e 3 HIGH.
-
-As três famílias HIGH corresponderam a duas falhas 500 repetidas em baselines
-válidos da Petclinic e a uma operação autenticada da crAPI que aceitou
-credencial ausente e retornou conteúdo funcional. A referência é descrita como
-operacional e assistida por agentes, não como verdade humana absoluta.
-
-\subsection{Avaliação da Priorização Fuzzy}
-
-A auditoria do FIS v2 mostrou que o status HTTP dominava a decisão. A ablação
-do tempo e a ablação do sinal de tamanho não alteraram a faixa de nenhuma das
-161 famílias. O v2 e o baseline baseado apenas em status obtiveram a mesma
+A configuração inicial do FIS combinava desvio de status HTTP, tempo de resposta
+e tamanho da resposta. A avaliação cega mostrou que o status dominava as
+decisões: neutralizar tempo ou tamanho não alterou a faixa de nenhuma das 161
+famílias. O modelo e o baseline baseado somente em status obtiveram a mesma
 acurácia, 0,298, o mesmo macro-F1, 0,254, e o mesmo erro ordinal médio, 0,702.
-O v2 apresentou correlação de Spearman de 0,710 com a referência.
 
-A matriz de confusão explicou a baixa acurácia: 67 famílias LOW foram elevadas
-a MEDIUM e 43 famílias MEDIUM foram elevadas a HIGH. O modelo
-superpriorizava rejeições seguras, status 4xx não documentados e falhas 5xx
-localizadas. Em particular, uma resposta 4xx não documentada pode representar
-contract drift e ainda assim constituir rejeição segura da entrada exercitada;
-as duas propriedades precisam ser preservadas sem receber automaticamente a
-mesma prioridade de uma operação válida indisponível.
+A matriz de confusão revelou 67 famílias LOW elevadas a MEDIUM e 43 famílias
+MEDIUM elevadas a HIGH. O mecanismo superpriorizava rejeições seguras, 4xx não
+documentados e falhas 5xx localizadas. Uma rejeição não documentada pode
+representar contract drift, mas não deve receber automaticamente a mesma
+prioridade de uma operação válida indisponível, de uma aceitação indevida ou de
+uma falha recorrente.
 
-Esse resultado motivou o FIS v3. Seus antecedentes são contradição
-comportamental, força da evidência e exposição de controle de acesso. Tempo e
-tamanho deixaram de integrar o núcleo da decisão. Repetição após deduplicação
-fortalece a evidência de falhas de servidor; credencial ausente e inválida são
-tratadas separadamente; e a conformidade da resposta é recalculada contra o
-contrato, sem usar o rótulo final do analisador como antecedente.
+Esse diagnóstico levou à revisão do construto e dos antecedentes. O modelo
+revisado utiliza contradição comportamental, força da evidência e exposição de
+controle de acesso. A contradição representa a incompatibilidade entre o caso,
+o status, o schema e o comportamento observado; a evidência distingue
+manifestações isoladas de determinadas recorrências; e a exposição de acesso
+captura operações protegidas que aceitam credencial ausente ou inválida. Seis
+regras Mamdani agregam esses sinais e produzem o escore contínuo.
 
-Aplicado às mesmas 161 famílias de desenvolvimento, o código do v3 reproduziu
-todas as faixas da referência, com macro-F1 1,000 e erro ordinal zero. Esse
-resultado comprova que a implementação expressa a rubrica formulada, mas não
-estima generalização: as regras foram definidas depois da análise desta
-amostra. Uma quinta API ou um conjunto futuro congelado antes da rotulagem é
-necessário para a avaliação confirmatória.
+No conjunto de desenvolvimento, o modelo revisado reproduziu as 161 faixas da
+rubrica, com macro-F1 1,000 e erro ordinal zero. Esse resultado demonstra que a
+implementação expressa a rubrica formulada, mas não constitui evidência de
+generalização, pois a mesma amostra foi usada para diagnosticar e revisar o
+mecanismo. Por isso, regras e parâmetros foram congelados antes da avaliação
+externa.
 
-\subsection{Casos Representativos e Falsos Positivos}
+\subsection{Avaliação Externa no Meilisearch}
 
-Os desacordos do v2 mostraram três padrões importantes. Primeiro, rejeições
-404 de identificadores gerados não comprovam falha da operação e tendem a LOW.
-Segundo, um baseline POST cujo corpo satisfaz o schema OpenAPI, mas recebe 400
-por restrições não declaradas pelo contrato, evidencia contract drift de
-entrada e tende a MEDIUM. Terceiro, um erro 500 isolado possui evidência mais
-fraca que o mesmo comportamento repetido em diferentes casos; por isso, a
-recorrência atua como modificador de prioridade no v3.
+O modelo congelado foi aplicado ao Meilisearch v1.45.1 em cinco campanhas, cada
+uma com 85 operações selecionadas e 477 requisições concluídas. As assinaturas
+estritas apresentaram interseção 216 e união 276. A variação veio dos campos
+\texttt{requestUid} e \texttt{processingTimeMs} em
+\texttt{POST /multi-search}. Após normalização restrita a esses dois campos,
+cada repetição apresentou as mesmas 222 assinaturas semânticas.
 
-\subsection{Discussão Geral}
+As assinaturas foram agrupadas em 134 famílias. A referência final classificou
+122 como sustentadas e 12 como indeterminadas. Entre as sustentadas, 116
+receberam LOW, 6 receberam MEDIUM e nenhuma recebeu HIGH.
 
-O principal resultado do piloto não é que o FIS v2 tenha superado um baseline,
-mas que a instrumentação permitiu demonstrar por que ele não o superava. A
-revisão substituiu sinais fáceis de medir, porém pouco discriminativos, por
-fatos mais próximos do construto. A contribuição deve ser apresentada como um
-processo auditável de priorização de anomalias técnicas, incluindo contract
-drift e robustez, e não como estimador de impacto real ou gravidade de
-segurança.
+O modelo revisado concordou com a referência em 120 das 122 famílias
+sustentadas; o baseline baseado somente em status acertou 4. A
+Tabela~\ref{tab:confirmacao-fis} apresenta as métricas nas classes observadas.
 
-Permanecem como ameaças a quantidade de APIs, a dependência do OpenAPI como
-oráculo parcial, a correlação entre julgadores agentes e o ajuste do v3 no
-mesmo conjunto usado para diagnosticar o v2. As campanhas definitivas devem
-congelar código, regras e protocolo antes da coleta confirmatória.
+\begin{table}[ht]
+\centering
+\caption{Comparação confirmatória nas 122 famílias sustentadas}
+\label{tab:confirmacao-fis}
+\begin{tabular}{|l|r|r|}
+\hline
+\textbf{Métrica} & \textbf{Modelo revisado} & \textbf{Status-only} \\ \hline
+Acurácia & 0,9836 & 0,0328 \\ \hline
+Macro-F1 (classes observadas) & 0,8957 & 0,0317 \\ \hline
+Acurácia balanceada & 0,8333 & 0,3333 \\ \hline
+Erro ordinal médio & 0,0164 & 0,9672 \\ \hline
+Spearman & 0,9088 & -0,6981 \\ \hline
+\end{tabular}
+\end{table}
+
+Como 84 das 122 famílias sustentadas eram controles de credencial inválida, foi
+realizada uma análise sem esses casos. O modelo revisado permaneceu correto em
+36 de 38 famílias, contra 4 de 38 do baseline. Os dois desacordos foram
+preservados: um baseline de \texttt{PATCH /experimental-features} com status
+415 não documentado e uma mutação válida de \texttt{POST /export} que retornou
+200 quando o contrato documentava 202. O FIS não foi reajustado com esses casos.
+
+\subsection{Discussão e Limitações}
+
+O principal resultado do corpus de desenvolvimento foi explicar por que o
+modelo inicial não acrescentava separação categórica ao status. A revisão
+substituiu sinais fáceis de medir, mas pouco discriminativos, por fatos mais
+próximos da prioridade técnica. A avaliação externa indica que essa
+operacionalização permaneceu coerente no Meilisearch sem retroalimentar o
+modelo congelado.
+
+Os resultados não permitem avaliar a faixa HIGH no holdout, estimar gravidade
+real de segurança ou extrapolar para APIs em geral. A concordância de prioridade
+entre os agentes foi baixa na confirmação, e a amostra apresentou forte
+presença de controles de credencial inválida. A referência deve ser entendida
+como operacional e auditável, não como verdade universal.
+
+A contribuição observada é um processo rastreável para gerar, detectar,
+deduplicar e priorizar anomalias técnicas, incluindo contract drift, robustez e
+controle de acesso. O modelo de coleta final e a comparação com Schemathesis
+serão discutidos com o orientador.

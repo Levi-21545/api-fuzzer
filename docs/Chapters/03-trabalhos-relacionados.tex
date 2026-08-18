@@ -1,21 +1,24 @@
 % TCC — Trabalhos Relacionados
 \section{Trabalhos Relacionados}\label{sec:relacionados}
 
-O uso de OpenAPI para geração automática de testes já está estabelecido por
-ferramentas com estratégias e objetivos distintos. A comparação desta seção
-não busca determinar uma ferramenta universalmente superior, mas posicionar a
-proposta quanto à geração de casos negativos, exploração de estado, oráculos,
-reprodução e priorização dos achados.
+O uso de OpenAPI para geração automática de testes está estabelecido por
+ferramentas com estratégias e objetivos distintos. A comparação não busca uma
+ferramenta universalmente superior, mas posiciona a proposta quanto à geração
+de casos negativos, exploração de estado, oráculos, reprodução e priorização.
+
+\textit{[Sketch para orientação: as versões consultadas e as fontes primárias
+de cada ferramenta ainda serão incorporadas à bibliografia. A matriz expressa
+um posicionamento provisório, não uma comparação experimental concluída.]}
 
 \begin{table}[ht]
 \centering
 \scalefont{0.78}
-\caption{Papel das principais ferramentas na análise comparativa}
+\caption{Matriz preliminar de posicionamento das ferramentas relacionadas}
 \label{tab:ferramentas-relacionadas}
 \begin{tabular}{|p{2.2cm}|p{3.2cm}|p{2.0cm}|p{6.0cm}|}
 \hline
 \textbf{Ferramenta} & \textbf{Abordagem principal} & \textbf{Estado} & \textbf{Papel no TCC} \\ \hline
-Schemathesis & Testes baseados em propriedades a partir de OpenAPI & Parcialmente stateful & Comparação mais próxima e possível baseline experimental \\ \hline
+Schemathesis & Testes baseados em propriedades a partir de OpenAPI & Parcialmente stateful & Candidato mais próximo a uma comparação experimental; decisão pendente de orientação \\ \hline
 RESTler & Gramática e sequências derivadas do contrato & Stateful & Referência para dependências, deduplicação e reprodução \\ \hline
 RESTest & Geração black-box aleatória e baseada em restrições & Suporte condicionado & Referência para casos nominais, inválidos e oráculos \\ \hline
 RestTestGen & Framework extensível de teste black-box & Extensível & Comparação arquitetural com parser, mutadores e oráculos \\ \hline
@@ -24,18 +27,14 @@ Dredd & Execução de exemplos e teste de conformidade & Hooks manuais & Anteced
 \end{tabular}
 \end{table}
 
-A análise detalhada deverá comparar as versões efetivamente consultadas e
-referenciar as fontes primárias de cada ferramenta. Em particular, Schemathesis
-é o candidato mais compatível para uma comparação experimental limitada.
-RESTler é cientificamente relevante, mas seu foco em sequências stateful reduz
-a equivalência direta. Dredd será mantido como antecedente de teste de contrato,
-enquanto AFL e libFuzzer permanecem na fundamentação conceitual.
+Entre as ferramentas levantadas, Schemathesis permanece como o candidato mais
+próximo para uma comparação experimental limitada. Sua inclusão ainda não foi
+definida: comparabilidade, custo e contribuição para a questão central serão
+discutidos com o orientador. As demais ferramentas cumprem papel de referência
+conceitual ou arquitetural, sem pretensão de equivalência experimental direta.
 
 No corpus bibliográfico levantado, não foi identificado um mecanismo
-diretamente equivalente ao sistema proposto para combinar sinais da execução e
-da divergência contratual em um escore fuzzy de severidade. Essa observação não
-constitui uma alegação de inexistência: a contribuição investigada é a
-integração e a avaliação desse mecanismo no pipeline desenvolvido.
-
-% TODO(TCC): substituir esta tabela de posicionamento pela matriz reduzida e
-% citada de .agents/references/11-matriz-comparativa-verificada.md.
+diretamente equivalente à integração proposta entre sinais contratuais,
+evidência observada e um escore fuzzy auditável. Essa observação não constitui
+alegação de inexistência. A contribuição investigada é a integração e a
+avaliação desse mecanismo no pipeline desenvolvido.

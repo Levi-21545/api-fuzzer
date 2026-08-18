@@ -1,64 +1,81 @@
 % TCC — Desenvolvimento
 \section{Desenvolvimento da Ferramenta}\label{sec:desenvolvimento}
 
-\subsection{Arquitetura e Fluxo Operacional}
-
 O OpenAPI Contract Fuzzer foi implementado em Python como um pipeline modular.
-O contrato é convertido em um modelo interno; esse modelo orienta a geração de
-valores-base e mutações; um plano materializa as requisições; o executor envia
-as chamadas à API; e o analisador confronta as respostas com o contrato antes
-de encaminhar os resultados reportáveis ao sistema fuzzy e ao gerador de
-relatórios.
+A organização separa interpretação do contrato, geração dos casos, execução
+HTTP, análise das respostas, priorização e persistência dos artefatos. Esta
+seção descreve as responsabilidades necessárias para compreender e reproduzir
+o fluxo, sem transformar a estrutura de arquivos do código em arquitetura do
+artigo.
 
-% TODO(TCC): inserir diagrama editável:
-% OpenAPI -> Parser -> Modelo -> Geração/Mutação -> Plano/Runner -> API
-% -> Analisador Contratual -> FIS -> Relatório.
+\subsection{Do Contrato ao Plano de Execução}
 
-\subsection{Interpretação do Contrato e Geração de Entradas}
+O parser aceita documentos OpenAPI em YAML ou JSON e os converte em um modelo
+interno de operações, parâmetros, corpos, respostas e requisitos de segurança.
+O subconjunto implementado reconhece GET, POST, PUT, PATCH e DELETE; parâmetros
+de caminho, consulta e cabeçalho; corpos e respostas JSON; referências locais;
+e composição limitada por \texttt{allOf}. Restrições como obrigatoriedade,
+\texttt{readOnly}, enumeração, formato, padrão, tamanhos e limites numéricos são
+preservadas quando suportadas.
 
-O parser atual aceita documentos YAML ou JSON e representa operações,
-parâmetros, corpos JSON, respostas e mecanismos de segurança dentro de um
-subconjunto de OpenAPI. A partir do modelo, o gerador produz valores-base e o
-motor aplica operações de substituição ou remoção sobre tipos primitivos,
-objetos e arrays.
+O gerador produz a entrada-base e o motor de mutações percorre sua estrutura
+para aplicar alterações tipadas. O construtor do plano resolve caminhos,
+payloads, cabeçalhos, autenticação e estratégia aplicada. Cada entrada recebe
+um \texttt{case\_id} e registra se representa baseline, mutação ou teste de
+autenticação, além dos metadados das mutações. O plano completo é persistido
+antes das chamadas à API.
 
-O suporte não é integral: referências e composições de schema, diferentes
-\textit{media types} e parte das regras de serialização ainda não são
-interpretados. Além disso, o catálogo existente é predominantemente orientado
-por tipos. O texto e a avaliação deverão distinguir restrições efetivamente
-usadas de capacidades ainda não implementadas.
+% TODO(TCC-FIGURA): avaliar posteriormente um único diagrama de arquitetura e
+% pipeline. Nenhuma figura provisória integra o artigo neste checkpoint.
 
-\subsection{Planejamento e Execução}
+\subsection{Execução, Análise e Rastreabilidade}
 
-O plano de execução associa operação, caminho resolvido, corpo e cabeçalhos.
-Autenticação pode ser fornecida por configuração ou obtida por um procedimento
-automático baseado no contrato. A execução utiliza um cliente HTTP assíncrono e
-um semáforo para limitar a concorrência, preservando a ordem lógica entre plano
-e resultados.
+A execução utiliza cliente HTTP assíncrono, semáforo de concorrência, atraso e
+timeout configuráveis. Para cada caso são registrados URL, status, tempo,
+tamanho, corpo e erro de transporte. Os runners experimentais cuidam da
+inicialização, do reset e da proveniência específica das aplicações sem alterar
+o núcleo da ferramenta.
 
-\subsection{Detecção de Divergências}
+O analisador confronta status e schemas observados com o contrato. Entre as
+classificações estão falhas de transporte, erros 5xx, status não documentados,
+incompatibilidades de schema e aceitação de entradas que deveriam ser
+rejeitadas. Uma rejeição 4xx documentada e compatível é preservada como
+comportamento esperado e separada dos candidatos. Uma divergência contratual
+continua relevante mesmo quando a API rejeita a entrada com segurança, pois
+pode afetar consumidores; por outro lado, uma observação reportada não equivale
+automaticamente a causa raiz, defeito confirmado ou vulnerabilidade.
 
-O analisador identifica respostas sem status, erros de servidor, status não
-documentados, incompatibilidades de schema e aceitação de entradas mutadas.
-Uma rejeição 4xx documentada e compatível com o schema é comportamento esperado
-e não deve ser contabilizada como anomalia candidata.
+O pós-processamento correlaciona plano, resultado e achado por
+\texttt{case\_id}, constrói assinaturas, seleciona representantes e calcula
+métricas. Cada diretório de campanha reúne \texttt{run\_manifest.json}, plano de
+execução, resultados brutos, achados estruturados, conjunto deduplicado e
+relatórios em Markdown. O manifesto preserva configuração, revisão e estado do
+código, hashes do contrato e da árvore-fonte, ambiente, horários, contagens e
+estado da campanha. Cabeçalhos e valores sensíveis são redigidos antes da
+persistência pública.
 
-Um achado reportado não equivale automaticamente a defeito ou vulnerabilidade.
-A confirmação exige reprodução e inspeção das condições do contrato, da entrada
-e do ambiente.
+Esse conjunto permite rastrear os números do artigo até casos concretos e
+distinguir falha da aplicação, falha ambiental e campanha incompleta. Uma
+amostra pública gerada pelo pipeline contém uma execução L2 de cada alvo e
+demonstra o formato dos artefatos, mas não define o modelo de coleta final.
 
-\subsection{Priorização por Lógica Fuzzy}
+\subsection{Priorização Fuzzy}
 
-Após a classificação contratual, o sistema Mamdani combina desvio de status,
-tempo de resposta e tamanho da resposta para produzir um escore contínuo,
-posteriormente dividido nas faixas LOW, MEDIUM e HIGH. As funções de
-pertinência, regras e limiares atuais são escolhas heurísticas do autor; sua
-coerência constitui objeto da avaliação, não uma propriedade presumida.
+Depois da classificação contratual, um sistema Mamdani combina sinais
+observáveis para produzir um escore contínuo e as faixas LOW, MEDIUM e HIGH. O
+FIS não decide se existe divergência; ele organiza a inspeção dos achados já
+reportados. Entradas, pertinências, regras ativadas e eventual fallback são
+preservados nos artefatos para tornar a decisão auditável.
 
-\subsection{Artefatos e Rastreabilidade}
+O construto é prioridade técnica da anomalia, abrangendo contract drift,
+compatibilidade funcional, robustez e controle de acesso. O escore não estima
+impacto real, explorabilidade nem gravidade de segurança. A evolução do modelo
+e os sinais utilizados em sua revisão são apresentados uma única vez na
+Seção~\ref{sec:revisao-fis}, junto das evidências que motivaram a mudança.
 
-Cada campanha produz plano, resultados brutos, achados estruturados e relatório
-em Markdown. Antes da coleta definitiva, os artefatos deverão incluir
-identificador de caso, mutação aplicada, versão do contrato, configuração e
-seed, permitindo deduplicação, reexecução e rastreabilidade dos números
-apresentados no artigo.
+A cobertura de OpenAPI permanece parcial. Outros media types,
+\texttt{oneOf}, \texttt{anyOf}, referências externas e parte das regras de
+serialização não são suportados. A ferramenta também não resolve dependências
+gerais entre recursos ou sequências stateful; identificadores dinâmicos podem
+apontar para recursos inexistentes. Esses limites restringem as operações
+exercitáveis e acompanham a interpretação dos resultados.

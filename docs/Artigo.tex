@@ -104,19 +104,43 @@
 \pagestyle{plain2}
 
 \begin{abstract}
-\textbf{Introduction:} Divergences between REST API implementations and their OpenAPI contracts can compromise integration reliability and make robustness defects harder to identify.
-\textbf{Objective:} This work develops and evaluates a black-box, contract-guided fuzzer for REST APIs, including a fuzzy inference system for prioritizing reported findings.
-\textbf{Methodology or Steps:} The tool parses a supported subset of OpenAPI, generates baseline inputs and mutations, executes HTTP requests, compares responses with the contract, and assigns a continuous severity score. Its evaluation is organized as repeated campaigns against locally controlled APIs, followed by deduplication, reproduction, and human labeling of findings.
-\textbf{Results:} The implementation currently provides the end-to-end execution pipeline and automated unit tests. Quantitative results and the final assessment of severity ranking will be incorporated after the experimental campaigns.
+Divergences between REST API implementations and their OpenAPI contracts can
+affect integration reliability and reveal robustness, conformance, and
+access-control anomalies. This work presents a black-box, contract-guided
+fuzzer and investigates the use of a fuzzy inference system to prioritize the
+reported anomalies. The tool parses a supported subset of OpenAPI, generates
+baseline and mutated inputs, executes HTTP requests, detects contractual
+divergences, and preserves reproducible artifacts. Four APIs supported the
+development and audit of the prioritization model; after its revision was
+frozen, Meilisearch was used as an external holdout. The development pilot
+executed 958 requests and produced 161 behavioral families. The initial model
+reproduced the same categorical decisions as a status-only baseline, with
+accuracy 0.298. On 122 supported holdout families, the revised model agreed
+with a blind operational reference in 120 cases, compared with 4 for the
+baseline. These partial results concern technical priority, not actual security
+impact; the final experimental protocol remains subject to advisor review.
 \end{abstract}
 
 \keywords{REST APIs, OpenAPI, Fuzzing, Contract Testing, Fuzzy Logic.}
      
 \begin{resumo}
-\textbf{Introdução:} Divergências entre implementações de APIs REST e seus contratos OpenAPI podem comprometer a confiabilidade das integrações e dificultar a identificação de falhas de robustez.
-\textbf{Objetivo:} Este trabalho desenvolve e avalia um \textit{fuzzer} de caixa-preta guiado por contrato para APIs REST, incluindo um sistema de inferência fuzzy para priorizar os achados reportados.
-\textbf{Metodologia ou Etapas:} A ferramenta interpreta um subconjunto suportado de OpenAPI, gera entradas-base e mutações, executa requisições HTTP, compara as respostas com o contrato e atribui um escore contínuo de severidade. A avaliação é organizada em campanhas repetidas contra APIs controladas localmente, seguidas de deduplicação, reprodução e rotulagem humana dos achados.
-\textbf{Resultados:} A implementação atual oferece o fluxo completo de execução e testes unitários automatizados. Os resultados quantitativos e a avaliação final do ordenamento de severidade serão incorporados após as campanhas experimentais.
+Divergências entre implementações de APIs REST e seus contratos OpenAPI podem
+afetar a confiabilidade das integrações e revelar anomalias de robustez,
+conformidade e controle de acesso. Este trabalho apresenta um \textit{fuzzer}
+de caixa-preta guiado por contrato e investiga o uso de um sistema de inferência
+fuzzy para priorizar as anomalias reportadas. A ferramenta interpreta um
+subconjunto de OpenAPI, gera entradas-base e mutações, executa requisições HTTP,
+detecta divergências contratuais e preserva artefatos reproduzíveis. Quatro APIs
+apoiaram o desenvolvimento e a auditoria do modelo de priorização; após o
+congelamento de sua revisão, o Meilisearch foi utilizado como \textit{holdout}
+externo. O piloto de desenvolvimento executou 958 requisições e produziu 161
+famílias comportamentais. O modelo inicial reproduziu as mesmas decisões
+categóricas de um \textit{baseline} baseado apenas em status, com acurácia
+0,298. Nas 122 famílias sustentadas do \textit{holdout}, o modelo revisado
+concordou com uma referência operacional cega em 120 casos, contra 4 do
+\textit{baseline}. Esses resultados parciais tratam de prioridade técnica, não
+de impacto real de segurança; o protocolo experimental final permanece sujeito
+à avaliação do orientador.
 \end{resumo}
 
 \palavraschave{APIs REST, OpenAPI, Fuzzing, Teste de Contrato, Lógica Fuzzy.}

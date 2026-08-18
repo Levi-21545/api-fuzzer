@@ -1,49 +1,60 @@
 % TCC — Fundamentação Teórica
 \section{Fundamentação Teórica}\label{sec:fundamentacao}
 
-Esta seção reúne os conceitos necessários para compreender a geração de testes
-guiada por contratos e o mecanismo de priorização empregado pela ferramenta.
-A redação definitiva deverá manter apenas a teoria utilizada na metodologia e
-na interpretação dos resultados.
+Esta seção delimita os conceitos necessários para compreender a geração de
+testes guiada por contratos e o mecanismo de priorização. A versão definitiva
+incorporará as fontes primárias já mapeadas na revisão bibliográfica.
 
 \subsection{APIs REST e Especificação OpenAPI}
 
-Esta subseção abordará os elementos de OpenAPI efetivamente interpretados pela
-ferramenta, incluindo operações, parâmetros, corpos de requisição, esquemas,
-restrições, respostas e mecanismos de segurança. Também discutirá o contrato
-como fonte de geração e como oráculo parcial, reconhecendo que uma especificação
-incompleta não representa todas as regras de negócio da implementação.
+Neste trabalho, o documento OpenAPI exerce dois papéis. Primeiro, fornece
+estrutura para gerar operações, parâmetros e corpos de requisição. Segundo,
+atua como oráculo parcial ao descrever status e schemas esperados nas respostas.
+Esse oráculo é incompleto: uma API pode aplicar regras de negócio ausentes do
+contrato, e o contrato também pode divergir da implementação sem que exista
+falha de segurança.
 
-% TODO(TCC): converter as fontes verificadas em .agents/references/01-rest-http-openapi.md
-% para entradas BibTeX e redigir esta subseção com citações primárias.
+\textit{[Sketch para orientação: incorporar definições e fontes primárias sobre
+REST, OpenAPI e contrato como oráculo parcial.]}
 
 \subsection{Teste Negativo e Fuzzing}
 
-Serão apresentados teste negativo, robustez, oráculos de teste e as distinções
-entre \textit{fuzzing} geracional e mutacional, bem como entre abordagens de
-caixa-preta, caixa-cinza e caixa-branca. AFL e libFuzzer serão utilizados apenas
-para contextualizar o \textit{fuzzing} tradicional guiado por cobertura, pois
-não constituem concorrentes experimentais diretos do presente trabalho.
+Teste negativo exercita entradas inválidas, limites e combinações adversas para
+observar se o sistema rejeita dados de forma controlada. O \textit{fuzzing}
+pode ser geracional, quando produz casos a partir de um modelo, ou mutacional,
+quando transforma entradas existentes. A ferramenta combina as duas ideias:
+gera um valor-base do contrato e aplica operadores tipados. Diferentemente de
+fuzzers guiados por cobertura, a observação permanece \textit{black-box}.
 
-% TODO(TCC): usar .agents/references/02-fundamentos-fuzzing.md como mapa de fontes.
+\textit{[Sketch para orientação: incorporar fontes primárias sobre teste
+negativo, robustez e fuzzing geracional/mutacional.]}
 
 \subsection{Fuzzing de APIs REST Guiado por Contrato}
 
-O \textit{fuzzing} de APIs REST introduz desafios relacionados a dados
-estruturados, autenticação, dependências entre operações, estado e qualidade do
-contrato. Nesta subseção serão discutidos o uso de OpenAPI para gerar entradas
-válidas e inválidas, os principais oráculos contratuais e os limites de uma
-avaliação exclusivamente \textit{black-box}.
+APIs introduzem desafios de dados estruturados, autenticação, dependências
+entre recursos, estado e serialização. OpenAPI permite orientar entradas e
+comparar respostas, mas não resolve automaticamente essas dependências nem
+garante a completude do oráculo. Por isso, rejeições seguras não documentadas,
+aceitações indevidas, erros de servidor e divergências de schema precisam ser
+descritos separadamente.
 
-% TODO(TCC): usar .agents/references/03-fuzzing-apis-rest.md e os fichamentos
-% centrais, priorizando artigos IEEE/ACM e fontes primárias.
+\textit{[Sketch para orientação: consolidar aqui as fontes de fuzzing de APIs e
+os limites conhecidos de abordagens exclusivamente black-box.]}
 
-\subsection{Lógica Fuzzy e Sistemas de Inferência}
+\subsection{Lógica Fuzzy e Prioridade Técnica}
 
-Esta subseção apresentará conjuntos fuzzy, funções de pertinência, regras
-linguísticas, inferência Mamdani, agregação e desfuzzificação. A fundamentação
-deve distinguir a detecção de uma divergência da estimativa de sua severidade e
-deixar explícito quais parâmetros do sistema foram definidos heuristicamente.
+Um sistema Mamdani representa conceitos graduais por funções de pertinência,
+combina antecedentes em regras linguísticas, agrega suas ativações e produz um
+valor contínuo por desfuzzificação. Essa estrutura favorece uma priorização
+interpretável, pois permite preservar entradas, pertinências e regras ativadas.
 
-% TODO(TCC): converter as fontes de .agents/references/05-logica-fuzzy-fis.md
-% e .agents/references/08-fuzzy-priorizacao-severidade.md para BibTeX.
+Neste trabalho, a saída representa prioridade técnica da anomalia. Ela não
+confirma vulnerabilidade, explorabilidade, impacto de negócio ou urgência real
+de correção. O modelo revisado utiliza contradição comportamental, força da
+evidência e exposição de controle de acesso como antecedentes. A detecção
+contratual ocorre antes da priorização e constitui uma responsabilidade
+conceitualmente distinta.
+
+\textit{[Sketch para orientação: incorporar fundamentos de conjuntos fuzzy,
+inferência Mamdani e priorização, distinguindo parâmetros heurísticos de
+parâmetros apoiados pela literatura.]}

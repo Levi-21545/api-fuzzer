@@ -1,13 +1,63 @@
 % TCC — Introdução
 \section{Introdução}
-APIs REST tornaram-se parte essencial da infraestrutura de sistemas modernos, conectando serviços, aplicações web e dispositivos móveis \cite{arcuri2026fuzzingrestapisindustry}. Nesse cenário, falhas de robustez e inconsistências entre o comportamento da API e o contrato publicado impactam diretamente a confiabilidade de integrações e o custo de manutenção. Embora testes funcionais tradicionais sejam eficazes para validar cenários felizes (\textit{happy path}), eles frequentemente deixam de exercitar valores-limite, formatos inválidos e combinações pouco usuais de parâmetros, que são justamente as situações em que falhas sutis tendem a se manifestar.
 
-O uso de contratos formais, como a especificação OpenAPI (versões 3.0 e 3.1), viabiliza uma abordagem "guiada por contrato" para a geração de casos de teste: em vez de produzir entradas aleatórias, o processo explora estruturas, tipos e restrições descritas no \textit{schema} para produzir mutações \emph{válidas e inválidas} de forma sistemática. Essa estratégia aumenta a probabilidade de revelar respostas inesperadas (por exemplo, códigos 5xx, mensagens de erro inconsistentes ou divergências estruturais entre a resposta e o contrato) sem exigir acesso ao código-fonte nem instrumentação interna da aplicação, isto é, em um contexto \emph{black-box} \cite{meyer1992designbycontract}.
+APIs REST tornaram-se parte essencial da infraestrutura de sistemas modernos,
+conectando serviços, aplicações web e dispositivos móveis
+\cite{arcuri2026fuzzingrestapisindustry}. Nesse cenário, falhas de robustez e
+inconsistências entre o comportamento da API e o contrato publicado afetam a
+confiabilidade das integrações e o custo de manutenção. Testes funcionais
+tradicionais validam cenários esperados, mas podem deixar de exercitar valores
+limite, formatos inválidos e combinações pouco usuais de parâmetros.
 
-Este trabalho propõe o desenvolvimento e a avaliação de uma ferramenta de \emph{fuzzing} automatizado para APIs REST baseada em contratos OpenAPI. A ferramenta implementa: (i) um \textit{parser} que converte um subconjunto da especificação em um modelo interno; (ii) um motor que produz entradas-base e aplica mutações orientadas por tipos e por parte das restrições representadas; (iii) um plano de execução e um \textit{runner} de requisições com controle de concorrência; e (iv) um analisador que registra evidências e identifica divergências em relação ao contrato interpretado. A avaliação caracteriza os achados produzidos em APIs distintas, sua reprodução entre campanhas e a utilidade do mecanismo de priorização.
+Contratos como a especificação OpenAPI descrevem operações, estruturas, tipos,
+restrições e respostas esperadas. Eles podem orientar a geração sistemática de
+entradas válidas e inválidas e servir como oráculo parcial para identificar
+divergências entre especificação e implementação. Essa abordagem permite
+observar a API externamente, sem instrumentação de código, em um contexto
+\textit{black-box} relacionado à noção de contrato de software
+\cite{meyer1992designbycontract}.
 
-Além da identificação de divergências contratuais, a ferramenta utiliza um sistema de inferência fuzzy do tipo Mamdani para atribuir um escore contínuo aos achados reportados. Esse componente não confirma automaticamente defeitos ou vulnerabilidades: sua função é apoiar a priorização da inspeção humana a partir de sinais observáveis da execução. Nesse contexto, a pesquisa investiga quais tipos de achado o \textit{fuzzer} produz em APIs distintas, em que medida esses achados são reproduzíveis e quão coerente é o ordenamento de severidade em relação a critérios humanos definidos independentemente do escore.
+Este trabalho apresenta uma ferramenta de \textit{fuzzing} automatizado para
+APIs REST, implementada em Python e orientada por um subconjunto de OpenAPI. O
+pipeline interpreta o contrato, gera valores-base e mutações, materializa um
+plano de execução, envia requisições, confronta as respostas com o contrato e
+produz artefatos rastreáveis. Um sistema de inferência fuzzy Mamdani atribui
+prioridade técnica às anomalias reportadas depois da classificação contratual.
 
-O escopo delimita-se a APIs REST descritas em OpenAPI, não abrangendo cenários dependentes de sequenciamento complexo de requisições ou manutenção de estado entre chamadas, autenticação avançada (por exemplo, fluxos completos de OAuth2) nem avaliação de carga ou desempenho. A ferramenta gera saídas estruturadas compatíveis com automação, mas a integração completa e a efetividade em fluxos de CI/CD não constituem objetos centrais da avaliação.
+A questão central provisória é: em que medida um \textit{fuzzer} de caixa-preta,
+guiado por um subconjunto de OpenAPI, produz achados tecnicamente relevantes em
+APIs REST e em que medida um sistema de inferência fuzzy fornece uma ordenação
+de prioridade coerente com critérios definidos independentemente de seu
+escore?
 
-O restante deste artigo está organizado da seguinte forma. A Seção~\ref{sec:fundamentacao} apresenta os conceitos de OpenAPI, \textit{fuzzing} de APIs e lógica fuzzy necessários à compreensão do trabalho. A Seção~\ref{sec:relacionados} discute ferramentas e pesquisas relacionadas e posiciona a proposta. A Seção~\ref{sec:metodologia} descreve o delineamento e o protocolo de avaliação, enquanto a Seção~\ref{sec:desenvolvimento} detalha a arquitetura e as decisões da implementação. A Seção~\ref{sec:resultados} apresenta e discute os resultados experimentais. Por fim, a Seção~\ref{sec:conclusoes} sintetiza as contribuições, limitações e possibilidades de continuidade.
+A avaliação é organizada em três dimensões complementares: (i) capacidade de
+geração e detecção de diferentes anomalias contratuais e comportamentais;
+(ii) coerência da prioridade técnica atribuída aos achados; e (iii) estabilidade
+dos comportamentos observados quando há campanhas repetidas. A terceira
+dimensão foi examinada no \textit{holdout}; sua extensão ao restante do corpus
+depende da definição do protocolo final com o orientador.
+
+Quatro APIs foram utilizadas como pilotos de desenvolvimento, permitindo
+auditar a configuração inicial e formular um modelo revisado. Após o
+congelamento das regras, uma quinta API foi empregada como \textit{holdout}
+externo. A prioridade
+foi comparada com uma referência operacional cega, construída sem revelar o
+escore e assistida por agentes independentes. Esses resultados são evidência
+parcial e base para discutir o delineamento definitivo; não implicam
+superioridade geral sobre outros \textit{fuzzers} nem estimativa de impacto real
+de segurança.
+
+O escopo limita-se a APIs REST descritas em OpenAPI. Não são abrangidos
+sequenciamento stateful geral, fluxos completos de OAuth2, avaliação de carga,
+cobertura de código ou confirmação automática de vulnerabilidades. Um achado
+pode representar \textit{contract drift}, incompatibilidade funcional,
+robustez ou comportamento de controle de acesso e ainda exigir interpretação
+antes de ser tratado como defeito.
+
+O restante deste artigo está organizado da seguinte forma. A
+Seção~\ref{sec:fundamentacao} apresenta os conceitos necessários. A
+Seção~\ref{sec:relacionados} posiciona a proposta diante das ferramentas
+relacionadas. A Seção~\ref{sec:metodologia} descreve o desenho da avaliação, e a
+Seção~\ref{sec:desenvolvimento} apresenta a ferramenta. A
+Seção~\ref{sec:resultados} registra os resultados parciais. Por fim, a
+Seção~\ref{sec:conclusoes} sintetiza o checkpoint e suas limitações.

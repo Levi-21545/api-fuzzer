@@ -1,9 +1,27 @@
 % TCC — Conclusão
 \section{Conclusão}\label{sec:conclusoes}
 
-Esta seção será redigida após a análise dos resultados. A versão final deverá
-responder explicitamente à questão de pesquisa, distinguir contribuições
-implementadas de contribuições demonstradas e apresentar limitações sem
-extrapolar as APIs e configurações avaliadas.
+Este artigo-sketch registra o estado atual do projeto, não o fechamento da
+avaliação. Foi implementado um pipeline que interpreta um subconjunto de
+OpenAPI, gera baselines e mutações, executa testes black-box, identifica
+divergências, deduplica observações, atribui prioridade técnica e preserva
+artefatos rastreáveis por campanha.
 
-% TODO(TCC): sintetizar resultados, contribuições, limitações e trabalhos futuros.
+Os pilotos mostraram que os níveis de mutação exercitam perspectivas
+complementares: comportamento nominal, alterações isoladas e interações. A
+auditoria do mecanismo de priorização revelou que sua configuração inicial era
+dominada pelo status HTTP. A revisão orientada por fatos comportamentais foi
+congelada e apresentou concordância substancialmente maior que o baseline no
+holdout Meilisearch.
+
+A contribuição não é a determinação automática de vulnerabilidades ou impacto
+real, mas uma forma auditável de priorizar contract drift, incompatibilidades
+funcionais, problemas de robustez e indícios de controle de acesso. As
+conclusões são limitadas pelo número de aplicações, pelo OpenAPI como oráculo
+parcial, pela referência assistida por agentes, pelo desbalanceamento das
+classes e pela ausência de casos HIGH no holdout.
+
+O modelo de coleta final e a manutenção de uma comparação exploratória com
+Schemathesis serão definidos com o orientador. Essas decisões podem ampliar a
+avaliação, mas não alteram a separação entre desenvolvimento e confirmação nem
+os resultados já preservados.
