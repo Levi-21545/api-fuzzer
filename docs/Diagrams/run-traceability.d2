@@ -1,0 +1,96 @@
+# Níveis de observação e rastreabilidade dos achados
+# d2 --layout elk --pad 32 run-traceability.d2 run-traceability.svg
+
+direction: right
+grid-columns: 2
+grid-gap: 56
+style.fill: "#FFFFFF"
+
+classes: {
+  group: {
+    style: {
+      fill: "#FAFAFA"
+      stroke: "#90A4AE"
+      stroke-width: 2
+      border-radius: 10
+      font-size: 18
+    }
+  }
+  provenance: {
+    shape: document
+    style: {
+      fill: "#E3F2FD"
+      stroke: "#1565C0"
+      stroke-width: 2
+      font-size: 18
+    }
+  }
+  observation: {
+    style: {
+      fill: "#E8F5E9"
+      stroke: "#2E7D32"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 18
+    }
+  }
+  reduction: {
+    style: {
+      fill: "#FFF8E1"
+      stroke: "#F57F17"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 18
+    }
+  }
+  analytical: {
+    style: {
+      fill: "#F3E5F5"
+      stroke: "#7B1FA2"
+      stroke-width: 2
+      stroke-dash: 3
+      border-radius: 8
+      font-size: 18
+    }
+  }
+}
+
+observation_lane: "Da campanha à observação" {
+  direction: down
+  class: group
+
+  campaign: "Registrar a campanha\nO run_id liga configuração, hashes e manifesto" {
+    class: provenance
+  }
+  request: "Rastrear cada requisição\nO case_id liga plano, resposta HTTP e classificação" {
+    class: observation
+  }
+  raw_finding: "Registrar o achado observado\nPreserva classe, status e divergência contratual" {
+    class: observation
+  }
+
+  campaign -> request: "contém"
+  request -> raw_finding: "correlaciona"
+}
+
+consolidation_lane: "Da observação à evidência consolidada" {
+  direction: down
+  class: group
+
+  signature: "Normalizar observações equivalentes\nA assinatura combina API, endpoint, classe, status e resposta" {
+    class: reduction
+  }
+  unique: "Consolidar as duplicatas\nUm representante reúne case_ids, ocorrências e níveis L0/L1/L2" {
+    class: reduction
+  }
+  family: "Agrupar para a análise\nA família reúne o mesmo comportamento factual por endpoint" {
+    class: analytical
+  }
+
+  signature -> unique: "deduplica"
+  unique -> family: "agrupa posteriormente" {
+    style.stroke-dash: 3
+  }
+}
+
+observation_lane.raw_finding -> consolidation_lane.signature

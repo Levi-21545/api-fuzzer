@@ -54,6 +54,15 @@ horários e contagens. O plano e os resultados são correlacionados por
 \texttt{case\_id}; campanhas incompletas ou inválidas devem permanecer
 identificáveis, em vez de desaparecer das evidências.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.96\linewidth,trim=0 1022 0 0,clip]{Diagrams/experimental-architecture.png}
+    \caption{Ciclo de uma execução experimental isolada. O script específico
+    prepara o alvo descartável e invoca o fuzzer; a evidência da execução é
+    completada com a proveniência do alvo antes da deduplicação e consolidação.}
+    \label{fig:ciclo-experimental}
+\end{figure}
+
 Cinco níveis de observação são mantidos separados: requisição, achado bruto,
 assinatura estrita, campanha e família comportamental. A assinatura estrita
 agrupa observações com a mesma aplicação, operação, classificação, status e

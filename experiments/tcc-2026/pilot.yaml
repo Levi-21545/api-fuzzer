@@ -1,39 +1,125 @@
 manifest_version: 1
 experiment_id: TCC-PILOT-001
-status: pilot
+kind: development_pilot
+status: completed
 purpose: >-
-  Validate the experimental pipeline, contract-aware mutation metadata and
-  artifact collection before freezing the definitive TCC experiment.
+  Verificar o pipeline experimental, comparar os níveis L1 e L2 e formar o
+  corpus de desenvolvimento usado na revisão do modelo fuzzy antes da
+  validação confirmatória.
+
+scope:
+  targets:
+    - vampi
+    - petclinic
+    - crapi
+    - realworld
+  excludes:
+    - >-
+      Meilisearch, reservado como alvo externo para a validação confirmatória
+      TCC-CONFIRMATORY-001.
+
+phases:
+  - id: l1
+    level: 1
+    description: Mutações individuais guiadas pelas restrições do contrato.
+  - id: l2
+    level: 2
+    description: >-
+      Mutações individuais e até 10 pares não conflitantes por payload.
 
 fuzzer:
-  git_ref: master
+  revision: recorded_per_run
+  source_tree_sha256: recorded_per_run
   runner: scripts/experiments/run_experiment.sh
-  level: 1
-  max_mutations_per_payload: 20
   all_endpoints: true
-  excluded_paths:
-    - /createdb
+  max_mutations_per_payload: 20
+  max_pairs_per_payload: 10
   concurrency: 1
   delay_ms: 250
   timeout_seconds: 10
+  deduplication:
+    inline: false
+    postprocessor: scripts/experiments/deduplicate_run.py
 
 targets:
   - id: vampi
-    role: vulnerable API and pipeline smoke test
-    source_commit: f16052d
-    schema_from_repository_root: ../mock-projects/VAmPI/openapi_specs/openapi3.yml
-    container_image: >-
+    role: API vulnerável e smoke test do pipeline completo.
+    runner: scripts/experiments/run_vampi_pilot.sh
+    schema: ../mock-projects/VAmPI/openapi_specs/openapi3.yml
+    runtime: >-
       erev0s/vampi@sha256:0a5a224b6e14ae7da6a6ea265178ff71286ff903aec74adee98f660bb0e4ca12
-    note: Image digest resolved and validated during the controlled pilot.
+    authentication:
+      mode: auto_auth
+      probes: true
+    excluded_paths:
+      - /createdb
+
+  - id: petclinic
+    role: API com contrato amplo e alta proporção de rejeições documentadas.
+    runner: scripts/experiments/run_petclinic_pilot.sh
+    schema: >-
+      ../mock-projects/spring-petclinic-rest/src/main/resources/openapi.yml
+    runtime: springcommunity/spring-petclinic-rest:4.0.2
+    authentication:
+      mode: none
+      probes: false
+    excluded_paths:
+      - /oops
+
+  - id: crapi
+    role: API vulnerável com múltiplos serviços e operações autenticadas.
+    runner: scripts/experiments/run_crapi_pilot.sh
+    schema: ../mock-projects/crAPI/openapi-spec/crapi-openapi-spec.json
+    runtime: crAPI 1.1.5 com imagens de contêiner registradas por run
+    authentication:
+      mode: auto_auth
+      probes: true
+    excluded_paths: []
+
+  - id: realworld
+    role: API autenticada com contrato e implementação mantidos separadamente.
+    runner: scripts/experiments/run_realworld_pilot.sh
+    schema: ../mock-projects/realworld/specs/api/openapi.yml
+    runtime: >-
+      Revisões do backend realworld-django-ninja e do contrato canônico
+      registradas por run.
+    authentication:
+      mode: dynamic_auth
+      probes: true
+    excluded_paths: []
 
 artifacts_per_run:
-  - run_manifest.json
-  - execution_plan.json
-  - results.json
-  - analysis_findings.json
-  - analysis_report.md
-  - target_container.log
+  required:
+    - run_manifest.json
+    - data/execution_plan.json
+    - data/results.json
+    - analysis/analysis_findings.json
+    - analysis/analysis_report.md
+    - analysis/findings_unique.json
+    - analysis/metrics.json
+    - analysis/deduplication_report.md
+  target_provenance:
+    - logs do contêiner ou da stack
+    - metadados das imagens ou revisões dos fontes
+    - evidência de bootstrap ou autenticação quando aplicável
 
-repetitions:
-  pilot: 1
-  definitive: to_be_decided_after_pilot
+execution_policy:
+  repetitions_per_target_and_level: 1
+  isolated_run_directories: true
+  refuse_overwrite: true
+  disposable_target_state: true
+  cleanup_after_capture: true
+  redact_credentials: true
+
+interpretation:
+  - >-
+    Os achados são observações operacionais black-box, não causas raiz
+    confirmadas, vulnerabilidades independentes ou estimativas de
+    explorabilidade.
+  - >-
+    Os pilotos apoiaram o desenvolvimento e a revisão do modelo; não substituem
+    o protocolo experimental final nem a avaliação confirmatória independente.
+
+related_experiments:
+  public_sample: TCC-PUBLIC-001
+  confirmatory_validation: TCC-CONFIRMATORY-001

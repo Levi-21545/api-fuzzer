@@ -1,0 +1,108 @@
+# Ciclo de uma execução experimental isolada
+# d2 --layout elk --pad 32 experimental-architecture.d2 experimental-architecture.svg
+
+direction: down
+grid-columns: 1
+grid-gap: 44
+style.fill: "#FFFFFF"
+
+classes: {
+  setup: {
+    style: {
+      fill: "#E3F2FD"
+      stroke: "#1565C0"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  control: {
+    style: {
+      fill: "#FFF8E1"
+      stroke: "#F57F17"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  runtime: {
+    style: {
+      fill: "#E8F5E9"
+      stroke: "#2E7D32"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  process: {
+    style: {
+      fill: "#F3E5F5"
+      stroke: "#7B1FA2"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  evidence: {
+    shape: document
+    style: {
+      fill: "#ECEFF1"
+      stroke: "#455A64"
+      stroke-width: 2
+      font-size: 19
+    }
+  }
+  row: {
+    style: {
+      fill: transparent
+      stroke: transparent
+    }
+  }
+}
+
+definition: "Definir a execução\nEscolhe contrato, versão do alvo, níveis L0-L2 e limites" {
+  class: setup
+}
+
+runner: "Preparar a campanha\nO script do alvo valida pré-condições, cria o run_id e autentica" {
+  class: control
+}
+
+runtime_row: "" {
+  grid-columns: 2
+  grid-gap: 56
+  class: row
+
+  target: "Inicializar uma API descartável\nProvisiona, prepara os dados e aguarda a API ficar pronta" {
+    class: runtime
+  }
+  fuzzer: "Executar o fuzzer\nGera casos, envia requisições e analisa respostas" {
+    class: process
+  }
+}
+
+capture_row: "" {
+  grid-columns: 2
+  grid-gap: 56
+  class: row
+
+  cleanup: "Capturar o ambiente e encerrar\nColeta logs e versões e encerra a API mesmo em caso de falha" {
+    class: control
+  }
+  raw: "Persistir a evidência bruta\nSalva manifesto, plano, resultados e achados" {
+    class: evidence
+  }
+}
+
+postprocess: "Consolidar a execução\nCorrelaciona as requisições por case_id, deduplica e gera o relatório" {
+  class: process
+}
+
+definition -> runner: "configura"
+runner -> runtime_row.target: "provisiona e prepara"
+runner -> runtime_row.fuzzer: "invoca"
+runtime_row.target <-> runtime_row.fuzzer: "requisições e respostas HTTP"
+runtime_row.target -> capture_row.cleanup: "logs e metadados"
+runtime_row.fuzzer -> capture_row.raw: "persiste"
+capture_row.cleanup -> capture_row.raw
+capture_row.raw -> postprocess: "consolida"

@@ -25,8 +25,16 @@ um \texttt{case\_id} e registra se representa baseline, mutação ou teste de
 autenticação, além dos metadados das mutações. O plano completo é persistido
 antes das chamadas à API.
 
-% TODO(TCC-FIGURA): avaliar posteriormente um único diagrama de arquitetura e
-% pipeline. Nenhuma figura provisória integra o artigo neste checkpoint.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.56\linewidth,height=0.67\textheight,
+    keepaspectratio,trim=0 0 1609 0,clip]{Diagrams/system-architecture.png}
+    \caption{Arquitetura interna do OpenAPI Contract Fuzzer. Contrato e
+    parâmetros são transformados em um plano rastreável; as respostas da API
+    são confrontadas com o comportamento documentado, priorizadas pelo sistema
+    fuzzy e consolidadas em artefatos auditáveis.}
+    \label{fig:arquitetura-fuzzer}
+\end{figure}
 
 \subsection{Execução, Análise e Rastreabilidade}
 
@@ -53,6 +61,16 @@ relatórios em Markdown. O manifesto preserva configuração, revisão e estado 
 código, hashes do contrato e da árvore-fonte, ambiente, horários, contagens e
 estado da campanha. Cabeçalhos e valores sensíveis são redigidos antes da
 persistência pública.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.96\linewidth,trim=0 1679 0 0,clip]{Diagrams/run-traceability.png}
+    \caption{Níveis de observação e rastreabilidade dos achados. O
+    \texttt{case\_id} relaciona plano, resposta e classificação; a deduplicação
+    produz achados operacionais únicos, e o agrupamento em famílias ocorre em
+    etapa analítica posterior.}
+    \label{fig:rastreabilidade-achados}
+\end{figure}
 
 Esse conjunto permite rastrear os números do artigo até casos concretos e
 distinguir falha da aplicação, falha ambiental e campanha incompleta. Uma

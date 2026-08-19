@@ -47,6 +47,16 @@ manifestações isoladas de determinadas recorrências; e a exposição de acess
 captura operações protegidas que aceitam credencial ausente ou inválida. Seis
 regras Mamdani agregam esses sinais e produzem o escore contínuo.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.96\linewidth,trim=0 1624 0 0,clip]{Diagrams/fuzzy-prioritization.png}
+    \caption{Fluxo auditável do sistema Mamdani de priorização. Sinais do
+    contrato, da resposta e da autenticação são fuzzificados e combinados por
+    seis regras. A saída representa prioridade técnica, não confirmação de
+    vulnerabilidade.}
+    \label{fig:priorizacao-fuzzy}
+\end{figure}
+
 No conjunto de desenvolvimento, o modelo revisado reproduziu as 161 faixas da
 rubrica, com macro-F1 1,000 e erro ordinal zero. Esse resultado demonstra que a
 implementação expressa a rubrica formulada, mas não constitui evidência de

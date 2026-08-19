@@ -1,0 +1,151 @@
+# Arquitetura interna do OpenAPI Contract Fuzzer
+# d2 --layout elk --pad 32 system-architecture.d2 system-architecture.svg
+
+direction: down
+grid-columns: 1
+grid-gap: 44
+style.fill: "#FFFFFF"
+
+classes: {
+  group: {
+    style: {
+      fill: "#FAFAFA"
+      stroke: "#90A4AE"
+      stroke-width: 2
+      border-radius: 10
+      font-size: 18
+    }
+  }
+  input: {
+    style: {
+      fill: "#E3F2FD"
+      stroke: "#1565C0"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  planning: {
+    style: {
+      fill: "#FFF8E1"
+      stroke: "#F57F17"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  runtime: {
+    style: {
+      fill: "#E8F5E9"
+      stroke: "#2E7D32"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  evaluation: {
+    style: {
+      fill: "#F3E5F5"
+      stroke: "#7B1FA2"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 20
+    }
+  }
+  evidence: {
+    shape: document
+    style: {
+      fill: "#ECEFF1"
+      stroke: "#455A64"
+      stroke-width: 2
+      font-size: 19
+    }
+  }
+  external: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#37474F"
+      stroke-width: 3
+      stroke-dash: 3
+      border-radius: 8
+      font-size: 20
+    }
+  }
+}
+
+inputs: "Entradas" {
+  grid-columns: 2
+  grid-gap: 36
+  class: group
+
+  contract: "Contrato OpenAPI\nDefine operações, dados e respostas esperadas" {
+    shape: document
+    class: input
+  }
+  configuration: "Configuração da campanha\nDefine alvo, limites e credenciais" {
+    class: input
+  }
+}
+
+plan: "Planejamento rastreável" {
+  direction: down
+  class: group
+
+  parser: "Interpretar o contrato\nCria um modelo interno navegável" {
+    class: planning
+  }
+  generation: "Gerar os casos de teste\nCria o caso-base e as mutações L1/L2" {
+    class: planning
+  }
+  selection: "Preparar as operações\nSeleciona o que será testado e resolve a autenticação" {
+    class: planning
+  }
+  builder: "Montar o plano rastreável\nAtribui um case_id a cada requisição" {
+    class: planning
+  }
+}
+
+execution: "Execução" {
+  grid-columns: 2
+  grid-gap: 48
+  class: group
+
+  runner: "Executar o plano\nEnvia as requisições de forma assíncrona" {
+    class: runtime
+  }
+  target: "API REST avaliada\nRetorna as respostas observadas" {
+    class: external
+  }
+}
+
+evaluation: "Avaliação e evidências" {
+  direction: down
+  class: group
+
+  analyzer: "Verificar a conformidade\nCompara cada resposta com o contrato e o caso" {
+    class: evaluation
+  }
+  fuzzy: "Priorizar os achados\nO sistema fuzzy atribui uma prioridade técnica auditável" {
+    class: evaluation
+  }
+  postprocess: "Consolidar as ocorrências\nCorrelaciona os casos e reúne observações equivalentes" {
+    class: evaluation
+  }
+  artifacts: "Preservar as evidências\nManifesto, plano, resultados, achados e métricas" {
+    class: evidence
+  }
+}
+
+inputs.contract -> plan.parser
+inputs.configuration -> plan.selection
+plan.parser -> plan.selection
+plan.parser -> plan.generation
+plan.selection -> plan.builder
+plan.generation -> plan.builder
+plan.builder -> execution.runner
+execution.runner <-> execution.target
+execution.runner -> evaluation.analyzer
+plan.builder -> evaluation.analyzer {
+  style.stroke-dash: 3
+}
+evaluation.analyzer -> evaluation.fuzzy -> evaluation.postprocess -> evaluation.artifacts

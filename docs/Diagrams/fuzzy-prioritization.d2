@@ -1,0 +1,112 @@
+# Fluxo auditável do sistema fuzzy Mamdani
+# d2 --layout elk --pad 32 fuzzy-prioritization.d2 fuzzy-prioritization.svg
+
+direction: down
+grid-columns: 1
+grid-gap: 44
+style.fill: "#FFFFFF"
+
+classes: {
+  input: {
+    style: {
+      fill: "#E3F2FD"
+      stroke: "#1565C0"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 18
+    }
+  }
+  process: {
+    style: {
+      fill: "#FFF8E1"
+      stroke: "#F57F17"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 19
+    }
+  }
+  rules: {
+    style: {
+      fill: "#F3E5F5"
+      stroke: "#7B1FA2"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 17
+    }
+  }
+  output: {
+    style: {
+      fill: "#E8F5E9"
+      stroke: "#2E7D32"
+      stroke-width: 2
+      border-radius: 8
+      font-size: 18
+    }
+  }
+  row: {
+    style: {
+      fill: transparent
+      stroke: transparent
+    }
+  }
+}
+
+inputs: "" {
+  grid-columns: 3
+  grid-gap: 28
+  class: row
+
+  behavior: "Medir a contradição\nCompara intenção do caso, contrato e resposta" {
+    class: input
+  }
+  evidence: "Medir a força da evidência\n0,5 inicialmente; 1,0 em falha de transporte ou 5xx recorrente" {
+    class: input
+  }
+  access: "Medir a exposição de acesso\n0 normal; 0,6 credencial inválida; 1,0 credencial ausente" {
+    class: input
+  }
+}
+
+fuzzification: "Converter valores em graus de pertinência\nContradição: baixa, média ou alta\nEvidência: limitada ou forte\nExposição: nenhuma, potencial ou clara" {
+  class: process
+}
+
+rule_base: "" {
+  grid-columns: 2
+  grid-gap: 36
+  class: row
+
+  behavior_rules: "Interpretar o comportamento\nR1: baixa → LOW\nR2: média → MEDIUM\nR3: alta + evidência limitada → MEDIUM\nR4: alta + evidência forte → HIGH" {
+    class: rules
+  }
+  access_rules: "Interpretar o controle de acesso\nR5: exposição potencial → MEDIUM\nR6: exposição clara → HIGH" {
+    class: rules
+  }
+}
+
+inference: "Combinar as regras e calcular a pontuação\nAgregação Mamdani e desfuzzificação pelo centroide" {
+  class: process
+}
+
+outputs: "" {
+  grid-columns: 2
+  grid-gap: 36
+  class: row
+
+  priority: "Classificar a prioridade técnica\nLOW < 0,33; MEDIUM entre 0,33 e 0,66; HIGH ≥ 0,66" {
+    class: output
+  }
+  audit: "Explicar a decisão\nRegistra entradas, pertinências, regras ativadas e eventual fallback" {
+    class: output
+  }
+}
+
+inputs.behavior -> fuzzification
+inputs.evidence -> fuzzification
+inputs.access -> fuzzification
+fuzzification -> rule_base.behavior_rules
+fuzzification -> rule_base.access_rules
+rule_base.behavior_rules -> inference
+rule_base.access_rules -> inference
+inference -> outputs.priority
+inference -> outputs.audit
