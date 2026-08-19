@@ -1,13 +1,62 @@
 # OpenAPI Contract Fuzzer
 
-Ferramenta de fuzzing guiada por contrato OpenAPI para APIs REST.
+Ferramenta de teste *black-box* para APIs REST guiada por contratos OpenAPI. O
+projeto interpreta o contrato, gera casos-base e mutações estruturadas, executa
+as requisições e registra divergências entre a resposta observada e o
+comportamento documentado. Os achados são deduplicados e recebem uma prioridade
+técnica auditável por meio de um sistema de inferência fuzzy Mamdani.
 
-## Requisitos
+O objetivo é apoiar a descoberta e a triagem de inconsistências contratuais,
+problemas de robustez e comportamentos de controle de acesso. Um achado não é,
+por si só, uma causa raiz, um defeito confirmado ou uma vulnerabilidade.
 
-- Python 3.10+
-- `pip`
+## Escopo e limitações
 
-## Instalação
+- suporte intencional a um subconjunto de OpenAPI usado pelo projeto, sem
+  pretensão de implementar integralmente a especificação;
+- execução externa à aplicação, sem instrumentação ou cobertura de código;
+- geração *stateless* por operação, com suporte parcial a autenticação e sem
+  sequenciamento *stateful* geral;
+- sem fluxos completos de OAuth2, teste de carga ou confirmação automática de
+  impacto de segurança;
+- resultados limitados às aplicações, contratos, versões e configurações
+  avaliados.
+
+## Arquitetura
+
+O fluxo interno separa interpretação do contrato, geração, execução, análise,
+priorização e persistência. O analisador decide se uma resposta deve produzir
+um achado; o sistema fuzzy atua somente depois dessa decisão.
+
+![Arquitetura interna do fuzzer](docs/Diagrams/system-architecture.svg)
+
+As campanhas reproduzíveis usam um runner específico para cada aplicação. O
+runner prepara um alvo descartável, aguarda sua disponibilidade, executa o
+fuzzer, captura a proveniência do ambiente e encerra a infraestrutura mesmo em
+caso de falha. A deduplicação ocorre depois da captura dos dados brutos.
+
+![Ciclo de uma execução experimental](docs/Diagrams/experimental-architecture.svg)
+
+As fontes D2 estão em [`docs/Diagrams/`](docs/Diagrams/). Os SVGs podem ser
+regenerados com D2 e o layout ELK:
+
+```bash
+d2 --layout elk --pad 32 \
+  docs/Diagrams/system-architecture.d2 \
+  docs/Diagrams/system-architecture.svg
+
+d2 --layout elk --pad 32 \
+  docs/Diagrams/experimental-architecture.d2 \
+  docs/Diagrams/experimental-architecture.svg
+```
+
+O diretório também contém diagramas específicos da
+[rastreabilidade](docs/Diagrams/run-traceability.svg) e da
+[priorização fuzzy](docs/Diagrams/fuzzy-prioritization.svg).
+
+## Instalação e verificações locais
+
+Requisitos: Python 3.10 ou superior e `pip`.
 
 ```bash
 python -m venv .venv
@@ -16,207 +65,170 @@ pip install -U pip
 pip install -e ".[dev]"
 ```
 
-### Testes
-
 ```bash
 pytest -v
 ```
 
-### Lint
+Os testes verificam o núcleo do projeto sem iniciar as aplicações-alvo. As
+campanhas com runners exigem Docker e dependências próprias das aplicações-alvo.
+
+## Execução direta pelo CLI
+
+O CLI pressupõe que a API já esteja disponível. Ele não provisiona nem remove
+o alvo:
 
 ```bash
-ruff check src/ tests/
-```
-
-## Como executar
-Comando base:
-```bash
-python -m fuzzer.main <schema.yaml>
-```
-
-### Argumentos principais
-- `schema` (posicional): caminho para o arquivo OpenAPI (YAML ou JSON)
-- `--base-url`: sobrescreve a URL base definida no schema
-- `--auth <arquivo.yaml>`: configura autenticação dinâmica via arquivo
-- `--auto-auth`: registro + login automáticos (descobre endpoints no schema)
-- `--auth-probe`: envia probes de autenticação (sem token + token inválido) nos endpoints que exigem `security`
-- `--level <int>`: nível de fuzzing (default: 1)
-- `--max <int>`: máximo de mutações individuais por payload (default: 10)
-- `--max-pairs <int>`: máximo adicional de pares L2 por payload (default: 10)
-- `--limit <int>`: limita quantidade de endpoints executados
-- `--all`: executa todos os endpoints
-- `--path <glob>`: filtra endpoints por padrão de path (ex.: /users/*)
-- `--concurrency <int>`: requisições concorrentes (default: 5)
-- `--delay <int>`: atraso em milissegundos entre requisições (default: 0)
-- `--timeout <int>`: timeout em segundos por requisição HTTP (default: 10)
-- `--output-dir <dir>`: diretório de saída (default: output)
-
-Observação: se você não usar `--all`, `--limit` ou `--path`, o projeto executa até 10 endpoints por padrão.
-
-### Exemplo completo
-
-```bash
-python -m fuzzer.main spec.yaml \
-  --base-url http://localhost:8888 \
-  --auto-auth --auth-probe \
-  --level 2 --max 10 --max-pairs 10 \
-  --delay 100 --timeout 15 \
-  --concurrency 5 --all
-```
-
-### Exemplo com autenticação
-```bash
-python -m fuzzer.main biometrique.openapi.yaml \
-  --base-url http://localhost:3000 \
-  --auth auth.yaml \
+python -m fuzzer.main contrato.yaml \
+  --base-url http://127.0.0.1:8000 \
+  --level 2 \
+  --max 20 \
+  --max-pairs 10 \
+  --concurrency 1 \
+  --delay 250 \
+  --timeout 10 \
   --all
 ```
 
-Formato esperado do `auth.yaml`:
+Os níveis controlam a geração:
 
-**Modo estático** (token fixo, sem login):
-```yaml
-auth:
-  inject:
-    headers:
-      Authorization: "Bearer eyJhbGciOi..."
-```
+- `--level 0`: executa somente o caso-base compatível com o contrato;
+- `--level 1`: preserva o caso-base e adiciona mutações isoladas;
+- `--level 2`: preserva L0/L1 e adiciona pares de mutações compatíveis.
 
-**Modo dinâmico** (faz login e extrai token):
-```yaml
-auth:
-  request:
-    method: POST
-    url: http://localhost:3000/auth/login
-    headers:
-      Content-Type: application/json
-    body:
-      email: test@example.com
-      password: secret123
-  response:
-    extract:
-      token: ["access_token"]
-  inject:
-    headers:
-      Authorization: "Bearer {token}"
-```
+A seleção de operações pode ser feita com `--all`, `--limit`, `--path` e
+`--exclude-path`. Sem uma dessas opções, são selecionadas até dez operações.
+`--max` limita as mutações isoladas por payload e `--max-pairs` limita os pares
+adicionais de L2.
 
-Para desabilitar autenticação sem remover o arquivo:
-```yaml
-auth:
-  enabled: false
-  inject:
-    headers:
-      Authorization: "Bearer ..."
-```
+Para autenticação, `--auth arquivo.yaml` injeta credenciais estáticas ou obtidas
+por login; `--auto-auth` tenta localizar registro e login no contrato; e
+`--auth-probe` testa operações protegidas sem credencial e com credencial
+inválida. Cabeçalhos e tokens são redigidos antes da persistência.
 
-### Auto-auth (registro + login automáticos)
-Quando o schema OpenAPI declara `securitySchemes` e endpoints de registro/login,
-o fuzzer pode se autenticar automaticamente sem um `auth.yaml`:
+## Reprodução por runners
+
+Os runners abaixo administram a infraestrutura local. Eles verificam
+pré-condições, iniciam e preparam a aplicação, chamam o runner comum
+[`run_experiment.sh`](scripts/experiments/run_experiment.sh), coletam logs e
+metadados, encerram o alvo e executam a deduplicação. Não é necessário subir ou
+derrubar os contêineres manualmente.
+
+Todos usam `.venv/bin/python` por padrão e aceitam `PYTHON_BIN` para outro
+interpretador. Os checkouts externos são procurados em `../mock-projects`, a
+menos que as variáveis indicadas abaixo sejam definidas.
+
+| Alvo | Runner | Pré-requisitos e configuração externa |
+|---|---|---|
+| VAmPI | [`run_vampi_pilot.sh`](scripts/experiments/run_vampi_pilot.sh) | Docker, `curl` e contrato em `$MOCK_ROOT/VAmPI` |
+| Spring Petclinic REST | [`run_petclinic_pilot.sh`](scripts/experiments/run_petclinic_pilot.sh) | Docker, `curl` e checkout em `$PETCLINIC_ROOT` |
+| OWASP crAPI | [`run_crapi_pilot.sh`](scripts/experiments/run_crapi_pilot.sh) | Docker Compose, `curl` e checkout em `$CRAPI_ROOT` |
+| RealWorld/Conduit | [`run_realworld_pilot.sh`](scripts/experiments/run_realworld_pilot.sh) | Docker Compose, `curl`, `jq`, contrato em `$REALWORLD_SPEC_ROOT` e backend em `$REALWORLD_BACKEND_ROOT` |
+| Meilisearch | [`run_meilisearch_experiment.sh`](scripts/experiments/run_meilisearch_experiment.sh) | Docker, `curl`, `jq`, `shasum` e acesso para baixar o contrato oficial fixado |
+
+Exemplo de uma run L2 identificada, usando a VAmPI:
 
 ```bash
-python -m fuzzer.main schema.yaml --base-url http://localhost:5002 --all --auto-auth
+EXPERIMENT_ID=TCC-PUBLIC-001 \
+LEVEL=2 \
+MAX_MUTATIONS=20 \
+MAX_PAIRS=10 \
+bash scripts/experiments/run_vampi_pilot.sh
 ```
 
-Ele descobre os endpoints de register/login pelo path, gera o corpo da requisição
-a partir do schema (preenchendo todos os campos obrigatórios com valores válidos),
-cria credenciais aleatórias, obtém um token JWT e injeta `Authorization: Bearer`
-**apenas nos endpoints que declaram `security` no schema**.
-
-### Auth probes (--auth-probe)
-Quando usado com `--auto-auth` ou `--auth`, o fuzzer envia **2 probes adicionais**
-para cada endpoint autenticado:
-
-1. **Sem token** — requisição sem header `Authorization`
-2. **Token inválido** — requisição com `Authorization: Bearer invalid_token`
-
-Essas probes são executadas **antes** das mutações para evitar bloqueio por
-requisições lentas em servidores single-thread. O analisador classifica respostas
-4xx que seguem o contrato como `EXPECTED_FAILURE` (autenticação funcionando
-corretamente) ou `ERROR_CONTRADICTION` (resposta fora do contrato).
-
-## Saídas
-Cada execução cria uma pasta em `output/<timestamp>/` contendo:
-
-- `run_manifest.json`: configuração, proveniência, contagens e artefatos
-- `data/execution_plan.json`: plano de execução gerado
-- `data/results.json`: resultados brutos de execução
-- `analysis/analysis_report.md`: resumo leve dos achados (para desenvolvimento)
-- `analysis/analysis_findings.json`: lista de achados com campos principais
-
-A deduplicação é executada automaticamente após uma campanha bem-sucedida e
-produz `analysis/findings_unique.json`, `analysis/metrics.json` e
-`analysis/deduplication_report.md`. O relatório prioriza até 50 achados únicos;
-o JSON preserva o conjunto completo. Cada achado classificado inclui os inputs,
-graus de pertinência e regras ativadas pelo sistema fuzzy. Tokens e cabeçalhos
-de autenticação são redigidos dos artefatos persistidos. Use
-`--no-deduplicate` para preservar somente os dados de execução e a análise
-original, que também são escritos com redação.
-
-Um run também pode ser pós-processado novamente, sem reexecutar a API:
+Os runners das quatro aplicações de desenvolvimento aceitam as mesmas
+variáveis de nível e orçamento. O runner do Meilisearch fixa a configuração
+confirmatória em L2, 20 mutações isoladas e 10 pares; `REPETITIONS` controla a
+quantidade de execuções:
 
 ```bash
-PYTHONPATH=src python scripts/experiments/deduplicate_run.py output/<run>
+EXPERIMENT_ID=TCC-PUBLIC-001 \
+REPETITIONS=1 \
+bash scripts/experiments/run_meilisearch_experiment.sh
 ```
 
-Sua assinatura estrita representa um achado operacional black-box, não uma
-causa raiz, um bug confirmado ou uma vulnerabilidade.
+`RUN_ID` e `OUTPUT_ROOT` permitem identificar a execução e alterar o destino
+dos artefatos. `HOST_PORT` também está disponível em VAmPI, Petclinic,
+RealWorld e Meilisearch; o runner da crAPI usa a porta 8888 definida por sua
+stack. Um diretório de run existente nunca é sobrescrito.
 
-Cada anomalia é classificada por severidade via **motor de lógica fuzzy**:
-- **LOW** — resposta de erro documentada e rápida (comportamento esperado)
-- **MEDIUM** — status não documentado ou contradição no corpo da resposta
-- **HIGH** — erro interno do servidor (5xx) ou anomalia com alta pontuação composta
+## Artefatos e pós-processamento
 
-## Estrutura (resumo)
-`fuzzer/main.py`: fluxo principal da execução
+Cada execução cria `output/experiments/<experimento>/<alvo>/<run-id>/` quando
+iniciada por um runner, ou `output/<run-id>/` na execução direta padrão. A
+estrutura principal é:
 
-`fuzzer/cli/args.py`: argumentos da linha de comando
+```text
+<run-id>/
+├── run_manifest.json
+├── data/
+│   ├── execution_plan.json
+│   ├── results.json
+│   └── ... proveniência específica do alvo
+└── analysis/
+    ├── analysis_findings.json
+    ├── analysis_report.md
+    ├── findings_unique.json
+    ├── metrics.json
+    └── deduplication_report.md
+```
 
-`fuzzer/parser/openapi_parser.py`: parser do schema OpenAPI
+O manifesto registra configuração, revisão do código, hashes, horários,
+contagens e estado da execução. `case_id` correlaciona plano, requisição,
+resposta e achado. A deduplicação usa uma assinatura operacional *black-box*
+para reunir observações equivalentes sem tratá-las como a mesma causa raiz.
 
-`fuzzer/mutator/engine.py`: motor de mutações
-
-`fuzzer/orchestrator/execution_plan_builder.py`: planejamento da execução
-`fuzzer/orchestrator/runner.py`: orquestrador da execução
-
-`fuzzer/executor/executor.py`: cliente de execução das requisições
-
-`fuzzer/analysis/analyzer.py`: análise dos resultados (em construção)
-
-`fuzzer/analysis/fuzzy_engine.py`: motor de lógica fuzzy para scoring de anomalias
-
----
-
-## Comandos úteis — APIs mock para testes
-
-### VAmPI (API vulnerável com OpenAPI)
+O CLI deduplica automaticamente uma execução concluída. Os runners usam
+`--no-deduplicate`, capturam primeiro a proveniência do alvo e chamam depois o
+pós-processador. Uma run também pode ser processada novamente sem executar a
+API:
 
 ```bash
-# Subir container vulnerável (porta 5002)
-docker run -d --name vampi-vuln -p 5002:5000 erev0s/vampi:latest
-
-# Inicializar banco de dados dummy
-curl -s http://localhost:5002/createdb
-
-# Executar fuzzer com auto-auth (registra + login automaticamente)
-python -m fuzzer.main <caminho-para-vampi>/openapi_specs/openapi3.yml \
-  --base-url http://localhost:5002 --all --auto-auth
-
-# Remover container
-docker rm -f vampi-vuln
+PYTHONPATH=src python scripts/experiments/deduplicate_run.py \
+  output/experiments/<experimento>/<alvo>/<run-id>
 ```
 
-### crAPI (API vulnerável completa)
+## Priorização fuzzy
 
-```bash
-# Subir (via docker-compose no diretório do projeto)
-cd <caminho-para-crAPI>/deploy/docker
-docker compose up -d
+O modelo atual (`mamdani-behavior-evidence-access-v3`) recebe três antecedentes:
 
-# Executar fuzzer
-python -m fuzzer.main <caminho-para-openapi>/crapi-openapi-spec.json \
-  --base-url http://localhost:8888 --all --auto-auth --auth-probe
+- contradição entre o comportamento observado e o contrato;
+- força da evidência disponível para o achado;
+- exposição observada em testes de controle de acesso.
 
-# Derrubar
-docker compose down
-```
+Seis regras Mamdani produzem um score entre 0 e 1, convertido nas faixas `LOW`,
+`MEDIUM` e `HIGH`. Cada achado preserva os valores de entrada, graus de
+pertinência, regras ativadas e eventual uso do fallback, permitindo auditar a
+classificação.
+
+O score expressa **prioridade técnica para triagem**. Ele não estima
+explorabilidade, impacto real ou gravidade de segurança e não substitui a
+análise humana do achado. O desenho do modelo está resumido no
+[diagrama de priorização](docs/Diagrams/fuzzy-prioritization.svg).
+
+## Estado experimental
+
+Os três conjuntos preservados têm papéis diferentes:
+
+| Conjunto | Aplicações | Papel |
+|---|---|---|
+| [`TCC-PILOT-001`](experiments/tcc-2026/pilot.yaml) | VAmPI, Petclinic, crAPI e RealWorld | Pilotos L1/L2 usados para desenvolver, corrigir e revisar o pipeline e o modelo fuzzy; não constituem o protocolo final. |
+| [`TCC-PUBLIC-001`](experiments/tcc-2026/public/) | As cinco aplicações | Uma run L2 pública por alvo, produzida pelo pipeline atual para inspeção e reprodução. |
+| `TCC-CONFIRMATORY-001` | Meilisearch v1.45.1 | Cinco repetições externas executadas depois do congelamento do modelo revisado, sem recalibração com o holdout. |
+
+A amostra pública preserva 1.435 requisições concluídas e seus artefatos. Sua
+[documentação própria](experiments/tcc-2026/public/README.md) registra as runs,
+contagens e condições de reprodução. A quantidade de repetições e o papel das
+cinco APIs em uma coleta final ainda dependem do fechamento do protocolo do
+TCC.
+
+## Estrutura do código
+
+- `src/fuzzer/parser/`: interpretação do contrato OpenAPI;
+- `src/fuzzer/generator/` e `src/fuzzer/mutator/`: casos-base e mutações;
+- `src/fuzzer/orchestrator/`: autenticação, plano e coordenação da execução;
+- `src/fuzzer/executor/`: cliente HTTP assíncrono e resultados brutos;
+- `src/fuzzer/analysis/`: detecção, priorização fuzzy e deduplicação;
+- `src/fuzzer/utils/`: manifesto, persistência, redação e utilitários;
+- `scripts/experiments/`: runners e pós-processamento experimental;
+- `experiments/tcc-2026/`: protocolos documentais e amostra pública;
+- `docs/`: artigo e fontes dos diagramas.
