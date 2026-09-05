@@ -120,19 +120,24 @@ execution: "Execução" {
 
 evaluation: "Avaliação e evidências" {
   direction: down
+  grid-columns: 1
   class: group
 
   analyzer: "Verificar a conformidade\nCompara cada resposta com o contrato e o caso" {
     class: evaluation
+    width: 700
   }
   fuzzy: "Priorizar os achados\nO sistema fuzzy atribui uma prioridade técnica auditável" {
     class: evaluation
+    width: 700
   }
   postprocess: "Consolidar as ocorrências\nCorrelaciona os casos e reúne observações equivalentes" {
     class: evaluation
+    width: 700
   }
   artifacts: "Preservar as evidências\nManifesto, plano, resultados, achados e métricas" {
     class: evidence
+    width: 700
   }
 }
 

@@ -58,14 +58,39 @@ classes: {
       stroke: transparent
     }
   }
+  spacer: {
+    style: {
+      fill: transparent
+      stroke: transparent
+      opacity: 0
+    }
+  }
 }
 
-definition: "Definir a execução\nEscolhe contrato, versão do alvo, níveis L0-L2 e limites" {
-  class: setup
+top_row: "" {
+  grid-columns: 3
+  grid-gap: 0
+  class: row
+
+  pad_left: "" { class: spacer }
+  definition: "Definir a execução\nEscolhe contrato, versão do alvo, níveis L0-L2 e limites" {
+    class: setup
+    width: 900
+  }
+  pad_right: "" { class: spacer }
 }
 
-runner: "Preparar a campanha\nO script do alvo valida pré-condições, cria o run_id e autentica" {
-  class: control
+runner_row: "" {
+  grid-columns: 3
+  grid-gap: 0
+  class: row
+
+  pad_left: "" { class: spacer }
+  runner: "Preparar a campanha\nO script do alvo valida pré-condições, cria o run_id e autentica" {
+    class: control
+    width: 900
+  }
+  pad_right: "" { class: spacer }
 }
 
 runtime_row: "" {
@@ -75,9 +100,11 @@ runtime_row: "" {
 
   target: "Inicializar uma API descartável\nProvisiona, prepara os dados e aguarda a API ficar pronta" {
     class: runtime
+    width: 560
   }
   fuzzer: "Executar o fuzzer\nGera casos, envia requisições e analisa respostas" {
     class: process
+    width: 560
   }
 }
 
@@ -88,21 +115,32 @@ capture_row: "" {
 
   cleanup: "Capturar o ambiente e encerrar\nColeta logs e versões e encerra a API mesmo em caso de falha" {
     class: control
+    width: 560
   }
   raw: "Persistir a evidência bruta\nSalva manifesto, plano, resultados e achados" {
     class: evidence
+    width: 560
   }
 }
 
-postprocess: "Consolidar a execução\nCorrelaciona as requisições por case_id, deduplica e gera o relatório" {
-  class: process
+final_row: "" {
+  grid-columns: 3
+  grid-gap: 0
+  class: row
+
+  pad_left: "" { class: spacer }
+  postprocess: "Consolidar a execução\nCorrelaciona as requisições por case_id, deduplica e gera o relatório" {
+    class: process
+    width: 900
+  }
+  pad_right: "" { class: spacer }
 }
 
-definition -> runner: "configura"
-runner -> runtime_row.target: "provisiona e prepara"
-runner -> runtime_row.fuzzer: "invoca"
-runtime_row.target <-> runtime_row.fuzzer: "requisições e respostas HTTP"
+top_row.definition -> runner_row.runner: "configura"
+runner_row.runner -> runtime_row.target: "provisiona e prepara"
+runner_row.runner -> runtime_row.fuzzer: "invoca"
+runtime_row.target <-> runtime_row.fuzzer: "HTTP"
 runtime_row.target -> capture_row.cleanup: "logs e metadados"
 runtime_row.fuzzer -> capture_row.raw: "persiste"
 capture_row.cleanup -> capture_row.raw
-capture_row.raw -> postprocess: "consolida"
+capture_row.raw -> final_row.postprocess: "consolida"
