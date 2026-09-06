@@ -1,40 +1,97 @@
 % TCC — Trabalhos Relacionados
 \section{Trabalhos Relacionados}\label{sec:relacionados}
 
-O uso de OpenAPI para geração automática de testes está estabelecido por
-ferramentas com estratégias e objetivos distintos. A comparação não busca uma
-ferramenta universalmente superior, mas posiciona a proposta quanto à geração
-de casos negativos, exploração de estado, oráculos, reprodução e priorização.
+Esta seção posiciona o projeto diante de ferramentas que também testam APIs
+REST a partir de contratos. A comparação é bibliográfica e não representa uma
+execução conjunta das ferramentas. O objetivo é identificar capacidades e
+limites relevantes para o recorte do TCC, sem produzir um ranking entre
+soluções com objetivos diferentes.
 
-\textit{[Sketch para orientação: as versões consultadas e as fontes primárias
-de cada ferramenta ainda serão incorporadas à bibliografia. A matriz expressa
-um posicionamento provisório, não uma comparação experimental concluída.]}
+Os critérios usados são: fonte do modelo de entrada; modo de acesso à
+aplicação; estratégia de geração; tratamento de estado e dependências; forma
+do oráculo; possibilidade de reproduzir os resultados; e organização ou
+priorização dos achados.
+
+\subsection{Ferramentas selecionadas}
+
+\paragraph{Schemathesis.}
+Schemathesis deriva testes baseados em propriedades a partir de schemas de
+APIs. A geração usa tipos e restrições do contrato e aplica verificações
+semânticas às respostas observadas \cite{hatfielddodds2022schemathesis}. A
+abordagem é black-box e inclui mecanismos para reduzir e reproduzir casos que
+falham. Ela é a ferramenta mais próxima do projeto no uso direto do contrato
+para gerar entradas e verificar propriedades, mas seu foco é o teste baseado
+em propriedades, não a atribuição de uma prioridade fuzzy aos achados.
+
+\paragraph{RESTler.}
+RESTler compila uma especificação Swagger/OpenAPI em uma gramática e infere
+dependências produtor--consumidor entre operações. Com isso, gera sequências
+stateful que criam o estado necessário antes de exercitar parâmetros
+\cite{atlidakis2019restler}. O trabalho também descreve checkers e mecanismos
+de agrupamento de bugs. RESTler é uma referência para dependências entre
+operações; o fuzzer deste TCC cobre esse aspecto apenas parcialmente e não
+pretende oferecer a mesma exploração stateful.
+
+\paragraph{RESTest.}
+RESTest realiza teste black-box orientado por OpenAPI e combina geração
+aleatória com restrições adicionais. O framework contempla casos nominais e
+de falha e associa oráculos aos casos gerados \cite{martinlopez2020restest}.
+Essa abordagem ajuda a separar o uso do contrato da implementação de um
+oráculo, mas depende do modelo e das restrições disponíveis. O projeto se
+aproxima no teste negativo e se diferencia pelo catálogo de mutações e pela
+priorização posterior dos achados.
+
+\paragraph{RestTestGen.}
+RestTestGen apresenta uma arquitetura extensível para teste black-box, com
+parser OpenAPI, provedores de valores, geradores, mutadores, executor e
+oráculos \cite{corradini2022resttestgen}. A decomposição é útil para comparar
+componentes do pipeline e para discutir reprodução dos artefatos. O trabalho
+não define um classificador fuzzy de prioridade; essa é uma parte específica
+da proposta deste TCC.
+
+\subsection{Síntese da comparação}
 
 \begin{table}[ht]
 \centering
-\scalefont{0.78}
-\caption{Matriz preliminar de posicionamento das ferramentas relacionadas}
+\scalefont{0.82}
+\caption{Posicionamento bibliográfico das ferramentas selecionadas}
 \label{tab:ferramentas-relacionadas}
-\begin{tabular}{|p{2.2cm}|p{3.2cm}|p{2.0cm}|p{6.0cm}|}
+\begin{tabular}{|p{2.3cm}|p{2.3cm}|p{1.7cm}|p{2.3cm}|p{2.4cm}|p{2.4cm}|}
 \hline
-\textbf{Ferramenta} & \textbf{Abordagem principal} & \textbf{Estado} & \textbf{Papel no TCC} \\ \hline
-Schemathesis & Testes baseados em propriedades a partir de OpenAPI & Parcialmente stateful & Candidato mais próximo a uma comparação experimental; decisão pendente de orientação \\ \hline
-RESTler & Gramática e sequências derivadas do contrato & Stateful & Referência para dependências, deduplicação e reprodução \\ \hline
-RESTest & Geração black-box aleatória e baseada em restrições & Suporte condicionado & Referência para casos nominais, inválidos e oráculos \\ \hline
-RestTestGen & Framework extensível de teste black-box & Extensível & Comparação arquitetural com parser, mutadores e oráculos \\ \hline
-EvoMaster & Geração orientada por busca & Black-box e white-box & Contraste com técnicas search-based e feedback interno \\ \hline
-Dredd & Execução de exemplos e teste de conformidade & Hooks manuais & Antecedente de teste por contrato, não baseline de fuzzing \\ \hline
+\textbf{Ferramenta} & \textbf{Entrada e geração} & \textbf{Acesso} & \textbf{Estado} & \textbf{Oráculo} & \textbf{Prioridade} \\ \hline
+Schemathesis & Schema + property-based & Black-box & Fluxos conforme configuração & Checks e propriedades & Não identificada na fonte-base \\ \hline
+RESTler & Gramática + sequências & Black-box & Stateful, produtor--consumidor & Checkers e respostas & Não é foco \\ \hline
+RESTest & OpenAPI + restrições & Black-box & Dependente do modelo & Oráculos dos casos & Não é foco \\ \hline
+RestTestGen & Framework modular + mutadores & Black-box & Extensível & Oráculos extensíveis & Não identificada \\ \hline
+Projeto & OpenAPI + mutações tipadas & Black-box & Parcial & Contrato e detectores & FIS Mamdani pós-execução \\ \hline
 \end{tabular}
 \end{table}
 
-Entre as ferramentas levantadas, Schemathesis permanece como o candidato mais
-próximo para uma comparação experimental limitada. Sua inclusão ainda não foi
-definida: comparabilidade, custo e contribuição para a questão central serão
-discutidos com o orientador. As demais ferramentas cumprem papel de referência
-conceitual ou arquitetural, sem pretensão de equivalência experimental direta.
+As quatro ferramentas mostram que “usar OpenAPI” não define uma única técnica.
+Elas diferem na maneira de gerar dados, montar sequências, lidar com estado e
+interpretar respostas. Os trabalhos de revisão também apontam dificuldades
+recorrentes: dependências entre operações, autenticação, dados realistas e
+reprodução das execuções. Esses fatores precisam ser controlados ou registrados
+para que duas campanhas possam ser comparadas \cite{golmohammadi2023rest,zhang2023openproblems}.
 
-No corpus bibliográfico levantado, não foi identificado um mecanismo
-diretamente equivalente à integração proposta entre sinais contratuais,
-evidência observada e um escore fuzzy auditável. Essa observação não constitui
-alegação de inexistência. A contribuição investigada é a integração e a
-avaliação desse mecanismo no pipeline desenvolvido.
+O projeto não reivindica novidade por gerar casos a partir de OpenAPI, testar
+entradas negativas ou verificar status e schema. A proposta investigada é mais
+específica: combinar mutações estruturadas, evidências reproduzíveis e um
+sistema fuzzy que ordena os achados depois da execução. A metodologia avalia
+essa combinação no corpus definido; não há comparação experimental suficiente
+para afirmar superioridade sobre as ferramentas relacionadas.
+
+\subsection{Critério para eventual comparação experimental}
+
+Schemathesis é a candidata mais próxima caso o orientador considere útil uma
+comparação prática. Para ser válida, ela teria de usar os mesmos contratos,
+alvos, número de campanhas, condições de reset e orçamento aproximado. As
+métricas deveriam permanecer limitadas às definidas no TCC: requisições
+concluídas, divergências observadas, famílias deduplicadas, estabilidade e
+reprodução dos artefatos. Cobertura interna, qualidade de implementação ou
+superioridade de uma ferramenta não seriam inferidas sem um protocolo próprio.
+
+Por ora, RESTler, RESTest e RestTestGen cumprem papel de referências
+arquiteturais e metodológicas. EvoMaster e Dredd permanecem registrados no
+material de apoio, mas não entram nesta comparação até que sua utilidade e a
+fonte primária adequada sejam confirmadas.
