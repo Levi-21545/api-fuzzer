@@ -136,8 +136,8 @@ Essa separação evita contar várias mutações que produziram a mesma resposta
 como falhas diferentes. Ela também não afirma que cada grupo corresponde a uma
 causa raiz no código da aplicação.
 
-Para comparar a prioridade atribuída pelo FIS, foi construída uma referência
-independente do seu resultado. Cada família foi apresentada com o contrato, a
+Na avaliação histórica de desenvolvimento e confirmação do FIS, foi construída
+uma referência independente do seu resultado. Cada família foi apresentada com o contrato, a
 requisição, a resposta e a repetição observada, mas sem mostrar a classificação
 do analisador nem a prioridade calculada pelo FIS. Três avaliações independentes
 aplicaram a mesma rubrica de LOW, MEDIUM e HIGH. Quando não houve maioria, uma
@@ -145,16 +145,28 @@ quarta avaliação decidiu o caso sem acesso às avaliações anteriores ou ao F
 Essa referência serve para a comparação operacional; não é uma avaliação de
 especialistas humanos e não confirma vulnerabilidades.
 
-O FIS é comparado com uma regra mais simples, que usa apenas o desvio do status
-HTTP. As duas abordagens recebem as mesmas famílias como entrada. A análise
-registra a matriz de confusão, a acurácia, o macro-F1 e o erro ordinal médio,
+Nesse conjunto histórico, o FIS é comparado com uma regra mais simples, que usa
+apenas o desvio do status HTTP. As duas abordagens recebem as mesmas famílias
+como entrada. A análise registra a matriz de confusão, a acurácia, o macro-F1
+e o erro ordinal médio,
 codificando LOW, MEDIUM e HIGH como 0, 1 e 2. O erro ordinal é a média das
 diferenças absolutas entre a faixa prevista e a faixa de referência. Quando
 uma classe estiver ausente na referência, serão apresentados separadamente o
 macro-F1 das três classes e o das classes observadas, declarando a ausência.
 Famílias sem prioridade sustentada são contabilizadas separadamente e não
 entram nessas métricas. Cada família contribui uma única vez para a comparação.
-A estabilidade é medida pela presença de
+
+A coleta final não inclui nova rotulagem cega nem transferência dos rótulos
+históricos para os novos achados. Ela avalia execução e completude dos
+artefatos, divergências observadas, redução por deduplicação e estabilidade,
+além de descrever a distribuição dos escores e das faixas de prioridade.
+Sem uma referência para esses novos resultados, não serão calculadas métricas
+de acerto da prioridade nem inferida sua correção a partir da distribuição.
+O FIS permanece sem recalibração. Assim, a comparação histórica de prioridade
+e a coleta final constituem evidências complementares, com conjuntos e
+finalidades distintos.
+
+Na coleta final, a estabilidade é medida pela presença de
 uma mesma assinatura nas cinco campanhas, sem um replay adicional de cada
 requisição. Uma assinatura é considerada estável quando aparece em pelo menos
 quatro campanhas sob a mesma configuração.
