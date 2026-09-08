@@ -9,7 +9,7 @@ PYTHON_BIN="${PYTHON_BIN:-${REPO_ROOT}/.venv/bin/python}"
 
 PETCLINIC_ROOT="${PETCLINIC_ROOT:-${REPO_ROOT}/../mock-projects/spring-petclinic-rest}"
 SCHEMA="${PETCLINIC_ROOT}/src/main/resources/openapi.yml"
-IMAGE="springcommunity/spring-petclinic-rest:4.0.2"
+IMAGE="springcommunity/spring-petclinic-rest@sha256:151a8709c664d77c9d118aa79474fcbcf06fc4c65f975143c294a58e3cf2c2f4"
 CONTAINER="api-fuzzer-petclinic-pilot"
 PORT="${HOST_PORT:-9966}"
 BASE_URL="http://127.0.0.1:${PORT}/petclinic/api"

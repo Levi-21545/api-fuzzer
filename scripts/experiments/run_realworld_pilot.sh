@@ -14,6 +14,10 @@ SPEC_ROOT="$(cd -- "${SPEC_ROOT}" && pwd)"
 BACKEND_ROOT="$(cd -- "${BACKEND_ROOT}" && pwd)"
 SCHEMA="${SPEC_ROOT}/specs/api/openapi.yml"
 COMPOSE_FILE="${BACKEND_ROOT}/docker-compose.yml"
+# Preserve the executable from the 2026-09-04 audit, not a new dependency solve.
+BACKEND_IMAGE="sha256:3bb0bcd5f84c18a7ee6c71df24534cc6c0dbc7e36a202137eefc25b0d2c4878a"
+BACKEND_SOURCE_COMMIT="04ef47ced437ee8795a13bdcbc2eff2be19e33bd"
+DATABASE_IMAGE="postgres@sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280"
 
 PORT="${HOST_PORT:-18080}"
 BASE_URL="http://127.0.0.1:${PORT}/api"
@@ -23,14 +27,6 @@ OUTPUT_ROOT="${OUTPUT_ROOT:-${REPO_ROOT}/output/experiments/${EXPERIMENT_ID}/rea
 RUN_DIR="${OUTPUT_ROOT}/${RUN_ID}"
 PROJECT_SUFFIX="$(printf '%s' "${RUN_ID}" | tr '[:upper:]_' '[:lower:]-' | tr -cd 'a-z0-9-')"
 COMPOSE_PROJECT="${COMPOSE_PROJECT:-api-fuzzer-realworld-${PROJECT_SUFFIX}}"
-
-TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/api-fuzzer-realworld.XXXXXX")"
-OVERRIDE_FILE="${TEMP_DIR}/compose.override.yml"
-BOOTSTRAP_LOG="${TEMP_DIR}/bootstrap.log"
-AUTH_CONFIG="${TEMP_DIR}/auth.yml"
-AUTH_RESULT="${TEMP_DIR}/authentication.json"
-LOGIN_RESPONSE="${TEMP_DIR}/login.json"
-PHASE="environment_check"
 
 for required in "${SCHEMA}" "${COMPOSE_FILE}" "${RUNNER}" "${DEDUPLICATOR}"; do
   if [[ ! -f "${required}" ]]; then
@@ -56,19 +52,40 @@ fi
 
 SPEC_COMMIT="$(git -C "${SPEC_ROOT}" rev-parse HEAD)"
 BACKEND_COMMIT="$(git -C "${BACKEND_ROOT}" rev-parse HEAD)"
+if [[ "${BACKEND_COMMIT}" != "${BACKEND_SOURCE_COMMIT}" ]]; then
+  echo "RealWorld checkout must match frozen source ${BACKEND_SOURCE_COMMIT}." >&2
+  exit 1
+fi
+if ! docker image inspect "${BACKEND_IMAGE}" >/dev/null 2>&1; then
+  echo "Frozen RealWorld image missing: ${BACKEND_IMAGE}. Load its saved archive; see README." >&2
+  exit 1
+fi
 
-# Remove the target's fixed port and source bind mount. The image is built from
-# the target checkout, but the running container cannot write back into it.
+TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/api-fuzzer-realworld.XXXXXX")"
+OVERRIDE_FILE="${TEMP_DIR}/compose.override.yml"
+BOOTSTRAP_LOG="${TEMP_DIR}/bootstrap.log"
+AUTH_CONFIG="${TEMP_DIR}/auth.yml"
+AUTH_RESULT="${TEMP_DIR}/authentication.json"
+LOGIN_RESPONSE="${TEMP_DIR}/login.json"
+PHASE="environment_check"
+
+# Reuse the frozen image and remove the source bind mount and build definition.
 cat >"${OVERRIDE_FILE}" <<EOF
 services:
   realword-app:
+    image: ${BACKEND_IMAGE}
+    build: !reset null
+    pull_policy: never
     ports: !override
       - "127.0.0.1:${PORT}:8000"
     volumes: !override []
+  db:
+    image: ${DATABASE_IMAGE}
 EOF
 
 compose() {
   docker compose \
+    --env-file /dev/null \
     --project-name "${COMPOSE_PROJECT}" \
     --project-directory "${BACKEND_ROOT}" \
     --file "${COMPOSE_FILE}" \
@@ -81,6 +98,8 @@ cleanup() {
     compose logs --no-color >"${RUN_DIR}/data/target_stack.log" 2>&1 || true
     cp "${BOOTSTRAP_LOG}" "${RUN_DIR}/data/bootstrap.log" 2>/dev/null || true
     cp "${AUTH_RESULT}" "${RUN_DIR}/data/authentication.json" 2>/dev/null || true
+    docker image inspect "${BACKEND_IMAGE}" "${DATABASE_IMAGE}" \
+      >"${RUN_DIR}/data/target_images.json" 2>/dev/null || true
   fi
   compose down --volumes --remove-orphans >/dev/null 2>&1 || true
 }
@@ -129,8 +148,8 @@ if [[ "${db_ready}" -ne 1 ]]; then
 fi
 
 PHASE="application_start"
-echo "Building and starting RealWorld at ${BASE_URL}"
-compose up --detach --build realword-app >>"${BOOTSTRAP_LOG}" 2>&1
+echo "Starting frozen RealWorld at ${BASE_URL}"
+compose up --detach --no-build realword-app >>"${BOOTSTRAP_LOG}" 2>&1
 
 ready=0
 for _attempt in {1..90}; do
@@ -209,7 +228,7 @@ auth:
 EOF
 
 PHASE="fuzzer_campaign"
-API_FUZZER_TARGET_IMAGE="RealWorld backend ${BACKEND_COMMIT}; canonical contract ${SPEC_COMMIT}" \
+API_FUZZER_TARGET_IMAGE="RealWorld ${BACKEND_IMAGE}; backend ${BACKEND_COMMIT}; canonical contract ${SPEC_COMMIT}; see target_images.json" \
 RUN_ID="${RUN_ID}" \
 OUTPUT_ROOT="${OUTPUT_ROOT}" \
 "${RUNNER}" \

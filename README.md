@@ -122,7 +122,7 @@ menos que as variáveis indicadas abaixo sejam definidas.
 | VAmPI | [`run_vampi_pilot.sh`](scripts/experiments/run_vampi_pilot.sh) | Docker, `curl` e contrato em `$MOCK_ROOT/VAmPI` |
 | Spring Petclinic REST | [`run_petclinic_pilot.sh`](scripts/experiments/run_petclinic_pilot.sh) | Docker, `curl` e checkout em `$PETCLINIC_ROOT` |
 | OWASP crAPI | [`run_crapi_pilot.sh`](scripts/experiments/run_crapi_pilot.sh) | Docker Compose, `curl` e checkout em `$CRAPI_ROOT` |
-| RealWorld/Conduit | [`run_realworld_pilot.sh`](scripts/experiments/run_realworld_pilot.sh) | Docker Compose, `curl`, `jq`, contrato em `$REALWORLD_SPEC_ROOT` e backend em `$REALWORLD_BACKEND_ROOT` |
+| RealWorld/Conduit | [`run_realworld_pilot.sh`](scripts/experiments/run_realworld_pilot.sh) | Docker Compose, `curl`, `jq`, contrato em `$REALWORLD_SPEC_ROOT`, backend em `$REALWORLD_BACKEND_ROOT` e imagem local congelada (abaixo) |
 | Meilisearch | [`run_meilisearch_experiment.sh`](scripts/experiments/run_meilisearch_experiment.sh) | Docker, `curl`, `jq`, `shasum` e acesso para baixar o contrato oficial fixado |
 
 Exemplo de uma run L2 identificada, usando a VAmPI:
@@ -150,6 +150,39 @@ bash scripts/experiments/run_meilisearch_experiment.sh
 dos artefatos. `HOST_PORT` também está disponível em VAmPI, Petclinic,
 RealWorld e Meilisearch; o runner da crAPI usa a porta 8888 definida por sua
 stack. Um diretório de run existente nunca é sobrescrito.
+
+### Imagens congeladas
+
+Petclinic, VAmPI e Meilisearch usam referências por digest. Na crAPI,
+[`crapi-images.yaml`](scripts/experiments/crapi-images.yaml) complementa o
+Compose original apenas com as nove imagens usadas pelo runner e a plataforma
+`linux/amd64` do Mongo. O serviço opcional de gateway do Compose original não
+é iniciado pelo runner. Os digests preservam as imagens das verificações locais;
+não representam atualização das aplicações.
+
+O RealWorld reutiliza a imagem **arm64** da auditoria de 04/09/2026, construída
+do backend `04ef47ced437ee8795a13bdcbc2eff2be19e33bd`:
+`sha256:3bb0bcd5f84c18a7ee6c71df24534cc6c0dbc7e36a202137eefc25b0d2c4878a`.
+O runner exige essa imagem local e esse commit do checkout, fixa o PostgreSQL
+por digest e não executa build. As imagens efetivas são registradas em
+`data/target_images.json` em cada campanha.
+
+A imagem pode ser preservada e restaurada sem uma nova resolução de dependências:
+
+```bash
+mkdir -p output/frozen-images
+# Executar uma vez, sem sobrescrever um arquivo já preservado.
+docker image save --output output/frozen-images/realworld-3bb0bcd5f84c.tar \
+  sha256:3bb0bcd5f84c18a7ee6c71df24534cc6c0dbc7e36a202137eefc25b0d2c4878a
+docker image load --input output/frozen-images/realworld-3bb0bcd5f84c.tar
+```
+
+Esse arquivo é local e ignorado pelo Git; não acompanha o clone do repositório.
+Sem ele ou a imagem já carregada, a execução do RealWorld é bloqueada. Um build
+novo pode resolver dependências diferentes e não substitui silenciosamente a
+imagem congelada. Disponibilizar o arquivo para reprodução externa e garantir
+um rebuild idêntico são questões distintas; este procedimento garante somente
+a reutilização do mesmo executável nas campanhas locais.
 
 ## Artefatos e pós-processamento
 

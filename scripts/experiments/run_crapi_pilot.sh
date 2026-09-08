@@ -11,10 +11,10 @@ CRAPI_ROOT="${CRAPI_ROOT:-${REPO_ROOT}/../mock-projects/crAPI}"
 DEPLOY_DIR="${CRAPI_ROOT}/deploy/docker"
 COMPOSE_FILE="${DEPLOY_DIR}/docker-compose.yml"
 MINIMAL_FILE="${DEPLOY_DIR}/docker-compose.minimal.yml"
+IMAGES_FILE="${SCRIPT_DIR}/crapi-images.yaml"
 SCHEMA="${CRAPI_ROOT}/openapi-spec/crapi-openapi-spec.json"
 
 CRAPI_SOURCE_VERSION="$(tr -d '[:space:]' <"${CRAPI_ROOT}/VERSION")"
-CRAPI_IMAGE_TAG="${CRAPI_IMAGE_TAG:-main}"
 COMPOSE_PROJECT="api-fuzzer-crapi-pilot"
 BASE_URL="http://127.0.0.1:8888"
 EXPERIMENT_ID="${EXPERIMENT_ID:-TCC-PILOT-001}"
@@ -28,7 +28,7 @@ if [[ ! -f "${SCHEMA}" ]]; then
   exit 1
 fi
 
-if [[ ! -f "${COMPOSE_FILE}" || ! -f "${MINIMAL_FILE}" ]]; then
+if [[ ! -f "${COMPOSE_FILE}" || ! -f "${MINIMAL_FILE}" || ! -f "${IMAGES_FILE}" ]]; then
   echo "crAPI Compose files were not found under: ${DEPLOY_DIR}" >&2
   exit 1
 fi
@@ -42,7 +42,7 @@ mkdir -p "${OUTPUT_ROOT}"
 
 compose() {
   env \
-    VERSION="${CRAPI_IMAGE_TAG}" \
+    VERSION=main \
     LISTEN_IP="127.0.0.1" \
     docker compose \
       --env-file /dev/null \
@@ -50,6 +50,7 @@ compose() {
       --project-directory "${DEPLOY_DIR}" \
       --file "${COMPOSE_FILE}" \
       --file "${MINIMAL_FILE}" \
+      --file "${IMAGES_FILE}" \
       --compatibility \
       "$@"
 }
@@ -93,7 +94,7 @@ done
 
 trap cleanup EXIT
 
-echo "Starting crAPI source ${CRAPI_SOURCE_VERSION} with image tag ${CRAPI_IMAGE_TAG}"
+echo "Starting crAPI source ${CRAPI_SOURCE_VERSION} with pinned images"
 echo "Target URL: ${BASE_URL}"
 compose up --detach --pull missing crapi-chatbot crapi-web >"${BOOTSTRAP_LOG}" 2>&1
 
@@ -117,7 +118,7 @@ if [[ "${ready}" -ne 1 ]]; then
   exit 1
 fi
 
-API_FUZZER_TARGET_IMAGE="crAPI source ${CRAPI_SOURCE_VERSION}; images ${CRAPI_IMAGE_TAG}; see target_images.json" \
+API_FUZZER_TARGET_IMAGE="crAPI source ${CRAPI_SOURCE_VERSION}; pinned images; see target_images.json" \
 RUN_ID="${RUN_ID}" \
 OUTPUT_ROOT="${OUTPUT_ROOT}" \
 "${RUNNER}" \
