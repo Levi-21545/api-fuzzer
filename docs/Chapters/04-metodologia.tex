@@ -1,35 +1,11 @@
 % TCC — Metodologia
 \section{Metodologia}\label{sec:metodologia}
 
-Esta pesquisa é aplicada e experimental e avalia um \textit{fuzzer}
-\textit{black-box} orientado por contratos OpenAPI. A investigação considera
-três perguntas complementares: quais divergências técnicas são observadas em
-APIs distintas, com que estabilidade os comportamentos reaparecem em campanhas
-repetidas e se a priorização ajuda a organizar os achados para triagem. Neste estudo, o
-sistema de inferência fuzzy (FIS) atribui uma prioridade técnica a cada
-anomalia observada. A pontuação não representa explorabilidade, impacto real
-nem gravidade de segurança demonstrada.
-
-As três formulações abaixo são mantidas provisoriamente para escolher a
-pergunta que melhor representa o trabalho:
-
-\begin{enumerate}
-    \item \textit{Como um pipeline black-box orientado por OpenAPI pode
-    produzir evidências reprodutíveis e priorizadas para a triagem de
-    divergências em APIs REST durante ciclos de integração contínua?}
-    \item \textit{De que forma um fuzzer black-box orientado por OpenAPI pode
-    transformar divergências observadas em evidências reproduzíveis,
-    deduplicadas e priorizadas para a triagem de APIs REST em ciclos de
-    integração contínua?}
-    \item \textit{Quais evidências de execução, estabilidade e prioridade um
-    pipeline black-box orientado por OpenAPI produz ao testar APIs REST, e
-    quais condições determinam sua utilidade para triagem em ciclos de
-    integração contínua?}
-\end{enumerate}
-
-Nas três versões, integração contínua delimita o contexto de uso. O trabalho
-não implementa workflow, plugin, quality gate ou outra integração específica
-com uma esteira.
+Para responder à questão de pesquisa, adota-se uma avaliação aplicada e
+experimental, baseada em execuções locais controladas. Esta seção define o
+papel das aplicações, a geração dos casos, as condições de repetição e as
+métricas usadas para analisar os artefatos produzidos. O protocolo distingue
+as evidências históricas de desenvolvimento da coleta final planejada.
 
 \subsection{Desenho do Estudo e Papel das Aplicações}
 
@@ -51,13 +27,12 @@ usadas no desenvolvimento continuarão identificadas como conjunto de pilotos. O
 Meilisearch será analisado no mesmo conjunto de campanhas, mas manterá o papel
 separado de aplicação externa ao desenvolvimento do FIS.
 
-O Meilisearch já possui cinco campanhas completas. Elas serão reaproveitadas
-somente se a conferência dos manifestos (arquivos de registro da execução)
-confirmar a mesma revisão do fuzzer,
-contrato, configuração, procedimento de reset e conjunto de artefatos exigidos
-para a coleta. Se algum desses elementos não puder ser comprovado, as
-campanhas serão repetidas. A data não precisa ser igual à das demais APIs; o
-que precisa ser igual é o protocolo registrado.
+O Meilisearch já possui cinco campanhas completas de confirmação do FIS.
+Elas permanecem como evidência histórica. A coleta final será formada por 25
+campanhas novas, cinco por aplicação, executadas a partir da mesma revisão do
+repositório e com árvore de trabalho limpa. Os manifestos registrarão o commit,
+os hashes dos contratos e a configuração. Verificações prévias dos runners
+não integram esse conjunto final.
 
 A repetição não existe para fazer o fuzzer sortear casos diferentes. Com o mesmo
 contrato, revisão e configuração, o plano de requisições tende a ser o mesmo.
@@ -69,8 +44,9 @@ resposta ou uma falha transitória podem mudar entre campanhas.
 \subsection{Geração dos Testes e Níveis de Mutação}
 
 A geração começa com um caso compatível com as informações interpretadas do
-contrato. A partir dele, o motor aplica operadores tipados sobre parâmetros e
-corpos. Três níveis organizam a exploração:
+contrato. A partir dele, o motor aplica operadores tipados aos corpos JSON.
+Os parâmetros de caminho, consulta e cabeçalho recebem valores gerados, mas
+não participam desse motor de mutações. Três níveis organizam a exploração:
 
 \begin{itemize}
     \item \textbf{Nível 0 (L0) --- caso-base:} executa a entrada gerada para
@@ -145,7 +121,9 @@ cinco unidades:
 
 \begin{itemize}
     \item uma \textbf{requisição}, que é um caso enviado à API;
-    \item um \textbf{achado}, que é a divergência observada nessa requisição;
+    \item uma \textbf{observação classificada}, emitida pelo analisador para
+    uma requisição; rejeições esperadas entram nas contagens de execução,
+    enquanto as demais observações candidatas são os achados para triagem;
     \item uma \textbf{assinatura}, isto é, um identificador que agrupa
     observações equivalentes por aplicação, operação, classificação, status e
     resposta normalizada;
@@ -169,12 +147,20 @@ especialistas humanos e não confirma vulnerabilidades.
 
 O FIS é comparado com uma regra mais simples, que usa apenas o desvio do status
 HTTP. As duas abordagens recebem as mesmas famílias como entrada. A análise
-registra a proporção de classificações iguais, o desempenho por classe (LOW,
-MEDIUM e HIGH), a distância entre erros de prioridade e a correlação entre o
-ranking produzido e a referência. A estabilidade é medida pela presença de
+registra a matriz de confusão, a acurácia, o macro-F1 e o erro ordinal médio,
+codificando LOW, MEDIUM e HIGH como 0, 1 e 2. O erro ordinal é a média das
+diferenças absolutas entre a faixa prevista e a faixa de referência. Quando
+uma classe estiver ausente na referência, serão apresentados separadamente o
+macro-F1 das três classes e o das classes observadas, declarando a ausência.
+Famílias sem prioridade sustentada são contabilizadas separadamente e não
+entram nessas métricas. Cada família contribui uma única vez para a comparação.
+A estabilidade é medida pela presença de
 uma mesma assinatura nas cinco campanhas, sem um replay adicional de cada
 requisição. Uma assinatura é considerada estável quando aparece em pelo menos
 quatro campanhas sob a mesma configuração.
+A proporção estável usa como denominador a união das assinaturas candidatas
+das cinco campanhas da mesma aplicação. Se não houver assinaturas, a proporção
+é registrada como não aplicável e o resultado zero é preservado.
 
 \subsection{Limitações e Ameaças à Interpretação}
 

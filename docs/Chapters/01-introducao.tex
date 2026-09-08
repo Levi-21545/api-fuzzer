@@ -24,18 +24,14 @@ plano de execução, envia requisições, confronta as respostas com o contrato 
 produz artefatos rastreáveis. Um sistema de inferência fuzzy Mamdani atribui
 prioridade técnica às anomalias reportadas depois da classificação contratual.
 
-A questão central provisória é: em que medida um \textit{fuzzer} de caixa-preta,
-guiado por um subconjunto de OpenAPI, produz achados tecnicamente relevantes em
-APIs REST e em que medida um sistema de inferência fuzzy fornece uma ordenação
-de prioridade coerente com critérios definidos independentemente de seu
-escore?
+A questão central é: \textit{Quais contribuições e limitações a combinação de
+fuzzing black-box orientado por OpenAPI, deduplicação e priorização fuzzy
+apresenta para a triagem de divergências em APIs REST?}
 
-A avaliação é organizada em três dimensões complementares: (i) capacidade de
-geração e detecção de diferentes anomalias contratuais e comportamentais;
-(ii) coerência da prioridade técnica atribuída aos achados; e (iii) estabilidade
-dos comportamentos observados quando há campanhas repetidas. A terceira
-dimensão foi examinada no \textit{holdout}; sua extensão ao restante do corpus
-depende da definição do protocolo final com o orientador.
+A avaliação é organizada em três dimensões complementares: (i) execução e
+completude das evidências de anomalias contratuais e comportamentais;
+(ii) estabilidade dos comportamentos entre campanhas; e (iii) redução por
+deduplicação e coerência da prioridade técnica para triagem.
 
 Quatro APIs foram utilizadas como pilotos de desenvolvimento, permitindo
 auditar a configuração inicial e formular um modelo revisado. Após o
@@ -53,6 +49,9 @@ cobertura de código ou confirmação automática de vulnerabilidades. Um achado
 pode representar \textit{contract drift}, incompatibilidade funcional,
 robustez ou comportamento de controle de acesso e ainda exigir interpretação
 antes de ser tratado como defeito.
+
+Integração contínua constitui um contexto de uso potencial e uma motivação,
+mas o trabalho não implementa nem avalia integração com uma esteira.
 
 O restante deste artigo está organizado da seguinte forma. A
 Seção~\ref{sec:fundamentacao} apresenta os conceitos necessários. A
