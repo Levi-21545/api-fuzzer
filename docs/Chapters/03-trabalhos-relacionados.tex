@@ -1,97 +1,148 @@
 % TCC — Trabalhos Relacionados
 \section{Trabalhos Relacionados}\label{sec:relacionados}
 
-Esta seção posiciona o projeto diante de ferramentas que também testam APIs
-REST a partir de contratos. A comparação é bibliográfica e não representa uma
-execução conjunta das ferramentas. O objetivo é identificar capacidades e
-limites relevantes para o recorte do TCC, sem produzir um ranking entre
-soluções com objetivos diferentes.
+Esta seção compara estratégias de teste automatizado de APIs REST que usam um
+contrato como entrada. A análise é exclusivamente bibliográfica: nenhuma dessas
+ferramentas foi executada como baseline experimental. O objetivo não é escolher
+uma vencedora, mas identificar como diferentes trabalhos tratam geração,
+estado, oráculos e apresentação dos resultados, preservando os limites das
+versões e dos experimentos descritos nas fontes.
 
-Os critérios usados são: fonte do modelo de entrada; modo de acesso à
-aplicação; estratégia de geração; tratamento de estado e dependências; forma
-do oráculo; possibilidade de reproduzir os resultados; e organização ou
-priorização dos achados.
+Foram selecionados Schemathesis, RESTler, RESTest e RestTestGen porque possuem
+fontes primárias acessíveis e cobrem decisões diretamente relacionadas ao
+projeto. A comparação observa: formato de contrato e acesso black-box ou
+white-box; geração válida, inválida e stateful; oráculos e classes de falha;
+artefatos, reprodução e deduplicação; priorização de resultados; e relação
+declarada com integração contínua.
 
-\subsection{Ferramentas selecionadas}
+\subsection{Estratégias de geração e tratamento de estado}
 
-\paragraph{Schemathesis.}
-Schemathesis deriva testes baseados em propriedades a partir de schemas de
-APIs. A geração usa tipos e restrições do contrato e aplica verificações
-semânticas às respostas observadas \cite{hatfielddodds2022schemathesis}. A
-abordagem é black-box e inclui mecanismos para reduzir e reproduzir casos que
-falham. Ela é a ferramenta mais próxima do projeto no uso direto do contrato
-para gerar entradas e verificar propriedades, mas seu foco é o teste baseado
-em propriedades, não a atribuição de uma prioridade fuzzy aos achados.
+As quatro abordagens partem de uma descrição de API, mas não constroem o espaço
+de testes da mesma forma. RESTler compila Swagger/OpenAPI em uma gramática,
+infere dependências produtor--consumidor e usa valores extraídos das respostas
+para formar sequências stateful. A execução fornece realimentação para descartar
+sequências inviáveis e aprofundar estados alcançáveis
+\cite{atlidakis2019restler}. Seu ponto central é a ordem entre operações e a
+propagação de recursos dinâmicos.
 
-\paragraph{RESTler.}
-RESTler compila uma especificação Swagger/OpenAPI em uma gramática e infere
-dependências produtor--consumidor entre operações. Com isso, gera sequências
-stateful que criam o estado necessário antes de exercitar parâmetros
-\cite{atlidakis2019restler}. O trabalho também descreve checkers e mecanismos
-de agrupamento de bugs. RESTler é uma referência para dependências entre
-operações; o fuzzer deste TCC cobre esse aspecto apenas parcialmente e não
-pretende oferecer a mesma exploração stateful.
+RESTest trabalha no nível de uma operação por caso. Ele gera entradas nominais
+e variantes inválidas e pode enriquecer OpenAPI com IDL4OAS para expressar
+dependências entre parâmetros que o contrato comum não contém. A geração
+baseada em restrições tenta satisfazer ou violar deliberadamente essas
+dependências \cite{martinlopez2020restest}. Assim, sua noção de dependência está
+principalmente dentro da requisição, enquanto a exploração stateful entre
+operações não é o foco do artigo-base.
 
-\paragraph{RESTest.}
-RESTest realiza teste black-box orientado por OpenAPI e combina geração
-aleatória com restrições adicionais. O framework contempla casos nominais e
-de falha e associa oráculos aos casos gerados \cite{martinlopez2020restest}.
-Essa abordagem ajuda a separar o uso do contrato da implementação de um
-oráculo, mas depende do modelo e das restrições disponíveis. O projeto se
-aproxima no teste negativo e se diferencia pelo catálogo de mutações e pela
-priorização posterior dos achados.
+Schemathesis deriva geradores e propriedades de OpenAPI ou GraphQL por meio de
+teste baseado em propriedades. A fonte descreve geração de entradas válidas e
+negativas, redução automática de casos que falham e testes em máquina de
+estados, estes dependentes de relações entre operações como os links de
+OpenAPI \cite{hatfielddodds2021schemathesis}. RestTestGen, por sua vez, oferece
+componentes extensíveis para parser, templates de dados, provedores de valores,
+mutadores, ordenação, execução e oráculos. Sua estratégia nominal ordena
+operações a partir de um grafo de dependências e reutiliza valores observados;
+a estratégia de erro aplica mutações a interações nominais bem-sucedidas
+\cite{corradini2022resttestgen}.
 
-\paragraph{RestTestGen.}
-RestTestGen apresenta uma arquitetura extensível para teste black-box, com
-parser OpenAPI, provedores de valores, geradores, mutadores, executor e
-oráculos \cite{corradini2022resttestgen}. A decomposição é útil para comparar
-componentes do pipeline e para discutir reprodução dos artefatos. O trabalho
-não define um classificador fuzzy de prioridade; essa é uma parte específica
-da proposta deste TCC.
+Essas diferenças produzem custos e alcances distintos. Na comparação histórica
+de Corradini et al., RestTestGen, RESTler, bBOXRT e RESTest foram avaliados em
+14 serviços com versões e configurações de 2021; Schemathesis não integrou esse
+corpus. Robustez da ferramenta, enumeração de sequências e diversidade de dados
+competiram pelo mesmo orçamento de teste \cite{corradini2021comparison}. Os
+resultados ajudam a explicar os trade-offs, mas não estabelecem superioridade
+atual ou universal de uma estratégia.
 
-\subsection{Síntese da comparação}
+\subsection{Oráculos, evidências e triagem}
 
-\begin{table}[ht]
+As fontes também divergem no que consideram um resultado relevante. O artigo
+inicial do RESTler trata respostas 5xx como bugs observáveis e associa cada uma
+à sequência que a produziu. Como ocorrências repetidas são frequentes, propõe
+\emph{bucketization} por sufixos de sequências para facilitar a inspeção; os
+autores relatam que os bugs do estudo puderam ser reproduzidos
+\cite{atlidakis2019restler}. Esse agrupamento é específico ao modelo do RESTler
+e não prova causa raiz comum.
+
+RESTest explicita cinco oráculos: ausência de 5xx, conformidade da resposta com
+OAS, rejeição de violações de parâmetros, rejeição de violações de dependências
+e não rejeição de requisições consideradas válidas. Também gera testes Java
+executáveis e oferece execução offline ou online; a fonte apresenta esta última
+como aplicável a um ambiente de integração contínua
+\cite{martinlopez2020restest}. O artigo não descreve um ranking pós-execução ou
+uma deduplicação geral dos achados.
+
+Schemathesis deriva propriedades de semânticas HTTP e do schema, incluindo
+status não declarado, corpo incompatível e rejeição de entrada inválida. O
+backend de teste baseado em propriedades fornece redução e deduplicação de
+erros, e os testes derivados podem integrar uma suíte existente ou ser
+executados diretamente \cite{hatfielddodds2021schemathesis}. RestTestGen
+separa oráculos de status e schema, registra sequências, requisições, respostas
+e resultados dos oráculos em relatórios JSON e pode materializar casos com
+REST-assured \cite{corradini2022resttestgen}. Na fonte-base, nenhuma das duas
+abordagens apresenta um classificador geral de prioridade técnica dos achados.
+
+Para tornar os limites verificáveis, a Tabela~\ref{tab:ferramentas-relacionadas}
+resume apenas capacidades documentadas nas fontes citadas. ``Não demonstrado''
+significa que o aspecto não foi caracterizado no trabalho consultado, e não que
+seja impossível ou esteja ausente de toda versão posterior.
+
+\begin{table*}[ht]
 \centering
-\scalefont{0.82}
-\caption{Posicionamento bibliográfico das ferramentas selecionadas}
+\scalefont{0.78}
+\renewcommand{\arraystretch}{1.08}
+\caption{Comparação bibliográfica das estratégias selecionadas, conforme as
+fontes citadas no texto}
 \label{tab:ferramentas-relacionadas}
-\begin{tabular}{|p{2.3cm}|p{2.3cm}|p{1.7cm}|p{2.3cm}|p{2.4cm}|p{2.4cm}|}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{2.0cm}|
+>{\raggedright\arraybackslash}p{2.9cm}|
+>{\raggedright\arraybackslash}p{2.9cm}|
+>{\raggedright\arraybackslash}p{3.3cm}|
+>{\raggedright\arraybackslash}p{3.2cm}|}
 \hline
-\textbf{Ferramenta} & \textbf{Entrada e geração} & \textbf{Acesso} & \textbf{Estado} & \textbf{Oráculo} & \textbf{Prioridade} \\ \hline
-Schemathesis & Schema + property-based & Black-box & Fluxos conforme configuração & Checks e propriedades & Não identificada na fonte-base \\ \hline
-RESTler & Gramática + sequências & Black-box & Stateful, produtor--consumidor & Checkers e respostas & Não é foco \\ \hline
-RESTest & OpenAPI + restrições & Black-box & Dependente do modelo & Oráculos dos casos & Não é foco \\ \hline
-RestTestGen & Framework modular + mutadores & Black-box & Extensível & Oráculos extensíveis & Não identificada \\ \hline
-Projeto & OpenAPI + mutações tipadas & Black-box & Parcial & Contrato e detectores & FIS Mamdani pós-execução \\ \hline
+\textbf{Ferramenta} & \textbf{Contrato, acesso e geração} &
+\textbf{Estado e casos negativos} & \textbf{Oráculos e evidências} &
+\textbf{Priorização e CI} \\ \hline
+Schemathesis &
+OpenAPI/GraphQL; black-box ou white-box em processo; geração baseada em propriedades &
+Entradas válidas e negativas; máquina de estados dependente das relações disponíveis &
+Propriedades de HTTP/schema; shrinking e deduplicação de erros no backend &
+Sem ranking pós-execução demonstrado; integrável a suítes de teste \\ \hline
+RESTler &
+Swagger/OpenAPI; black-box; gramática e dicionários &
+Sequências stateful com relações produtor--consumidor e valores mutados &
+5xx no oráculo-base; sequência preservada e bucketization de ocorrências &
+Busca prioriza exploração, não achados; CI não caracterizada na fonte \\ \hline
+RESTest &
+OpenAPI com IDL4OAS opcional; black-box; geração aleatória ou por restrições &
+Uma operação por caso; entradas nominais e inválidas, inclusive dependências entre parâmetros &
+Cinco oráculos; testes executáveis; deduplicação não demonstrada &
+Sem ranking de achados; execução online apresentada para CI \\ \hline
+RestTestGen &
+OpenAPI; black-box; provedores de valores e mutadores extensíveis &
+Grafo de dependências, reuso de valores e estratégias nominal/de erro &
+Oráculos de status e schema; relatórios JSON e testes REST-assured &
+Prioriza geração/ordem, não achados; CI não avaliada na fonte \\ \hline
+Projeto deste TCC &
+Subconjunto de OpenAPI; black-box; caso-base e mutações tipadas &
+Níveis L0, L1 e L2; dependências stateful apenas parciais &
+Detectores contratuais; plano, respostas, manifestos e famílias deduplicadas &
+FIS Mamdani pós-execução; CI apenas como contexto de uso \\ \hline
 \end{tabular}
-\end{table}
+\end{table*}
 
-As quatro ferramentas mostram que “usar OpenAPI” não define uma única técnica.
-Elas diferem na maneira de gerar dados, montar sequências, lidar com estado e
-interpretar respostas. Os trabalhos de revisão também apontam dificuldades
-recorrentes: dependências entre operações, autenticação, dados realistas e
-reprodução das execuções. Esses fatores precisam ser controlados ou registrados
-para que duas campanhas possam ser comparadas \cite{golmohammadi2023rest,zhang2023openproblems}.
+\subsection{Posicionamento da proposta}
 
-O projeto não reivindica novidade por gerar casos a partir de OpenAPI, testar
-entradas negativas ou verificar status e schema. A proposta investigada é mais
-específica: combinar mutações estruturadas, evidências reproduzíveis e um
-sistema fuzzy que ordena os achados depois da execução. A metodologia avalia
-essa combinação no corpus definido; não há comparação experimental suficiente
-para afirmar superioridade sobre as ferramentas relacionadas.
+A comparação evidencia que geração por OpenAPI, casos negativos, validação de
+status ou schema, sequências stateful e redução de resultados já aparecem em
+trabalhos anteriores. Também mostra que ``priorização'' pode se referir a
+coisas diferentes: escolher operações e valores durante a geração, guiar a
+busca por sequências ou ordenar evidências depois que a execução terminou. O
+projeto atua no terceiro sentido.
 
-\subsection{Critério para eventual comparação experimental}
-
-Schemathesis é a candidata mais próxima caso o orientador considere útil uma
-comparação prática. Para ser válida, ela teria de usar os mesmos contratos,
-alvos, número de campanhas, condições de reset e orçamento aproximado. As
-métricas deveriam permanecer limitadas às definidas no TCC: requisições
-concluídas, divergências observadas, famílias deduplicadas, estabilidade e
-reprodução dos artefatos. Cobertura interna, qualidade de implementação ou
-superioridade de uma ferramenta não seriam inferidas sem um protocolo próprio.
-
-Por ora, RESTler, RESTest e RestTestGen cumprem papel de referências
-arquiteturais e metodológicas. EvoMaster e Dredd permanecem registrados no
-material de apoio, mas não entram nesta comparação até que sua utilidade e a
-fonte primária adequada sejam confirmadas.
+A lacuna investigada não é a ausência de fuzzers de API nem a superioridade de
+uma técnica de geração. O estudo examina as contribuições e limitações de uma
+combinação específica: fuzzing black-box orientado por OpenAPI, evidências
+rastreáveis, deduplicação por comportamento observável e prioridade fuzzy
+pós-execução. Essa formulação é restrita ao corpus bibliográfico consultado e
+será avaliada nas aplicações do estudo. Como não há comparação experimental
+com as ferramentas desta seção, os resultados não autorizam afirmar maior
+cobertura, eficácia ou qualidade do projeto em relação a elas.

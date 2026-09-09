@@ -1,193 +1,142 @@
 % TCC — Fundamentação Teórica
 \section{Fundamentação Teórica}\label{sec:fundamentacao}
 
-Esta seção apresenta os conceitos necessários para compreender o fuzzer e o
-experimento. O texto separa três elementos que às vezes são tratados como se
-fossem um só: o contrato da API, usado para gerar e verificar casos; a
-execução, que observa o comportamento do serviço; e a priorização, que ordena
-os achados depois da execução.
+Esta seção reúne os conceitos necessários para compreender a proposta sem
+antecipar o protocolo experimental. O encadeamento adotado distingue três
+etapas: o contrato fornece uma descrição processável e expectativas parciais;
+o teste black-box produz observações e evidências; e a inferência fuzzy ordena
+os achados já detectados. Essa separação é importante porque gerar uma
+requisição, reconhecer uma divergência e atribuir prioridade são problemas
+relacionados, mas não equivalentes.
 
-\subsection{APIs REST, HTTP e contratos}
+\subsection{REST, semântica HTTP e contratos processáveis}
 
 REST é um estilo arquitetural para sistemas distribuídos, definido por
 restrições como identificação de recursos, interface uniforme, comunicação
-stateless e uso de representações transferidas entre cliente e servidor
-\cite{fielding2000rest}. Uma API REST expõe essas operações por meio de uma
-interface acessível pela rede; na prática, HTTP fornece a semântica dos
-métodos, das respostas, dos códigos de status e dos cabeçalhos
-\cite{rfc9110}. A presença de HTTP e JSON, isoladamente, não garante que uma
-API siga todas as restrições de REST.
+sem estado entre requisições e transferência de representações
+\cite{fielding2000rest}. HTTP fornece a semântica observável da interação:
+métodos expressam a intenção da requisição, enquanto códigos de status e
+cabeçalhos comunicam características da resposta \cite{rfc9110}. Uma API usar
+HTTP e JSON, portanto, não basta para demonstrar que ela satisfaz todas as
+restrições de REST; esses elementos são apenas parte da interface que um teste
+externo consegue observar.
 
-Um contrato de API descreve parte do comportamento esperado entre cliente e
-servidor. Ele pode declarar quais operações existem, quais parâmetros são
-aceitos, como os dados são representados e quais respostas são esperadas. Essa
-descrição permite verificar propriedades observáveis, mas não substitui as
-regras de negócio que não foram registradas no contrato.
+A OpenAPI Specification (OAS) descreve APIs HTTP de forma independente de
+linguagem. Um documento pode declarar caminhos, operações, parâmetros, corpos,
+respostas e esquemas de segurança \cite{openapi310}. Em OpenAPI 3.1, a
+descrição dos dados se alinha ao JSON Schema, cujo vocabulário permite formular
+asserções estruturais com palavras-chave como \texttt{type},
+\texttt{required}, \texttt{enum}, limites numéricos, padrões e propriedades
+\cite{jsonschema202012}. Essas declarações tornam uma parte do acordo entre
+cliente e serviço legível por ferramentas.
 
-\subsection{OpenAPI e JSON Schema}
+Há uma analogia útil com Design by Contract: precondições expressam obrigações
+do cliente, pós-condições expressam garantias do fornecedor e invariantes
+preservam propriedades do objeto \cite{meyer1992designbycontract}. A analogia
+não estabelece equivalência formal. OpenAPI não expressa necessariamente
+invariantes, dependências entre chamadas ou todas as regras de negócio; além
+disso, o documento publicado pode estar incompleto ou desatualizado.
 
-OpenAPI é uma especificação independente de linguagem para descrever APIs HTTP
-\cite{openapi311}. No fuzzer, os elementos mais relevantes são as operações
-em \texttt{paths}, os parâmetros de rota, consulta e cabeçalho, o
-\texttt{requestBody}, as respostas declaradas e os componentes reutilizáveis
-por meio de referências \texttt{\$ref}. O documento também pode declarar
-esquemas de segurança, que orientam a forma de autenticar as requisições.
+Neste trabalho, o contrato é uma descrição processável do comportamento
+esperado e não uma especificação completa da aplicação. O fuzzer interpreta um
+subconjunto de OpenAPI para construir requisições e conferir propriedades
+observáveis. Logo, toda conclusão deve ser delimitada tanto pelo que o contrato
+declara quanto pelo que a ferramenta efetivamente suporta.
 
-Os schemas associados a entradas e respostas expressam restrições sobre os
-dados. Em OpenAPI 3.1, essas restrições seguem o vocabulário do JSON Schema;
-palavras-chave como \texttt{type}, \texttt{required}, \texttt{enum}, limites
-numéricos, padrões e propriedades descrevem parte da estrutura válida
-\cite{jsonschema202012}. A validação de schema, entretanto, não descreve por
-si só dependências entre chamadas, efeitos persistentes, permissões ou regras
-de negócio.
+\subsection{Fuzzing black-box, oráculos e evidência}
 
-Neste trabalho, o suporte ao contrato é deliberadamente parcial. O executor
-interpreta o subconjunto de OpenAPI implementado pelo projeto e registra a
-versão e a configuração utilizadas. Portanto, uma divergência observada só é
-interpretada em relação às declarações efetivamente carregadas; ela não é uma
-afirmação sobre todo o comportamento possível da aplicação.
+Fuzzing automatiza a produção e a execução de muitas entradas
+\cite{golmohammadi2023rest}. Uma estratégia
+geracional constrói casos a partir de um modelo, enquanto uma estratégia
+mutacional transforma casos existentes. Em APIs REST, o contrato permite
+preservar a estrutura de parâmetros e corpos ao gerar casos potencialmente
+válidos e também orientar teste negativo, no qual obrigatoriedade, tipo, faixa
+ou outra restrição é deliberadamente violada. RESTest, por exemplo, distingue
+casos nominais de casos defeituosos e explicita oráculos diferentes para
+requisições que deveriam ser aceitas ou rejeitadas
+\cite{martinlopez2020restest}; RestTestGen concretiza a mesma separação em
+estratégias nominal e de erro, com mutadores próprios
+\cite{corradini2022resttestgen}.
 
-\subsection{Teste negativo e fuzzing de APIs}
+No modo black-box, a geração e a decisão não recebem cobertura de código nem
+instrumentação interna. Contrato, configuração, requisições e respostas são as
+fontes de evidência disponíveis. Isso amplia a aplicabilidade a serviços cujo
+código não está acessível, mas limita a capacidade de explicar causas internas.
+Autenticação, estado persistente, dados realistas e dependências entre operações
+continuam sendo obstáculos relevantes \cite{golmohammadi2023rest}. RESTler
+mostra uma resposta específica a parte desse problema: infere relações
+produtor--consumidor do contrato, preserva valores obtidos nas respostas e
+explora sequências de requisições com realimentação da execução
+\cite{atlidakis2019restler}. Essa exploração stateful é diferente de apenas
+repetir operações isoladas.
 
-Teste negativo exercita entradas que deveriam ser rejeitadas, limites e
-combinações que podem revelar tratamento inesperado. Fuzzing é uma forma
-automatizada de gerar e executar muitas entradas, registrando as respostas
-obtidas. Na geração \emph{geracional}, os casos são construídos a partir de um
-modelo; na geração \emph{mutacional}, entradas existentes são transformadas.
-Casos estruturados podem combinar as duas estratégias.
+Um oráculo de teste decide se a observação satisfaz alguma expectativa. Status
+de servidor, status não declarado, conformidade do corpo com o schema e
+aceitação de uma entrada inválida são exemplos de propriedades verificáveis a
+partir da interface. Nenhuma delas, isoladamente, comprova que toda a operação
+está correta. O contrato atua, portanto, como \emph{oráculo parcial}: permite
+detectar contradições relativas às declarações disponíveis, mas não cobre
+efeitos de negócio, intenção do fornecedor, impacto ou segurança. Estudos da
+área mostram que ferramentas baseadas em OpenAPI adotam combinações distintas
+de geração e oráculos, e que a incompletude dos schemas limita a exploração
+black-box \cite{golmohammadi2023rest,zhang2023openproblems}.
 
-Em APIs REST, a geração precisa respeitar a estrutura de parâmetros e corpos
-JSON, além de lidar com autenticação, dependências entre recursos, estado e
-serialização. O survey de Golmohammadi, Zhang e Arcuri organiza esses desafios
-e mostra que o contrato é uma fonte frequente de informação para geração e
-validação, mas não resolve sozinho o estado da aplicação ou a completude do
-oráculo \cite{golmohammadi2023rest}.
+Uma observação só é útil para análise posterior se permanecer ligada às
+condições que a produziram. RESTler associa o erro à sequência de requisições e
+agrupa ocorrências provavelmente redundantes; Schemathesis combina redução do
+caso que falha com deduplicação de erros; e RestTestGen pode registrar em JSON
+as requisições, respostas e avaliações dos oráculos
+\cite{atlidakis2019restler,hatfielddodds2021schemathesis,corradini2022resttestgen}.
+Esses mecanismos não são idênticos, mas evidenciam três necessidades distintas:
+\emph{rastreabilidade} relaciona a observação à sua origem;
+\emph{reprodução} preserva informação suficiente para provocar novamente o
+comportamento; e \emph{deduplicação} reduz ocorrências equivalentes para a
+triagem. Um grupo deduplicado não corresponde automaticamente a uma causa raiz.
 
-Ferramentas existentes exploram pontos diferentes desse espaço. RESTler deriva
-sequências stateful e dependências produtor--consumidor a partir do contrato
-\cite{atlidakis2019restler}. RESTest combina restrições e geração black-box
-\cite{martinlopez2020restest}. Schemathesis deriva testes baseados em
-propriedades a partir de schemas de APIs \cite{hatfielddodds2022schemathesis},
-enquanto RestTestGen organiza parser, geradores, mutadores e estratégias de
-execução em uma arquitetura modular \cite{corradini2022resttestgen}. Essas
-abordagens mostram que “usar OpenAPI” não identifica uma técnica única: os
-fuzzers diferem no modo de gerar casos, modelar estado e decidir se uma
-resposta merece investigação. Comparações entre ferramentas também destacam
-dependências, autenticação, dados realistas e reprodutibilidade como fatores
-que afetam os resultados \cite{zhang2023openproblems}.
+O projeto adota esse vocabulário de forma operacional. Uma ocorrência é o
+resultado individual de um caso executado. Uma divergência é uma propriedade
+observada que contradiz uma expectativa interpretada do contrato ou de um
+detector. Um achado é a evidência estruturada dessa divergência, vinculada ao
+caso e à resposta. Assinaturas e famílias agrupam padrões observáveis para
+evitar que repetições dominem a análise. Em um possível ciclo de integração
+contínua, um resultado útil para triagem deve ser produzido sob orçamento
+conhecido, manter essa cadeia de evidências, separar campanha incompleta de
+comportamento do alvo e apresentar volume tratável. Esses são critérios de uso
+adotados pelo estudo; o trabalho não implementa nem avalia uma esteira de CI.
 
-O fuzzer deste trabalho permanece \emph{black-box}: ele não instrumenta o
-código da aplicação nem utiliza cobertura interna para orientar a geração. A
-informação disponível para o ciclo é o contrato, a configuração da campanha,
-as requisições enviadas e as respostas recebidas.
+\subsection{Inferência fuzzy e prioridade técnica}
 
-\subsection{Contrato como oráculo parcial e evidência de execução}
+Em um conjunto clássico, a pertinência é binária. Em um conjunto fuzzy, uma
+função associa cada elemento a um grau no intervalo entre zero e um
+\cite{zadeh1965fuzzy}. Esse grau representa o quanto a observação pertence a um
+conceito gradual definido pelo modelo; não deve ser interpretado como
+probabilidade. Termos linguísticos como baixa, média e alta podem, assim,
+representar regiões sobrepostas de uma variável.
 
-Um oráculo de teste é o mecanismo usado para decidir se o comportamento
-observado é compatível com o esperado. Neste projeto, o contrato OpenAPI
-funciona como um \emph{oráculo parcial}: fornece expectativas verificáveis
-sobre método, parâmetros, formato, status e schema, mas não cobre tudo que
-seria necessário para afirmar que a operação está correta ou segura. Essa é
-uma síntese operacional do estudo, e não uma propriedade que a especificação
-OpenAPI declare formalmente.
+O sistema implementado organiza a inferência em quatro passos conceituais:
+calcula os graus de pertinência, avalia regras linguísticas, agrega as
+conclusões ativadas e desfuzzifica o conjunto resultante em um valor numérico.
+Ele adota a abordagem linguística de Mamdani, cujas regras têm a forma ``se ...
+então ...'' e mantêm consequentes fuzzy \cite{mamdani1975}. As funções de
+pertinência, regras, operadores e o método de desfuzzificação são escolhas do
+projeto; a fonte histórica não determina os parâmetros adequados para este
+domínio.
 
-Por isso, um achado representa uma divergência observada entre a requisição,
-a resposta e as expectativas interpretadas do contrato. Ele não é tratado
-automaticamente como vulnerabilidade, causa raiz ou impacto de segurança. Uma
-resposta inesperada pode resultar de regra de negócio não documentada, estado
-residual, autenticação, dependência externa ou defeito do serviço; a evidência
-registrada deve permitir que essa hipótese seja investigada depois.
+Prioridade também exige delimitação. Na literatura de regressão, priorizar
+casos de teste significa alterar sua ordem para atingir antes um objetivo, como
+revelar falhas \cite{elbaum2002prioritization}; abordagens fuzzy já foram
+empregadas para ordenar esses casos antes da execução
+\cite{alakeel2014fuzzy}. O problema deste projeto ocorre depois da execução: os
+analisadores já produziram achados, e o sistema Mamdani ordena quais evidências
+merecem inspeção primeiro.
 
-O estado também interfere no resultado. Operações podem criar, alterar ou
-remover recursos, depender de dados previamente existentes e exigir credenciais
-ou uma ordem específica. Assim, uma campanha precisa registrar o contrato, a
-versão do alvo, os parâmetros de execução, a autenticação aplicável e os
-artefatos que permitem correlacionar plano, requisição, resposta e análise.
-Reset, concorrência controlada e repetição com configuração fixa reduzem
-variações experimentais, mas não transformam a observação black-box em
-explicação da causa interna.
-
-Para manter o vocabulário do experimento explícito, o projeto usa os seguintes
-termos operacionais. Uma ocorrência é uma execução individual de um caso. Um
-achado é uma ocorrência que passou por algum detector de divergência. Uma
-assinatura reúne achados com o mesmo padrão observável, e uma família é o
-conjunto deduplicado usado para contar esse padrão nas análises. Esses termos
-organizam os artefatos do projeto; não são definições universais da literatura
-de fuzzing. A deduplicação reduz repetição na triagem, mas não identifica a
-causa raiz.
-
-\subsection{Lógica fuzzy e inferência de Mamdani}
-
-Na lógica clássica, um elemento pertence ou não pertence a um conjunto. Na
-lógica fuzzy, uma função de pertinência atribui um grau entre zero e um para
-representar quanto uma observação se enquadra em um conceito gradual
-\cite{zadeh1965fuzzy}. Esse grau não é uma probabilidade: indica pertinência a
-um conjunto linguístico definido pelo modelo.
-
-Um sistema de inferência fuzzy recebe variáveis de entrada, calcula suas
-pertinências, aplica regras linguísticas e combina as ativações em uma saída.
-Na formulação de Mamdani, as regras têm a forma “se ... então ...” e a saída
-é obtida pela agregação das conclusões e por uma etapa de desfuzzificação
-\cite{mamdani1975}. O resultado é interpretável porque pode ser acompanhado
-pelas entradas, pelas funções de pertinência e pelas regras que contribuíram
-para a decisão.
-
-No fuzzer, o sistema fuzzy não decide se existe um achado. Essa decisão é
-produzida pelos analisadores, que comparam a resposta observada com o contrato
-e com os detectores definidos pelo projeto. O sistema fuzzy recebe sinais do
-achado e produz uma prioridade técnica para a triagem. A separação evita
-confundir “detectar uma divergência” com “ordenar as divergências para análise”.
-
-As funções, faixas e regras do FIS são escolhas do projeto. A literatura sobre
-lógica fuzzy fundamenta a forma de representar e combinar sinais, mas não
-determina que contradição comportamental, força da evidência ou exposição de
-controle de acesso devam receber valores específicos neste estudo. A validade
-dessas escolhas depende da descrição do modelo e da avaliação experimental
-apresentadas nas seções seguintes.
-
-\subsection{Prioridade técnica, severidade e impacto}
-
-Na literatura de testes, priorização costuma significar reordenar casos para
-atingir primeiro um objetivo, como detectar falhas mais cedo durante testes de
-regressão \cite{elbaum2002prioritization}. Trabalhos que usam lógica fuzzy
-nesse contexto combinam sinais dos casos para definir a ordem de execução
-\cite{alakeel2014fuzzy}. O sistema deste projeto resolve um problema diferente:
-os casos já foram executados, e a saída fuzzy ordena os achados que serão
-triados.
-
-Por isso, \emph{prioridade técnica} é uma definição operacional deste TCC. Ela
-expressa quão urgente é analisar uma divergência à luz dos sinais disponíveis
-no artefato, não uma medida universal de severidade, explorabilidade, impacto
-de negócio ou probabilidade de vulnerabilidade. Um status HTTP, um tamanho de
-resposta ou uma divergência estrutural podem justificar investigação, mas não
-determinam sozinhos o efeito de segurança.
-
-Essa distinção evita atribuir ao score uma decisão que ele não toma. O modelo
-ajuda a ordenar evidências para triagem; a confirmação de causa, impacto e
-vulnerabilidade exige análise adicional do alvo e não faz parte do mecanismo
-fuzzy descrito aqui.
-
-\subsection{Síntese conceitual}
-
-O encadeamento teórico do projeto pode ser resumido assim:
-
-\begin{enumerate}
-    \item o contrato OpenAPI delimita operações, dados e respostas que podem
-    ser exercitados;
-    \item o gerador produz casos válidos, inválidos e mutados a partir desse
-    contrato;
-    \item o executor envia as requisições e preserva as respostas em uma
-    campanha identificável;
-    \item os analisadores comparam observações com as expectativas
-    interpretadas do contrato;
-    \item os achados são agrupados em assinaturas e famílias para reduzir
-    repetição;
-    \item o sistema fuzzy atribui prioridade técnica aos achados agrupados;
-    \item a triagem humana interpreta as evidências e decide quais resultados
-    merecem investigação adicional.
-\end{enumerate}
-
-Esse fluxo delimita a contribuição do trabalho: produzir evidências
-reproduzíveis a partir de contratos OpenAPI e oferecer uma ordenação
-interpretável para sua triagem. Ele não promete modelar todas as regras das
-APIs, medir cobertura de código ou confirmar automaticamente vulnerabilidades.
+Por isso, \emph{prioridade técnica} designa neste TCC a urgência relativa de
+triagem segundo os sinais presentes nos artefatos. Ela não equivale a
+severidade universal, impacto de negócio, explorabilidade ou probabilidade de
+vulnerabilidade. Uma vulnerabilidade requer que condições e consequências de
+segurança sejam confirmadas; uma divergência contratual pode ser relevante para
+compatibilidade ou robustez sem constituir vulnerabilidade. O FIS não detecta a
+divergência nem substitui essa análise: ele recebe achados já classificados e
+produz uma ordenação interpretável. Suas entradas, funções e regras são escolhas
+do projeto e precisam ser descritas e avaliadas empiricamente, em vez de serem
+tratadas como consequência automática da literatura fuzzy.
