@@ -59,7 +59,7 @@ observation_lane: "Da campanha à observação" {
   direction: down
   class: group
 
-  campaign: "Registrar a campanha\nO run_id liga configuração, hashes e manifesto" {
+  campaign: "Registrar a campanha\nO run_id liga configuração, resumos criptográficos e manifesto" {
     class: provenance
   }
   request: "Rastrear cada requisição\nO case_id liga plano, resposta HTTP e classificação" {
@@ -77,13 +77,13 @@ consolidation_lane: "Da observação à evidência consolidada" {
   direction: down
   class: group
 
-  signature: "Normalizar observações equivalentes\nA assinatura combina API, endpoint, classe, status e resposta" {
+  signature: "Normalizar observações equivalentes\nA assinatura combina API, operação, classe, status e resposta" {
     class: reduction
   }
   unique: "Consolidar as duplicatas\nUm representante reúne case_ids, ocorrências e níveis L0/L1/L2" {
     class: reduction
   }
-  family: "Agrupar para a análise\nA família reúne o mesmo comportamento factual por endpoint" {
+  family: "Agrupar para a análise\nA família reúne o mesmo comportamento factual por operação" {
     class: analytical
   }
 

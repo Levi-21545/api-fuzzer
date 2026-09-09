@@ -127,7 +127,7 @@ output_row: "" {
     class: output
     width: 470
   }
-  audit: "Explicar a decisão\nRegistra entradas, pertinências,\nregras ativadas e eventual fallback" {
+  audit: "Explicar a decisão\nRegistra entradas, pertinências,\nregras ativadas e eventual regra alternativa" {
     class: output
     width: 470
   }
@@ -140,5 +140,5 @@ fuzz_row.fuzzification -> rule_row.behavior_rules: "graus de pertinência"
 fuzz_row.fuzzification -> rule_row.access_rules
 rule_row.behavior_rules -> inference_row.inference: "regras ativadas"
 rule_row.access_rules -> inference_row.inference
-inference_row.inference -> output_row.priority: "score"
+inference_row.inference -> output_row.priority: "pontuação"
 inference_row.inference -> output_row.audit: "rastreabilidade"

@@ -86,7 +86,7 @@ runner_row: "" {
   class: row
 
   pad_left: "" { class: spacer }
-  runner: "Preparar a campanha\nO script do alvo valida pré-condições, cria o run_id e autentica" {
+  runner: "Preparar a campanha\nO programa auxiliar do alvo valida pré-condições, cria o run_id e autentica" {
     class: control
     width: 900
   }
@@ -102,7 +102,7 @@ runtime_row: "" {
     class: runtime
     width: 560
   }
-  fuzzer: "Executar o fuzzer\nGera casos, envia requisições e analisa respostas" {
+  fuzzer: "Executar a ferramenta\nGera casos, envia requisições e analisa respostas" {
     class: process
     width: 560
   }
@@ -113,7 +113,7 @@ capture_row: "" {
   grid-gap: 56
   class: row
 
-  cleanup: "Capturar o ambiente e encerrar\nColeta logs e versões e encerra a API mesmo em caso de falha" {
+  cleanup: "Capturar o ambiente e encerrar\nRegistra versões e encerra a API mesmo em caso de falha" {
     class: control
     width: 560
   }
@@ -140,7 +140,7 @@ top_row.definition -> runner_row.runner: "configura"
 runner_row.runner -> runtime_row.target: "provisiona e prepara"
 runner_row.runner -> runtime_row.fuzzer: "invoca"
 runtime_row.target <-> runtime_row.fuzzer: "HTTP"
-runtime_row.target -> capture_row.cleanup: "logs e metadados"
+runtime_row.target -> capture_row.cleanup: "registros e metadados"
 runtime_row.fuzzer -> capture_row.raw: "persiste"
 capture_row.cleanup -> capture_row.raw
 capture_row.raw -> final_row.postprocess: "consolida"
