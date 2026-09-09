@@ -4,7 +4,8 @@
 Esta seção reúne os conceitos necessários para compreender a proposta sem
 antecipar o protocolo experimental. O encadeamento adotado distingue três
 etapas: o contrato fornece uma descrição processável e expectativas parciais;
-o teste black-box produz observações e evidências; e a inferência fuzzy ordena
+o teste \textit{black-box} produz observações e evidências; e a inferência
+\textit{fuzzy} ordena
 os achados já detectados. Essa separação é importante porque gerar uma
 requisição, reconhecer uma divergência e atribuir prioridade são problemas
 relacionados, mas não equivalentes.
@@ -30,7 +31,7 @@ asserções estruturais com palavras-chave como \texttt{type},
 \cite{jsonschema202012}. Essas declarações tornam uma parte do acordo entre
 cliente e serviço legível por ferramentas.
 
-Há uma analogia útil com Design by Contract: precondições expressam obrigações
+Há uma analogia útil com \textit{Design by Contract}: precondições expressam obrigações
 do cliente, pós-condições expressam garantias do fornecedor e invariantes
 preservam propriedades do objeto \cite{meyer1992designbycontract}. A analogia
 não estabelece equivalência formal. OpenAPI não expressa necessariamente
@@ -38,14 +39,14 @@ invariantes, dependências entre chamadas ou todas as regras de negócio; além
 disso, o documento publicado pode estar incompleto ou desatualizado.
 
 Neste trabalho, o contrato é uma descrição processável do comportamento
-esperado e não uma especificação completa da aplicação. O fuzzer interpreta um
+esperado e não uma especificação completa da aplicação. O \textit{fuzzer} interpreta um
 subconjunto de OpenAPI para construir requisições e conferir propriedades
 observáveis. Logo, toda conclusão deve ser delimitada tanto pelo que o contrato
 declara quanto pelo que a ferramenta efetivamente suporta.
 
-\subsection{Fuzzing black-box, oráculos e evidência}
+\subsection{\textit{Fuzzing black-box}, oráculos e evidência}
 
-Fuzzing automatiza a produção e a execução de muitas entradas
+\textit{Fuzzing} automatiza a produção e a execução de muitas entradas
 \cite{golmohammadi2023rest}. Uma estratégia
 geracional constrói casos a partir de um modelo, enquanto uma estratégia
 mutacional transforma casos existentes. Em APIs REST, o contrato permite
@@ -58,7 +59,7 @@ requisições que deveriam ser aceitas ou rejeitadas
 estratégias nominal e de erro, com mutadores próprios
 \cite{corradini2022resttestgen}.
 
-No modo black-box, a geração e a decisão não recebem cobertura de código nem
+No modo \textit{black-box}, a geração e a decisão não recebem cobertura de código nem
 instrumentação interna. Contrato, configuração, requisições e respostas são as
 fontes de evidência disponíveis. Isso amplia a aplicabilidade a serviços cujo
 código não está acessível, mas limita a capacidade de explicar causas internas.
@@ -67,19 +68,19 @@ continuam sendo obstáculos relevantes \cite{golmohammadi2023rest}. RESTler
 mostra uma resposta específica a parte desse problema: infere relações
 produtor--consumidor do contrato, preserva valores obtidos nas respostas e
 explora sequências de requisições com realimentação da execução
-\cite{atlidakis2019restler}. Essa exploração stateful é diferente de apenas
+\cite{atlidakis2019restler}. Essa exploração com estado é diferente de apenas
 repetir operações isoladas.
 
 Um oráculo de teste decide se a observação satisfaz alguma expectativa. Status
-de servidor, status não declarado, conformidade do corpo com o schema e
+de servidor, status não declarado, conformidade do corpo com o esquema e
 aceitação de uma entrada inválida são exemplos de propriedades verificáveis a
 partir da interface. Nenhuma delas, isoladamente, comprova que toda a operação
 está correta. O contrato atua, portanto, como \emph{oráculo parcial}: permite
 detectar contradições relativas às declarações disponíveis, mas não cobre
 efeitos de negócio, intenção do fornecedor, impacto ou segurança. Estudos da
 área mostram que ferramentas baseadas em OpenAPI adotam combinações distintas
-de geração e oráculos, e que a incompletude dos schemas limita a exploração
-black-box \cite{golmohammadi2023rest,zhang2023openproblems}.
+de geração e oráculos, e que a incompletude dos esquemas limita a exploração
+\textit{black-box} \cite{golmohammadi2023rest,zhang2023openproblems}.
 
 Uma observação só é útil para análise posterior se permanecer ligada às
 condições que a produziram. RESTler associa o erro à sequência de requisições e
@@ -104,9 +105,9 @@ conhecido, manter essa cadeia de evidências, separar campanha incompleta de
 comportamento do alvo e apresentar volume tratável. Esses são critérios de uso
 adotados pelo estudo; o trabalho não implementa nem avalia uma esteira de CI.
 
-\subsection{Inferência fuzzy e prioridade técnica}
+\subsection{Inferência \textit{fuzzy} e prioridade técnica}
 
-Em um conjunto clássico, a pertinência é binária. Em um conjunto fuzzy, uma
+Em um conjunto clássico, a pertinência é binária. Em um conjunto \textit{fuzzy}, uma
 função associa cada elemento a um grau no intervalo entre zero e um
 \cite{zadeh1965fuzzy}. Esse grau representa o quanto a observação pertence a um
 conceito gradual definido pelo modelo; não deve ser interpretado como
@@ -117,14 +118,14 @@ O sistema implementado organiza a inferência em quatro passos conceituais:
 calcula os graus de pertinência, avalia regras linguísticas, agrega as
 conclusões ativadas e desfuzzifica o conjunto resultante em um valor numérico.
 Ele adota a abordagem linguística de Mamdani, cujas regras têm a forma ``se ...
-então ...'' e mantêm consequentes fuzzy \cite{mamdani1975}. As funções de
+então ...'' e mantêm consequentes \textit{fuzzy} \cite{mamdani1975}. As funções de
 pertinência, regras, operadores e o método de desfuzzificação são escolhas do
 projeto; a fonte histórica não determina os parâmetros adequados para este
 domínio.
 
 Prioridade também exige delimitação. Na literatura de regressão, priorizar
 casos de teste significa alterar sua ordem para atingir antes um objetivo, como
-revelar falhas \cite{elbaum2002prioritization}; abordagens fuzzy já foram
+revelar falhas \cite{elbaum2002prioritization}; abordagens \textit{fuzzy} já foram
 empregadas para ordenar esses casos antes da execução
 \cite{alakeel2014fuzzy}. O problema deste projeto ocorre depois da execução: os
 analisadores já produziram achados, e o sistema Mamdani ordena quais evidências
@@ -139,4 +140,4 @@ compatibilidade ou robustez sem constituir vulnerabilidade. O FIS não detecta a
 divergência nem substitui essa análise: ele recebe achados já classificados e
 produz uma ordenação interpretável. Suas entradas, funções e regras são escolhas
 do projeto e precisam ser descritas e avaliadas empiricamente, em vez de serem
-tratadas como consequência automática da literatura fuzzy.
+tratadas como consequência automática da literatura \textit{fuzzy}.

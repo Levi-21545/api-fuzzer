@@ -1,7 +1,7 @@
 % TCC — Desenvolvimento
 \section{Desenvolvimento da Ferramenta}\label{sec:desenvolvimento}
 
-O OpenAPI Contract Fuzzer foi implementado em Python como um pipeline modular.
+O OpenAPI Contract Fuzzer foi implementado em Python como um fluxo modular.
 A organização separa interpretação do contrato, geração dos casos, execução
 HTTP, análise das respostas, priorização e persistência dos artefatos. Esta
 seção descreve as responsabilidades necessárias para compreender e reproduzir
@@ -10,7 +10,7 @@ artigo.
 
 \subsection{Do Contrato ao Plano de Execução}
 
-O parser aceita documentos OpenAPI em YAML ou JSON e os converte em um modelo
+O analisador aceita documentos OpenAPI em YAML ou JSON e os converte em um modelo
 interno de operações, parâmetros, corpos, respostas e requisitos de segurança.
 O subconjunto implementado reconhece GET, POST, PUT, PATCH e DELETE; parâmetros
 de caminho, consulta e cabeçalho; corpos e respostas JSON; referências locais;
@@ -20,8 +20,8 @@ preservadas quando suportadas.
 
 O gerador produz a entrada-base e o motor de mutações percorre sua estrutura
 para aplicar alterações tipadas. O construtor do plano resolve caminhos,
-payloads, cabeçalhos, autenticação e estratégia aplicada. Cada entrada recebe
-um \texttt{case\_id} e registra se representa baseline, mutação ou teste de
+corpos, cabeçalhos, autenticação e estratégia aplicada. Cada entrada recebe
+um \texttt{case\_id} e registra se representa caso-base, mutação ou teste de
 autenticação, além dos metadados das mutações. O plano completo é persistido
 antes das chamadas à API.
 
@@ -32,21 +32,21 @@ antes das chamadas à API.
     \caption{Arquitetura interna do OpenAPI Contract Fuzzer. Contrato e
     parâmetros são transformados em um plano rastreável; as respostas da API
     são confrontadas com o comportamento documentado, priorizadas pelo sistema
-    fuzzy e consolidadas em artefatos auditáveis.}
+    \textit{fuzzy} e consolidadas em artefatos auditáveis.}
     \label{fig:arquitetura-fuzzer}
 \end{figure}
 
 \subsection{Execução, Análise e Rastreabilidade}
 
 A execução utiliza cliente HTTP assíncrono, semáforo de concorrência, atraso e
-timeout configuráveis. Para cada caso são registrados URL, status, tempo,
-tamanho, corpo e erro de transporte. Os runners experimentais cuidam da
-inicialização, do reset e da proveniência específica das aplicações sem alterar
+tempo limite configuráveis. Para cada caso são registrados URL, status, tempo,
+tamanho, corpo e erro de transporte. Os executores experimentais cuidam da
+inicialização, da reinicialização e da proveniência específica das aplicações sem alterar
 o núcleo da ferramenta.
 
-O analisador confronta status e schemas observados com o contrato. Entre as
+O analisador confronta status e esquemas observados com o contrato. Entre as
 classificações estão falhas de transporte, erros 5xx, status não documentados,
-incompatibilidades de schema e aceitação de entradas que deveriam ser
+incompatibilidades de esquema e aceitação de entradas que deveriam ser
 rejeitadas. Uma rejeição 4xx documentada e compatível é preservada como
 comportamento esperado e separada dos candidatos. Uma divergência contratual
 continua relevante mesmo quando a API rejeita a entrada com segurança, pois
@@ -58,7 +58,7 @@ O pós-processamento correlaciona plano, resultado e achado por
 métricas. Cada diretório de campanha reúne \texttt{run\_manifest.json}, plano de
 execução, resultados brutos, achados estruturados, conjunto deduplicado e
 relatórios em Markdown. O manifesto preserva configuração, revisão e estado do
-código, hashes do contrato e da árvore-fonte, ambiente, horários, contagens e
+código, resumos criptográficos do contrato e da árvore-fonte, ambiente, horários, contagens e
 estado da campanha. Cabeçalhos e valores sensíveis são redigidos antes da
 persistência pública.
 
@@ -74,26 +74,26 @@ persistência pública.
 
 Esse conjunto permite rastrear os números do artigo até casos concretos e
 distinguir falha da aplicação, falha ambiental e campanha incompleta. Uma
-amostra pública gerada pelo pipeline contém uma execução L2 de cada alvo e
+amostra pública gerada pelo fluxo contém uma execução L2 de cada alvo e
 demonstra o formato dos artefatos, mas não define o modelo de coleta final.
 
-\subsection{Priorização Fuzzy}
+\subsection{Priorização \textit{Fuzzy}}
 
 Depois da classificação contratual, um sistema Mamdani combina sinais
-observáveis para produzir um escore contínuo e as faixas LOW, MEDIUM e HIGH. O
+observáveis para produzir um escore contínuo e as faixas \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH}. O
 FIS não decide se existe divergência; ele organiza a inspeção dos achados já
-reportados. Entradas, pertinências, regras ativadas e eventual fallback são
+reportados. Entradas, pertinências, regras ativadas e eventual regra alternativa são
 preservados nos artefatos para tornar a decisão auditável.
 
-O construto é prioridade técnica da anomalia, abrangendo contract drift,
+O construto é prioridade técnica da anomalia, abrangendo \textit{contract drift},
 compatibilidade funcional, robustez e controle de acesso. O escore não estima
 impacto real, explorabilidade nem gravidade de segurança. A evolução do modelo
 e os sinais utilizados em sua revisão são apresentados uma única vez na
 Seção~\ref{sec:revisao-fis}, junto das evidências que motivaram a mudança.
 
-A cobertura de OpenAPI permanece parcial. Outros media types,
+A cobertura de OpenAPI permanece parcial. Outros tipos de mídia,
 \texttt{oneOf}, \texttt{anyOf}, referências externas e parte das regras de
 serialização não são suportados. A ferramenta também não resolve dependências
-gerais entre recursos ou sequências stateful; identificadores dinâmicos podem
+gerais entre recursos ou sequências com estado; identificadores dinâmicos podem
 apontar para recursos inexistentes. Esses limites restringem as operações
 exercitáveis e acompanham a interpretação dos resultados.

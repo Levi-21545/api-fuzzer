@@ -1,9 +1,9 @@
 % TCC — Conclusão
 \section{Conclusão}\label{sec:conclusoes}
 
-Este artigo-sketch registra o estado atual do projeto, não o fechamento da
-avaliação. Foi implementado um pipeline que interpreta um subconjunto de
-OpenAPI, gera baselines e mutações, executa testes black-box, identifica
+Este esboço do artigo registra o estado atual do projeto, não o fechamento da
+avaliação. Foi implementado um fluxo que interpreta um subconjunto de
+OpenAPI, gera casos-base e mutações, executa testes \textit{black-box}, identifica
 divergências, deduplica observações, atribui prioridade técnica e preserva
 artefatos rastreáveis por campanha.
 
@@ -11,15 +11,15 @@ Os pilotos mostraram que os níveis de mutação exercitam perspectivas
 complementares: comportamento nominal, alterações isoladas e interações. A
 auditoria do mecanismo de priorização revelou que sua configuração inicial era
 dominada pelo status HTTP. A revisão orientada por fatos comportamentais foi
-congelada e apresentou concordância substancialmente maior que o baseline no
-holdout Meilisearch.
+congelada e apresentou concordância substancialmente maior que a linha de base no
+\textit{holdout} Meilisearch.
 
 A contribuição não é a determinação automática de vulnerabilidades ou impacto
-real, mas uma forma auditável de priorizar contract drift, incompatibilidades
+real, mas uma forma auditável de priorizar \textit{contract drift}, incompatibilidades
 funcionais, problemas de robustez e indícios de controle de acesso. As
 conclusões são limitadas pelo número de aplicações, pelo OpenAPI como oráculo
 parcial, pela referência assistida por agentes, pelo desbalanceamento das
-classes e pela ausência de casos HIGH no holdout.
+classes e pela ausência de casos \texttt{HIGH} no \textit{holdout}.
 
 A próxima etapa prevê cinco campanhas por aplicação para avaliar execução,
 deduplicação e estabilidade, mantendo a prioridade como resultado descritivo

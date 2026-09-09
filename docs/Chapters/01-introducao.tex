@@ -2,7 +2,7 @@
 \section{Introdução}
 
 APIs REST tornaram-se parte recorrente da infraestrutura de sistemas modernos,
-conectando serviços, aplicações web e dispositivos móveis
+conectando serviços, aplicações \textit{web} e dispositivos móveis
 \cite{golmohammadi2023rest}. Nesse cenário, falhas de robustez e
 inconsistências entre o comportamento da API e o contrato publicado afetam a
 confiabilidade das integrações e o custo de manutenção. Testes funcionais
@@ -19,9 +19,9 @@ observar a API externamente, sem instrumentação de código, em um contexto
 
 Este trabalho apresenta uma ferramenta de \textit{fuzzing} automatizado para
 APIs REST, implementada em Python e orientada por um subconjunto de OpenAPI. O
-pipeline interpreta o contrato, gera valores-base e mutações, materializa um
+fluxo interpreta o contrato, gera valores-base e mutações, materializa um
 plano de execução, envia requisições, confronta as respostas com o contrato e
-produz artefatos rastreáveis. Um sistema de inferência fuzzy Mamdani atribui
+produz artefatos rastreáveis. Um sistema de inferência \textit{fuzzy} Mamdani atribui
 prioridade técnica às anomalias reportadas depois da classificação contratual.
 
 A questão central é: \textit{Quais contribuições e limitações a combinação de
@@ -44,7 +44,7 @@ superioridade geral sobre outros \textit{fuzzers} nem estimativa de impacto real
 de segurança.
 
 O escopo limita-se a APIs REST descritas em OpenAPI. Não são abrangidos
-sequenciamento stateful geral, fluxos completos de OAuth2, avaliação de carga,
+sequenciamento geral com estado, fluxos completos de OAuth2, avaliação de carga,
 cobertura de código ou confirmação automática de vulnerabilidades. Um achado
 pode representar \textit{contract drift}, incompatibilidade funcional,
 robustez ou comportamento de controle de acesso e ainda exigir interpretação
@@ -59,4 +59,4 @@ Seção~\ref{sec:relacionados} posiciona a proposta diante das ferramentas
 relacionadas. A Seção~\ref{sec:metodologia} descreve o desenho da avaliação, e a
 Seção~\ref{sec:desenvolvimento} apresenta a ferramenta. A
 Seção~\ref{sec:resultados} registra os resultados parciais. Por fim, a
-Seção~\ref{sec:conclusoes} sintetiza o checkpoint e suas limitações.
+Seção~\ref{sec:conclusoes} sintetiza o marco atual e suas limitações.
