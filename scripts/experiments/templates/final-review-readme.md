@@ -35,7 +35,9 @@ PYTHONPATH=src .venv/bin/python scripts/experiments/analyze_final.py \
 ```
 
 O pacote preserva metadados completos de inspeção das imagens Docker; revisar
-seu conteúdo e a licença do asset Meilisearch antes de qualquer publicação.
+seu conteúdo antes da publicação. O contrato Community Meilisearch v1.45.1 está
+identificado como MIT-only pelo upstream; sua atribuição acompanha o pacote em
+`licenses/meilisearch-LICENSE-MIT.txt` e `LICENSES.md`.
 
 ## Executar uma nova coleta
 

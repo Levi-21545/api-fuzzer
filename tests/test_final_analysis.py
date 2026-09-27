@@ -195,6 +195,8 @@ def test_cli_writes_a_compact_revalidated_review_bundle(tmp_path, capsys):
     assert output["alpha"]["totals"]["executed_requests"] == 5
     assert output["alpha"]["signature_union"] == 1
     assert (review / "results.md").is_file()
+    report = (review / "results.md").read_text()
+    assert "| Arquivo | ID semântico (prefixo) |" in report
     assert (review / "README.md").is_file()
     assert (review / "final-analysis.json").is_file()
     index = json.loads((review / "provenance-index.json").read_text())
@@ -278,6 +280,12 @@ def test_shared_meilisearch_contract_keeps_source_hashes(tmp_path, capsys):
     capsys.readouterr()
     shared_contract = review / "contracts/meilisearch-v1.45.1-openapi.json"
     assert shared_contract.is_file()
+    meili_license = review / "licenses/meilisearch-LICENSE-MIT.txt"
+    assert meili_license.is_file()
+    assert "Copyright (c) 2019-2025 Meili SAS" in meili_license.read_text()
+    license_record = (review / "LICENSES.md").read_text()
+    assert "MIT-only segundo o upstream" in license_record
+    assert "meilisearch/meilisearch/issues/6010" in license_record
     index = json.loads((review / "provenance-index.json").read_text())
     for run in index["runs"]:
         mapping = run["artifact_mappings"]["data/target_contract.json"]

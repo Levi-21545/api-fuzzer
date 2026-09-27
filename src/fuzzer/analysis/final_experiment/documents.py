@@ -11,7 +11,14 @@ from .protocol import (
     REPO_ROOT,
     analyzer_git_revision,
 )
-from .review_metadata import REVIEW_LICENSES, REVIEW_PROVENANCE
+from .review_metadata import (
+    MEILISEARCH_ASSET_URL,
+    MEILISEARCH_LICENSE_EVIDENCE_URL,
+    MEILISEARCH_LICENSE_URL,
+    MEILISEARCH_MIT_LICENSE,
+    REVIEW_LICENSES,
+    REVIEW_PROVENANCE,
+)
 from .summary import illustrative_signatures
 
 
@@ -155,8 +162,11 @@ def write_review_documents(
                 "sem representar estatisticamente a API."
             ),
             "",
-            "| API | Presença | Run / case_id | Endpoint | Classe | HTTP | Arquivo |",
-            "|---|---:|---|---|---|---:|---|",
+            (
+                "| API | Presença | Run / case_id | Endpoint | Classe | HTTP | "
+                "Arquivo | ID semântico (prefixo) |"
+            ),
+            "|---|---:|---|---|---|---:|---|---|",
         ]
     )
     for api in order:
@@ -173,8 +183,8 @@ def write_review_documents(
                 f"| {labels.get(api, api)} | {len(signature['present_in'])}/5 | "
                 f"`{run_id}` / `{case_id}` | `{finding['endpoint_id']}` | "
                 f"`{finding['classification']}` | {finding.get('status_code', '—')} | "
-                f"`{api}/{run_id}/analysis/analysis_findings.json` "
-                f"({signature_id[:12]}…) |"
+                f"`{api}/{run_id}/analysis/analysis_findings.json` | "
+                f"`{signature_id[:12]}…` |"
             )
     (review_root / "results.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -196,7 +206,7 @@ def write_review_documents(
         (
             "Contratos dos clones ficam referenciados por revisão e SHA-256, sem "
             "cópias extras. Os textos de licença dos quatro projetos estão em "
-            "`licenses/`."
+            "`licenses/`; o aviso MIT do asset Meilisearch também está incluído lá."
         ),
         "",
         "| API | Origem | Licença | SHA-256 |",
@@ -209,19 +219,37 @@ def write_review_documents(
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         license_lines.append(
             f"| Meilisearch v1.45.1 | Asset comunitário em `contracts/` | "
-            f"Redistribuição do asset ainda a comprovar | "
+            f"MIT — asset comunitário MIT-only segundo o upstream | "
             f"`{manifest['inputs']['schema_sha256']}` |"
         )
         license_lines.extend(
             [
                 "",
                 (
+                    f"Asset: [{MEILISEARCH_ASSET_URL}]({MEILISEARCH_ASSET_URL}). "
+                    "O upstream o lista entre os assets exclusivamente MIT na "
+                    f"[decisão de separar os assets Community e Enterprise]"
+                    f"({MEILISEARCH_LICENSE_EVIDENCE_URL}); o aviso está em "
+                    f"[`licenses/meilisearch-LICENSE-MIT.txt`]"
+                    f"(licenses/meilisearch-LICENSE-MIT.txt), obtido de "
+                    f"[{MEILISEARCH_LICENSE_URL}]({MEILISEARCH_LICENSE_URL})."
+                ),
+                "",
+                (
                     "O contrato VAmPI não foi copiado porque contém um exemplo "
-                    "com formato de JWT. O asset comunitário Meilisearch é distinto "
-                    "do Enterprise ([licença e distinção](https://github.com/"
-                    "meilisearch/meilisearch/issues/6010))."
+                    "com formato de JWT."
+                ),
+                "",
+                (
+                    "O contrato Meilisearch mantém um valor com aparência de "
+                    "chave apenas no exemplo textual do esquema Bearer. O pacote "
+                    "não o altera para preservar o hash do asset; não há evidência "
+                    "no contrato de que o exemplo seja uma credencial ativa."
                 ),
             ]
+        )
+        (review_root / "licenses/meilisearch-LICENSE-MIT.txt").write_text(
+            MEILISEARCH_MIT_LICENSE, encoding="utf-8"
         )
     (review_root / "LICENSES.md").write_text(
         "\n".join(license_lines) + "\n", encoding="utf-8"
