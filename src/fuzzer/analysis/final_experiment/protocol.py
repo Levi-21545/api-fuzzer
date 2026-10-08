@@ -9,6 +9,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from fuzzer.analysis.deduplication import EXPECTED_CLASSIFICATION, build_signature
 from fuzzer.analysis.run_postprocessor import correlate_records
 from fuzzer.parser.openapi_parser import parse_openapi
@@ -140,8 +142,10 @@ def artifact_hashes(run_dir: Path, manifest: dict[str, Any]) -> dict[str, str]:
     return hashes
 
 
-def validate_run(run_dir: Path, api: str, commit: str) -> dict[str, Any]:
-    manifest = require_dict(read_json(run_dir / "run_manifest.json"), "manifest")
+def check_manifest(
+    run_dir: Path, manifest: dict[str, Any], api: str, commit: str
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    """Check identity, completion, frozen commit, configuration, and provenance."""
     if manifest.get("target_id") != api or manifest.get("run_id") != run_dir.name:
         raise InvalidCampaign(f"{run_dir}: target or run identity mismatch")
     number = manifest.get("run_number")
@@ -179,13 +183,14 @@ def validate_run(run_dir: Path, api: str, commit: str) -> dict[str, Any]:
         raise InvalidCampaign(f"{run_dir}: missing target provenance")
     if not fuzzer.get("source_tree_sha256"):
         raise InvalidCampaign(f"{run_dir}: missing source provenance")
+    return inputs, config, deduplication
 
-    hashes = artifact_hashes(run_dir, manifest)
+
+def count_operations(run_dir: Path, inputs: dict[str, Any]) -> tuple[int, int]:
+    """Verify the contract hash; count documented and parser-supported operations."""
     schema_file = contract_path(run_dir, inputs)
     if digest(schema_file) != inputs["schema_sha256"]:
         raise InvalidCampaign(f"{run_dir}: contract hash mismatch")
-    import yaml
-
     contract = require_dict(
         yaml.safe_load(schema_file.read_text(encoding="utf-8")), f"{run_dir}: contract"
     )
@@ -195,16 +200,20 @@ def validate_run(run_dir: Path, api: str, commit: str) -> dict[str, Any]:
         for path_item in paths.values()
         for method in require_dict(path_item, f"{run_dir}: path item")
     )
-    supported_operations = len(parse_openapi(str(schema_file)).endpoints)
+    return total_operations, len(parse_openapi(str(schema_file)).endpoints)
 
-    plans = require_records(run_dir / "data/execution_plan.json")
-    results = require_records(run_dir / "data/results.json")
-    findings = require_records(run_dir / "analysis/analysis_findings.json")
-    unique = require_records(run_dir / "analysis/findings_unique.json")
-    correlated = correlate_records(plans, results, findings)
-    metrics = require_dict(
-        read_json(run_dir / "analysis/metrics.json"), f"{run_dir}: metrics"
-    )
+
+def check_counts(
+    run_dir: Path,
+    manifest: dict[str, Any],
+    metrics: dict[str, Any],
+    deduplication: dict[str, Any],
+    records: dict[str, list[dict[str, Any]]],
+    supported_operations: int,
+) -> None:
+    """Recount metrics.json and manifest counts from the raw run records."""
+    plans, results = records["plans"], records["results"]
+    findings, unique = records["findings"], records["unique"]
     counts = require_dict(metrics.get("counts"), f"{run_dir}: metric counts")
     manifest_counts = require_dict(manifest.get("counts"), f"{run_dir}: counts")
     expected_count = sum(
@@ -269,6 +278,11 @@ def validate_run(run_dir: Path, api: str, commit: str) -> dict[str, Any]:
     if dict(classes) != metrics.get("candidate_by_classification"):
         raise InvalidCampaign(f"{run_dir}: candidate classification counts mismatch")
 
+
+def check_signatures(
+    run_dir: Path, api: str, unique: list[dict[str, Any]], correlated: list[Any]
+) -> None:
+    """Recompute every deduplication bucket and representative from case records."""
     buckets: dict[str, set[str]] = {}
     for item in unique:
         signature = require_dict(item.get("signature"), f"{run_dir}: signature")
@@ -309,10 +323,34 @@ def validate_run(run_dir: Path, api: str, commit: str) -> dict[str, Any]:
         if item["signature"] != build_signature(api, by_case[case_id]):
             raise InvalidCampaign(f"{run_dir}: signature differs from representative")
 
+
+def validate_run(run_dir: Path, api: str, commit: str) -> dict[str, Any]:
+    manifest = require_dict(read_json(run_dir / "run_manifest.json"), "manifest")
+    inputs, config, deduplication = check_manifest(run_dir, manifest, api, commit)
+    hashes = artifact_hashes(run_dir, manifest)
+    total_operations, supported_operations = count_operations(run_dir, inputs)
+
+    records = {
+        "plans": require_records(run_dir / "data/execution_plan.json"),
+        "results": require_records(run_dir / "data/results.json"),
+        "findings": require_records(run_dir / "analysis/analysis_findings.json"),
+        "unique": require_records(run_dir / "analysis/findings_unique.json"),
+    }
+    correlated = correlate_records(
+        records["plans"], records["results"], records["findings"]
+    )
+    metrics = require_dict(
+        read_json(run_dir / "analysis/metrics.json"), f"{run_dir}: metrics"
+    )
+    check_counts(
+        run_dir, manifest, metrics, deduplication, records, supported_operations
+    )
+    check_signatures(run_dir, api, records["unique"], correlated)
+
     return {
         "manifest": manifest,
         "metrics": metrics,
-        "unique": unique,
+        "unique": records["unique"],
         "configuration": config,
         "artifact_sha256": hashes,
         "contract_operations": total_operations,
