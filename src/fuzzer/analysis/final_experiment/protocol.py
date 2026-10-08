@@ -338,11 +338,15 @@ def discover_apis(root: Path) -> dict[str, list[Path]]:
 
 
 def validate_api(api: str, run_dirs: list[Path], commit: str) -> list[dict[str, Any]]:
-    if len(run_dirs) != RUN_COUNT:
+    return check_campaign(api, [validate_run(path, api, commit) for path in run_dirs])
+
+
+def check_campaign(api: str, runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Check numbering and shared metadata across already validated runs."""
+    if len(runs) != RUN_COUNT:
         raise InvalidCampaign(
-            f"{api}: expected exactly {RUN_COUNT} runs, found {len(run_dirs)}"
+            f"{api}: expected exactly {RUN_COUNT} runs, found {len(runs)}"
         )
-    runs = [validate_run(path, api, commit) for path in run_dirs]
     numbers = [run["manifest"]["run_number"] for run in runs]
     if sorted(numbers) != list(range(1, RUN_COUNT + 1)):
         raise InvalidCampaign(
@@ -377,12 +381,4 @@ def select_valid_attempts(
             valid.append(validate_run(path, api, commit))
         except (InvalidCampaign, ValueError, KeyError, TypeError) as error:
             invalid.append({"run_id": path.name, "reason": str(error)})
-    return validate_api(
-        api,
-        [
-            path
-            for path in run_dirs
-            if path.name in {run["manifest"]["run_id"] for run in valid}
-        ],
-        commit,
-    ), invalid
+    return check_campaign(api, valid), invalid

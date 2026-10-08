@@ -240,19 +240,17 @@ análise humana do achado. O desenho do modelo está resumido no
 
 ## Estado experimental
 
-Os três conjuntos preservados têm papéis diferentes:
+A [amostra pública versionada](experiments/tcc-2026/public/README.md) contém
+uma run L2 de cada uma das cinco APIs, com 1.435 requisições concluídas. Ela
+permite inspecionar o pipeline, mas não sustenta métricas entre cinco campanhas.
 
-| Conjunto | Aplicações | Papel |
-|---|---|---|
-| [`TCC-PILOT-001`](experiments/tcc-2026/pilot.yaml) | VAmPI, Petclinic, crAPI e RealWorld | Pilotos L1/L2 usados para desenvolver, corrigir e revisar o pipeline e o modelo fuzzy; não constituem o protocolo final. |
-| [`TCC-PUBLIC-001`](experiments/tcc-2026/public/) | As cinco aplicações | Uma run L2 pública por alvo, produzida pelo pipeline atual para inspeção e reprodução. |
-| `TCC-CONFIRMATORY-001` | Meilisearch v1.45.1 | Cinco repetições externas executadas depois do congelamento do modelo revisado, sem recalibração com o holdout. |
-
-A amostra pública preserva 1.435 requisições concluídas e seus artefatos. Sua
-[documentação própria](experiments/tcc-2026/public/README.md) registra as runs,
-contagens e condições de reprodução. A quantidade de repetições e o papel das
-cinco APIs em uma coleta final ainda dependem do fechamento do protocolo do
-TCC.
+Os [pilotos](experiments/tcc-2026/pilot.yaml) e a confirmação histórica do
+Meilisearch tiveram papéis próprios no desenvolvimento e na avaliação do FIS.
+A coleta final posterior executou 25 campanhas novas, cinco por API. Suas runs
+permanecem em `output/experiments/TCC-FINAL-001/`, ignorado pelo Git; o pacote
+público dessa coleta ainda não foi versionado. O
+[plano de fechamento](experiments/tcc-2026/FINAL-PACKAGE-PLAN.md) define a
+refatoração do analisador, a validação e a publicação de um único pacote final.
 
 ## Estrutura do código
 
