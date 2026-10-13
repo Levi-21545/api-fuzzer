@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 from fuzzer.analysis.deduplication import CorrelatedFinding, build_signature
-from fuzzer.analysis.final_experiment import protocol, summary
+from fuzzer.analysis.final_experiment import documents, protocol, summary
 
 MODULE = Path(__file__).resolve().parents[1] / "scripts/experiments/analyze_final.py"
 SPEC = importlib.util.spec_from_file_location("final_analysis", MODULE)
@@ -18,6 +18,12 @@ SPEC.loader.exec_module(analysis)
 def write_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value), encoding="utf-8")
+
+
+def edit_json(path, change):
+    value = json.loads(path.read_text())
+    change(value)
+    write_json(path, value)
 
 
 def make_run(
@@ -179,10 +185,10 @@ def test_cli_writes_a_compact_revalidated_review_bundle(tmp_path, capsys):
     for run_dir in paths:
         log = run_dir / "data/target_container.log"
         log.write_text("diagnostic log", encoding="utf-8")
-        manifest_path = run_dir / "run_manifest.json"
-        manifest = json.loads(manifest_path.read_text())
-        manifest["artifacts"].append("data/target_container.log")
-        write_json(manifest_path, manifest)
+        edit_json(
+            run_dir / "run_manifest.json",
+            lambda m: m["artifacts"].append("data/target_container.log"),
+        )
     source_hashes = {
         run_dir.name: protocol.digest(run_dir / "run_manifest.json")
         for run_dir in paths
@@ -273,11 +279,12 @@ def test_shared_meilisearch_contract_keeps_source_hashes(tmp_path, capsys):
     for run_dir in paths:
         contract = run_dir / "data/target_contract.json"
         contract.write_bytes((run_dir / "data/contract.json").read_bytes())
-        manifest_path = run_dir / "run_manifest.json"
-        manifest = json.loads(manifest_path.read_text())
-        manifest["inputs"]["schema"] = "data/target_contract.json"
-        manifest["artifacts"].append("data/target_contract.json")
-        write_json(manifest_path, manifest)
+
+        def use_target_contract(manifest):
+            manifest["inputs"]["schema"] = "data/target_contract.json"
+            manifest["artifacts"].append("data/target_contract.json")
+
+        edit_json(run_dir / "run_manifest.json", use_target_contract)
     review = tmp_path / "review"
 
     assert analysis.main([str(source), "expected", "--review-dir", str(review)]) == 0
@@ -335,10 +342,7 @@ def test_missing_and_wrong_repetitions_rejected(tmp_path):
     paths = make_campaign(tmp_path, "alpha")
     with pytest.raises(protocol.InvalidCampaign, match="exactly 5 runs"):
         protocol.validate_api("alpha", paths[:4], "expected")
-    manifest_path = paths[-1] / "run_manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["run_number"] = 4
-    write_json(manifest_path, manifest)
+    edit_json(paths[-1] / "run_manifest.json", lambda m: m.update(run_number=4))
     with pytest.raises(protocol.InvalidCampaign, match="numbered 1 through 5"):
         protocol.validate_api("alpha", paths, "expected")
 
@@ -348,13 +352,12 @@ def test_missing_and_wrong_repetitions_rejected(tmp_path):
 )
 def test_incompatible_campaign_metadata_rejected(tmp_path, field, value):
     paths = make_campaign(tmp_path, "alpha")
-    manifest_path = paths[-1] / "run_manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    if field == "schema_sha256":
-        manifest["inputs"][field] = value
-    else:
-        manifest[field] = value
-    write_json(manifest_path, manifest)
+
+    def change(manifest):
+        target = manifest["inputs"] if field == "schema_sha256" else manifest
+        target[field] = value
+
+    edit_json(paths[-1] / "run_manifest.json", change)
     expected = "contract hash" if field == "schema_sha256" else "metadata differs"
     with pytest.raises(protocol.InvalidCampaign, match=expected):
         protocol.validate_api("alpha", paths, "expected")
@@ -407,10 +410,10 @@ def test_meilisearch_multi_search_volatile_fields_are_normalized():
 
 def test_metrics_counts_must_match_unique_findings(tmp_path):
     paths = make_campaign(tmp_path, "alpha")
-    metrics_path = paths[0] / "analysis/metrics.json"
-    metrics = json.loads(metrics_path.read_text())
-    metrics["counts"]["findings_unique_operational"] = 2
-    write_json(metrics_path, metrics)
+    edit_json(
+        paths[0] / "analysis/metrics.json",
+        lambda m: m["counts"].update(findings_unique_operational=2),
+    )
     with pytest.raises(protocol.InvalidCampaign, match="metrics counts"):
         protocol.validate_run(paths[0], "alpha", "expected")
 
@@ -425,10 +428,10 @@ def test_metrics_counts_must_match_unique_findings(tmp_path):
 )
 def test_representative_must_match_complete_case_records(tmp_path, part, field, value):
     path = make_run(tmp_path, "alpha", 1)
-    unique_path = path / "analysis/findings_unique.json"
-    unique = json.loads(unique_path.read_text())
-    unique[0]["representative"][part][field] = value
-    write_json(unique_path, unique)
+    edit_json(
+        path / "analysis/findings_unique.json",
+        lambda u: u[0]["representative"][part].update({field: value}),
+    )
 
     with pytest.raises(protocol.InvalidCampaign, match="representative differs"):
         protocol.validate_run(path, "alpha", "expected")
@@ -437,19 +440,24 @@ def test_representative_must_match_complete_case_records(tmp_path, part, field, 
 @pytest.mark.parametrize(
     "change,expected",
     [
-        ("candidate_endpoints", "candidate endpoint count"),
-        ("http_status", "HTTP status class counts"),
+        (
+            lambda m: m["counts"].update(candidate_endpoints=0),
+            "candidate endpoint count",
+        ),
+        (
+            lambda m: m.update(executed_by_http_status_class={"4xx": 1}),
+            "HTTP status class counts",
+        ),
+        (
+            lambda m: m.update(candidate_by_classification={"SERVER_ERROR": 2}),
+            "candidate classification counts",
+        ),
     ],
+    ids=["candidate-endpoints", "http-status", "classification"],
 )
 def test_secondary_counts_are_checked_against_records(tmp_path, change, expected):
     path = make_run(tmp_path, "alpha", 1)
-    metrics_path = path / "analysis/metrics.json"
-    metrics = json.loads(metrics_path.read_text())
-    if change == "candidate_endpoints":
-        metrics["counts"]["candidate_endpoints"] = 0
-    else:
-        metrics["executed_by_http_status_class"] = {"4xx": 1}
-    write_json(metrics_path, metrics)
+    edit_json(path / "analysis/metrics.json", change)
 
     with pytest.raises(protocol.InvalidCampaign, match=expected):
         protocol.validate_run(path, "alpha", "expected")
@@ -495,10 +503,10 @@ def test_illustrative_case_selection_keeps_existing_semantic_id_rule():
 @pytest.mark.parametrize("selected", [None, 0, True, "1"])
 def test_selected_operations_requires_positive_integer(tmp_path, selected):
     path = make_run(tmp_path, "alpha", 1)
-    manifest_path = path / "run_manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["counts"]["selected_endpoints"] = selected
-    write_json(manifest_path, manifest)
+    edit_json(
+        path / "run_manifest.json",
+        lambda m: m["counts"].update(selected_endpoints=selected),
+    )
     with pytest.raises(protocol.InvalidCampaign, match="no operations were selected"):
         protocol.validate_run(path, "alpha", "expected")
 
@@ -510,20 +518,17 @@ def test_missing_listed_artifact_and_case_mismatch_rejected(tmp_path):
         protocol.validate_run(path, "alpha", "expected")
 
     (path / "analysis/analysis_report.md").write_text("report", encoding="utf-8")
-    results_path = path / "data/results.json"
-    results = json.loads(results_path.read_text())
-    results[0]["case_id"] = "other-case"
-    write_json(results_path, results)
+    edit_json(path / "data/results.json", lambda r: r[0].update(case_id="other-case"))
     with pytest.raises(ValueError, match="plan/result case_id mismatch"):
         protocol.validate_run(path, "alpha", "expected")
 
 
 def test_signature_bucket_recomputed_from_records(tmp_path):
     path = make_run(tmp_path, "alpha", 1)
-    unique_path = path / "analysis/findings_unique.json"
-    unique = json.loads(unique_path.read_text())
-    unique[0]["signature"]["id"] = "incorrect"
-    write_json(unique_path, unique)
+    edit_json(
+        path / "analysis/findings_unique.json",
+        lambda u: u[0]["signature"].update(id="incorrect"),
+    )
     with pytest.raises(protocol.InvalidCampaign, match="signature/case mapping"):
         protocol.validate_run(path, "alpha", "expected")
 
@@ -538,3 +543,59 @@ def test_invalid_attempt_is_retained_outside_five_valid_runs(tmp_path):
     assert rejected == [
         {"run_id": "run-6", "reason": f"{invalid}: run_number must be between 1 and 5"}
     ]
+
+
+@pytest.mark.parametrize(
+    "change,message",
+    [
+        (lambda m: m.update(target_id="other"), "target or run identity"),
+        (lambda m: m.update(status="failed"), "not completed cleanly"),
+        (lambda m: m.update(error="boom"), "not completed cleanly"),
+        (lambda m: m.update(started_at=None), "missing run timestamps"),
+        (lambda m: m["fuzzer"]["git"].update(commit="other"), "clean commit"),
+        (lambda m: m["fuzzer"]["git"].update(dirty=True), "clean commit"),
+        (
+            lambda m: m["fuzzer"]["configuration"].update(level=1),
+            "required configuration",
+        ),
+        (
+            lambda m: m["fuzzer"]["configuration"].update(delay_ms=0),
+            "required configuration",
+        ),
+        (
+            lambda m: m["postprocessing"]["deduplication"].update(status="failed"),
+            "deduplication is not completed",
+        ),
+        (lambda m: m["inputs"].update(target_image=None), "missing target provenance"),
+        (
+            lambda m: m["counts"].update(planned_requests=2),
+            "manifest/postprocessing counts",
+        ),
+    ],
+    ids=[
+        "target",
+        "status",
+        "error",
+        "timestamps",
+        "commit",
+        "dirty-tree",
+        "level",
+        "delay",
+        "deduplication",
+        "target-image",
+        "manifest-counts",
+    ],
+)
+def test_protocol_rules_reject_run(tmp_path, change, message):
+    """Frozen commit, clean tree, required configuration and completion."""
+    path = make_run(tmp_path, "alpha", 1)
+    edit_json(path / "run_manifest.json", change)
+    with pytest.raises(protocol.InvalidCampaign, match=message):
+        protocol.validate_run(path, "alpha", "expected")
+
+
+def test_documents_use_brazilian_number_format():
+    assert documents.number(7175) == "7.175"
+    assert documents.percent(0.385) == "38,5%"
+    assert documents.score(0.84) == "0,84"
+    assert documents.percent(None) == documents.score(None) == "—"
