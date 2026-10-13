@@ -202,6 +202,8 @@
     "reobserved_at_least_four_ratio": 0.608058608058608,
     "observed_once_ratio": 0.23809523809523808,
     "signatures_with_band_change": 3,
+    "strict_signatures_with_mixed_bands": 6,
+    "fis_inputs_with_different_scores": 0,
     "score_distribution_unique_per_run": {
       "count": 985,
       "median": 0.16,
@@ -10223,6 +10225,21 @@
         ]
       }
     },
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": true,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [],
+      "level": 2,
+      "max_mutations_per_payload": 20,
+      "max_pairs_per_payload": 10,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
     "invalid_attempts": []
   },
   "meilisearch": {
@@ -10420,6 +10437,8 @@
     "reobserved_at_least_four_ratio": 1.0,
     "observed_once_ratio": 0.0,
     "signatures_with_band_change": 0,
+    "strict_signatures_with_mixed_bands": 0,
+    "fis_inputs_with_different_scores": 0,
     "score_distribution_unique_per_run": {
       "count": 1140,
       "median": 0.16,
@@ -20572,6 +20591,48 @@
         ]
       }
     },
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": false,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [
+        "/batches",
+        "/chats",
+        "/chats/{workspace_uid}",
+        "/chats/{workspace_uid}/chat/completions",
+        "/chats/{workspace_uid}/settings",
+        "/dynamic-search-rules/{uid}",
+        "/indexes/{index_uid}",
+        "/indexes/{index_uid}/documents",
+        "/indexes/{index_uid}/documents/{document_id}",
+        "/indexes/{index_uid}/search",
+        "/indexes/{index_uid}/settings/distinct-attribute",
+        "/indexes/{index_uid}/settings/facet-search",
+        "/indexes/{index_uid}/settings/search-cutoff-ms",
+        "/indexes/{index_uid}/similar",
+        "/indexes/{index_uid}/stats",
+        "/keys/{key}",
+        "/logs/stderr",
+        "/logs/stream",
+        "/network",
+        "/network/control",
+        "/stats",
+        "/tasks",
+        "/tasks/cancel",
+        "/tasks/{task_id}/documents",
+        "/webhooks",
+        "/webhooks/{uuid}"
+      ],
+      "level": 2,
+      "max_mutations_per_payload": 20,
+      "max_pairs_per_payload": 10,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
     "invalid_attempts": []
   },
   "petclinic": {
@@ -20776,6 +20837,8 @@
     "reobserved_at_least_four_ratio": 1.0,
     "observed_once_ratio": 0.0,
     "signatures_with_band_change": 0,
+    "strict_signatures_with_mixed_bands": 10,
+    "fis_inputs_with_different_scores": 0,
     "score_distribution_unique_per_run": {
       "count": 235,
       "median": 0.17,
@@ -22904,6 +22967,23 @@
         ]
       }
     },
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": false,
+      "auto_auth": false,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [
+        "/oops"
+      ],
+      "level": 2,
+      "max_mutations_per_payload": 20,
+      "max_pairs_per_payload": 10,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
     "invalid_attempts": []
   },
   "realworld": {
@@ -23111,6 +23191,8 @@
     "reobserved_at_least_four_ratio": 0.7058823529411765,
     "observed_once_ratio": 0.29411764705882354,
     "signatures_with_band_change": 0,
+    "strict_signatures_with_mixed_bands": 0,
+    "fis_inputs_with_different_scores": 0,
     "score_distribution_unique_per_run": {
       "count": 65,
       "median": 0.5,
@@ -23767,6 +23849,21 @@
         ]
       }
     },
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": false,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [],
+      "level": 2,
+      "max_mutations_per_payload": 20,
+      "max_pairs_per_payload": 10,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
     "invalid_attempts": []
   },
   "vampi": {
@@ -23959,6 +24056,8 @@
     "reobserved_at_least_four_ratio": 0.5454545454545454,
     "observed_once_ratio": 0.45454545454545453,
     "signatures_with_band_change": 0,
+    "strict_signatures_with_mixed_bands": 0,
+    "fis_inputs_with_different_scores": 0,
     "score_distribution_unique_per_run": {
       "count": 35,
       "median": 0.16,
@@ -24345,6 +24444,23 @@
           }
         ]
       }
+    },
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": true,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [
+        "/createdb"
+      ],
+      "level": 2,
+      "max_mutations_per_payload": 20,
+      "max_pairs_per_payload": 10,
+      "path_filter": null,
+      "timeout_seconds": 10
     },
     "invalid_attempts": []
   }

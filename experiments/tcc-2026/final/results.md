@@ -1,6 +1,6 @@
 # Resultados da coleta final
 
-25 campanhas: 5 APIs × 5 repetições, todas com o fuzzer no commit `ceec101280f999e14fa95955db5bd7e5ceb05e84` e a mesma configuração.
+25 campanhas: 5 APIs × 5 repetições, todas com o fuzzer no commit `ceec101280f999e14fa95955db5bd7e5ceb05e84`.
 
 ## Como ler
 
@@ -9,6 +9,27 @@
 - **Assinatura estrita:** reúne, dentro de uma campanha, achados com a mesma operação, classe, status HTTP, resposta normalizada e caminho do erro de validação.
 - **ID semântico:** identifica o mesmo achado entre campanhas. No Meilisearch, ignora `requestUid` e `processingTimeMs` em `POST /multi-search`.
 - **Presença:** em quantas das 5 campanhas um ID semântico apareceu. Cada ID conta no máximo uma vez por campanha.
+
+## Configuração
+
+Em todas as campanhas: nível L2, até 20 mutações isoladas e 10 pares por payload, concorrência 1, 250 ms entre requisições e timeout de 10 s. As 5 campanhas de cada API têm configuração idêntica; entre APIs, variam:
+
+| API | Operações testadas | Autenticação | Teste de acesso | Caminhos excluídos |
+|---|---:|---|---|---:|
+| VAmPI | 13 de 14 | cadastro e login automáticos | sim | 1 |
+| Spring Petclinic REST | 36 de 37 | nenhuma (o contrato não define) | não | 1 |
+| crAPI | 44 de 44 | cadastro e login automáticos | sim | 0 |
+| RealWorld/Conduit | 19 de 19 | token obtido pelo runner | sim | 0 |
+| Meilisearch | 85 de 138 | chave mestra | sim | 26 |
+
+- **Operações testadas:** selecionadas pelo fuzzer, de quantas o contrato documenta.
+- **Teste de acesso:** repete as operações protegidas sem credencial e com credencial inválida.
+
+Excluir um caminho remove todas as operações dele. Motivos (lista completa em `fuzzer.configuration.excluded_paths`, no `run_manifest.json` de cada campanha):
+
+- VAmPI: `/createdb` recria o banco com dados de exemplo.
+- Spring Petclinic REST: `/oops` sempre falha, por definição do contrato.
+- Meilisearch: caminhos com formato de entrada que o fuzzer não suporta, que dependem de recursos ou integrações ausentes no alvo, ou que alterariam o índice usado como semente.
 
 ## Execução
 
@@ -75,7 +96,13 @@ As colunas "em k/5" contam IDs presentes em exatamente k campanhas. As duas últ
 | RealWorld/Conduit | 65 | 0,50 | 0,50 | 0,50 | 0 | 65 | 0 |
 | Meilisearch | 1.140 | 0,16 | 0,16 | 0,50 | 1.020 | 120 | 0 |
 
-Um score por assinatura estrita em cada campanha (mesmo total da tabela de deduplicação). Os scores descrevem a prioridade de triagem atribuída; não medem acerto nem confirmam vulnerabilidades. A comparação com rótulos de referência existe só nos conjuntos históricos.
+Um score por assinatura estrita em cada campanha: o maior entre os seus casos (mesmo total da tabela de deduplicação). Os scores descrevem a prioridade de triagem atribuída; não medem acerto nem confirmam vulnerabilidades. A comparação com rótulos de referência existe só nos conjuntos históricos.
+
+Casos da mesma assinatura podem ter scores diferentes porque ela agrupa pela resposta, mas o FIS avalia também a requisição: a mesma resposta é mais grave quando a requisição era válida (caso-base) do que quando era uma mutação, e quando foi enviada sem credencial do que com credencial inválida. Por isso, 16 das 2.460 assinaturas reúnem casos de faixas diferentes (Spring Petclinic REST: 10; crAPI: 6).
+
+3 IDs semânticos mudam de faixa entre campanhas (crAPI: 3): a mesma resposta veio de requisições diferentes em cada campanha.
+
+Achados com as mesmas entradas do FIS receberam sempre o mesmo score.
 
 ## Casos ilustrativos
 

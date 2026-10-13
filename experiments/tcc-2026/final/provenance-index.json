@@ -1,6 +1,6 @@
 {
   "campaign_commit": "ceec101280f999e14fa95955db5bd7e5ceb05e84",
-  "analyzer_commit": "052ee81ba56e4c2908b712218fd234eff0dd692f",
+  "analyzer_commit": "183d6c9c293bbecaaaae586b84fdf56824871e72",
   "runs": [
     {
       "api": "crapi",
