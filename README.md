@@ -246,11 +246,8 @@ permite inspecionar o pipeline, mas não sustenta métricas entre cinco campanha
 
 Os [pilotos](experiments/tcc-2026/pilot.yaml) e a confirmação histórica do
 Meilisearch tiveram papéis próprios no desenvolvimento e na avaliação do FIS.
-A coleta final posterior executou 25 campanhas novas, cinco por API. Suas runs
-permanecem em `output/experiments/TCC-FINAL-001/`, ignorado pelo Git; o pacote
-público dessa coleta ainda não foi versionado. O
-[plano de fechamento](experiments/tcc-2026/FINAL-PACKAGE-PLAN.md) define a
-refatoração do analisador, a validação e a publicação de um único pacote final.
+A coleta final executou 25 campanhas novas, cinco por API. O pacote com essas
+runs será publicado em `experiments/tcc-2026/final/`.
 
 ## Estrutura do código
 
