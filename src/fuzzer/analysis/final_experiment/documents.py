@@ -384,16 +384,15 @@ def fis_grouping_note(
         summaries[api]["score_distribution_unique_per_run"]["count"] for api in apis
     )
     paragraph = (
-        "Casos da mesma assinatura podem ter scores diferentes porque ela agrupa "
-        "pela resposta, mas o FIS avalia também a requisição: a mesma "
-        "resposta é mais grave quando a requisição era válida (caso-base) do que "
-        "quando era uma mutação, e quando foi enviada sem credencial do que com "
-        "credencial inválida."
+        "Casos com a mesma assinatura podem receber prioridades diferentes "
+        "porque as entradas do FIS não dependem só da resposta: também "
+        "consideram a requisição (se deveria ser rejeitada, se foi enviada sem "
+        "credencial) e a evidência reunida entre os casos."
     )
     if mixed:
         paragraph += (
-            f" Por isso, {mixed} das {number(signatures)} assinaturas reúnem casos "
-            f"de faixas diferentes ({mixed_by_api})."
+            f" Isso ocorreu em {mixed} das {number(signatures)} assinaturas "
+            f"({mixed_by_api})."
         )
     lines = ["", paragraph]
     if changed:

@@ -650,8 +650,8 @@ def test_documents_explain_configuration_and_fis_grouping():
     assert "- Meilisearch: caminhos com formato de entrada" in configuration
 
     note = "\n".join(documents.fis_grouping_note(summaries, ["meilisearch"]))
-    assert "Casos da mesma assinatura podem ter scores diferentes" in note
-    assert "2 das 1.140 assinaturas reúnem casos de faixas diferentes" in note
+    assert "podem receber prioridades diferentes" in note
+    assert "Isso ocorreu em 2 das 1.140 assinaturas" in note
     assert "(Meilisearch: 2)" in note
     assert "1 IDs semânticos mudam de faixa entre campanhas" in note
     assert "receberam sempre o mesmo score" in note
@@ -659,4 +659,4 @@ def test_documents_explain_configuration_and_fis_grouping():
     for field in ("strict_signatures_with_mixed_bands", "signatures_with_band_change"):
         summaries["meilisearch"][field] = 0
     note = "\n".join(documents.fis_grouping_note(summaries, ["meilisearch"]))
-    assert "reúnem casos" not in note and "mudam de faixa" not in note
+    assert "Isso ocorreu" not in note and "mudam de faixa" not in note
