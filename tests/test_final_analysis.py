@@ -208,48 +208,41 @@ def test_cli_writes_a_compact_revalidated_review_bundle(tmp_path, capsys):
     assert (review / "README.md").is_file()
     assert (review / "final-analysis.json").is_file()
     index = json.loads((review / "provenance-index.json").read_text())
-    assert index["collector_commit"] == "expected"
-    assert index["analyzer_files_sha256"] == protocol.analyzer_source_hashes()
+    assert index["campaign_commit"] == "expected"
     assert len(index["runs"]) == 5
-    assert index["source_only_invalid_attempts"] == {"alpha": []}
+    assert "invalid_attempts_not_included" not in index
     assert str(tmp_path) not in json.dumps(index)
+    contract = review / "contracts/alpha.json"
+    assert protocol.digest(contract) == protocol.digest(paths[0] / "data/contract.json")
     for run_dir in paths:
         assert (run_dir / "data/target_container.log").is_file()
         bundled = review / "alpha" / run_dir.name
         manifest = json.loads((bundled / "run_manifest.json").read_text())
         assert "data/target_container.log" not in manifest["artifacts"]
+        assert manifest["inputs"]["schema"] == "../../contracts/alpha.json"
         assert not (bundled / "data/target_container.log").exists()
         provenance = next(
             item for item in index["runs"] if item["run_id"] == run_dir.name
         )
-        assert provenance["source_manifest_sha256"] == source_hashes[run_dir.name]
-        assert provenance["package_manifest_sha256"] == protocol.digest(
-            bundled / "run_manifest.json"
-        )
-        assert provenance["adapted_manifest_fields"] == ["artifacts", "inputs.schema"]
-        assert provenance["omitted_artifacts"] == [
-            {
-                "path": "data/target_container.log",
-                "reason": "diagnostic log kept in source",
-            }
-        ]
-        manifest_mapping = provenance["artifact_mappings"]["run_manifest.json"]
-        assert manifest_mapping["action"] == "adapted"
-        assert manifest_mapping["source_sha256"] == source_hashes[run_dir.name]
-        assert manifest_mapping["package_sha256"] == protocol.digest(
-            bundled / "run_manifest.json"
-        )
-        copied_mapping = provenance["artifact_mappings"]["data/results.json"]
-        assert copied_mapping["action"] == "copied"
-        assert copied_mapping["source_sha256"] == copied_mapping["package_sha256"]
+        assert provenance == {
+            "api": "alpha",
+            "run_id": run_dir.name,
+            "original_manifest_sha256": source_hashes[run_dir.name],
+            "omitted_files": ["data/target_container.log"],
+            "changed_manifest_fields": ["artifacts", "inputs.schema"],
+        }
     readme = (review / "README.md").read_text()
-    assert "## Por onde começar" in readme
     assert "## Conferir os resultados" in readme
-    assert "## Como este diretório foi gerado" in readme
     assert "## Repetir a coleta" in readme
-    assert "provenance-index.json" in readme
+    assert "<review-dir> expected" in readme
     assert "{{" not in readme
-    assert "--review-dir <review-dir>" in readme
+    signatures = (review / "assinaturas.csv").read_text().splitlines()
+    assert signatures[0].startswith("api,id_semantico,endpoint,classe,http,presenca")
+    assert signatures[1].startswith("alpha,")
+    assert (
+        ",GET /x,SERVER_ERROR,500,5,1 2 3 4 5,0.80,0.80,HIGH,case-1," in signatures[1]
+    )
+    assert len(signatures) == 2
     validated_bundle = protocol.discover_apis(review)
     assert len(validated_bundle["alpha"]) == 5
 
@@ -296,15 +289,11 @@ def test_shared_meilisearch_contract_keeps_source_hashes(tmp_path, capsys):
     assert meili_license.is_file()
     assert "Copyright (c) 2019-2025 Meili SAS" in meili_license.read_text()
     license_record = (review / "LICENSES.md").read_text()
-    assert "MIT-only segundo o upstream" in license_record
+    assert "contracts/meilisearch-v1.45.1-openapi.json" in license_record
     assert "meilisearch/meilisearch/issues/6010" in license_record
     index = json.loads((review / "provenance-index.json").read_text())
     for run in index["runs"]:
-        mapping = run["artifact_mappings"]["data/target_contract.json"]
-        assert mapping["action"] == "relocated"
-        assert mapping["package_path"] == "contracts/meilisearch-v1.45.1-openapi.json"
-        assert mapping["source_sha256"] == mapping["package_sha256"]
-        assert run["contract_input"]["distribution"] == "included"
+        assert run["changed_manifest_fields"] == ["artifacts", "inputs.schema"]
         per_run_contract = (
             review / "meilisearch" / run["run_id"] / "data/target_contract.json"
         )
@@ -324,7 +313,7 @@ def test_review_bundle_keeps_invalid_attempt_reason_only_in_source(tmp_path, cap
     assert analysis.main([str(source), "expected", "--review-dir", str(review)]) == 0
     capsys.readouterr()
     index = json.loads((review / "provenance-index.json").read_text())
-    assert index["source_only_invalid_attempts"] == {"alpha": ["run-6"]}
+    assert index["invalid_attempts_not_included"] == {"alpha": ["run-6"]}
     package_analysis = (review / "final-analysis.json").read_text()
     assert str(tmp_path) not in package_analysis
     invalid = json.loads(package_analysis)["alpha"]["invalid_attempts"]

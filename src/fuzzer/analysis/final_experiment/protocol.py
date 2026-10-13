@@ -16,8 +16,6 @@ from fuzzer.analysis.run_postprocessor import correlate_records
 from fuzzer.parser.openapi_parser import parse_openapi
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
-PACKAGE_DIR = Path(__file__).resolve().parent
-ENTRYPOINT = REPO_ROOT / "scripts/experiments/analyze_final.py"
 
 RUN_COUNT = 5
 
@@ -77,13 +75,6 @@ def require_records(path: Path) -> list[dict[str, Any]]:
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def analyzer_source_hashes() -> dict[str, str]:
-    """Hash the entrypoint and every module and template of this package."""
-    package_files = [*PACKAGE_DIR.glob("*.py"), *PACKAGE_DIR.glob("*.md")]
-    files = [ENTRYPOINT, *sorted(package_files)]
-    return {path.relative_to(REPO_ROOT).as_posix(): digest(path) for path in files}
 
 
 def analyzer_git_revision() -> str | None:

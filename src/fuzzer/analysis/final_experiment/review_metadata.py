@@ -4,9 +4,6 @@ MEILISEARCH_ASSET_URL = (
     "https://github.com/meilisearch/meilisearch/releases/download/"
     "v1.45.1/meilisearch-openapi.json"
 )
-MEILISEARCH_LICENSE_URL = (
-    "https://github.com/meilisearch/meilisearch/blob/v1.45.1/LICENSE-MIT"
-)
 MEILISEARCH_LICENSE_EVIDENCE_URL = "https://github.com/meilisearch/meilisearch/issues/6010"
 MEILISEARCH_MIT_LICENSE = """MIT License
 
@@ -31,28 +28,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-# Key order is the API order of the generated documents. "external" contracts
-# stay in ../mock-projects and are referenced by the adapted manifests;
-# "included" contracts are copied once to `schema` inside the package. The
-# license is copied from `license_file` or written from `license_text`.
+# Key order is the API order of the generated documents. Each contract is copied
+# unchanged to contracts/<contract_file>; `source` is the markdown link to the
+# exact upstream revision. The license is copied from `license_file` or written
+# from `license_text`.
 API_METADATA = {
     "vampi": {
         "label": "VAmPI",
-        "contract": "external",
-        "schema": "../mock-projects/VAmPI/openapi_specs/openapi3.yml",
-        "source": "VAmPI (`f16052dce83f05847133ec98f01c5193a41de7d8`)",
+        "contract_file": "vampi-openapi3.yml",
+        "source": (
+            "[erev0s/VAmPI](https://github.com/erev0s/VAmPI/tree/"
+            "f16052dce83f05847133ec98f01c5193a41de7d8) @ `f16052d`"
+        ),
         "license": "MIT",
         "license_file": "../mock-projects/VAmPI/LICENSE",
         "license_copy": "vampi-LICENSE.txt",
     },
     "petclinic": {
         "label": "Spring Petclinic REST",
-        "contract": "external",
-        "schema": (
-            "../mock-projects/spring-petclinic-rest/src/main/resources/openapi.yml"
-        ),
+        "contract_file": "petclinic-openapi.yml",
         "source": (
-            "spring-petclinic-rest (`c7b5f5e9e90af2e5b94a40dd77b2a53dc33f67bd`)"
+            "[spring-petclinic/spring-petclinic-rest]"
+            "(https://github.com/spring-petclinic/spring-petclinic-rest/tree/"
+            "c7b5f5e9e90af2e5b94a40dd77b2a53dc33f67bd) @ `c7b5f5e`"
         ),
         "license": "Apache-2.0",
         "license_file": "../mock-projects/spring-petclinic-rest/LICENSE.txt",
@@ -60,19 +58,21 @@ API_METADATA = {
     },
     "crapi": {
         "label": "crAPI",
-        "contract": "external",
-        "schema": "../mock-projects/crAPI/openapi-spec/crapi-openapi-spec.json",
-        "source": "crAPI (`73d309cc8f28bbdeed31dbb35f05dba8354de3c9`)",
+        "contract_file": "crapi-openapi-spec.json",
+        "source": (
+            "[OWASP/crAPI](https://github.com/OWASP/crAPI/tree/"
+            "73d309cc8f28bbdeed31dbb35f05dba8354de3c9) @ `73d309c`"
+        ),
         "license": "Apache-2.0",
         "license_file": "../mock-projects/crAPI/LICENSE.md",
         "license_copy": "crapi-LICENSE.txt",
     },
     "realworld": {
         "label": "RealWorld/Conduit",
-        "contract": "external",
-        "schema": "../mock-projects/realworld/specs/api/openapi.yml",
+        "contract_file": "realworld-openapi.yml",
         "source": (
-            "RealWorld specification (`98f29fb3f8bcb1dd614b91f2851371bf22c34775`)"
+            "[realworld-apps/realworld](https://github.com/realworld-apps/"
+            "realworld/tree/98f29fb3f8bcb1dd614b91f2851371bf22c34775) @ `98f29fb`"
         ),
         "license": "MIT",
         "license_file": "../mock-projects/realworld/LICENSE",
@@ -80,11 +80,9 @@ API_METADATA = {
     },
     "meilisearch": {
         "label": "Meilisearch",
-        "contract_label": "Meilisearch v1.45.1",
-        "contract": "included",
-        "schema": "contracts/meilisearch-v1.45.1-openapi.json",
-        "source": "Asset comunitário em `contracts/`",
-        "license": "MIT — asset comunitário MIT-only segundo o upstream",
+        "contract_file": "meilisearch-v1.45.1-openapi.json",
+        "source": f"[asset da release v1.45.1]({MEILISEARCH_ASSET_URL})",
+        "license": "MIT",
         "license_text": MEILISEARCH_MIT_LICENSE,
         "license_copy": "meilisearch-LICENSE-MIT.txt",
     },
@@ -94,24 +92,12 @@ API_METADATA = {
 LICENSE_NOTES = (
     (
         "meilisearch",
-        f"Asset: [{MEILISEARCH_ASSET_URL}]({MEILISEARCH_ASSET_URL}). "
-        "O upstream o lista entre os assets exclusivamente MIT na "
-        f"[decisão de separar os assets Community e Enterprise]"
-        f"({MEILISEARCH_LICENSE_EVIDENCE_URL}); o aviso está em "
-        f"[`licenses/meilisearch-LICENSE-MIT.txt`]"
-        f"(licenses/meilisearch-LICENSE-MIT.txt), obtido de "
-        f"[{MEILISEARCH_LICENSE_URL}]({MEILISEARCH_LICENSE_URL}).",
+        "O Meilisearch distribui este contrato entre os assets exclusivamente "
+        f"MIT ([issue #6010]({MEILISEARCH_LICENSE_EVIDENCE_URL})).",
     ),
     (
         "vampi",
-        "O contrato VAmPI não foi copiado porque contém um exemplo "
-        "com formato de JWT.",
-    ),
-    (
-        "meilisearch",
-        "O contrato Meilisearch mantém um valor com aparência de "
-        "chave apenas no exemplo textual do esquema Bearer. O pacote "
-        "não o altera para preservar o hash do asset; não há evidência "
-        "no contrato de que o exemplo seja uma credencial ativa.",
+        "Os tokens de exemplo nos contratos (VAmPI, Meilisearch) vêm da "
+        "documentação original e não são credenciais.",
     ),
 )

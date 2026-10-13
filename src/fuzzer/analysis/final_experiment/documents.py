@@ -1,13 +1,15 @@
-"""Render results.md, LICENSES.md and README.md for the review package."""
+"""Render the human-readable files of the review package."""
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .protocol import REPO_ROOT, RUN_COUNT, analyzer_git_revision
+from .protocol import REPO_ROOT, RUN_COUNT
 from .review_metadata import API_METADATA, LICENSE_NOTES
 from .summary import illustrative_signatures
 
@@ -63,7 +65,6 @@ def write_review_documents(
     review_root: Path,
     summaries: dict[str, dict[str, Any]],
     commit: str,
-    experiment_root: Path,
 ) -> None:
     """Render the package documents from validated summaries."""
     apis = [api for api in API_METADATA if api in summaries]
@@ -95,8 +96,11 @@ def write_review_documents(
     write_lines(
         review_root / "LICENSES.md", licenses_document(review_root, summaries, apis)
     )
+    (review_root / "assinaturas.csv").write_text(
+        signatures_csv(review_root, summaries, apis), encoding="utf-8"
+    )
     (review_root / "README.md").write_text(
-        readme_document(review_root, commit, experiment_root), encoding="utf-8"
+        readme_document(review_root, commit), encoding="utf-8"
     )
 
 
@@ -355,23 +359,28 @@ def licenses_document(
         metadata = API_METADATA.get(api, {})
         run_id = summaries[api]["run_ids"][0]
         manifest_file = review_root / api / run_id / "run_manifest.json"
-        manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+        inputs = json.loads(manifest_file.read_text(encoding="utf-8"))["inputs"]
+        contract = inputs["schema"].removeprefix("../../")
+        license_name = metadata.get("license", "—")
+        if "license_copy" in metadata:
+            license_name = f"[{license_name}](licenses/{metadata['license_copy']})"
         rows.append(
             [
-                metadata.get("contract_label", label(api)),
-                metadata.get("source", "upstream"),
-                metadata.get("license", "verificar upstream"),
-                f"`{manifest['inputs']['schema_sha256']}`",
+                label(api),
+                f"[`{contract}`]({contract})",
+                metadata.get("source", "—"),
+                license_name,
+                f"`{inputs['schema_sha256']}`",
             ]
         )
+    columns = ["API", "Contrato", "Origem", "Licença", "SHA-256"]
     lines = [
         "# Contratos e licenças",
         "",
-        "Contratos dos clones ficam referenciados por revisão e SHA-256, sem "
-        "cópias extras. Os textos de licença dos quatro projetos estão em "
-        "`licenses/`; o aviso MIT do asset Meilisearch também está incluído lá.",
+        "Os contratos em `contracts/` são cópias sem alteração dos arquivos usados "
+        "nas campanhas.",
         "",
-        *table(["API", "Origem", "Licença", "SHA-256"], "llll", rows),
+        *table(columns, "lllll", rows),
     ]
     for api, note in LICENSE_NOTES:
         if api in apis:
@@ -379,22 +388,77 @@ def licenses_document(
     return lines
 
 
-def readme_document(review_root: Path, commit: str, experiment_root: Path) -> str:
-    def relative(path: Path, placeholder: str) -> str:
-        if path.is_relative_to(REPO_ROOT):
-            return path.relative_to(REPO_ROOT).as_posix()
-        return placeholder
+def signatures_csv(
+    review_root: Path, summaries: dict[str, dict[str, Any]], apis: list[str]
+) -> str:
+    """One row per semantic ID, with an example case to open in the run files."""
+    columns = [
+        "api",
+        "id_semantico",
+        "endpoint",
+        "classe",
+        "http",
+        "presenca",
+        "campanhas",
+        "score_min",
+        "score_max",
+        "faixas",
+        "exemplo_case_id",
+        "exemplo_arquivo",
+    ]
+    rows = []
+    for api in apis:
+        components = {}
+        for run_id in summaries[api]["run_ids"]:
+            unique_file = review_root / api / run_id / "analysis/findings_unique.json"
+            for item in json.loads(unique_file.read_text(encoding="utf-8")):
+                components[item["signature"]["id"]] = item["signature"]["components"]
+        for signature_id, signature in summaries[api]["signatures"].items():
+            origin = signature["origins"][0]
+            parts = components[origin["strict_signature"]]
+            scores = signature["score_range"] or [None, None]
+            rows.append(
+                {
+                    "api": api,
+                    "id_semantico": signature_id,
+                    "endpoint": parts["endpoint_id"],
+                    "classe": parts["classification"],
+                    "http": parts["status_code"],
+                    "presenca": len(signature["present_in"]),
+                    "campanhas": " ".join(map(str, signature["present_in"])),
+                    "score_min": "" if scores[0] is None else f"{scores[0]:.2f}",
+                    "score_max": "" if scores[1] is None else f"{scores[1]:.2f}",
+                    "faixas": " ".join(signature["bands"]),
+                    "exemplo_case_id": origin["case_id"],
+                    "exemplo_arquivo": (
+                        f"{api}/{origin['run_id']}/analysis/analysis_findings.json"
+                    ),
+                }
+            )
+    rows.sort(
+        key=lambda row: (
+            apis.index(row["api"]),
+            -row["presenca"],
+            row["endpoint"],
+            row["id_semantico"],
+        )
+    )
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=columns, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    return output.getvalue()
 
+
+def readme_document(review_root: Path, commit: str) -> str:
+    review_dir = (
+        review_root.relative_to(REPO_ROOT).as_posix()
+        if review_root.is_relative_to(REPO_ROOT)
+        else "<review-dir>"
+    )
     text = README_TEMPLATE.read_text(encoding="utf-8")
-    replacements = {
-        "{{COLLECTOR_COMMIT}}": commit,
-        "{{ANALYZER_REVISION}}": analyzer_git_revision()
-        or "pendente (checkout com alterações locais)",
-        "{{EXPERIMENT_ROOT}}": relative(experiment_root, "<experiment-root>"),
-        "{{REVIEW_DIR}}": relative(review_root, "<review-dir>"),
-    }
-    for marker, value in replacements.items():
-        text = text.replace(marker, value)
+    text = text.replace("{{COLLECTOR_COMMIT}}", commit)
+    text = text.replace("{{REVIEW_DIR}}", review_dir)
     if "{{" in text or "}}" in text:
         raise ValueError("unresolved review README template marker")
     return text

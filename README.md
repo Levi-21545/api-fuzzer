@@ -128,7 +128,7 @@ menos que as variáveis indicadas abaixo sejam definidas.
 Exemplo de uma run L2 identificada, usando a VAmPI:
 
 ```bash
-EXPERIMENT_ID=TCC-PUBLIC-001 \
+EXPERIMENT_ID=TCC-EXEMPLO-001 \
 LEVEL=2 \
 MAX_MUTATIONS=20 \
 MAX_PAIRS=10 \
@@ -141,7 +141,7 @@ confirmatória em L2, 20 mutações isoladas e 10 pares; `REPETITIONS` controla 
 quantidade de execuções:
 
 ```bash
-EXPERIMENT_ID=TCC-PUBLIC-001 \
+EXPERIMENT_ID=TCC-EXEMPLO-001 \
 REPETITIONS=1 \
 bash scripts/experiments/run_meilisearch_experiment.sh
 ```
@@ -240,14 +240,11 @@ análise humana do achado. O desenho do modelo está resumido no
 
 ## Estado experimental
 
-A [amostra pública versionada](experiments/tcc-2026/public/README.md) contém
-uma run L2 de cada uma das cinco APIs, com 1.435 requisições concluídas. Ela
-permite inspecionar o pipeline, mas não sustenta métricas entre cinco campanhas.
+A coleta final executou 25 campanhas, cinco por API. Runs, resultados e
+contratos estão em [`experiments/tcc-2026/final/`](experiments/tcc-2026/final/README.md).
 
 Os [pilotos](experiments/tcc-2026/pilot.yaml) e a confirmação histórica do
 Meilisearch tiveram papéis próprios no desenvolvimento e na avaliação do FIS.
-A coleta final executou 25 campanhas novas, cinco por API. O pacote com essas
-runs será publicado em `experiments/tcc-2026/final/`.
 
 ## Estrutura do código
 
@@ -258,5 +255,5 @@ runs será publicado em `experiments/tcc-2026/final/`.
 - `src/fuzzer/analysis/`: detecção, priorização fuzzy e deduplicação;
 - `src/fuzzer/utils/`: manifesto, persistência, redação e utilitários;
 - `scripts/experiments/`: runners e pós-processamento experimental;
-- `experiments/tcc-2026/`: protocolos documentais e amostra pública;
+- `experiments/tcc-2026/`: pilotos e coleta final;
 - `docs/`: artigo e fontes dos diagramas.
