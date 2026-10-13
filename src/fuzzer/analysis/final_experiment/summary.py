@@ -91,13 +91,21 @@ def timestamp(value: str, run_id: str) -> datetime:
         raise InvalidCampaign(f"{run_id}: invalid timestamp") from error
 
 
+def fis_score(finding: dict[str, Any]) -> float:
+    score = finding.get("severity_score")
+    return float(score) if isinstance(score, (int, float)) else float("-inf")
+
+
 def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
     observations: dict[str, dict[int, dict[str, Any]]] = defaultdict(dict)
+    # FIS finding that gives each selected strict signature its score.
+    top_findings: dict[str, dict[int, dict[str, Any]]] = defaultdict(dict)
     origins: dict[str, list[dict[str, str]]] = defaultdict(list)
     totals, classifications = Counter(), Counter()
     strict_scores, strict_bands = [], Counter()
-    # A strict signature does not include the FIS inputs, so its cases may differ
-    # in band; the FIS itself must give one output per input combination.
+    # A strict signature groups by response while the FIS also scores the
+    # request, so its cases may differ in band. A signature takes the highest
+    # score among its cases; the FIS must give one output per input combination.
     mixed_bands, fis_outputs = 0, defaultdict(set)
     campaigns = []
     for run in runs:
@@ -132,19 +140,20 @@ def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
 
         classifications.update(metrics.get("candidate_by_classification", {}))
 
-        bands_by_case = {}
+        findings_by_case = {}
         for finding in run["findings"]:
             if finding.get("classification") == EXPECTED_CLASSIFICATION:
                 continue
-            bands_by_case[finding["case_id"]] = finding.get("severity", "UNKNOWN")
+            findings_by_case[finding["case_id"]] = finding
             inputs = (finding.get("severity_assessment") or {}).get("inputs")
             fis_outputs[json.dumps(inputs, sort_keys=True)].add(
                 (finding.get("severity_score"), finding.get("severity"))
             )
 
         for item in run["unique"]:
-            mixed_bands += len({bands_by_case[case] for case in item["case_ids"]}) > 1
-            strict_finding = item["representative"]["finding"]
+            cases = [findings_by_case[case] for case in item["case_ids"]]
+            mixed_bands += len({case.get("severity") for case in cases}) > 1
+            strict_finding = max(cases, key=fis_score)
             strict_score = strict_finding.get("severity_score")
             if isinstance(strict_score, (int, float)):
                 strict_scores.append(float(strict_score))
@@ -154,6 +163,7 @@ def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
             current = observations[key].get(number)
             if current is None or item["signature"]["id"] < current["signature"]["id"]:
                 observations[key][number] = item
+                top_findings[key][number] = strict_finding
 
             origins[key].append(
                 {
@@ -169,8 +179,8 @@ def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
         defaultdict(set),
     )
     for key, by_run in observations.items():
-        for item in by_run.values():
-            finding = item["representative"]["finding"]
+        for number, item in by_run.items():
+            finding = top_findings[key][number]
             result = item["representative"]["result"]
             response_time, score = (
                 result.get("response_time_ms"),

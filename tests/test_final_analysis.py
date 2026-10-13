@@ -610,10 +610,20 @@ def test_fis_band_differences_inside_groups_are_counted(tmp_path):
             }
         )
 
-    add_case(runs[0], "case-2", 0.5, "MEDIUM")
+    runs[0]["findings"][0].update(
+        severity_score=0.5,
+        severity="MEDIUM",
+        severity_assessment={"inputs": {"behavior_contradiction": 0.15}},
+    )
+    add_case(runs[0], "case-2", 0.9, "HIGH")
     result = summary.summarize("alpha", runs)
     assert result["strict_signatures_with_mixed_bands"] == 1
     assert result["fis_inputs_with_different_scores"] == 0
+    # The signature takes the highest score among its cases, not the representative.
+    assert result["score_distribution_unique_per_run"]["max"] == 0.9
+    assert result["band_distribution_unique_per_run"] == {"HIGH": 5}
+    assert result["signatures_with_band_change"] == 0
+    assert next(iter(result["signatures"].values()))["score_range"] == [0.8, 0.9]
 
     add_case(runs[1], "case-2", 0.4, "MEDIUM")
     result = summary.summarize("alpha", runs)
@@ -640,11 +650,13 @@ def test_documents_explain_configuration_and_fis_grouping():
     assert "- Meilisearch: caminhos com formato de entrada" in configuration
 
     note = "\n".join(documents.fis_grouping_note(summaries, ["meilisearch"]))
-    assert "- 2 das 1.140 assinaturas têm casos em mais de uma faixa" in note
+    assert "Casos da mesma assinatura podem ter scores diferentes" in note
+    assert "2 das 1.140 assinaturas reúnem casos de faixas diferentes" in note
     assert "(Meilisearch: 2)" in note
-    assert "- 1 IDs semânticos aparecem em faixas diferentes" in note
-    assert "não do FIS" in note
+    assert "1 IDs semânticos mudam de faixa entre campanhas" in note
+    assert "receberam sempre o mesmo score" in note
 
     for field in ("strict_signatures_with_mixed_bands", "signatures_with_band_change"):
         summaries["meilisearch"][field] = 0
-    assert documents.fis_grouping_note(summaries, ["meilisearch"]) == []
+    note = "\n".join(documents.fis_grouping_note(summaries, ["meilisearch"]))
+    assert "reúnem casos" not in note and "mudam de faixa" not in note

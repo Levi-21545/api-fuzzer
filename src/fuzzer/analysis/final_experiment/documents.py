@@ -357,9 +357,10 @@ def fis_section(summaries: dict[str, dict[str, Any]], apis: list[str]) -> list[s
         "",
         *table(columns, "lrrrrrrr", rows),
         "",
-        "Um score por assinatura estrita em cada campanha (mesmo total da tabela "
-        "de deduplicação). Os scores descrevem a prioridade de triagem "
-        "atribuída; não medem acerto nem confirmam vulnerabilidades. A "
+        "Um score por assinatura estrita em cada campanha: o maior entre os seus "
+        "casos (mesmo total da tabela de deduplicação). Os scores descrevem a "
+        "prioridade de triagem atribuída; não medem acerto nem confirmam "
+        "vulnerabilidades. A "
         "comparação com rótulos de referência existe só nos conjuntos "
         "históricos.",
         *fis_grouping_note(summaries, apis),
@@ -369,7 +370,7 @@ def fis_section(summaries: dict[str, dict[str, Any]], apis: list[str]) -> list[s
 def fis_grouping_note(
     summaries: dict[str, dict[str, Any]], apis: list[str]
 ) -> list[str]:
-    """Explain why one strict signature or semantic ID can span FIS bands."""
+    """Explain the per-signature score and why bands can differ."""
 
     def per_api(field: str) -> tuple[int, str]:
         counts = [(label(api), summaries[api][field]) for api in apis]
@@ -379,36 +380,35 @@ def fis_grouping_note(
     mixed, mixed_by_api = per_api("strict_signatures_with_mixed_bands")
     changed, changed_by_api = per_api("signatures_with_band_change")
     conflicts, _ = per_api("fis_inputs_with_different_scores")
-    if not mixed and not changed and not conflicts:
-        return []
     signatures = sum(
         summaries[api]["score_distribution_unique_per_run"]["count"] for api in apis
     )
-    lines = [
+    paragraph = (
+        "Casos da mesma assinatura podem ter scores diferentes porque ela agrupa "
+        "pela resposta, mas o FIS avalia também a requisição: a mesma "
+        "resposta é mais grave quando a requisição era válida (caso-base) do que "
+        "quando era uma mutação, e quando foi enviada sem credencial do que com "
+        "credencial inválida."
+    )
+    if mixed:
+        paragraph += (
+            f" Por isso, {mixed} das {number(signatures)} assinaturas reúnem casos "
+            f"de faixas diferentes ({mixed_by_api})."
+        )
+    lines = ["", paragraph]
+    if changed:
+        lines += [
+            "",
+            f"{changed} IDs semânticos mudam de faixa entre campanhas "
+            f"({changed_by_api}): a mesma resposta veio de requisições diferentes "
+            "em cada campanha.",
+        ]
+    lines += [
         "",
-        "Cada assinatura estrita entra na tabela com o score do seu caso "
-        "representante. Como a assinatura não inclui as entradas do FIS, um "
-        "grupo pode reunir casos com entradas e faixas diferentes, por exemplo "
-        "caso-base e mutação, ou requisição sem credencial e com credencial "
-        "inválida:",
-        "",
-        f"- {mixed} das {number(signatures)} assinaturas têm casos em mais de uma "
-        f"faixa ({mixed_by_api or 'nenhuma API'});",
-        f"- {changed} IDs semânticos aparecem em faixas diferentes entre "
-        "campanhas, porque o caso representante variou "
-        f"({changed_by_api or 'nenhuma API'}).",
-        "",
+        f"O FIS deu scores diferentes para entradas iguais em {conflicts} casos."
+        if conflicts
+        else "Achados com as mesmas entradas do FIS receberam sempre o mesmo score.",
     ]
-    if conflicts:
-        lines.append(
-            f"Em {conflicts} combinações de entradas, o FIS deu scores diferentes "
-            "para entradas iguais."
-        )
-    else:
-        lines.append(
-            "Em cada API, achados com as mesmas entradas do FIS receberam sempre o "
-            "mesmo score: as diferenças vêm do agrupamento, não do FIS."
-        )
     return lines
 
 
