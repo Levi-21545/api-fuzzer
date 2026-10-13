@@ -243,12 +243,13 @@ def test_cli_writes_a_compact_revalidated_review_bundle(tmp_path, capsys):
         assert copied_mapping["action"] == "copied"
         assert copied_mapping["source_sha256"] == copied_mapping["package_sha256"]
     readme = (review / "README.md").read_text()
-    assert "## Analisar este pacote" in readme
-    assert "## Exportar novamente dos runs locais" in readme
-    assert "## Executar uma nova coleta" in readme
+    assert "## Por onde começar" in readme
+    assert "## Conferir os resultados" in readme
+    assert "## Como este diretório foi gerado" in readme
+    assert "## Repetir a coleta" in readme
     assert "provenance-index.json" in readme
     assert "{{" not in readme
-    assert '--review-dir "$REVIEW_DEST"' in readme
+    assert "--review-dir <review-dir>" in readme
     validated_bundle = protocol.discover_apis(review)
     assert len(validated_bundle["alpha"]) == 5
 

@@ -18,7 +18,6 @@ from fuzzer.parser.openapi_parser import parse_openapi
 REPO_ROOT = Path(__file__).resolve().parents[4]
 PACKAGE_DIR = Path(__file__).resolve().parent
 ENTRYPOINT = REPO_ROOT / "scripts/experiments/analyze_final.py"
-README_TEMPLATE = REPO_ROOT / "scripts/experiments/templates/final-review-readme.md"
 
 RUN_COUNT = 5
 
@@ -81,15 +80,28 @@ def digest(path: Path) -> str:
 
 
 def analyzer_source_hashes() -> dict[str, str]:
-    """Hash the entrypoint, every module of this package, and the README template."""
-    files = [ENTRYPOINT, *sorted(PACKAGE_DIR.glob("*.py")), README_TEMPLATE]
+    """Hash the entrypoint and every module and template of this package."""
+    package_files = [*PACKAGE_DIR.glob("*.py"), *PACKAGE_DIR.glob("*.md")]
+    files = [ENTRYPOINT, *sorted(package_files)]
     return {path.relative_to(REPO_ROOT).as_posix(): digest(path) for path in files}
 
 
 def analyzer_git_revision() -> str | None:
-    """Identify a recoverable analyzer revision only from a clean checkout."""
+    """Return HEAD only if the code under src/ and scripts/ matches it.
+
+    Files elsewhere, such as the export destination itself, do not change which
+    code produced the results.
+    """
     status = subprocess.run(
-        ["git", "status", "--porcelain", "--untracked-files=all"],
+        [
+            "git",
+            "status",
+            "--porcelain",
+            "--untracked-files=all",
+            "--",
+            "src",
+            "scripts",
+        ],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,

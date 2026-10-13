@@ -7,9 +7,11 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .protocol import README_TEMPLATE, REPO_ROOT, RUN_COUNT, analyzer_git_revision
+from .protocol import REPO_ROOT, RUN_COUNT, analyzer_git_revision
 from .review_metadata import API_METADATA, LICENSE_NOTES
 from .summary import illustrative_signatures
+
+README_TEMPLATE = Path(__file__).with_name("readme_template.md")
 
 FINDING_CLASSES = {
     "ERROR_CONTRADICTION": (
