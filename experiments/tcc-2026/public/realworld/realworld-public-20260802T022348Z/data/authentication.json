@@ -1,6 +1,0 @@
-{
-  "registration_status": 201,
-  "login_status": 200,
-  "authenticated_request_status": 200,
-  "authorization_header": "Token <REDACTED>"
-}

@@ -250,6 +250,3 @@ docs/descricao/
 
 .agents/
 .claude/
-
-# Generated public experiment samples keep their target provenance logs.
-!experiments/tcc-2026/public/**/data/*.log
