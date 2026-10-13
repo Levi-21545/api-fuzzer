@@ -1,0 +1,77 @@
+{
+  "artifacts": [
+    "run_manifest.json",
+    "data/execution_plan.json",
+    "data/results.json",
+    "analysis/analysis_findings.json",
+    "analysis/analysis_report.md",
+    "analysis/deduplication_report.md",
+    "analysis/findings_unique.json",
+    "analysis/metrics.json"
+  ],
+  "counts": {
+    "completed_requests": 49,
+    "findings": 39,
+    "planned_requests": 49,
+    "selected_endpoints": 13
+  },
+  "environment": {
+    "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+    "python": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]"
+  },
+  "error": null,
+  "experiment_id": "TCC-FINAL-001",
+  "finished_at": "2026-09-24T02:17:50.850068+00:00",
+  "fuzzer": {
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": true,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [
+        "/createdb"
+      ],
+      "level": 2,
+      "max_mutations_per_payload": 20,
+      "max_pairs_per_payload": 10,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
+    "git": {
+      "branch": "issue-13-14-stabilize-and-produce-experiments",
+      "commit": "ceec101280f999e14fa95955db5bd7e5ceb05e84",
+      "dirty": false
+    },
+    "source_tree_sha256": "336740bd6de117fa4251e2d8a2a4c5e168644efa5b6e520c1df62aaaa5a2266b"
+  },
+  "inputs": {
+    "base_url": "http://127.0.0.1:5002",
+    "schema": "../../contracts/vampi-openapi3.yml",
+    "schema_sha256": "35200f354f9c9968182fc19458295ed45bb4c368150348c46d5146a7e40a61c9",
+    "target_image": "erev0s/vampi@sha256:0a5a224b6e14ae7da6a6ea265178ff71286ff903aec74adee98f660bb0e4ca12"
+  },
+  "manifest_version": 1,
+  "postprocessing": {
+    "deduplication": {
+      "counts": {
+        "candidate_endpoints": 6,
+        "candidate_findings_raw": 7,
+        "classified_observations": 39,
+        "executed_requests": 49,
+        "expected_failures": 32,
+        "findings_unique_operational": 7,
+        "planned_requests": 49
+      },
+      "error": null,
+      "status": "completed"
+    }
+  },
+  "run_id": "vampi-final-r3-20260924T021734Z",
+  "run_number": 3,
+  "started_at": "2026-09-24T02:17:37.585312+00:00",
+  "status": "completed",
+  "target_id": "vampi"
+}

@@ -1,0 +1,1008 @@
+[
+  {
+    "auth_probe_kind": "missing_credential",
+    "case_id": "auth-probe-000001",
+    "case_kind": "auth_probe",
+    "endpoint_id": "GET /me",
+    "headers": {},
+    "method": "GET",
+    "mutations": [],
+    "path": "/me",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": "invalid_credential",
+    "case_id": "auth-probe-000002",
+    "case_kind": "auth_probe",
+    "endpoint_id": "GET /me",
+    "headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "method": "GET",
+    "mutations": [],
+    "path": "/me",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": "missing_credential",
+    "case_id": "auth-probe-000003",
+    "case_kind": "auth_probe",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "headers": {},
+    "method": "DELETE",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": "invalid_credential",
+    "case_id": "auth-probe-000004",
+    "case_kind": "auth_probe",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "method": "DELETE",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": "missing_credential",
+    "case_id": "auth-probe-000005",
+    "case_kind": "auth_probe",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij/email",
+    "payload": {
+      "email": "A"
+    }
+  },
+  {
+    "auth_probe_kind": "invalid_credential",
+    "case_id": "auth-probe-000006",
+    "case_kind": "auth_probe",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij/email",
+    "payload": {
+      "email": "A"
+    }
+  },
+  {
+    "auth_probe_kind": "missing_credential",
+    "case_id": "auth-probe-000007",
+    "case_kind": "auth_probe",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij/password",
+    "payload": {
+      "password": "<REDACTED>"
+    }
+  },
+  {
+    "auth_probe_kind": "invalid_credential",
+    "case_id": "auth-probe-000008",
+    "case_kind": "auth_probe",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij/password",
+    "payload": {
+      "password": "<REDACTED>"
+    }
+  },
+  {
+    "auth_probe_kind": "missing_credential",
+    "case_id": "auth-probe-000009",
+    "case_kind": "auth_probe",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [],
+    "path": "/books/v1",
+    "payload": {
+      "book_title": "A",
+      "secret": "A"
+    }
+  },
+  {
+    "auth_probe_kind": "invalid_credential",
+    "case_id": "auth-probe-000010",
+    "case_kind": "auth_probe",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [],
+    "path": "/books/v1",
+    "payload": {
+      "book_title": "A",
+      "secret": "A"
+    }
+  },
+  {
+    "auth_probe_kind": "missing_credential",
+    "case_id": "auth-probe-000011",
+    "case_kind": "auth_probe",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "headers": {},
+    "method": "GET",
+    "mutations": [],
+    "path": "/books/v1/A",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": "invalid_credential",
+    "case_id": "auth-probe-000012",
+    "case_kind": "auth_probe",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "method": "GET",
+    "mutations": [],
+    "path": "/books/v1/A",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000001",
+    "case_kind": "baseline",
+    "endpoint_id": "GET /",
+    "headers": {},
+    "method": "GET",
+    "mutations": [],
+    "path": "/",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000002",
+    "case_kind": "baseline",
+    "endpoint_id": "GET /users/v1",
+    "headers": {},
+    "method": "GET",
+    "mutations": [],
+    "path": "/users/v1",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000003",
+    "case_kind": "baseline",
+    "endpoint_id": "GET /users/v1/_debug",
+    "headers": {},
+    "method": "GET",
+    "mutations": [],
+    "path": "/users/v1/_debug",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000004",
+    "case_kind": "baseline",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [],
+    "path": "/users/v1/register",
+    "payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000005",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [],
+        "value": "not-an-object"
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": "not-an-object"
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000006",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": null,
+        "expected_valid": true,
+        "operation": "replace",
+        "operator": "empty_object",
+        "path": [],
+        "value": {}
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": {}
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000007",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "username"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000008",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "password"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000009",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "email"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": {
+      "email": 123,
+      "password": "<REDACTED>",
+      "username": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000010",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "username"
+        ],
+        "value": 123
+      },
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "password"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000011",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "username"
+        ],
+        "value": 123
+      },
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "email"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": {
+      "email": 123,
+      "password": "<REDACTED>",
+      "username": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000012",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "password"
+        ],
+        "value": 123
+      },
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "email"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/register",
+    "payload": {
+      "email": 123,
+      "password": "<REDACTED>",
+      "username": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000013",
+    "case_kind": "baseline",
+    "endpoint_id": "POST /users/v1/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [],
+    "path": "/users/v1/login",
+    "payload": {
+      "password": "<REDACTED>",
+      "username": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000014",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [],
+        "value": "not-an-object"
+      }
+    ],
+    "path": "/users/v1/login",
+    "payload": "not-an-object"
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000015",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": null,
+        "expected_valid": true,
+        "operation": "replace",
+        "operator": "empty_object",
+        "path": [],
+        "value": {}
+      }
+    ],
+    "path": "/users/v1/login",
+    "payload": {}
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000016",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "username"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/login",
+    "payload": {
+      "password": "<REDACTED>",
+      "username": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000017",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "password"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/login",
+    "payload": {
+      "password": "<REDACTED>",
+      "username": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000018",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /users/v1/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "username"
+        ],
+        "value": 123
+      },
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "password"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/login",
+    "payload": {
+      "password": "<REDACTED>",
+      "username": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000019",
+    "case_kind": "baseline",
+    "endpoint_id": "GET /me",
+    "headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "method": "GET",
+    "mutations": [],
+    "path": "/me",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000020",
+    "case_kind": "baseline",
+    "endpoint_id": "GET /users/v1/{username}",
+    "headers": {},
+    "method": "GET",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000021",
+    "case_kind": "baseline",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "method": "DELETE",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000022",
+    "case_kind": "baseline",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij/email",
+    "payload": {
+      "email": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000023",
+    "case_kind": "mutation",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [],
+        "value": "not-an-object"
+      }
+    ],
+    "path": "/users/v1/username_apowvsij/email",
+    "payload": "not-an-object"
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000024",
+    "case_kind": "mutation",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [
+      {
+        "constraint": null,
+        "expected_valid": true,
+        "operation": "replace",
+        "operator": "empty_object",
+        "path": [],
+        "value": {}
+      }
+    ],
+    "path": "/users/v1/username_apowvsij/email",
+    "payload": {}
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000025",
+    "case_kind": "mutation",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "email"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/username_apowvsij/email",
+    "payload": {
+      "email": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000026",
+    "case_kind": "baseline",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [],
+    "path": "/users/v1/username_apowvsij/password",
+    "payload": {
+      "password": "<REDACTED>"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000027",
+    "case_kind": "mutation",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [],
+        "value": "not-an-object"
+      }
+    ],
+    "path": "/users/v1/username_apowvsij/password",
+    "payload": "not-an-object"
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000028",
+    "case_kind": "mutation",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [
+      {
+        "constraint": null,
+        "expected_valid": true,
+        "operation": "replace",
+        "operator": "empty_object",
+        "path": [],
+        "value": {}
+      }
+    ],
+    "path": "/users/v1/username_apowvsij/password",
+    "payload": {}
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000029",
+    "case_kind": "mutation",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "PUT",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "password"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/users/v1/username_apowvsij/password",
+    "payload": {
+      "password": "<REDACTED>"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000030",
+    "case_kind": "baseline",
+    "endpoint_id": "GET /books/v1",
+    "headers": {},
+    "method": "GET",
+    "mutations": [],
+    "path": "/books/v1",
+    "payload": null
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000031",
+    "case_kind": "baseline",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [],
+    "path": "/books/v1",
+    "payload": {
+      "book_title": "A",
+      "secret": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000032",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [],
+        "value": "not-an-object"
+      }
+    ],
+    "path": "/books/v1",
+    "payload": "not-an-object"
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000033",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": null,
+        "expected_valid": true,
+        "operation": "replace",
+        "operator": "empty_object",
+        "path": [],
+        "value": {}
+      }
+    ],
+    "path": "/books/v1",
+    "payload": {}
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000034",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "book_title"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/books/v1",
+    "payload": {
+      "book_title": 123,
+      "secret": "A"
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000035",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "secret"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/books/v1",
+    "payload": {
+      "book_title": "A",
+      "secret": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000036",
+    "case_kind": "mutation",
+    "endpoint_id": "POST /books/v1",
+    "headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "method": "POST",
+    "mutations": [
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "book_title"
+        ],
+        "value": 123
+      },
+      {
+        "constraint": "type",
+        "expected_valid": false,
+        "operation": "replace",
+        "operator": "wrong_type",
+        "path": [
+          "secret"
+        ],
+        "value": 123
+      }
+    ],
+    "path": "/books/v1",
+    "payload": {
+      "book_title": 123,
+      "secret": 123
+    }
+  },
+  {
+    "auth_probe_kind": null,
+    "case_id": "case-000037",
+    "case_kind": "baseline",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "method": "GET",
+    "mutations": [],
+    "path": "/books/v1/A",
+    "payload": null
+  }
+]

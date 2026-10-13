@@ -1,0 +1,561 @@
+[
+    {
+        "Id": "sha256:015c23f79d40c9dc1800cd0a458503b89aeda3b585a12c37d53829d6c7d61fdd",
+        "RepoTags": [
+            "crapi/mailhog:main"
+        ],
+        "RepoDigests": [
+            "crapi/mailhog@sha256:015c23f79d40c9dc1800cd0a458503b89aeda3b585a12c37d53829d6c7d61fdd"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-09-22T18:31:00.364554471Z",
+        "Config": {
+            "User": "mailhog",
+            "ExposedPorts": {
+                "1025/tcp": {},
+                "8025/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Entrypoint": [
+                "MailHog"
+            ],
+            "WorkingDir": "/home/mailhog"
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 11636925,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+                "sha256:71ee21928aa79de4a14482d350ae5053807ff40c5b5445f7627bfd86a01375ef",
+                "sha256:8a4565844047c856364002d8621037c3833e79b5ee2b6b0c02d69297775cbe76",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-31T00:22:45.043593243Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:015c23f79d40c9dc1800cd0a458503b89aeda3b585a12c37d53829d6c7d61fdd",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/crapi/mailhog"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:156f0b253fd61366d5fc2107ad45955027d5612f695a8436ce20167f3fa79bff",
+        "RepoTags": [
+            "postgres@sha256:156f0b253fd61366d5fc2107ad45955027d5612f695a8436ce20167f3fa79bff"
+        ],
+        "RepoDigests": [
+            "postgres@sha256:156f0b253fd61366d5fc2107ad45955027d5612f695a8436ce20167f3fa79bff"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-25T00:44:48.501682245Z",
+        "Config": {
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/14/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=14",
+                "PG_VERSION=14.24-1.pgdg13+2",
+                "PGDATA=/var/lib/postgresql/data"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "postgres"
+            ],
+            "Volumes": {
+                "/var/lib/postgresql/data": {}
+            },
+            "StopSignal": "SIGINT"
+        },
+        "Architecture": "arm64",
+        "Variant": "v8",
+        "Os": "linux",
+        "Size": 155737270,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:41d6505109809884e681a97f978542a2d4d3506af0124f18b3f3a471edfcc9b7",
+                "sha256:d2f32bd58ec3aa3445af8c07d5cc288719e8185025c9d69aa323531e63218341",
+                "sha256:e0af9c40e0d56705ab1cecfececc13a4d84adca26667c3929a9cdac8396a19f9",
+                "sha256:62d7792a9e6ebbd140b843633ae021e1e0320f78ab49ca5893fe695e9fb1dae2",
+                "sha256:d26cc9a449fc08e3d792792e3f4861534514c31c7412ffc9fd05af1819ae6c39",
+                "sha256:99bee41d3ad5669d5ae049c700023a6580007441bbf64f9d5b513081ba6f8df4",
+                "sha256:4f12e7e81b61adf58502529a27c6fdfc3da03201ba6cfca25f7e0f3eefde4e4a",
+                "sha256:17e0065edd26b26a072f2082bff06f6e9588d1c88fdb40c42667589a26fcde8c",
+                "sha256:d413038292eec852c93e3b59899996c70d35336e8d610b95c9dcdd38a873c2fe",
+                "sha256:9f0e8de75fcc1077d561a59f3456777efb6b91c34e57c710e3b2a51641070293",
+                "sha256:50a5f16ae0e922567b62652b925a32b7ce0ef5ffb277b03d0890cea7c07a7e00",
+                "sha256:6bdeb0d9e607c33746f7900afd3316f44cf9a28bf0605b8e2cec500f43244fda",
+                "sha256:a49fe8e625b8003710fcbf581f162a92c7ad2b5a6b33074c741306f340cb3322",
+                "sha256:62c400bd4b32a91ede9501dae75e63e0e306aef988c4c27161c73fcf5c46d7a5"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-09-24T02:30:43.91369736Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:156f0b253fd61366d5fc2107ad45955027d5612f695a8436ce20167f3fa79bff",
+            "size": 10237
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/library/postgres"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:1e0b73a187a28757c572acba508c46f48c9e8b0acaf5c20e6d95cdedce1acdf6",
+        "RepoTags": [
+            "chromadb/chroma:latest"
+        ],
+        "RepoDigests": [
+            "chromadb/chroma@sha256:1e0b73a187a28757c572acba508c46f48c9e8b0acaf5c20e6d95cdedce1acdf6"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-05-05T01:47:36.79338732Z",
+        "Config": {
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "ASAN_OPTIONS=",
+                "ASAN_SYMBOLIZER_PATH=",
+                "RUST_BACKTRACE=0"
+            ],
+            "Entrypoint": [
+                "dumb-init",
+                "--",
+                "chroma"
+            ],
+            "Cmd": [
+                "run",
+                "/config.yaml"
+            ],
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 165159628,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:ea756c943550334804f2aa53f4e49d231275aa4df9c9d2e32ff1bd347bdba31b",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:d4570b6d0ee493437db4054e634c287f23793fb8c4b2c5cd0748067e753d24b6",
+                "sha256:baf567771a77dea4467c929e1dcabd0493d69d87b6bd2045ba8d74dd967a12a2",
+                "sha256:ce4be95fad3b3a2a9522559326af5ab7dc26cce36b0e27a2f63250146c7b2796"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-09-05T00:29:13.086818029Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:1e0b73a187a28757c572acba508c46f48c9e8b0acaf5c20e6d95cdedce1acdf6",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/chromadb/chroma"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:36d274d54182a8baddba7ede17282035bb43ab9cb9cf87927e1fe7109901e0aa",
+        "RepoTags": [
+            "crapi/crapi-chatbot:main"
+        ],
+        "RepoDigests": [
+            "crapi/crapi-chatbot@sha256:36d274d54182a8baddba7ede17282035bb43ab9cb9cf87927e1fe7109901e0aa"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-09-22T15:52:00.906409648Z",
+        "Config": {
+            "ExposedPorts": {
+                "5002/tcp": {},
+                "5500/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D",
+                "PYTHON_VERSION=3.11.13",
+                "PYTHON_SHA256=8fb5f9fbc7609fa822cb31549884575db7fd9657cbffb89510b5d7975963a83a",
+                "PYTHONPATH=/app"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "/app/entrypoint.sh"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 372732578,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:14b82c37a96eb1fad5a5d17907a9f06d5d6c99d08f7d8eb7c750e7f32fe1daa3",
+                "sha256:6ef8942dbcecf8a7e17e7d2b6eb1dcaaa47596371ea0aee25edca6c2c6c7ed9f",
+                "sha256:5c3a9d503183b3e869bb1ab427d146212bb40b5c6fa5d39222154c235ab7b298",
+                "sha256:57d4d4281ed9e584415ed3d6aef634a9ccfb76f1f34a778289fb7aa4296a2302",
+                "sha256:c0af0bdc9fed2a25bc85d9e36230470f943b82102674059bcea68ce33a038e65",
+                "sha256:1a0a6564bbee2843297664f93ea69f2024dee72cabe28094453b623ff89d6a11",
+                "sha256:2d2b0c3ce430d7003668825e72515c339885af701fca9cae4f204ef08ea40ae1",
+                "sha256:b435947aa0b2312c0a36e531c48feef2da4bbb91a2825826384896df7db50348",
+                "sha256:a9e44144358792c1561088c99e98f6b2ac27257dbee341b1684a44e3439f6198",
+                "sha256:13e1483dea553e6f8beb15185b0d433da26345b2a379c02fc1e8b17d23b63537",
+                "sha256:67443f0d468c69803fc142ec0a12cbaa9083a04d72300df72b2532ad43ef7758",
+                "sha256:f71ecde9b6bc1ce16e64e0a9fadee96dcbd8fbf4c9fe003925ad89f81f15be70",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:c93aab7bba05949c40c0fa7c949ad6976f2b115e5f8e06962cb6c9b00c6c8387"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-31T00:30:37.355714831Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:36d274d54182a8baddba7ede17282035bb43ab9cb9cf87927e1fe7109901e0aa",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/crapi/crapi-chatbot"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef",
+        "RepoTags": [
+            "mongo:4.4",
+            "mongo@sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef"
+        ],
+        "RepoDigests": [
+            "mongo@sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef"
+        ],
+        "Config": {},
+        "Architecture": "",
+        "Os": "",
+        "Size": 5728,
+        "RootFS": {},
+        "Metadata": {
+            "LastTagTime": "2026-09-24T02:45:37.913077935Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef",
+            "size": 3249
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/library/mongo"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:5d1db5b3ba8e02bc68711ec6fc4e35ed7cd8b87e63785ece9e7ff5b5e36c5260",
+        "RepoTags": [
+            "crapi/crapi-identity:main"
+        ],
+        "RepoDigests": [
+            "crapi/crapi-identity@sha256:5d1db5b3ba8e02bc68711ec6fc4e35ed7cd8b87e63785ece9e7ff5b5e36c5260"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-09-22T15:22:57.030564003Z",
+        "Config": {
+            "ExposedPorts": {
+                "10001/tcp": {},
+                "8080/tcp": {},
+                "8989/tcp": {}
+            },
+            "Env": [
+                "PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "JAVA_HOME=/opt/java/openjdk",
+                "LANG=en_US.UTF-8",
+                "LANGUAGE=en_US:en",
+                "LC_ALL=en_US.UTF-8",
+                "JAVA_VERSION=jdk-17.0.16+8",
+                "JAVA_TOOL_OPTIONS=-Xmx128m"
+            ],
+            "Entrypoint": [
+                "/__cacert_entrypoint.sh"
+            ],
+            "Cmd": [
+                "/entrypoint.sh"
+            ],
+            "WorkingDir": "/app",
+            "Labels": {
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.version": "24.04"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 296638276,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:13b4428fd8e867dbe4a802ff3b475a3eff281b21f78ad990f052436b537ecfc9",
+                "sha256:71cf8c7f51abe5c76439f3cafe10c9f96d18cbe4935c180349fd71d1edd7758a",
+                "sha256:618a6f628632956fa5deea0f8fe549e96c6dd57274330fa77ce7d27691f6eeeb",
+                "sha256:baa0bec54cedda4404e7c36b702c69cd8bd0d19df6b49d622cadd667058e5802",
+                "sha256:1e4a920b61060e1f2fbf67a4085dad51fd463ca9ca9e74cff9ad88e51e73dcf2",
+                "sha256:ed66d0a1e95d4524dfd20970fe39ccb7eb5f80d85d4d1257d1d140801150a187",
+                "sha256:0c52b9c7a6426637b05e20b5ea224c71e52cf2a9a855b9589f8ebc66153229cf",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:93dd96abe9c30c4da309eb28ebd61fabda6aae01389def611834b8f839085680",
+                "sha256:7bd755a80e09f9e534ce982cdd5d6e203af56ed8e48d63845bddbd9a70d87979",
+                "sha256:8ecac06a96a47142b6c7a79224efe5153917cd0bafb4ae5fd029b6a3149469f1",
+                "sha256:59529c63fe1e0ba6f835f38622f62ca288e877e0518d6746e0d37fc775246e93"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-31T00:24:59.480720002Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:5d1db5b3ba8e02bc68711ec6fc4e35ed7cd8b87e63785ece9e7ff5b5e36c5260",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/crapi/crapi-identity"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:8ba0c7eda86ae065a673f1fa554d0109a24f25c5a8d65097ae024e5ee715c54e",
+        "RepoTags": [
+            "crapi/crapi-community:main"
+        ],
+        "RepoDigests": [
+            "crapi/crapi-community@sha256:8ba0c7eda86ae065a673f1fa554d0109a24f25c5a8d65097ae024e5ee715c54e"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-09-22T15:54:09.046485503Z",
+        "Config": {
+            "ExposedPorts": {
+                "6060/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "/app/main"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 17178273,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+                "sha256:dc320b62b4ad8e41c95d1f83a6951de87b6243e9771b6d13802ab7080542e2be",
+                "sha256:fac4affbb11e2e1b85f2b421ff4e25b3b27ef03f84e8693d14651bbe283f1ca3",
+                "sha256:d84725ad139525790ca8375409e2136c2ba1b087a91958d1352154df8392c0f9",
+                "sha256:63552e27dd590f7a0f4999dbbc6520220d5947f1738c73ce9cfa6ad8b7669052",
+                "sha256:da1cf28019c8cdbd5502c3179d6f54dcb4240e81172d169372abba8f0c2a35cd",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-31T00:22:56.131646083Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:8ba0c7eda86ae065a673f1fa554d0109a24f25c5a8d65097ae024e5ee715c54e",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/crapi/crapi-community"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:b27d246c646bd33898e7d1d2095b6e7576c0993a7b81a73aa7386929493d7151",
+        "RepoTags": [
+            "crapi/crapi-web:main"
+        ],
+        "RepoDigests": [
+            "crapi/crapi-web@sha256:b27d246c646bd33898e7d1d2095b6e7576c0993a7b81a73aa7386929493d7151"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-09-22T18:20:32.056062403Z",
+        "Config": {
+            "ExposedPorts": {
+                "443/tcp": {},
+                "80/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/usr/local/openresty/bin"
+            ],
+            "Cmd": [
+                "/etc/nginx/nginx-wrapper.sh"
+            ],
+            "WorkingDir": "/",
+            "Labels": {
+                "maintainer": "Evan Wies <evan@neomantra.net>",
+                "resty_add_package_builddeps": "",
+                "resty_add_package_rundeps": "",
+                "resty_config_deps": "--with-pcre     --with-cc-opt='-DNGX_LUA_ABORT_AT_PANIC -I/usr/local/openresty/pcre2/include -I/usr/local/openresty/openssl3/include'     --with-ld-opt='-L/usr/local/openresty/pcre2/lib -L/usr/local/openresty/openssl3/lib -Wl,-rpath,/usr/local/openresty/pcre2/lib:/usr/local/openresty/openssl3/lib'     ",
+                "resty_config_options": "    --with-compat     --without-http_rds_json_module     --without-http_rds_csv_module     --without-lua_rds_parser     --without-mail_pop3_module     --without-mail_imap_module     --without-mail_smtp_module     --with-http_addition_module     --with-http_auth_request_module     --with-http_dav_module     --with-http_flv_module     --with-http_geoip_module=dynamic     --with-http_gunzip_module     --with-http_gzip_static_module     --with-http_image_filter_module=dynamic     --with-http_mp4_module     --with-http_random_index_module     --with-http_realip_module     --with-http_secure_link_module     --with-http_slice_module     --with-http_ssl_module     --with-http_stub_status_module     --with-http_sub_module     --with-http_v2_module     --with-http_v3_module     --with-http_xslt_module=dynamic     --with-ipv6     --with-mail     --with-mail_ssl_module     --with-md5-asm     --with-sha1-asm     --with-stream     --with-stream_ssl_module     --with-stream_ssl_preread_module     --with-threads     ",
+                "resty_config_options_more": "",
+                "resty_eval_post_download_pre_configure": "",
+                "resty_eval_post_make": "",
+                "resty_eval_pre_configure": "",
+                "resty_eval_pre_make": "",
+                "resty_image_base": "alpine",
+                "resty_image_tag": "3.22.1",
+                "resty_luajit_options": "--with-luajit-xcflags='-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT'",
+                "resty_openssl_build_options": "enable-camellia enable-seed enable-rfc3779 enable-cms enable-md2 enable-rc5         enable-weak-ssl-ciphers enable-ssl3 enable-ssl3-method enable-md2 enable-ktls enable-fips         ",
+                "resty_openssl_patch_version": "3.4.1",
+                "resty_openssl_url_base": "https://github.com/openssl/openssl/releases/download/openssl-3.4.1",
+                "resty_openssl_version": "3.4.1",
+                "resty_pcre_build_options": "--enable-jit --enable-pcre2grep-jit --disable-bsr-anycrlf --disable-coverage --disable-ebcdic --disable-fuzz-support     --disable-jit-sealloc --disable-never-backslash-C --enable-newline-is-lf --enable-pcre2-8 --enable-pcre2-16 --enable-pcre2-32     --enable-pcre2grep-callout --enable-pcre2grep-callout-fork --disable-pcre2grep-libbz2 --disable-pcre2grep-libz --disable-pcre2test-libedit     --enable-percent-zt --disable-rebuild-chartables --enable-shared --disable-static --disable-silent-rules --enable-unicode --disable-valgrind     ",
+                "resty_pcre_options": "--with-pcre-jit",
+                "resty_pcre_sha256": "86b9cb0aa3bcb7994faa88018292bc704cdbb708e785f7c74352ff6ea7d3175b",
+                "resty_pcre_version": "10.44",
+                "resty_strip_binaries": "",
+                "resty_version": "1.27.1.2"
+            },
+            "StopSignal": "SIGQUIT",
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 70075726,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+                "sha256:fe0bdf2aad4a734eba546ed405c38e35f479ee9b027ce18e3fcb280dcccd8492",
+                "sha256:2551e15f4cf6b4881ab33379a16d6837a8821737424e8a58a3f4af975cbf88a4",
+                "sha256:d31febef25e80f8124203c0e50491ce592005c3218c27d7a64eeffdf59c1006f",
+                "sha256:cfb00a128d6ae055e3ae24d5c59a6de33547b11e3591a8c9c126bb4b8a0ac5c7",
+                "sha256:817bf34a067e99d3227955ea802792f8787363d56f2827043af0b5b6728e771c",
+                "sha256:a8932d5c8780dc31c06f01d0613267a4a8cabfc6e32fd5507be2d81f78a8f525",
+                "sha256:654df674b703844acaf17cb1ef81ecf588cfe938c0335d1545809adfa5a1f2d8",
+                "sha256:2a4670677def90aac5eb2a86e405b8b38088bfebea7d1a490d535d10a79e81e8",
+                "sha256:9cea2feeec286e8ab28168563014fc0b4091902eb2ec34e6f928456e6d126d60",
+                "sha256:a5cfa33e256eb613f814f5ac9f1ae692342169a41cf1ab751cf431212888a6d0",
+                "sha256:c0fb89910a88b4264d63c199a75d6d191fff65f47fb129e32d9147aeb09424fc",
+                "sha256:087e2e20258a31aed6e1a12e0d76a9645354a15607efee842b723280e3e8cd9e"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-31T00:24:19.01397323Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:b27d246c646bd33898e7d1d2095b6e7576c0993a7b81a73aa7386929493d7151",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/crapi/crapi-web"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:d4d2d94d35a31e211b04d5a771881f5ae13e358e8fa0804463ae3bace05dd815",
+        "RepoTags": [
+            "crapi/crapi-workshop:main"
+        ],
+        "RepoDigests": [
+            "crapi/crapi-workshop@sha256:d4d2d94d35a31e211b04d5a771881f5ae13e358e8fa0804463ae3bace05dd815"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-09-22T15:27:16.776479552Z",
+        "Config": {
+            "Env": [
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D",
+                "PYTHON_VERSION=3.11.13",
+                "PYTHON_SHA256=8fb5f9fbc7609fa822cb31549884575db7fd9657cbffb89510b5d7975963a83a"
+            ],
+            "Cmd": [
+                "/app/runner.sh"
+            ],
+            "WorkingDir": "/app",
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 111330475,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+                "sha256:1759a0fd9166a09eb8fae77fb1ed84fe2d5c1468816aeeaba50884e781c4f315",
+                "sha256:e9879c0a521a6a06433692f2ee4c9b3bea2716a14c90b094b3722335f23ba9ea",
+                "sha256:095df35245ff76392ad1c3d6765db3327c5a79ee8985cc025d55a36808fb1b7d",
+                "sha256:0906005fc5f257e08a5b908982e59bccf02ab7250c14963fc4941ed310185b27",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:aa1e4f89e898f9b53810e21aeb26cc17228b46eac810a0324282942c96b497be",
+                "sha256:ccedffa83e3eab60afed2319187626b3bac5f28cfae6696c6a064060b21793d2",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-31T00:24:26.642208354Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:d4d2d94d35a31e211b04d5a771881f5ae13e358e8fa0804463ae3bace05dd815",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/crapi/crapi-workshop"
+                }
+            ]
+        }
+    }
+]

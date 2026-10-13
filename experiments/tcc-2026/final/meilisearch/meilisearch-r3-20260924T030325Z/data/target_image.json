@@ -1,0 +1,73 @@
+[
+    {
+        "Id": "sha256:ac40212f9e5a7526d8007586e3e46fb0441d29dd36c7b02fa2341d2c9a1f6493",
+        "RepoTags": [
+            "getmeili/meilisearch:v1.45.1"
+        ],
+        "RepoDigests": [
+            "getmeili/meilisearch@sha256:ac40212f9e5a7526d8007586e3e46fb0441d29dd36c7b02fa2341d2c9a1f6493"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-05-28T15:42:23.010388632Z",
+        "Config": {
+            "ExposedPorts": {
+                "7700/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "MEILI_HTTP_ADDR=0.0.0.0:7700",
+                "MEILI_SERVER_PROVIDER=docker"
+            ],
+            "Entrypoint": [
+                "tini",
+                "--"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "/bin/meilisearch"
+            ],
+            "WorkingDir": "/meili_data",
+            "Labels": {
+                "org.opencontainers.image.created": "2026-05-28T15:24:57.717Z",
+                "org.opencontainers.image.description": "A lightning-fast search engine API bringing AI-powered hybrid search to your sites and applications.",
+                "org.opencontainers.image.licenses": "NOASSERTION",
+                "org.opencontainers.image.revision": "41322f8f257494d35e6bd0d8d57f7a2db5b1ca3c",
+                "org.opencontainers.image.source": "https://github.com/meilisearch/meilisearch",
+                "org.opencontainers.image.title": "meilisearch",
+                "org.opencontainers.image.url": "https://github.com/meilisearch/meilisearch",
+                "org.opencontainers.image.version": "v1.45.1"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 106062568,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:eeaa73608b53c6a3dab2c5a85c971d005a4bddb14082a9b5c1d363c4847972ee",
+                "sha256:bc6528b9f03bac7423e482e741dda468707e83fc2528eafc7d20c015f6cf8213",
+                "sha256:36831097f7fd5a8ecb20fd14c35ec73a2ff0153c9e4216dc52b9b63dd5fe23ce",
+                "sha256:38724a9cc9bd731e7b83d7f935376e865d66206c68bd4ea0be341744b3fdac19",
+                "sha256:145f61c3a4bfc61c939dfd4ac9f48e64b6c92651a1dee5d2d2bc9cfc491b7534",
+                "sha256:1b10399bb39404bbfe41aa0460d7350671beeff12223d76fcb0fd1e98cf2f44b"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-08-02T00:23:38.332964209Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:ac40212f9e5a7526d8007586e3e46fb0441d29dd36c7b02fa2341d2c9a1f6493",
+            "size": 1609
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/getmeili/meilisearch"
+                }
+            ]
+        }
+    }
+]

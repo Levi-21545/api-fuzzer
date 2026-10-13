@@ -1,0 +1,1334 @@
+[
+  {
+    "case_ids": [
+      "auth-probe-000022"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000022",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /articles/{slug}/favorite",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000022",
+        "case_kind": "auth_probe",
+        "endpoint_id": "POST /articles/{slug}/favorite",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/articles/A/favorite",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000022",
+        "endpoint_id": "POST /articles/{slug}/favorite",
+        "error": null,
+        "method": "POST",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 7.67,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /articles/{slug}/favorite",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "2024b0172ce5e2e8e8b95aeefb82e9b6d94fdc39387f019180d568c4905b7c9c",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000004"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000004",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /user",
+        "request_headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "user": {
+            "bio": null,
+            "email": "A",
+            "image": null,
+            "password": "<REDACTED>",
+            "username": "A"
+          }
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/user"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000004",
+        "case_kind": "auth_probe",
+        "endpoint_id": "PUT /user",
+        "headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/user",
+        "payload": {
+          "user": {
+            "bio": null,
+            "email": "A",
+            "image": null,
+            "password": "<REDACTED>",
+            "username": "A"
+          }
+        }
+      },
+      "result": {
+        "case_id": "auth-probe-000004",
+        "endpoint_id": "PUT /user",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 8.7,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/user"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /user",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "2194627cec618ce102141a3e40b05abb77607b47090e67ba9f8ad0e80ef461e4",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000020"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000020",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "DELETE /articles/{slug}/comments/{id}",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/comments/A"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000020",
+        "case_kind": "auth_probe",
+        "endpoint_id": "DELETE /articles/{slug}/comments/{id}",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/articles/A/comments/A",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000020",
+        "endpoint_id": "DELETE /articles/{slug}/comments/{id}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 7.74,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/comments/A"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "DELETE /articles/{slug}/comments/{id}",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "2595808af4337bde46f2062540e0b25d22bdefd91b4e2eda6c386d1e8bc8f0f5",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000008"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000008",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "DELETE /profiles/{username}/follow",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000008",
+        "case_kind": "auth_probe",
+        "endpoint_id": "DELETE /profiles/{username}/follow",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/profiles/A/follow",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000008",
+        "endpoint_id": "DELETE /profiles/{username}/follow",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 9.39,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "DELETE /profiles/{username}/follow",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "2c9a126a0d11c0bb30566e3a7ed948df2ba05b230d948bdc49d451f8b76a8c31",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000014"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000014",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "PUT /articles/{slug}",
+        "request_headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "article": {
+            "body": "A",
+            "description": "A",
+            "tagList": [
+              "A"
+            ],
+            "title": "A"
+          }
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000014",
+        "case_kind": "auth_probe",
+        "endpoint_id": "PUT /articles/{slug}",
+        "headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [],
+        "path": "/articles/A",
+        "payload": {
+          "article": {
+            "body": "A",
+            "description": "A",
+            "tagList": [
+              "A"
+            ],
+            "title": "A"
+          }
+        }
+      },
+      "result": {
+        "case_id": "auth-probe-000014",
+        "endpoint_id": "PUT /articles/{slug}",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 9.86,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "PUT /articles/{slug}",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "4771fb4a8d0ee0d6936616d19b94725406c83021e13e795e22539b86352cf429",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000018"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000018",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /articles/{slug}/comments",
+        "request_headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "comment": {
+            "body": "A"
+          }
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/comments"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000018",
+        "case_kind": "auth_probe",
+        "endpoint_id": "POST /articles/{slug}/comments",
+        "headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/articles/A/comments",
+        "payload": {
+          "comment": {
+            "body": "A"
+          }
+        }
+      },
+      "result": {
+        "case_id": "auth-probe-000018",
+        "endpoint_id": "POST /articles/{slug}/comments",
+        "error": null,
+        "method": "POST",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 8.08,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/comments"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /articles/{slug}/comments",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "5a92d85641b923ef5020ad465577355aa162c0fb5fe56853ec2342c75066186f",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000024"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000024",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "DELETE /articles/{slug}/favorite",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000024",
+        "case_kind": "auth_probe",
+        "endpoint_id": "DELETE /articles/{slug}/favorite",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/articles/A/favorite",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000024",
+        "endpoint_id": "DELETE /articles/{slug}/favorite",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 9.73,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "DELETE /articles/{slug}/favorite",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "6e078a9e715feb5c4e5b21b9fac7345cbacb6fdacdab5b674e13d6ba5b6e39e2",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000016"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000016",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "DELETE /articles/{slug}",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000016",
+        "case_kind": "auth_probe",
+        "endpoint_id": "DELETE /articles/{slug}",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "DELETE",
+        "mutations": [],
+        "path": "/articles/A",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000016",
+        "endpoint_id": "DELETE /articles/{slug}",
+        "error": null,
+        "method": "DELETE",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 8.38,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/A"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "DELETE /articles/{slug}",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "7a29d9d97aee733c8e2780c9badbe564c968fd7a0a78164d936579ad760abeed",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000002"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000002",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "GET /user",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/user"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000002",
+        "case_kind": "auth_probe",
+        "endpoint_id": "GET /user",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "GET",
+        "mutations": [],
+        "path": "/user",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000002",
+        "endpoint_id": "GET /user",
+        "error": null,
+        "method": "GET",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 9.73,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/user"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "GET /user",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "b52688525ebee753d97d54fafd19423ad205f3b727943ba547cc3be1e4b53176",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "case-000042"
+    ],
+    "case_kinds": [
+      "mutation"
+    ],
+    "execution_levels": [
+      "level_1"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "case-000042",
+        "classification": "UNEXPECTED_SUCCESS",
+        "description": "Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.",
+        "endpoint_id": "PUT /user",
+        "request_headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "user": "not-an-object"
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "medium behavioral contradiction -> medium priority",
+              "id": "R2_MEDIUM_CONTRADICTION",
+              "strength": 0.4
+            },
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.0
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 0.7,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 0.0,
+              "low": 0.0,
+              "medium": 0.4
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 200,
+        "url": "http://127.0.0.1:18080/api/user"
+      },
+      "plan": {
+        "auth_probe_kind": null,
+        "case_id": "case-000042",
+        "case_kind": "mutation",
+        "endpoint_id": "PUT /user",
+        "headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "mutations": [
+          {
+            "constraint": "type",
+            "expected_valid": false,
+            "operation": "replace",
+            "operator": "wrong_type",
+            "path": [
+              "user"
+            ],
+            "value": "not-an-object"
+          }
+        ],
+        "path": "/user",
+        "payload": {
+          "user": "not-an-object"
+        }
+      },
+      "result": {
+        "case_id": "case-000042",
+        "endpoint_id": "PUT /user",
+        "error": null,
+        "method": "PUT",
+        "raw_response": "{\"user\":{\"bio\":null,\"email\":\"fuzzer-20260924025120-83965@test.com\",\"image\":null,\"token\":\"<REDACTED>\",\"username\":\"fuzzer-20260924025120-83965\"}}",
+        "response_size": 364,
+        "response_time_ms": 41.05,
+        "status_code": 200,
+        "url": "http://127.0.0.1:18080/api/user"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "UNEXPECTED_SUCCESS",
+        "endpoint_id": "PUT /user",
+        "normalized_response_sha256": "996866d028fec007868e35f642ae3188286ee5ba83d997afe8b1d577dc93ca8f",
+        "status_code": 200,
+        "validation_error_path": null
+      },
+      "id": "bdb6cd6ee0ff9483a7ed4a74f1aa11ce42f1ceecc759917aa4032195f769efa3",
+      "normalized_response": "{\"user\":{\"bio\":null,\"email\":\"fuzzer-20260924025120-83965@test.com\",\"image\":null,\"token\":\"<TOKEN>\",\"username\":\"fuzzer-20260924025120-83965\"}}"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000006"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000006",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /profiles/{username}/follow",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000006",
+        "case_kind": "auth_probe",
+        "endpoint_id": "POST /profiles/{username}/follow",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/profiles/A/follow",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000006",
+        "endpoint_id": "POST /profiles/{username}/follow",
+        "error": null,
+        "method": "POST",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 7.73,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /profiles/{username}/follow",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "c2da57eb27b7c63db5c3f6274bc74e7aab57e37d0733a3bee32622a398fce4da",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000012"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000012",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "POST /articles",
+        "request_headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "request_payload": {
+          "article": {
+            "body": "A",
+            "description": "A",
+            "title": "A"
+          }
+        },
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000012",
+        "case_kind": "auth_probe",
+        "endpoint_id": "POST /articles",
+        "headers": {
+          "Authorization": "<REDACTED>",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "mutations": [],
+        "path": "/articles",
+        "payload": {
+          "article": {
+            "body": "A",
+            "description": "A",
+            "title": "A"
+          }
+        }
+      },
+      "result": {
+        "case_id": "auth-probe-000012",
+        "endpoint_id": "POST /articles",
+        "error": null,
+        "method": "POST",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 7.19,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "POST /articles",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "c90788352a0869e9d52b7cbfbcda5a0ae70475ba25d75ef4aeeb702bb2dde810",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  },
+  {
+    "case_ids": [
+      "auth-probe-000010"
+    ],
+    "case_kinds": [
+      "auth_probe"
+    ],
+    "execution_levels": [
+      "level_0"
+    ],
+    "occurrence_count": 1,
+    "representative": {
+      "finding": {
+        "case_id": "auth-probe-000010",
+        "classification": "SERVER_ERROR",
+        "description": "Server returned a 500 error.",
+        "endpoint_id": "GET /articles/feed",
+        "request_headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "request_payload": null,
+        "severity": "MEDIUM",
+        "severity_assessment": {
+          "activated_rules": [
+            {
+              "description": "high contradiction with limited evidence -> medium priority",
+              "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+              "strength": 0.6667
+            }
+          ],
+          "fallback_used": false,
+          "inputs": {
+            "access_control_exposure": 0.0,
+            "behavior_contradiction": 1.0,
+            "evidence_strength": 0.5
+          },
+          "memberships": {
+            "access_control_exposure": {
+              "clear": 0.0,
+              "none": 1.0,
+              "potential": 0.0
+            },
+            "behavior_contradiction": {
+              "high": 1.0,
+              "low": 0.0,
+              "medium": 0.0
+            },
+            "evidence_strength": {
+              "limited": 0.6667,
+              "strong": 0.0
+            }
+          },
+          "model_id": "mamdani-behavior-evidence-access-v3"
+        },
+        "severity_score": 0.5,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/feed"
+      },
+      "plan": {
+        "auth_probe_kind": "invalid_credential",
+        "case_id": "auth-probe-000010",
+        "case_kind": "auth_probe",
+        "endpoint_id": "GET /articles/feed",
+        "headers": {
+          "Authorization": "<REDACTED>"
+        },
+        "method": "GET",
+        "mutations": [],
+        "path": "/articles/feed",
+        "payload": null
+      },
+      "result": {
+        "case_id": "auth-probe-000010",
+        "endpoint_id": "GET /articles/feed",
+        "error": null,
+        "method": "GET",
+        "raw_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n",
+        "response_size": 145,
+        "response_time_ms": 7.51,
+        "status_code": 500,
+        "url": "http://127.0.0.1:18080/api/articles/feed"
+      }
+    },
+    "signature": {
+      "components": {
+        "api_id": "realworld",
+        "classification": "SERVER_ERROR",
+        "endpoint_id": "GET /articles/feed",
+        "normalized_response_sha256": "fd62a53afdd49595ccd111b6ac06466a1690e7c8da4aeb0e884b5e0f4e937624",
+        "status_code": 500,
+        "validation_error_path": null
+      },
+      "id": "e630ac68c338e605a5935f0f2bdc24603dde4922e8ac6fd566b7a0f4b5245d11",
+      "normalized_response": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Server Error (500)</title>\n</head>\n<body>\n  <h1>Server Error (500)</h1><p></p>\n</body>\n</html>\n"
+    }
+  }
+]

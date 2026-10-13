@@ -1,0 +1,68 @@
+[
+    {
+        "Id": "sha256:151a8709c664d77c9d118aa79474fcbcf06fc4c65f975143c294a58e3cf2c2f4",
+        "RepoTags": [
+            "springcommunity/spring-petclinic-rest:4.0.2"
+        ],
+        "RepoDigests": [
+            "springcommunity/spring-petclinic-rest@sha256:151a8709c664d77c9d118aa79474fcbcf06fc4c65f975143c294a58e3cf2c2f4"
+        ],
+        "Comment": "jvm arg files",
+        "Created": "1970-01-01T00:00:00Z",
+        "Config": {
+            "Env": [
+                "PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANGUAGE=en_US:en",
+                "LC_ALL=en_US.UTF-8",
+                "JAVA_HOME=/opt/java/openjdk",
+                "JAVA_VERSION=jdk-17.0.19+10",
+                "LANG=en_US.UTF-8"
+            ],
+            "Entrypoint": [
+                "java",
+                "-cp",
+                "@/app/jib-classpath-file",
+                "org.springframework.samples.petclinic.PetClinicApplication"
+            ],
+            "Labels": {
+                "org.opencontainers.image.created": "2026-06-10T03:30:57.931695+00:00",
+                "org.opencontainers.image.description": "The Ubuntu container image maintained by Canonical\n\nUbuntu is a Debian-based Linux operating system that runs from the desktop to the cloud, to all your internet connected things.\nIt is the world's most popular operating system across public clouds and OpenStack clouds.\nIt is the number one platform for containers; from Docker to Kubernetes to LXD, Ubuntu can run your containers at scale.\nFast, secure and simple, Ubuntu powers millions of PCs worldwide.\n",
+                "org.opencontainers.image.title": "ubuntu",
+                "org.opencontainers.image.version": "26.04"
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 175893874,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:e8c084c1b320c172e8be941d735d77298e49986014213a8282c9b533ee216a61",
+                "sha256:ab0ae19b58df847c6f0e4beb31f759a4dac2cc42288a6bda6f467eea4584c541",
+                "sha256:b18ee137480abafca8c288688b1d481bdbd7363779a5a0b56d23f7469bfaabf5",
+                "sha256:a5808d67754931b72fa74352b5c2ec96580741cab135974e762574151a653d02",
+                "sha256:9188a8be522aa087cf5ed539b5f43e4a7405212e617397ec79f04166e37ba8a7",
+                "sha256:3606fe3d754b56c3bd53066f409227e2470d208098175ed4aadb8f58db2a08b0",
+                "sha256:0cbe8569b324a23e167822da5539ffc74ba88a72c9a7656eb7cc37922251e864",
+                "sha256:c980d82daa907a4abb30c9f10e238dcff7a282923f4a9858980574b9c8911c67",
+                "sha256:f2717792c1e82b91ac7ac3e982bef37a72f27d373c40d201bc96917c1a9a4978",
+                "sha256:c93d28b7c3171af52fd8a916310c3905ef57899dbd167c124706b9d4ffc375a3"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-31T01:01:54.710218837Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+            "digest": "sha256:151a8709c664d77c9d118aa79474fcbcf06fc4c65f975143c294a58e3cf2c2f4",
+            "size": 1892
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/springcommunity/spring-petclinic-rest"
+                }
+            ]
+        }
+    }
+]

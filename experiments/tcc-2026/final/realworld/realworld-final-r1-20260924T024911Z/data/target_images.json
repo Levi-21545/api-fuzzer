@@ -1,0 +1,145 @@
+[
+    {
+        "Id": "sha256:3bb0bcd5f84c18a7ee6c71df24534cc6c0dbc7e36a202137eefc25b0d2c4878a",
+        "RepoTags": [
+            "api-fuzzer-realworld-realworld-stability-20260904-realword-app:latest"
+        ],
+        "RepoDigests": [
+            "api-fuzzer-realworld-realworld-stability-20260904-realword-app@sha256:3bb0bcd5f84c18a7ee6c71df24534cc6c0dbc7e36a202137eefc25b0d2c4878a"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-09-04T21:38:38.377816108-03:00",
+        "Config": {
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.14",
+                "PYTHON_SHA256=5c8462af5790baf43a321a1559dbe0db06d1be4300fb85fb53c40060668e548a",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1"
+            ],
+            "Cmd": [
+                "python3",
+                "manage.py",
+                "runserver",
+                "0.0.0.0:8000"
+            ],
+            "WorkingDir": "/app",
+            "Labels": {
+                "com.docker.compose.project": "api-fuzzer-realworld-realworld-stability-20260904",
+                "com.docker.compose.service": "realword-app",
+                "com.docker.compose.version": "5.1.2"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 186510120,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:13a56b6535801be2adde694dabaf1c2df1d862a390661907dac821c42cd565cc",
+                "sha256:811200da0061220a3e28b9142728f858e7618bade93ea61d53c34f3f2aa629d5",
+                "sha256:b739482d4a4cf250868e13640bca1d6d54ddc6ae5a3676a2986d5f08ed226f61",
+                "sha256:568932e4ff4c0815486f1de32df754ed0e9a43c713bed5be7e5c5abf65a068e0",
+                "sha256:84cb1e3fdd8f66fbcf4ced6426917f70b942442688a53ea37d14648538b890a1",
+                "sha256:781cdf91a3de28ca084f7006803e96d8a01df2726180db1bf2b9991aa1661136",
+                "sha256:02677b54e2fe65980786a98f20f481d858deb8c9aa2284acd3d05acf34f4d03f",
+                "sha256:a4b1a8b6eeacb9a06bbf5766ce10df8a2424e5254ec22fb966291fdf87b866e2",
+                "sha256:fa09cc27d50f7d36369ed2ead7d7dec3bb1d788a068d76e8c2ee2ad0f3006d57",
+                "sha256:fe15e28c55d73824f8f8a1579842fe31d3432f005658ffca1fcf60780e24066a"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-09-05T00:38:46.905684586Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:3bb0bcd5f84c18a7ee6c71df24534cc6c0dbc7e36a202137eefc25b0d2c4878a",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "rrl12hzgphfrxfn38r5a7shpl",
+                    "CreatedAt": "2026-09-04T21:38:49.249923649-03:00"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280",
+        "RepoTags": [
+            "postgres:18"
+        ],
+        "RepoDigests": [
+            "postgres@sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-25T00:43:21.961605837Z",
+        "Config": {
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/18/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=18",
+                "PG_VERSION=18.6-1.pgdg13+2",
+                "PGDATA=/var/lib/postgresql/18/docker"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "postgres"
+            ],
+            "Volumes": {
+                "/var/lib/postgresql": {}
+            },
+            "StopSignal": "SIGINT"
+        },
+        "Architecture": "arm64",
+        "Variant": "v8",
+        "Os": "linux",
+        "Size": 161077735,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:41d6505109809884e681a97f978542a2d4d3506af0124f18b3f3a471edfcc9b7",
+                "sha256:d2f32bd58ec3aa3445af8c07d5cc288719e8185025c9d69aa323531e63218341",
+                "sha256:e0af9c40e0d56705ab1cecfececc13a4d84adca26667c3929a9cdac8396a19f9",
+                "sha256:62d7792a9e6ebbd140b843633ae021e1e0320f78ab49ca5893fe695e9fb1dae2",
+                "sha256:d26cc9a449fc08e3d792792e3f4861534514c31c7412ffc9fd05af1819ae6c39",
+                "sha256:99bee41d3ad5669d5ae049c700023a6580007441bbf64f9d5b513081ba6f8df4",
+                "sha256:4f12e7e81b61adf58502529a27c6fdfc3da03201ba6cfca25f7e0f3eefde4e4a",
+                "sha256:17e0065edd26b26a072f2082bff06f6e9588d1c88fdb40c42667589a26fcde8c",
+                "sha256:7e611607ac593472118bf5c8a66f30dc8b77308efcbe059b10f05b056cb0f460",
+                "sha256:830f9c924472ac484f922e88bc30ea2de4a94a6a77411600b460caa26ab7761f",
+                "sha256:c9100499a95bac204ee336bfe4422d8a16267b6d187b70cd0d86f241eab331c9",
+                "sha256:592d58a1b459c459a44e9e26c7ad774a502efd3cd9b224fb8eee5c0e24deb5eb",
+                "sha256:c09c58d457ccd9ad492a742c0ee638aea2b6173bf8a271a7f31e0b4c9dc6fc0a"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-09-05T00:35:42.867790791Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280",
+            "size": 10229
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/library/postgres"
+                }
+            ]
+        }
+    }
+]

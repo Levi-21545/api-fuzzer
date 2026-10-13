@@ -1,0 +1,258 @@
+# Relatório de Análise
+
+Total de resultados classificados: 396
+
+## Por classificação
+- UNEXPECTED_ERROR_STATUS: 165
+- SERVER_ERROR: 106
+- ERROR_CONTRADICTION: 57
+- EXPECTED_FAILURE: 52
+- UNEXPECTED_SUCCESS: 12
+- SUCCESS_CONTRADICTION: 4
+
+## Por severidade
+- HIGH: 1
+- MEDIUM: 126
+- LOW: 269
+
+## Endpoints com mais achados (top 10)
+- POST /workshop/api/merchant/contact_mechanic: 29
+- POST /identity/api/auth/v3/check-otp: 25
+- POST /identity/api/auth/v2/check-otp: 25
+- POST /workshop/api/mechanic/signup: 23
+- POST /identity/api/v2/user/verify-email-token: 21
+- POST /workshop/api/shop/products: 21
+- POST /identity/api/auth/signup: 21
+- POST /identity/api/auth/v4.0/user/login-with-token: 21
+- POST /identity/api/auth/v2.7/user/login-with-token: 21
+- PUT /identity/api/v2/user/videos/{video_id}: 15
+
+## Amostras por classificação (até 50 cada)
+
+### UNEXPECTED_ERROR_STATUS
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/reset-password → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/reset-password → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/change-email → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/change-email → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/verify-email-token → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/verify-email-token → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/pictures → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/pictures → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/videos → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/user/videos → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/user/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/user/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] PUT /identity/api/v2/user/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] PUT /identity/api/v2/user/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] DELETE /identity/api/v2/user/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] DELETE /identity/api/v2/user/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/user/videos/convert_video → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/user/videos/convert_video → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] DELETE /identity/api/v2/admin/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] DELETE /identity/api/v2/admin/videos/{video_id} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/vehicle/vehicles → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/vehicle/vehicles → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/vehicle/add_vehicle → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/vehicle/add_vehicle → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/vehicle/{vehicleId}/location → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /identity/api/v2/vehicle/{vehicleId}/location → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/vehicle/resend_email → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /identity/api/v2/vehicle/resend_email → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /community/api/v2/community/posts/{postId} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /community/api/v2/community/posts/{postId} → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/community/posts → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/community/posts → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/community/posts/{postId}/comment → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/community/posts/{postId}/comment → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /community/api/v2/community/posts/recent → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /community/api/v2/community/posts/recent → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/coupon/new-coupon → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/coupon/new-coupon → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/coupon/validate-coupon → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /community/api/v2/coupon/validate-coupon → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /workshop/api/shop/products → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] GET /workshop/api/shop/products → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /workshop/api/shop/products → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /workshop/api/shop/products → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /workshop/api/shop/orders → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] POST /workshop/api/shop/orders → 401 — score=0.16 severity=LOW — API returned an undocumented error status code: 401.
+- [UNEXPECTED_ERROR_STATUS] PUT /workshop/api/shop/orders/{order_id} → 404 — score=0.16 severity=LOW — API returned an undocumented error status code: 404.
+- [UNEXPECTED_ERROR_STATUS] PUT /workshop/api/shop/orders/{order_id} → 404 — score=0.16 severity=LOW — API returned an undocumented error status code: 404.
+- [UNEXPECTED_ERROR_STATUS] GET /workshop/api/shop/orders/{order_id} → 404 — score=0.16 severity=LOW — API returned an undocumented error status code: 404.
+- [UNEXPECTED_ERROR_STATUS] GET /workshop/api/shop/orders/{order_id} → 404 — score=0.16 severity=LOW — API returned an undocumented error status code: 404.
+
+### SERVER_ERROR
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v3/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2/check-otp → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2.7/user/login-with-token → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+- [SERVER_ERROR] POST /identity/api/auth/v2.7/user/login-with-token → 500 — score=0.5 severity=MEDIUM — Server returned a 500 error.
+
+### ERROR_CONTRADICTION
+- [ERROR_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: {'error': 'json: cannot unmarshal string into Go value of type models.Coupon'} is not of type 'string'
+- [ERROR_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: {'error': 'json: cannot unmarshal number into Go struct field Coupon.coupon_code of type string'} is not of type 'string'
+- [ERROR_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: {'error': 'json: cannot unmarshal number into Go struct field Coupon.amount of type string'} is not of type 'string'
+- [ERROR_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: {'error': 'json: cannot unmarshal number into Go struct field Coupon.amount of type string'} is not of type 'string'
+- [ERROR_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: {'error': 'json: cannot unmarshal number into Go struct field Coupon.coupon_code of type string'} is not of type 'string'
+- [ERROR_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: {'error': 'json: cannot unmarshal number into Go struct field Coupon.coupon_code of type string'} is not of type 'string'
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/orders → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/shop/apply_coupon → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+- [ERROR_CONTRADICTION] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — Error response body for 400 does not match contract. Details: 'message' is a required property
+
+### EXPECTED_FAILURE
+- [EXPECTED_FAILURE] GET /identity/api/v2/user/dashboard → 404 — score=0.16 severity=LOW — API correctly rejected with documented 404 error.
+- [EXPECTED_FAILURE] GET /identity/api/v2/user/dashboard → 404 — score=0.16 severity=LOW — API correctly rejected with documented 404 error.
+- [EXPECTED_FAILURE] GET /workshop/api/mechanic/service_requests → 401 — score=0.16 severity=LOW — API correctly rejected with documented 401 error.
+- [EXPECTED_FAILURE] GET /workshop/api/mechanic/service_requests → 401 — score=0.16 severity=LOW — API correctly rejected with documented 401 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] POST /identity/api/auth/v4.0/user/login-with-token → 403 — score=0.16 severity=LOW — API correctly rejected with documented 403 error.
+- [EXPECTED_FAILURE] DELETE /identity/api/v2/user/videos/{video_id} → 404 — score=0.16 severity=LOW — API correctly rejected with documented 404 error.
+- [EXPECTED_FAILURE] DELETE /identity/api/v2/admin/videos/{video_id} → 404 — score=0.16 severity=LOW — API correctly rejected with documented 404 error.
+- [EXPECTED_FAILURE] GET /identity/api/v2/vehicle/{vehicleId}/location → 404 — score=0.16 severity=LOW — API correctly rejected with documented 404 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/shop/products → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/merchant/contact_mechanic → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+- [EXPECTED_FAILURE] POST /workshop/api/mechanic/signup → 400 — score=0.16 severity=LOW — API correctly rejected with documented 400 error.
+
+### UNEXPECTED_SUCCESS
+- [UNEXPECTED_SUCCESS] GET /workshop/api/shop/return_qr_code → 200 — score=0.73 severity=HIGH — Authentication probe was accepted with status 200; the request used no valid credentials.
+- [UNEXPECTED_SUCCESS] GET /workshop/api/shop/return_qr_code → 200 — score=0.5 severity=MEDIUM — Authentication probe was accepted with status 200; the request used no valid credentials.
+- [UNEXPECTED_SUCCESS] POST /identity/api/v2/user/reset-password → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /identity/api/v2/user/reset-password → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /identity/api/v2/user/reset-password → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /community/api/v2/coupon/new-coupon → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /community/api/v2/coupon/validate-coupon → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /community/api/v2/coupon/validate-coupon → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /workshop/api/shop/products → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /workshop/api/shop/products → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /workshop/api/shop/products → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+- [UNEXPECTED_SUCCESS] POST /workshop/api/shop/products → 200 — score=0.5 severity=MEDIUM — Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.
+
+### SUCCESS_CONTRADICTION
+- [SUCCESS_CONTRADICTION] GET /community/api/v2/community/posts/recent → 200 — score=0.5 severity=MEDIUM — Response body for 200 does not match the contract. Details: {'posts': [{'id': 'taoyuSLNsGnTACieKxCowm', 'title': '', 'content': '', 'author': {'nickname': 'aeqvcecj', 'email': 'aeqvcecj@fuzzer.com', 'vehicleid': '', 'profile_pic_url': '', 'created_at': '2026-09-24T02:40:45.218Z'}, 'comments': [], 'authorid': 8, 'CreatedAt': '2026-09-24T02:40:45.218Z'}, {'id': '7uMxqUMV2LNM4hNv8KzWH7', 'title': 'A', 'content': 'A', 'author': {'nickname': 'aeqvcecj', 'email': 'aeqvcecj@fuzzer.com', 'vehicleid': '', 'profile_pic_url': '', 'created_at': '2026-09-24T02:40:44.678Z'}, 'comments': [], 'authorid': 8, 'CreatedAt': '2026-09-24T02:40:44.678Z'}, {'id': 'hLM5Hq2wmikeWuPXtxWyw6', 'title': 'Title 3', 'content': 'Hello world 3', 'author': {'nickname': 'Robot', 'email': 'robot001@example.com', 'vehicleid': '4bae9968-ec7f-4de3-a3a0-ba1b2ab5e5e5', 'profile_pic_url': '', 'created_at': '2026-09-24T02:38:58.712Z'}, 'comments': [], 'authorid': 3, 'CreatedAt': '2026-09-24T02:38:58.712Z'}, {'id': 'p37SVKpnbyiHJxSJ3k52s5', 'title': 'Title 2', 'content': 'Hello world 2', 'author': {'nickname': 'Pogba', 'email': 'pogba006@example.com', 'vehicleid': 'cd515c12-0fc1-48ae-8b61-9230b70a845b', 'profile_pic_url': '', 'created_at': '2026-09-24T02:38:58.711Z'}, 'comments': [], 'authorid': 2, 'CreatedAt': '2026-09-24T02:38:58.711Z'}, {'id': 'NSKqSGW6GXiPdSa9HLsZx7', 'title': 'Title 1', 'content': 'Hello world 1', 'author': {'nickname': 'Adam', 'email': 'adam007@example.com', 'vehicleid': 'f89b5f21-7829-45cb-a650-299a61090378', 'profile_pic_url': '', 'created_at': '2026-09-24T02:38:58.698Z'}, 'comments': [], 'authorid': 1, 'CreatedAt': '2026-09-24T02:38:58.698Z'}], 'next_offset': 0, 'previous_offset': 0, 'total': 5} is not of type 'array'
+- [SUCCESS_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 200 — score=0.5 severity=MEDIUM — Response body for 200 does not match the contract. Details: None is not of type 'string'
+- [SUCCESS_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 200 — score=0.5 severity=MEDIUM — Response body for 200 does not match the contract. Details: None is not of type 'string'
+- [SUCCESS_CONTRADICTION] POST /community/api/v2/coupon/new-coupon → 200 — score=0.5 severity=MEDIUM — Response body for 200 does not match the contract. Details: None is not of type 'string'

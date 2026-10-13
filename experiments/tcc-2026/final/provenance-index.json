@@ -1,0 +1,316 @@
+{
+  "campaign_commit": "ceec101280f999e14fa95955db5bd7e5ceb05e84",
+  "analyzer_commit": "052ee81ba56e4c2908b712218fd234eff0dd692f",
+  "runs": [
+    {
+      "api": "crapi",
+      "run_id": "crapi-final-r1-20260924T022956Z",
+      "original_manifest_sha256": "0dff4c40ff95c8d84b48fdb9bc061294d02269f5edacd13dd536ca900ba4cbb1",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "crapi",
+      "run_id": "crapi-final-r2-20260924T023437Z",
+      "original_manifest_sha256": "20057a1649e9730ae2b44c2077be1c181cd8484cfd16e753cecbf7d8cd88d9ed",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "crapi",
+      "run_id": "crapi-final-r3-20260924T023820Z",
+      "original_manifest_sha256": "011d6c4e73b0bdbc14dff599bfc9df99f608c2400cd28ceef5d4abf807950901",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "crapi",
+      "run_id": "crapi-final-r4-20260924T024159Z",
+      "original_manifest_sha256": "43a5556ce226ec3d4653b86e6185f0a360a8e73de383fc12447449bdfb306c18",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "crapi",
+      "run_id": "crapi-final-r5-20260924T024535Z",
+      "original_manifest_sha256": "eac5b63f45ebbab210dfebe8e6fc0265c4071b517bce1140f2903550cb17be49",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "meilisearch",
+      "run_id": "meilisearch-r1-20260924T025900Z",
+      "original_manifest_sha256": "362154a550284c3fbab03d31f669f5575aebcd1995d964d1c675934cc491ed3e",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "meilisearch",
+      "run_id": "meilisearch-r2-20260924T030113Z",
+      "original_manifest_sha256": "75fceba038228d51ac9f34917ef4585a91a57a719ca68345360ebeace57d2562",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "meilisearch",
+      "run_id": "meilisearch-r3-20260924T030325Z",
+      "original_manifest_sha256": "df6578ada445dcecff64041db74cf8a32771643700c6c792bb0cf6a5a448b12b",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "meilisearch",
+      "run_id": "meilisearch-r4-20260924T030537Z",
+      "original_manifest_sha256": "2789fe2cec882e8d3b3d33ba572fb1d732b939f916c47d7c36ff0625d5eba93e",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "meilisearch",
+      "run_id": "meilisearch-r5-20260924T030751Z",
+      "original_manifest_sha256": "461529d0030cd8849da6a5d5d8618d8b5d18c92da6f74d118b3604176bb7cf67",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "petclinic",
+      "run_id": "petclinic-final-r1-20260924T021826Z",
+      "original_manifest_sha256": "007e6b9ccd64375f6a7dfdbe9c4025943950bf6528be4e5e878590f7735923a5",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "petclinic",
+      "run_id": "petclinic-final-r2-20260924T022037Z",
+      "original_manifest_sha256": "15a66c859eb4c8f5cf669dba5b5cfa1624a3dddf956b115c9f5f2a641dd142ba",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "petclinic",
+      "run_id": "petclinic-final-r3-20260924T022259Z",
+      "original_manifest_sha256": "51b92041f221020644280ad5fd79d810ecfc5f3c6c6790b8224d6a00c810e371",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "petclinic",
+      "run_id": "petclinic-final-r4-20260924T022520Z",
+      "original_manifest_sha256": "23309edf675e914daed01339628e487e7d5cae2795c6461fcd943b5f5cfea868",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "petclinic",
+      "run_id": "petclinic-final-r5-20260924T022740Z",
+      "original_manifest_sha256": "ab1e0d1803518746855dbde5ddd45c4f7537b865dd15f21c96b67272ef4ac3a9",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "realworld",
+      "run_id": "realworld-final-r1-20260924T024911Z",
+      "original_manifest_sha256": "ff1e528c4d83f127a129d083ee762c9ff2b81aca4df17ec0db894eb1d0850086",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "realworld",
+      "run_id": "realworld-final-r2-20260924T025013Z",
+      "original_manifest_sha256": "d424d8bb6ab929ca31d7a952e82042da8b6cfef069753fe4576cf69ef76b608f",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "realworld",
+      "run_id": "realworld-final-r3-20260924T025114Z",
+      "original_manifest_sha256": "4e48c7899afb3632805dd2e85e72384e4cf81724f50dfc6dc7bb1975d57c1f43",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "realworld",
+      "run_id": "realworld-final-r4-20260924T025213Z",
+      "original_manifest_sha256": "26f105507d24453b4023b40663bc4a87a0ebc42b66a0f94bff4356cb4cdbd50d",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "realworld",
+      "run_id": "realworld-final-r5-20260924T025314Z",
+      "original_manifest_sha256": "a6a23be2c776a30784b141887d3e6ca8c935e0c7315eac9296be8dadb5a6dbe3",
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "vampi",
+      "run_id": "vampi-final-r1-20260924T021658Z",
+      "original_manifest_sha256": "3079eca1ee94f722b485f5b37de45b92494a7db0790a8b057d18a7e881d5c32e",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "vampi",
+      "run_id": "vampi-final-r2-20260924T021717Z",
+      "original_manifest_sha256": "4f89102feba3decd8c923bd6505adb2a301ac74b16dc9300fa43915e507670b8",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "vampi",
+      "run_id": "vampi-final-r3-20260924T021734Z",
+      "original_manifest_sha256": "0d8acf397d94bcc001a88527493c66d5392bded21f9c350186f60636e734a8c4",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "vampi",
+      "run_id": "vampi-final-r4-20260924T021751Z",
+      "original_manifest_sha256": "33d4c2df8cba83801f265c1daecbc4d5126b014f746f85d028131b640358abeb",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    },
+    {
+      "api": "vampi",
+      "run_id": "vampi-final-r5-20260924T021809Z",
+      "original_manifest_sha256": "1b4a7ab12453e8c6963aa483d449a511ffa8f85ae404ef60cab1a73a85cf0695",
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ]
+    }
+  ]
+}

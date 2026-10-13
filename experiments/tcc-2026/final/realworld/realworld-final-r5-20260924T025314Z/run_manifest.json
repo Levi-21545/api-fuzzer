@@ -1,0 +1,77 @@
+{
+  "artifacts": [
+    "run_manifest.json",
+    "data/authentication.json",
+    "data/execution_plan.json",
+    "data/results.json",
+    "data/target_images.json",
+    "analysis/analysis_findings.json",
+    "analysis/analysis_report.md",
+    "analysis/deduplication_report.md",
+    "analysis/findings_unique.json",
+    "analysis/metrics.json"
+  ],
+  "counts": {
+    "completed_requests": 142,
+    "findings": 135,
+    "planned_requests": 142,
+    "selected_endpoints": 19
+  },
+  "environment": {
+    "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+    "python": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]"
+  },
+  "error": null,
+  "experiment_id": "TCC-FINAL-001",
+  "finished_at": "2026-09-24T02:54:01.599744+00:00",
+  "fuzzer": {
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": false,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [],
+      "level": 2,
+      "max_mutations_per_payload": 20,
+      "max_pairs_per_payload": 10,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
+    "git": {
+      "branch": "issue-13-14-stabilize-and-produce-experiments",
+      "commit": "ceec101280f999e14fa95955db5bd7e5ceb05e84",
+      "dirty": false
+    },
+    "source_tree_sha256": "336740bd6de117fa4251e2d8a2a4c5e168644efa5b6e520c1df62aaaa5a2266b"
+  },
+  "inputs": {
+    "base_url": "http://127.0.0.1:18080/api",
+    "schema": "../../contracts/realworld-openapi.yml",
+    "schema_sha256": "227d6983874850d35a883f4486b455cedbb272a0c103008595873c94ae1600ac",
+    "target_image": "RealWorld sha256:3bb0bcd5f84c18a7ee6c71df24534cc6c0dbc7e36a202137eefc25b0d2c4878a; backend 04ef47ced437ee8795a13bdcbc2eff2be19e33bd; canonical contract 98f29fb3f8bcb1dd614b91f2851371bf22c34775; see target_images.json"
+  },
+  "manifest_version": 1,
+  "postprocessing": {
+    "deduplication": {
+      "counts": {
+        "candidate_endpoints": 12,
+        "candidate_findings_raw": 13,
+        "classified_observations": 135,
+        "executed_requests": 142,
+        "expected_failures": 122,
+        "findings_unique_operational": 13,
+        "planned_requests": 142
+      },
+      "error": null,
+      "status": "completed"
+    }
+  },
+  "run_id": "realworld-final-r5-20260924T025314Z",
+  "run_number": 5,
+  "started_at": "2026-09-24T02:53:22.077958+00:00",
+  "status": "completed",
+  "target_id": "realworld"
+}

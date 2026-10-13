@@ -1,0 +1,99 @@
+{
+  "api_id": "crapi",
+  "by_execution_level": {
+    "level_0": {
+      "candidate_findings_raw": 92,
+      "classified_observations": 100,
+      "executed_requests": 114,
+      "planned_by_case_kind": {
+        "auth_probe": 70,
+        "baseline": 44
+      },
+      "planned_requests": 114,
+      "unique_findings_involving_level": 69
+    },
+    "level_1": {
+      "candidate_findings_raw": 147,
+      "classified_observations": 170,
+      "executed_requests": 171,
+      "planned_by_case_kind": {
+        "mutation": 171
+      },
+      "planned_requests": 171,
+      "unique_findings_involving_level": 101
+    },
+    "level_2": {
+      "candidate_findings_raw": 105,
+      "classified_observations": 126,
+      "executed_requests": 126,
+      "planned_by_case_kind": {
+        "mutation": 126
+      },
+      "planned_requests": 126,
+      "unique_findings_involving_level": 66
+    }
+  },
+  "candidate_by_classification": {
+    "ERROR_CONTRADICTION": 57,
+    "SERVER_ERROR": 106,
+    "SUCCESS_CONTRADICTION": 4,
+    "UNEXPECTED_ERROR_STATUS": 165,
+    "UNEXPECTED_SUCCESS": 12
+  },
+  "counts": {
+    "candidate_endpoints": 41,
+    "candidate_findings_raw": 344,
+    "classified_observations": 396,
+    "executed_requests": 411,
+    "expected_failures": 52,
+    "findings_unique_operational": 196,
+    "planned_requests": 411
+  },
+  "executed_by_http_status_class": {
+    "2xx": 31,
+    "4xx": 274,
+    "5xx": 106
+  },
+  "fuzzy_assessment": {
+    "classified_fallbacks": 0,
+    "classified_with_assessment": 396,
+    "unique_by_strongest_rule": {
+      "R1_LOW_CONTRADICTION": 157,
+      "R2_MEDIUM_CONTRADICTION": 14,
+      "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE": 24,
+      "R6_CLEAR_ACCESS_EXPOSURE": 1
+    },
+    "unique_fallbacks": 0,
+    "unique_with_assessment": 196
+  },
+  "rates": {
+    "candidate_per_executed_ratio": 0.837,
+    "deduplication_reduction_ratio": 0.4302,
+    "execution_completion_ratio": 1.0
+  },
+  "raw_by_classification": {
+    "ERROR_CONTRADICTION": 57,
+    "EXPECTED_FAILURE": 52,
+    "SERVER_ERROR": 106,
+    "SUCCESS_CONTRADICTION": 4,
+    "UNEXPECTED_ERROR_STATUS": 165,
+    "UNEXPECTED_SUCCESS": 12
+  },
+  "unique_by_classification": {
+    "ERROR_CONTRADICTION": 40,
+    "SERVER_ERROR": 24,
+    "SUCCESS_CONTRADICTION": 2,
+    "UNEXPECTED_ERROR_STATUS": 122,
+    "UNEXPECTED_SUCCESS": 8
+  },
+  "unique_by_score": {
+    "0.16": 157,
+    "0.5": 38,
+    "0.73": 1
+  },
+  "unique_by_severity": {
+    "HIGH": 1,
+    "LOW": 157,
+    "MEDIUM": 38
+  }
+}

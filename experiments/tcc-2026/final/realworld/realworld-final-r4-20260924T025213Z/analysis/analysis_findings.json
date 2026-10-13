@@ -1,0 +1,6824 @@
+[
+  {
+    "case_id": "auth-probe-000001",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "GET /user",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "auth-probe-000002",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "GET /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "auth-probe-000003",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": "A",
+        "image": null,
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "auth-probe-000004",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": "A",
+        "image": null,
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "auth-probe-000005",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "POST /profiles/{username}/follow",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+  },
+  {
+    "case_id": "auth-probe-000006",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "POST /profiles/{username}/follow",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+  },
+  {
+    "case_id": "auth-probe-000007",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /profiles/{username}/follow",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+  },
+  {
+    "case_id": "auth-probe-000008",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "DELETE /profiles/{username}/follow",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+  },
+  {
+    "case_id": "auth-probe-000009",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "GET /articles/feed",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles/feed"
+  },
+  {
+    "case_id": "auth-probe-000010",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "GET /articles/feed",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles/feed"
+  },
+  {
+    "case_id": "auth-probe-000011",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "auth-probe-000012",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "title": "A"
+      }
+    },
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "auth-probe-000013",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "auth-probe-000014",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "auth-probe-000015",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /articles/{slug}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "auth-probe-000016",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "DELETE /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "auth-probe-000017",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "comment": {
+        "body": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "auth-probe-000018",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "comment": {
+        "body": "A"
+      }
+    },
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "auth-probe-000019",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /articles/{slug}/comments/{id}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments/A"
+  },
+  {
+    "case_id": "auth-probe-000020",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "DELETE /articles/{slug}/comments/{id}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments/A"
+  },
+  {
+    "case_id": "auth-probe-000021",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "POST /articles/{slug}/favorite",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+  },
+  {
+    "case_id": "auth-probe-000022",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "POST /articles/{slug}/favorite",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+  },
+  {
+    "case_id": "auth-probe-000023",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /articles/{slug}/favorite",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+  },
+  {
+    "case_id": "auth-probe-000024",
+    "classification": "SERVER_ERROR",
+    "description": "Server returned a 500 error.",
+    "endpoint_id": "DELETE /articles/{slug}/favorite",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.6667
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 1.0,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 1.0,
+          "low": 0.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 500,
+    "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+  },
+  {
+    "case_id": "case-000001",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 401,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000002",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000003",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000004",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000005",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": "not-an-object"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000006",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {}
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000007",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000008",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000009",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": 123,
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000010",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000011",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {}
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000012",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000013",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000014",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": 123,
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users/login"
+  },
+  {
+    "case_id": "case-000015",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000016",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000017",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000018",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000019",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": "not-an-object"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000020",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {}
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000021",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000022",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000023",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000024",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>",
+        "username": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000025",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": 123,
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000026",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000027",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "password": "<REDACTED>",
+        "username": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000028",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000029",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>",
+        "username": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000030",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000031",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000032",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000033",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "username": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000034",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": 123,
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000035",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": 123,
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000036",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /users",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "email": "A",
+        "password": "<REDACTED>"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/users"
+  },
+  {
+    "case_id": "case-000038",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": "A",
+        "image": null,
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000039",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000040",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000041",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000042",
+    "classification": "UNEXPECTED_SUCCESS",
+    "description": "Server accepted a mutated payload and returned 200. The API should have rejected the invalid input.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": "not-an-object"
+    },
+    "severity": "MEDIUM",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "medium behavioral contradiction -> medium priority",
+          "id": "R2_MEDIUM_CONTRADICTION",
+          "strength": 0.4
+        },
+        {
+          "description": "high contradiction with limited evidence -> medium priority",
+          "id": "R3_HIGH_CONTRADICTION_WEAK_EVIDENCE",
+          "strength": 0.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.7,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 0.0,
+          "medium": 0.4
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.5,
+    "status_code": 200,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000044",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": 123,
+        "image": null,
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000045",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": "A",
+        "image": null,
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000046",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": "A",
+        "image": null,
+        "password": "<REDACTED>",
+        "username": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000047",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": 123,
+        "image": null,
+        "password": "<REDACTED>",
+        "username": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000048",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": 123,
+        "image": null,
+        "password": "<REDACTED>",
+        "username": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000049",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /user",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "user": {
+        "bio": null,
+        "email": "A",
+        "image": null,
+        "password": "<REDACTED>",
+        "username": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/user"
+  },
+  {
+    "case_id": "case-000050",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "GET /profiles/{username}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/profiles/A"
+  },
+  {
+    "case_id": "case-000051",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "POST /profiles/{username}/follow",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+  },
+  {
+    "case_id": "case-000052",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "DELETE /profiles/{username}/follow",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/profiles/A/follow"
+  },
+  {
+    "case_id": "case-000056",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000057",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000058",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000059",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": "not-an-object"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000060",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {}
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000061",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "description": "A",
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000062",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000063",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000064",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000065",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": 123,
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000066",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": 123,
+        "description": "A",
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000068",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          123
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000069",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          null
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000070",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": {
+          "not": "an array"
+        },
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000071",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "description": "A",
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000072",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000073",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "description": "A",
+        "tagList": [
+          123
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000074",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          null
+        ]
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000075",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000076",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": 123,
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000077",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000078",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          123
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000079",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          null
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000080",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "description": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles"
+  },
+  {
+    "case_id": "case-000081",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "GET /articles/{slug}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000082",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000083",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000084",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000085",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000086",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": "not-an-object"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000087",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {}
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000088",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000089",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": 123,
+        "tagList": [
+          "A"
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000090",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": 123,
+        "description": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000091",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          123
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000092",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          null
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000093",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": {
+          "not": "an array"
+        },
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000094",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          123
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000095",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          123
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000096",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": 123,
+        "description": 123,
+        "tagList": [
+          "A"
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000097",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": 123,
+        "tagList": [
+          null
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000098",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": 123,
+        "tagList": [
+          "A"
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000099",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": 123,
+        "description": "A",
+        "tagList": [
+          "A"
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000100",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": 123,
+        "description": "A",
+        "tagList": [
+          123
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000101",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": [
+          null
+        ],
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000102",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": "A",
+        "tagList": {
+          "not": "an array"
+        },
+        "title": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000103",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": 123,
+        "tagList": [
+          123
+        ],
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000104",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "PUT /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "article": {
+        "body": "A",
+        "description": 123,
+        "tagList": {
+          "not": "an array"
+        },
+        "title": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000105",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "DELETE /articles/{slug}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A"
+  },
+  {
+    "case_id": "case-000106",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "GET /articles/{slug}/comments",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000107",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "comment": {
+        "body": "A"
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000108",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000109",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000110",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000111",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "comment": "not-an-object"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000112",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "comment": {}
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000113",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "comment": {}
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000114",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 422 error.",
+    "endpoint_id": "POST /articles/{slug}/comments",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "comment": {
+        "body": 123
+      }
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.15,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 422,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments"
+  },
+  {
+    "case_id": "case-000115",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "DELETE /articles/{slug}/comments/{id}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A/comments/0"
+  },
+  {
+    "case_id": "case-000116",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "POST /articles/{slug}/favorite",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+  },
+  {
+    "case_id": "case-000117",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 404 error.",
+    "endpoint_id": "DELETE /articles/{slug}/favorite",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low behavioral contradiction -> low priority",
+          "id": "R1_LOW_CONTRADICTION",
+          "strength": 1.0
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "access_control_exposure": 0.0,
+        "behavior_contradiction": 0.2,
+        "evidence_strength": 0.5
+      },
+      "memberships": {
+        "access_control_exposure": {
+          "clear": 0.0,
+          "none": 1.0,
+          "potential": 0.0
+        },
+        "behavior_contradiction": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        },
+        "evidence_strength": {
+          "limited": 0.6667,
+          "strong": 0.0
+        }
+      },
+      "model_id": "mamdani-behavior-evidence-access-v3"
+    },
+    "severity_score": 0.16,
+    "status_code": 404,
+    "url": "http://127.0.0.1:18080/api/articles/A/favorite"
+  }
+]
