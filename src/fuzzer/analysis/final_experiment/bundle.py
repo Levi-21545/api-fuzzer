@@ -17,7 +17,7 @@ from .protocol import (
     discover_apis,
     select_valid_attempts,
 )
-from .review_metadata import REVIEW_LICENSES, REVIEW_SCHEMA_REFERENCES
+from .review_metadata import API_METADATA
 from .summary import require_scientific_parity, summarize
 
 
@@ -35,14 +35,14 @@ def write_review_bundle(
         raise InvalidCampaign("review directory cannot replace the experiment root")
 
     review_root.mkdir(parents=True)
-    shared_contract_dir = review_root / "contracts"
     licenses_dir = review_root / "licenses"
-    shared_contract_dir.mkdir()
     licenses_dir.mkdir()
-    meili_contract_written = False
     provenance_runs = []
 
     for api, (runs, _) in source_audit.items():
+        metadata = API_METADATA.get(api, {})
+        contract = metadata.get("contract")
+        shared_contract = metadata["schema"] if contract == "included" else None
         for run in runs:
             manifest = run["manifest"]
             source_dir = experiment_root / api / manifest["run_id"]
@@ -58,16 +58,12 @@ def write_review_bundle(
                         {"path": relative, "reason": "diagnostic log kept in source"}
                     )
                     continue
-                if api == "meilisearch" and relative == "data/target_contract.json":
-                    package_paths[relative] = (
-                        "contracts/meilisearch-v1.45.1-openapi.json"
-                    )
-                    if not meili_contract_written:
-                        shutil.copyfile(
-                            source_dir / relative,
-                            shared_contract_dir / "meilisearch-v1.45.1-openapi.json",
-                        )
-                        meili_contract_written = True
+                if shared_contract and relative == "data/target_contract.json":
+                    package_paths[relative] = shared_contract
+                    target = review_root / shared_contract
+                    if not target.exists():
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copyfile(source_dir / relative, target)
                     continue
                 source = source_dir / path
                 target = output_dir / path
@@ -80,12 +76,10 @@ def write_review_bundle(
 
             copied_manifest = json.loads(json.dumps(manifest))
             copied_manifest["artifacts"] = copied_artifacts
-            if api == "meilisearch":
-                copied_manifest["inputs"]["schema"] = (
-                    "../../contracts/meilisearch-v1.45.1-openapi.json"
-                )
-            elif api in REVIEW_SCHEMA_REFERENCES:
-                copied_manifest["inputs"]["schema"] = REVIEW_SCHEMA_REFERENCES[api]
+            if shared_contract:
+                copied_manifest["inputs"]["schema"] = f"../../{shared_contract}"
+            elif contract == "external":
+                copied_manifest["inputs"]["schema"] = metadata["schema"]
             else:
                 schema = Path(manifest["inputs"]["schema"])
                 source_schema = schema if schema.is_file() else source_dir / schema
@@ -112,7 +106,7 @@ def write_review_bundle(
                 action = "copied"
                 if relative == "run_manifest.json":
                     action = "adapted"
-                elif package_path.startswith("contracts/"):
+                elif package_path == shared_contract:
                     action = "relocated"
                 artifact_mappings[relative] = {
                     "action": action,
@@ -120,9 +114,7 @@ def write_review_bundle(
                     "source_sha256": digest(source_dir / relative),
                     "package_sha256": digest(review_root / package_path),
                 }
-            schema_distribution = (
-                "external" if api in REVIEW_SCHEMA_REFERENCES else "included"
-            )
+            schema_distribution = "external" if contract == "external" else "included"
             provenance_runs.append(
                 {
                     "api_id": api,
@@ -141,10 +133,17 @@ def write_review_bundle(
                 }
             )
 
-    for api, (license_name, license_path) in REVIEW_LICENSES.items():
-        source_license = REPO_ROOT / license_path
-        if source_license.is_file():
-            shutil.copyfile(source_license, licenses_dir / f"{api}-LICENSE.txt")
+    for api in source_audit:
+        metadata = API_METADATA.get(api, {})
+        license_file = metadata.get("license_file")
+        if "license_text" in metadata:
+            (licenses_dir / metadata["license_copy"]).write_text(
+                metadata["license_text"], encoding="utf-8"
+            )
+        elif license_file and (REPO_ROOT / license_file).is_file():
+            shutil.copyfile(
+                REPO_ROOT / license_file, licenses_dir / metadata["license_copy"]
+            )
 
     # Validate the copy itself so its hashes describe only files in the package.
     bundle_audit = {

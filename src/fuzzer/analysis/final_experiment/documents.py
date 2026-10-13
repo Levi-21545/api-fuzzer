@@ -8,17 +8,11 @@ from pathlib import Path
 from typing import Any
 
 from .protocol import (
+    README_TEMPLATE,
     REPO_ROOT,
     analyzer_git_revision,
 )
-from .review_metadata import (
-    MEILISEARCH_ASSET_URL,
-    MEILISEARCH_LICENSE_EVIDENCE_URL,
-    MEILISEARCH_LICENSE_URL,
-    MEILISEARCH_MIT_LICENSE,
-    REVIEW_LICENSES,
-    REVIEW_PROVENANCE,
-)
+from .review_metadata import API_METADATA, LICENSE_NOTES
 from .summary import illustrative_signatures
 
 
@@ -29,16 +23,9 @@ def write_review_documents(
     experiment_root: Path,
 ) -> None:
     """Render compact tables, provenance, and reproduction steps from validated data."""
-    known_order = ("vampi", "petclinic", "crapi", "realworld", "meilisearch")
-    order = [api for api in known_order if api in summaries]
+    order = [api for api in API_METADATA if api in summaries]
     order.extend(sorted(set(summaries) - set(order)))
-    labels = {
-        "vampi": "VAmPI",
-        "petclinic": "Spring Petclinic REST",
-        "crapi": "crAPI",
-        "realworld": "RealWorld/Conduit",
-        "meilisearch": "Meilisearch",
-    }
+    labels = {api: metadata["label"] for api, metadata in API_METADATA.items()}
 
     def percent(value: float | None) -> str:
         return f"{value:.1%}" if value is not None else "—"
@@ -190,15 +177,15 @@ def write_review_documents(
 
     license_rows = []
     for api in order:
-        if api == "meilisearch":
-            continue
-        license_name, _ = REVIEW_LICENSES.get(api, ("verificar upstream", ""))
+        metadata = API_METADATA.get(api, {})
         run_id = summaries[api]["run_ids"][0]
         manifest_path = review_root / api / run_id / "run_manifest.json"
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         license_rows.append(
-            f"| {labels.get(api, api)} | {REVIEW_PROVENANCE.get(api, 'upstream')} | "
-            f"{license_name} | `{manifest['inputs']['schema_sha256']}` |"
+            f"| {metadata.get('contract_label', labels.get(api, api))} | "
+            f"{metadata.get('source', 'upstream')} | "
+            f"{metadata.get('license', 'verificar upstream')} | "
+            f"`{manifest['inputs']['schema_sha256']}` |"
         )
     license_lines = [
         "# Contratos e licenças",
@@ -213,52 +200,15 @@ def write_review_documents(
         "|---|---|---|---|",
         *license_rows,
     ]
-    if "meilisearch" in summaries:
-        run_id = summaries["meilisearch"]["run_ids"][0]
-        manifest_path = review_root / "meilisearch" / run_id / "run_manifest.json"
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        license_lines.append(
-            f"| Meilisearch v1.45.1 | Asset comunitário em `contracts/` | "
-            f"MIT — asset comunitário MIT-only segundo o upstream | "
-            f"`{manifest['inputs']['schema_sha256']}` |"
-        )
-        license_lines.extend(
-            [
-                "",
-                (
-                    f"Asset: [{MEILISEARCH_ASSET_URL}]({MEILISEARCH_ASSET_URL}). "
-                    "O upstream o lista entre os assets exclusivamente MIT na "
-                    f"[decisão de separar os assets Community e Enterprise]"
-                    f"({MEILISEARCH_LICENSE_EVIDENCE_URL}); o aviso está em "
-                    f"[`licenses/meilisearch-LICENSE-MIT.txt`]"
-                    f"(licenses/meilisearch-LICENSE-MIT.txt), obtido de "
-                    f"[{MEILISEARCH_LICENSE_URL}]({MEILISEARCH_LICENSE_URL})."
-                ),
-                "",
-                (
-                    "O contrato VAmPI não foi copiado porque contém um exemplo "
-                    "com formato de JWT."
-                ),
-                "",
-                (
-                    "O contrato Meilisearch mantém um valor com aparência de "
-                    "chave apenas no exemplo textual do esquema Bearer. O pacote "
-                    "não o altera para preservar o hash do asset; não há evidência "
-                    "no contrato de que o exemplo seja uma credencial ativa."
-                ),
-            ]
-        )
-        (review_root / "licenses/meilisearch-LICENSE-MIT.txt").write_text(
-            MEILISEARCH_MIT_LICENSE, encoding="utf-8"
-        )
+    for api, note in LICENSE_NOTES:
+        if api in summaries:
+            license_lines.extend(["", note])
     (review_root / "LICENSES.md").write_text(
         "\n".join(license_lines) + "\n", encoding="utf-8"
     )
 
     revision = analyzer_git_revision() or "pendente (checkout com alterações locais)"
-    template = (
-        REPO_ROOT / "scripts/experiments/templates/final-review-readme.md"
-    ).read_text(encoding="utf-8")
+    template = README_TEMPLATE.read_text(encoding="utf-8")
     replacements = {
         "{{COLLECTOR_COMMIT}}": commit,
         "{{ANALYZER_REVISION}}": revision,

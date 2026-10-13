@@ -16,16 +16,9 @@ from fuzzer.analysis.run_postprocessor import correlate_records
 from fuzzer.parser.openapi_parser import parse_openapi
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
-ANALYZER_SOURCE_FILES = (
-    "scripts/experiments/analyze_final.py",
-    "src/fuzzer/analysis/final_experiment/__init__.py",
-    "src/fuzzer/analysis/final_experiment/bundle.py",
-    "src/fuzzer/analysis/final_experiment/documents.py",
-    "src/fuzzer/analysis/final_experiment/protocol.py",
-    "src/fuzzer/analysis/final_experiment/review_metadata.py",
-    "src/fuzzer/analysis/final_experiment/summary.py",
-    "scripts/experiments/templates/final-review-readme.md",
-)
+PACKAGE_DIR = Path(__file__).resolve().parent
+ENTRYPOINT = REPO_ROOT / "scripts/experiments/analyze_final.py"
+README_TEMPLATE = REPO_ROOT / "scripts/experiments/templates/final-review-readme.md"
 
 RUN_COUNT = 5
 
@@ -88,11 +81,9 @@ def digest(path: Path) -> str:
 
 
 def analyzer_source_hashes() -> dict[str, str]:
-    """Hash the entrypoint and each module that implements the analysis."""
-    return {
-        relative_path: digest(REPO_ROOT / relative_path)
-        for relative_path in ANALYZER_SOURCE_FILES
-    }
+    """Hash the entrypoint, every module of this package, and the README template."""
+    files = [ENTRYPOINT, *sorted(PACKAGE_DIR.glob("*.py")), README_TEMPLATE]
+    return {path.relative_to(REPO_ROOT).as_posix(): digest(path) for path in files}
 
 
 def analyzer_git_revision() -> str | None:
