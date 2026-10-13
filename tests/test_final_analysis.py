@@ -203,6 +203,9 @@ def test_cli_writes_a_compact_revalidated_review_bundle(tmp_path, capsys):
     assert (review / "results.md").is_file()
     report = (review / "results.md").read_text()
     assert "| Caso | ID semântico |" in report
+    assert "## Configuração" in report
+    assert "| alpha | 1 de 1 | — | não | 0 |" in report
+    assert "e a mesma configuração" not in report
     case_link = "[`case-1`, campanha 1](alpha/run-1/analysis/analysis_findings.json)"
     assert case_link in report
     assert (review / "README.md").is_file()
@@ -589,3 +592,59 @@ def test_documents_use_brazilian_number_format():
     assert documents.percent(0.385) == "38,5%"
     assert documents.score(0.84) == "0,84"
     assert documents.percent(None) == documents.score(None) == "—"
+
+
+def test_fis_band_differences_inside_groups_are_counted(tmp_path):
+    runs = protocol.validate_api("alpha", make_campaign(tmp_path, "alpha"), "expected")
+    assert summary.summarize("alpha", runs)["strict_signatures_with_mixed_bands"] == 0
+
+    def add_case(run, case_id, score, band):
+        run["unique"][0]["case_ids"].append(case_id)
+        run["findings"].append(
+            {
+                "case_id": case_id,
+                "classification": "SERVER_ERROR",
+                "severity_score": score,
+                "severity": band,
+                "severity_assessment": {"inputs": {"behavior_contradiction": 0.7}},
+            }
+        )
+
+    add_case(runs[0], "case-2", 0.5, "MEDIUM")
+    result = summary.summarize("alpha", runs)
+    assert result["strict_signatures_with_mixed_bands"] == 1
+    assert result["fis_inputs_with_different_scores"] == 0
+
+    add_case(runs[1], "case-2", 0.4, "MEDIUM")
+    result = summary.summarize("alpha", runs)
+    assert result["strict_signatures_with_mixed_bands"] == 2
+    assert result["fis_inputs_with_different_scores"] == 1
+
+
+def test_documents_explain_configuration_and_fis_grouping():
+    campaign = {"selected_operations": 85, "contract_operations": 138}
+    summaries = {
+        "meilisearch": {
+            "configuration": {"auth_probe": True, "excluded_paths": ["/a", "/b"]},
+            "campaigns": [campaign],
+            "strict_signatures_with_mixed_bands": 2,
+            "signatures_with_band_change": 1,
+            "fis_inputs_with_different_scores": 0,
+            "score_distribution_unique_per_run": {"count": 1140},
+        }
+    }
+    configuration = "\n".join(
+        documents.configuration_section(summaries, ["meilisearch"])
+    )
+    assert "| Meilisearch | 85 de 138 | chave mestra | sim | 2 |" in configuration
+    assert "- Meilisearch: caminhos com formato de entrada" in configuration
+
+    note = "\n".join(documents.fis_grouping_note(summaries, ["meilisearch"]))
+    assert "- 2 das 1.140 assinaturas têm casos em mais de uma faixa" in note
+    assert "(Meilisearch: 2)" in note
+    assert "- 1 IDs semânticos aparecem em faixas diferentes" in note
+    assert "não do FIS" in note
+
+    for field in ("strict_signatures_with_mixed_bands", "signatures_with_band_change"):
+        summaries["meilisearch"][field] = 0
+    assert documents.fis_grouping_note(summaries, ["meilisearch"]) == []

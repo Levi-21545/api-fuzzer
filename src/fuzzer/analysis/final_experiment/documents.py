@@ -9,7 +9,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .protocol import REPO_ROOT, RUN_COUNT
+from .protocol import REPO_ROOT, REQUIRED_CONFIGURATION, RUN_COUNT
 from .review_metadata import API_METADATA, LICENSE_NOTES
 from .summary import illustrative_signatures
 
@@ -73,12 +73,13 @@ def write_review_documents(
         "# Resultados da coleta final",
         "",
         f"{len(apis) * RUN_COUNT} campanhas: {len(apis)} APIs × {RUN_COUNT} "
-        f"repetições, todas com o fuzzer no commit `{commit}` e a mesma "
-        "configuração.",
+        f"repetições, todas com o fuzzer no commit `{commit}`.",
         "",
         "## Como ler",
         "",
         *(f"- **{term}:** {meaning}" for term, meaning in GLOSSARY),
+        "",
+        *configuration_section(summaries, apis),
         "",
         *execution_section(summaries, apis),
         "",
@@ -137,6 +138,60 @@ def table(columns: list[str], align: str, rows: list[list[Any]]) -> list[str]:
 
 def write_lines(path: Path, lines: list[str]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def configuration_section(
+    summaries: dict[str, dict[str, Any]], apis: list[str]
+) -> list[str]:
+    fixed = REQUIRED_CONFIGURATION
+    rows, exclusions = [], []
+    for api in apis:
+        configuration = summaries[api]["configuration"] or {}
+        campaign = summaries[api]["campaigns"][0] if summaries[api]["campaigns"] else {}
+        excluded = configuration.get("excluded_paths") or []
+        rows.append(
+            [
+                label(api),
+                f"{campaign.get('selected_operations', '—')} de "
+                f"{campaign.get('contract_operations', '—')}",
+                API_METADATA.get(api, {}).get("auth", "—"),
+                "sim" if configuration.get("auth_probe") else "não",
+                len(excluded),
+            ]
+        )
+        if excluded:
+            reason = API_METADATA.get(api, {}).get("exclusion", "sem motivo registrado")
+            exclusions.append(f"- {label(api)}: {reason}.")
+    columns = [
+        "API",
+        "Operações testadas",
+        "Autenticação",
+        "Teste de acesso",
+        "Caminhos excluídos",
+    ]
+    return [
+        "## Configuração",
+        "",
+        f"Em todas as campanhas: nível L{fixed['level']}, até "
+        f"{fixed['max_mutations_per_payload']} mutações isoladas e "
+        f"{fixed['max_pairs_per_payload']} pares por payload, concorrência "
+        f"{fixed['concurrency']}, {fixed['delay_ms']} ms entre requisições e "
+        f"timeout de {fixed['timeout_seconds']} s. As {RUN_COUNT} campanhas de "
+        "cada API têm configuração idêntica; entre APIs, variam:",
+        "",
+        *table(columns, "lrllr", rows),
+        "",
+        "- **Operações testadas:** selecionadas pelo fuzzer, de quantas o contrato "
+        "documenta.",
+        "- **Teste de acesso:** repete as operações protegidas sem credencial e "
+        "com credencial inválida.",
+        "",
+        "Excluir um caminho remove todas as operações dele. Motivos (lista "
+        "completa em `fuzzer.configuration.excluded_paths`, no "
+        "`run_manifest.json` de cada campanha):",
+        "",
+        *exclusions,
+    ]
 
 
 def execution_section(
@@ -307,7 +362,54 @@ def fis_section(summaries: dict[str, dict[str, Any]], apis: list[str]) -> list[s
         "atribuída; não medem acerto nem confirmam vulnerabilidades. A "
         "comparação com rótulos de referência existe só nos conjuntos "
         "históricos.",
+        *fis_grouping_note(summaries, apis),
     ]
+
+
+def fis_grouping_note(
+    summaries: dict[str, dict[str, Any]], apis: list[str]
+) -> list[str]:
+    """Explain why one strict signature or semantic ID can span FIS bands."""
+
+    def per_api(field: str) -> tuple[int, str]:
+        counts = [(label(api), summaries[api][field]) for api in apis]
+        listed = "; ".join(f"{name}: {count}" for name, count in counts if count)
+        return sum(count for _, count in counts), listed
+
+    mixed, mixed_by_api = per_api("strict_signatures_with_mixed_bands")
+    changed, changed_by_api = per_api("signatures_with_band_change")
+    conflicts, _ = per_api("fis_inputs_with_different_scores")
+    if not mixed and not changed and not conflicts:
+        return []
+    signatures = sum(
+        summaries[api]["score_distribution_unique_per_run"]["count"] for api in apis
+    )
+    lines = [
+        "",
+        "Cada assinatura estrita entra na tabela com o score do seu caso "
+        "representante. Como a assinatura não inclui as entradas do FIS, um "
+        "grupo pode reunir casos com entradas e faixas diferentes, por exemplo "
+        "caso-base e mutação, ou requisição sem credencial e com credencial "
+        "inválida:",
+        "",
+        f"- {mixed} das {number(signatures)} assinaturas têm casos em mais de uma "
+        f"faixa ({mixed_by_api or 'nenhuma API'});",
+        f"- {changed} IDs semânticos aparecem em faixas diferentes entre "
+        "campanhas, porque o caso representante variou "
+        f"({changed_by_api or 'nenhuma API'}).",
+        "",
+    ]
+    if conflicts:
+        lines.append(
+            f"Em {conflicts} combinações de entradas, o FIS deu scores diferentes "
+            "para entradas iguais."
+        )
+    else:
+        lines.append(
+            "Em cada API, achados com as mesmas entradas do FIS receberam sempre o "
+            "mesmo score: as diferenças vêm do agrupamento, não do FIS."
+        )
+    return lines
 
 
 def cases_section(

@@ -31,10 +31,13 @@ SOFTWARE.
 # Key order is the API order of the generated documents. Each contract is copied
 # unchanged to contracts/<contract_file>; `source` is the markdown link to the
 # exact upstream revision. The license is copied from `license_file` or written
-# from `license_text`.
+# from `license_text`. `auth` and `exclusion` describe how the runner set up
+# authentication and why paths were left out (results.md, Configuração).
 API_METADATA = {
     "vampi": {
         "label": "VAmPI",
+        "auth": "cadastro e login automáticos",
+        "exclusion": "`/createdb` recria o banco com dados de exemplo",
         "contract_file": "vampi-openapi3.yml",
         "source": (
             "[erev0s/VAmPI](https://github.com/erev0s/VAmPI/tree/"
@@ -46,6 +49,8 @@ API_METADATA = {
     },
     "petclinic": {
         "label": "Spring Petclinic REST",
+        "auth": "nenhuma (o contrato não define)",
+        "exclusion": "`/oops` sempre falha, por definição do contrato",
         "contract_file": "petclinic-openapi.yml",
         "source": (
             "[spring-petclinic/spring-petclinic-rest]"
@@ -58,6 +63,7 @@ API_METADATA = {
     },
     "crapi": {
         "label": "crAPI",
+        "auth": "cadastro e login automáticos",
         "contract_file": "crapi-openapi-spec.json",
         "source": (
             "[OWASP/crAPI](https://github.com/OWASP/crAPI/tree/"
@@ -69,6 +75,7 @@ API_METADATA = {
     },
     "realworld": {
         "label": "RealWorld/Conduit",
+        "auth": "token obtido pelo runner",
         "contract_file": "realworld-openapi.yml",
         "source": (
             "[realworld-apps/realworld](https://github.com/realworld-apps/"
@@ -80,6 +87,12 @@ API_METADATA = {
     },
     "meilisearch": {
         "label": "Meilisearch",
+        "auth": "chave mestra",
+        "exclusion": (
+            "caminhos com formato de entrada que o fuzzer não suporta, que "
+            "dependem de recursos ou integrações ausentes no alvo, ou que "
+            "alterariam o índice usado como semente"
+        ),
         "contract_file": "meilisearch-v1.45.1-openapi.json",
         "source": f"[asset da release v1.45.1]({MEILISEARCH_ASSET_URL})",
         "license": "MIT",

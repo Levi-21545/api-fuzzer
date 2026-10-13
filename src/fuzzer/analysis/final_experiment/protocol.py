@@ -344,6 +344,7 @@ def validate_run(run_dir: Path, api: str, commit: str) -> dict[str, Any]:
     return {
         "manifest": manifest,
         "metrics": metrics,
+        "findings": records["findings"],
         "unique": records["unique"],
         "configuration": config,
         "artifact_sha256": hashes,

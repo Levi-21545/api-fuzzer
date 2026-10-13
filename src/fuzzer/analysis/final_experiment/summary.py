@@ -9,6 +9,8 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from typing import Any
 
+from fuzzer.analysis.deduplication import EXPECTED_CLASSIFICATION
+
 from .protocol import InvalidCampaign, RUN_COUNT
 
 SCIENTIFIC_FIELDS = (
@@ -22,9 +24,12 @@ SCIENTIFIC_FIELDS = (
     "reobserved_at_least_four_ratio",
     "observed_once_ratio",
     "signatures_with_band_change",
+    "strict_signatures_with_mixed_bands",
+    "fis_inputs_with_different_scores",
     "score_distribution_unique_per_run",
     "band_distribution_unique_per_run",
     "signatures",
+    "configuration",
 )
 
 
@@ -91,6 +96,9 @@ def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
     origins: dict[str, list[dict[str, str]]] = defaultdict(list)
     totals, classifications = Counter(), Counter()
     strict_scores, strict_bands = [], Counter()
+    # A strict signature does not include the FIS inputs, so its cases may differ
+    # in band; the FIS itself must give one output per input combination.
+    mixed_bands, fis_outputs = 0, defaultdict(set)
     campaigns = []
     for run in runs:
         manifest, metrics = run["manifest"], run["metrics"]
@@ -124,7 +132,18 @@ def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
 
         classifications.update(metrics.get("candidate_by_classification", {}))
 
+        bands_by_case = {}
+        for finding in run["findings"]:
+            if finding.get("classification") == EXPECTED_CLASSIFICATION:
+                continue
+            bands_by_case[finding["case_id"]] = finding.get("severity", "UNKNOWN")
+            inputs = (finding.get("severity_assessment") or {}).get("inputs")
+            fis_outputs[json.dumps(inputs, sort_keys=True)].add(
+                (finding.get("severity_score"), finding.get("severity"))
+            )
+
         for item in run["unique"]:
+            mixed_bands += len({bands_by_case[case] for case in item["case_ids"]}) > 1
             strict_finding = item["representative"]["finding"]
             strict_score = strict_finding.get("severity_score")
             if isinstance(strict_score, (int, float)):
@@ -184,6 +203,10 @@ def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
         else None,
         "observed_once_ratio": frequencies[1] / union if union else None,
         "signatures_with_band_change": sum(len(value) > 1 for value in bands.values()),
+        "strict_signatures_with_mixed_bands": mixed_bands,
+        "fis_inputs_with_different_scores": sum(
+            len(outputs) > 1 for outputs in fis_outputs.values()
+        ),
         "score_distribution_unique_per_run": {
             "count": len(strict_scores),
             "median": statistics.median(strict_scores) if strict_scores else None,
@@ -207,6 +230,8 @@ def summarize(api: str, runs: list[dict[str, Any]]) -> dict[str, Any]:
             }
             for key in sorted(observations)
         },
+        # check_campaign guarantees the five runs share one configuration.
+        "configuration": runs[0]["configuration"] if runs else None,
     }
 
 
