@@ -196,7 +196,9 @@ def test_cli_writes_a_compact_revalidated_review_bundle(tmp_path, capsys):
     assert output["alpha"]["signature_union"] == 1
     assert (review / "results.md").is_file()
     report = (review / "results.md").read_text()
-    assert "| Arquivo | ID semântico (prefixo) |" in report
+    assert "| Caso | ID semântico |" in report
+    case_link = "[`case-1`, campanha 1](alpha/run-1/analysis/analysis_findings.json)"
+    assert case_link in report
     assert (review / "README.md").is_file()
     assert (review / "final-analysis.json").is_file()
     index = json.loads((review / "provenance-index.json").read_text())
@@ -259,7 +261,9 @@ def test_review_bundle_reports_empty_signature_union_without_division_error(
     assert output["empty"]["signature_union"] == 0
     assert output["empty"]["observed_once_ratio"] is None
     assert output["empty"]["reobserved_at_least_four_ratio"] is None
-    assert "| empty | 5/5 | 0/0/5 | 0 | 0 | 0 | 0.0% | 0 | — | — |" in report
+    assert "| empty | 5 | 5 | 0 | 0 | 5 |" in report
+    assert "| empty | 0 | 0 | 0 | 0,0% |" in report
+    assert "| empty | 0 | 0 | 0 | 0 | 0 | 0 | — | — |" in report
     assert "| empty | 0 | — | — | — | 0 | 0 | 0 |" in report
 
 

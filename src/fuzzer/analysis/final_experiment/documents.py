@@ -7,23 +7,53 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .protocol import README_TEMPLATE, REPO_ROOT, analyzer_git_revision
+from .protocol import README_TEMPLATE, REPO_ROOT, RUN_COUNT, analyzer_git_revision
 from .review_metadata import API_METADATA, LICENSE_NOTES
 from .summary import illustrative_signatures
 
-FINDING_CLASSES = (
-    "ERROR_CONTRADICTION",
-    "SERVER_ERROR",
-    "SUCCESS_CONTRADICTION",
-    "UNEXPECTED_ERROR_STATUS",
-    "UNEXPECTED_SUCCESS",
-)
+FINDING_CLASSES = {
+    "ERROR_CONTRADICTION": (
+        "erro 4xx documentado, mas o corpo não é JSON ou não segue o contrato."
+    ),
+    "SERVER_ERROR": "resposta 5xx.",
+    "SUCCESS_CONTRADICTION": (
+        "resposta 2xx não documentada, ou corpo fora do contrato."
+    ),
+    "UNEXPECTED_ERROR_STATUS": (
+        "erro 4xx não documentado para a operação, ou requisição sem resposta."
+    ),
+    "UNEXPECTED_SUCCESS": (
+        "resposta 2xx a uma requisição que deveria ser rejeitada (payload "
+        "mutado ou credencial ausente/inválida)."
+    ),
+}
 
-FIS_NOTE = (
-    "Escores e faixas são descritivos; não indicam acurácia nem confirmam "
-    "vulnerabilidades. Famílias e comparação FIS × status-only permanecem "
-    "restritas aos conjuntos históricos com referência. N conta um "
-    "representante por assinatura estrita em cada campanha."
+GLOSSARY = (
+    (
+        "Falha esperada",
+        "a API rejeitou a requisição com um erro 4xx documentado e no formato "
+        "do contrato. Não é achado.",
+    ),
+    (
+        "Achado bruto",
+        "uma requisição cuja resposta foi classificada como divergência "
+        "(classes abaixo). Conta cada requisição.",
+    ),
+    (
+        "Assinatura estrita",
+        "reúne, dentro de uma campanha, achados com a mesma operação, classe, "
+        "status HTTP, resposta normalizada e caminho do erro de validação.",
+    ),
+    (
+        "ID semântico",
+        "identifica o mesmo achado entre campanhas. No Meilisearch, ignora "
+        "`requestUid` e `processingTimeMs` em `POST /multi-search`.",
+    ),
+    (
+        "Presença",
+        f"em quantas das {RUN_COUNT} campanhas um ID semântico apareceu. Cada ID "
+        "conta no máximo uma vez por campanha.",
+    ),
 )
 
 
@@ -39,15 +69,23 @@ def write_review_documents(
     results = [
         "# Resultados da coleta final",
         "",
-        f"Commit congelado das campanhas: `{commit}`.",
+        f"{len(apis) * RUN_COUNT} campanhas: {len(apis)} APIs × {RUN_COUNT} "
+        f"repetições, todas com o fuzzer no commit `{commit}` e a mesma "
+        "configuração.",
         "",
-        *overview_section(summaries, apis),
+        "## Como ler",
         "",
-        *fis_section(summaries, apis),
+        *(f"- **{term}:** {meaning}" for term, meaning in GLOSSARY),
+        "",
+        *execution_section(summaries, apis),
+        "",
+        *findings_section(summaries, apis),
         "",
         *classes_section(summaries, apis),
         "",
-        FIS_NOTE,
+        *stability_section(summaries, apis),
+        "",
+        *fis_section(summaries, apis),
         "",
         *cases_section(review_root, summaries, apis),
     ]
@@ -64,12 +102,21 @@ def label(api: str) -> str:
     return API_METADATA.get(api, {}).get("label", api)
 
 
+def number(value: int) -> str:
+    """Brazilian thousands separator: 1.780."""
+    return f"{value:,}".replace(",", ".")
+
+
 def percent(value: float | None) -> str:
-    return f"{value:.1%}" if value is not None else "—"
+    return "—" if value is None else f"{value:.1%}".replace(".", ",")
 
 
 def score(value: float | None) -> str:
-    return f"{value:.2f}" if value is not None else "—"
+    return "—" if value is None else f"{value:.2f}".replace(".", ",")
+
+
+def bold(value: Any) -> str:
+    return f"**{value}**"
 
 
 def table(columns: list[str], align: str, rows: list[list[Any]]) -> list[str]:
@@ -86,73 +133,136 @@ def write_lines(path: Path, lines: list[str]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def overview_section(
+def execution_section(
     summaries: dict[str, dict[str, Any]], apis: list[str]
 ) -> list[str]:
-    rows, totals, total_status = [], Counter(), Counter()
+    keys = ("planned_requests", "executed_requests")
+    statuses = ("2xx", "4xx", "5xx")
+    rows, total = [], Counter()
     for api in apis:
-        summary = summaries[api]
-        counts = summary["totals"]
         status = Counter()
-        for campaign in summary["campaigns"]:
+        for campaign in summaries[api]["campaigns"]:
             status.update(campaign["http_status_classes"])
-        totals.update(counts)
-        total_status.update(status)
+        values = [summaries[api]["totals"][key] for key in keys]
+        values += [status[name] for name in statuses]
+        total.update(dict(enumerate(values)))
+        rows.append([label(api), *map(number, values)])
+    rows.append([bold("Total"), *(bold(number(total[i])) for i in range(5))])
+    return [
+        "## Execução",
+        "",
+        *table(["API", "Planejadas", "Executadas", *statuses], "lrrrrr", rows),
+        "",
+        "Respostas 4xx e 5xx são resultados normais do teste e não invalidam uma "
+        "campanha.",
+    ]
+
+
+def findings_section(
+    summaries: dict[str, dict[str, Any]], apis: list[str]
+) -> list[str]:
+    keys = (
+        "expected_failures",
+        "candidate_findings_raw",
+        "findings_unique_operational",
+    )
+    rows, total = [], Counter()
+    for api in apis:
+        counts = summaries[api]["totals"]
+        total.update({key: counts[key] for key in keys})
         rows.append(
             [
                 label(api),
-                f"{counts['planned_requests']:,}/{counts['executed_requests']:,}",
-                f"{status['2xx']:,}/{status['4xx']:,}/{status['5xx']:,}",
-                f"{counts['expected_failures']:,}",
-                f"{counts['candidate_findings_raw']:,}",
-                f"{counts['findings_unique_operational']:,}",
-                f"{summary['deduplication_reduction']:.1%}",
+                *(number(counts[key]) for key in keys),
+                percent(summaries[api]["deduplication_reduction"]),
+            ]
+        )
+    raw, unique = total["candidate_findings_raw"], total["findings_unique_operational"]
+    rows.append(
+        [
+            bold("Total"),
+            *(bold(number(total[key])) for key in keys),
+            bold(percent((raw - unique) / raw if raw else 0.0)),
+        ]
+    )
+    columns = [
+        "API",
+        "Falhas esperadas",
+        "Achados brutos",
+        "Assinaturas estritas",
+        "Redução",
+    ]
+    return [
+        "## Achados e deduplicação",
+        "",
+        *table(columns, "lrrrr", rows),
+        "",
+        f"Assinaturas estritas somam as {RUN_COUNT} campanhas. Redução = 1 − "
+        "assinaturas ÷ achados brutos.",
+    ]
+
+
+def classes_section(summaries: dict[str, dict[str, Any]], apis: list[str]) -> list[str]:
+    rows = [
+        [label(api)]
+        + [
+            number(summaries[api]["candidate_by_classification"].get(name, 0))
+            for name in FINDING_CLASSES
+        ]
+        for api in apis
+    ]
+    return [
+        "## Classes dos achados brutos",
+        "",
+        *table(["API", *FINDING_CLASSES], "lrrrrr", rows),
+        "",
+        *(f"- `{name}`: {meaning}" for name, meaning in FINDING_CLASSES.items()),
+    ]
+
+
+def stability_section(
+    summaries: dict[str, dict[str, Any]], apis: list[str]
+) -> list[str]:
+    presences = [str(count) for count in range(RUN_COUNT, 0, -1)]
+    rows, total = [], Counter()
+    for api in apis:
+        summary = summaries[api]
+        frequency = summary["presence_frequency"]
+        total.update({"union": summary["signature_union"]})
+        total.update({key: frequency[key] for key in presences})
+        rows.append(
+            [
+                label(api),
                 summary["signature_union"],
+                *(frequency[key] for key in presences),
                 percent(summary["reobserved_at_least_four_ratio"]),
                 percent(summary["observed_once_ratio"]),
             ]
         )
-    raw = totals["candidate_findings_raw"]
-    unique = totals["findings_unique_operational"]
     rows.append(
         [
-            "**Total**",
-            f"**{totals['planned_requests']:,}/{totals['executed_requests']:,}**",
-            f"**{total_status['2xx']:,}/{total_status['4xx']:,}/"
-            f"{total_status['5xx']:,}**",
-            f"**{totals['expected_failures']:,}**",
-            f"**{raw:,}**",
-            f"**{unique:,}**",
-            f"**{(raw - unique) / raw if raw else 0.0:.1%}**",
-            f"**{sum(summaries[api]['signature_union'] for api in apis)}**",
+            bold("Total"),
+            bold(total["union"]),
+            *(bold(total[key]) for key in presences),
             "—",
             "—",
         ]
     )
     columns = [
         "API",
-        "Planejadas/executadas",
-        "2xx/4xx/5xx",
-        "Esperadas",
-        "Brutos",
-        "Únicos/run",
-        "Redução",
-        "União",
-        "≥4/5",
-        "1/5",
+        "IDs semânticos",
+        *(f"em {key}/{RUN_COUNT}" for key in presences),
+        f"≥ 4/{RUN_COUNT}",
+        f"só 1/{RUN_COUNT}",
     ]
     return [
-        *table(columns, "lrrrrrrrrr", rows),
+        "## Estabilidade entre as campanhas",
         "",
-        "Falhas esperadas são observações compatíveis com o contrato. HTTP "
-        "4xx/5xx e zero achados não invalidam campanha. Assinaturas contam no "
-        "máximo uma vez por run; união zero produz percentuais não aplicáveis. "
-        "Meilisearch normaliza somente `requestUid` e `processingTimeMs` em "
-        "`POST /multi-search`.",
-        "Brutos = achados candidatos nas cinco campanhas; únicos/run = soma "
-        "das assinaturas estritas de cada campanha; união = IDs semânticos "
-        "distintos dentro da API. O total de união soma as cinco APIs. "
-        "Classes HTTP contam resultados executados.",
+        *table(columns, "l" + "r" * (len(columns) - 1), rows),
+        "",
+        f'As colunas "em k/{RUN_COUNT}" contam IDs presentes em exatamente k '
+        "campanhas. As duas últimas são percentuais sobre os IDs semânticos da "
+        "API; não há percentual no total porque ele mistura APIs.",
     ]
 
 
@@ -164,28 +274,34 @@ def fis_section(summaries: dict[str, dict[str, Any]], apis: list[str]) -> list[s
         rows.append(
             [
                 label(api),
-                distribution["count"],
+                number(distribution["count"]),
                 score(distribution["min"]),
                 score(distribution["median"]),
                 score(distribution["max"]),
-                *(bands.get(band, 0) for band in ("LOW", "MEDIUM", "HIGH")),
+                *(number(bands.get(band, 0)) for band in ("LOW", "MEDIUM", "HIGH")),
             ]
         )
-    columns = ["API", "N", "Mínimo", "Mediana", "Máximo", "LOW", "MEDIUM", "HIGH"]
-    return ["## Scores e faixas do FIS", "", *table(columns, "lrrrrrrr", rows)]
-
-
-def classes_section(summaries: dict[str, dict[str, Any]], apis: list[str]) -> list[str]:
-    rows = [
-        [label(api)]
-        + [
-            summaries[api]["candidate_by_classification"].get(name, 0)
-            for name in FINDING_CLASSES
-        ]
-        for api in apis
+    columns = [
+        "API",
+        "Assinaturas",
+        "Mínimo",
+        "Mediana",
+        "Máximo",
+        "LOW",
+        "MEDIUM",
+        "HIGH",
     ]
-    columns = ["API", *FINDING_CLASSES]
-    return ["## Classes dos achados brutos", "", *table(columns, "lrrrrr", rows)]
+    return [
+        "## Prioridade atribuída pelo FIS",
+        "",
+        *table(columns, "lrrrrrrr", rows),
+        "",
+        "Um score por assinatura estrita em cada campanha (mesmo total da tabela "
+        "de deduplicação). Os scores descrevem a prioridade de triagem "
+        "atribuída; não medem acerto nem confirmam vulnerabilidades. A "
+        "comparação com rótulos de referência existe só nos conjuntos "
+        "históricos.",
+    ]
 
 
 def cases_section(
@@ -193,6 +309,10 @@ def cases_section(
 ) -> list[str]:
     rows = []
     for api in apis:
+        run_numbers = {
+            campaign["run_id"]: campaign["run_number"]
+            for campaign in summaries[api]["campaigns"]
+        }
         for signature_id, signature in illustrative_signatures(
             summaries[api]["signatures"]
         ):
@@ -204,35 +324,24 @@ def cases_section(
             rows.append(
                 [
                     label(api),
-                    f"{len(signature['present_in'])}/5",
-                    f"`{run_id}` / `{case_id}`",
+                    f"{len(signature['present_in'])}/{RUN_COUNT}",
                     f"`{finding['endpoint_id']}`",
                     f"`{finding['classification']}`",
                     finding.get("status_code", "—"),
-                    f"`{findings_file}`",
+                    f"[`{case_id}`, campanha {run_numbers[run_id]}]({findings_file})",
                     f"`{signature_id[:12]}…`",
                 ]
             )
-    columns = [
-        "API",
-        "Presença",
-        "Run / case_id",
-        "Endpoint",
-        "Classe",
-        "HTTP",
-        "Arquivo",
-        "ID semântico (prefixo)",
-    ]
+    columns = ["API", "Presença", "Endpoint", "Classe", "HTTP", "Caso", "ID semântico"]
     return [
-        "## Casos ilustrativos rastreáveis",
+        "## Casos ilustrativos",
         "",
-        "Por API, selecionar o primeiro ID semântico em ordem lexical entre "
-        "os observados em 5/5 e em 1/5; se nenhum desses grupos existir, "
-        "usar o primeiro ID entre todos. Mostrar a primeira origem "
-        "registrada para cada ID. A escolha ilustra extremos de presença, "
-        "sem representar estatisticamente a API.",
+        f"Para cada API, um ID presente nas {RUN_COUNT} campanhas e um presente em "
+        "só 1: o primeiro de cada grupo em ordem alfabética do ID. APIs sem ID "
+        f"em 1/{RUN_COUNT} têm só um caso. Os casos servem para seguir um exemplo "
+        "até os dados brutos; não representam a API.",
         "",
-        *table(columns, "lrlllrll", rows),
+        *table(columns, "lrllrll", rows),
     ]
 
 
