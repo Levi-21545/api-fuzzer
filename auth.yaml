@@ -4,7 +4,7 @@ auth:
   enabled: false
   inject:
     headers:
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfbmFtZSI6ImF1dGVudGlxdWUtZGV2In0.fLelm-ESE2FBcItdUw_dDFJ4RppS4ctFRax96jcfyO4"
+      Authorization: "Bearer <TOKEN>"
 
 # Dynamic auth — uncomment and fill to make a login request then inject the token.
 # auth:
