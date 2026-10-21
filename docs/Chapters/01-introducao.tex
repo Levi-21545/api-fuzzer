@@ -21,8 +21,9 @@ Este trabalho apresenta uma ferramenta de \textit{fuzzing} automatizado para
 APIs REST, implementada em Python e orientada por um subconjunto de OpenAPI. O
 fluxo interpreta o contrato, gera valores-base e mutações, materializa um
 plano de execução, envia requisições, confronta as respostas com o contrato e
-produz artefatos rastreáveis. Um sistema de inferência \textit{fuzzy} Mamdani atribui
-prioridade técnica às anomalias reportadas depois da classificação contratual.
+produz artefatos rastreáveis. Um sistema de inferência \textit{fuzzy} (FIS, do
+inglês \textit{fuzzy inference system}), do tipo Mamdani, atribui prioridade
+técnica às anomalias reportadas depois da classificação contratual.
 
 A questão central é: \textit{Quais contribuições e limitações a combinação de
 fuzzing black-box orientado por OpenAPI, deduplicação e priorização fuzzy
@@ -36,12 +37,15 @@ deduplicação e coerência da prioridade técnica para triagem.
 Quatro APIs foram utilizadas como pilotos de desenvolvimento, permitindo
 auditar a configuração inicial e formular um modelo revisado. Após o
 congelamento das regras, uma quinta API foi empregada como \textit{holdout}
-externo. A prioridade
-foi comparada com uma referência operacional cega, construída sem revelar o
-escore e assistida por agentes independentes. Esses resultados são evidência
-parcial e base para discutir o delineamento definitivo; não implicam
-superioridade geral sobre outros \textit{fuzzers} nem estimativa de impacto real
-de segurança.
+externo. Nessa validação externa, a prioridade calculada foi comparada com uma
+referência construída às cegas: três instâncias do modelo de linguagem GPT-5.6
+Luna, executadas separadamente e sem acesso ao escore do FIS, classificaram
+cada comportamento segundo os mesmos critérios, e uma quarta instância decidiu os
+casos sem maioria. Em seguida, uma coleta final reuniu cinco campanhas de cada uma
+das cinco aplicações para avaliar completude, deduplicação e estabilidade dos
+achados. Os escores dessa coleta são descritos sem nova rotulagem de referência.
+As evidências não implicam superioridade geral sobre outros \textit{fuzzers}
+nem estimativa de impacto real de segurança.
 
 O escopo limita-se a APIs REST descritas em OpenAPI. Não são abrangidos
 sequenciamento geral com estado, fluxos completos de OAuth2, avaliação de carga,
@@ -58,5 +62,6 @@ Seção~\ref{sec:fundamentacao} apresenta os conceitos necessários. A
 Seção~\ref{sec:relacionados} posiciona a proposta diante das ferramentas
 relacionadas. A Seção~\ref{sec:metodologia} descreve o desenho da avaliação, e a
 Seção~\ref{sec:desenvolvimento} apresenta a ferramenta. A
-Seção~\ref{sec:resultados} registra os resultados parciais. Por fim, a
-Seção~\ref{sec:conclusoes} sintetiza o marco atual e suas limitações.
+Seção~\ref{sec:resultados} apresenta os resultados da avaliação da priorização e os da coleta
+final. Por fim, a Seção~\ref{sec:conclusoes} sintetiza as contribuições e
+limitações observadas.

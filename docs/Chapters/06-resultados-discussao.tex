@@ -1,12 +1,11 @@
 % TCC — Resultados e Discussão
 \section{Resultados e Discussão}\label{sec:resultados}
 
-Os resultados disponíveis descrevem uma trajetória experimental: os pilotos
-caracterizaram o funcionamento do fluxo e expuseram limitações do mecanismo
-de priorização; a auditoria orientou uma revisão; e o modelo congelado foi
-aplicado posteriormente a uma API que não participou de seu desenvolvimento.
-Essa sequência permite apresentar evidências parciais sem confundir corpus de
-desenvolvimento, confirmação externa e uma futura coleta final.
+Os resultados seguem as duas etapas da metodologia. Na Etapa 1, os pilotos
+caracterizaram o fluxo e expuseram limitações do mecanismo de priorização, a
+auditoria orientou sua revisão e o modelo congelado foi validado em uma API
+que não participou do desenvolvimento. Na Etapa 2, a coleta final avaliou
+execução, deduplicação e estabilidade nas cinco aplicações.
 
 \subsection{Caracterização dos Pilotos e dos Níveis de Mutação}
 
@@ -58,13 +57,13 @@ regras Mamdani agregam esses sinais e produzem o escore contínuo.
 \end{figure}
 
 No conjunto de desenvolvimento, o modelo revisado reproduziu as 161 faixas da
-rubrica, com macro-F1 1,000 e erro ordinal zero. Esse resultado demonstra que a
-implementação expressa a rubrica formulada, mas não constitui evidência de
+referência, com macro-F1 1,000 e erro ordinal zero. Esse resultado demonstra que a
+implementação expressa os critérios formulados, mas não constitui evidência de
 generalização, pois a mesma amostra foi usada para diagnosticar e revisar o
 mecanismo. Por isso, regras e parâmetros foram congelados antes da avaliação
 externa.
 
-\subsection{Avaliação Externa no Meilisearch}
+\subsection{Validação Externa no Meilisearch}
 
 O modelo congelado foi aplicado ao Meilisearch v1.45.1 em cinco campanhas, cada
 uma com 85 operações selecionadas e 477 requisições concluídas. As assinaturas
@@ -78,12 +77,15 @@ As assinaturas foram agrupadas em 134 famílias. A referência final classificou
 receberam \texttt{LOW}, 6 receberam \texttt{MEDIUM} e nenhuma recebeu \texttt{HIGH}.
 
 O modelo revisado concordou com a referência em 120 das 122 famílias
-sustentadas; a linha de base baseada somente em status acertou 4. A
+sustentadas; a linha de base baseada somente em status acertou 4. A diferença
+vem sobretudo das 116 famílias \texttt{LOW}: a linha de base atribuiu
+\texttt{MEDIUM} a todas, porque seus status não estavam documentados no
+contrato, o que também explica sua correlação negativa. A
 Tabela~\ref{tab:confirmacao-fis} apresenta as métricas nas classes observadas.
 
 \begin{table}[ht]
 \centering
-\caption{Comparação confirmatória nas 122 famílias sustentadas}
+\caption{Comparação nas 122 famílias sustentadas do Meilisearch}
 \label{tab:confirmacao-fis}
 \begin{tabular}{|l|r|r|}
 \hline
@@ -103,6 +105,111 @@ preservados: um caso-base de \texttt{PATCH /experimental-features} com status
 415 não documentado e uma mutação válida de \texttt{POST /export} que retornou
 200 quando o contrato documentava 202. O FIS não foi reajustado com esses casos.
 
+\subsection{Coleta Final nas Cinco Aplicações}\label{sec:coleta-final}
+
+As 25 campanhas finais concluíram as 7.175 requisições planejadas. Os manifestos
+registram a mesma revisão limpa da ferramenta, e a validação do pacote não
+identificou campanhas inválidas. Foram observadas 760 respostas 2xx, 5.450
+respostas 4xx e 965 respostas 5xx. Esses números descrevem as respostas aos
+casos gerados, incluindo mutações negativas; não constituem uma taxa de
+defeitos das APIs.
+
+A Tabela~\ref{tab:coleta-final} apresenta as contagens de execução e
+deduplicação. As 2.605 rejeições esperadas são respostas 4xx documentadas e
+compatíveis com o contrato, separadas dos 4.000 achados brutos. A redução de
+38,5\% compara esses achados com as 2.460 assinaturas estritas somadas nas
+campanhas. Não representa redução do número de causas raiz nem do número de
+vulnerabilidades.
+
+\begin{table}[ht]
+\centering
+\caption{Execução e deduplicação na coleta final, somando cinco campanhas por API}
+\label{tab:coleta-final}
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{|l|r|r|r|r|r|}
+\hline
+\textbf{API} & \textbf{Requisições} & \textbf{Rejeições} & \textbf{Achados} & \textbf{Assinaturas} & \textbf{Redução} \\
+ & & \textbf{esperadas} & \textbf{brutos} & \textbf{estritas} & \\ \hline
+VAmPI & 245 & 160 & 35 & 35 & 0,0\% \\ \hline
+Petclinic REST & 1.780 & 1.155 & 590 & 235 & 60,2\% \\ \hline
+crAPI & 2.055 & 260 & 1.720 & 985 & 42,7\% \\ \hline
+RealWorld & 710 & 610 & 65 & 65 & 0,0\% \\ \hline
+Meilisearch & 2.385 & 420 & 1.590 & 1.140 & 28,3\% \\ \hline
+\textbf{Total} & \textbf{7.175} & \textbf{2.605} & \textbf{4.000} & \textbf{2.460} & \textbf{38,5\%} \\ \hline
+\end{tabular}
+\end{table}
+
+As diferenças de redução dependem do contrato e dos comportamentos observados.
+No Petclinic REST, várias requisições convergiram para as mesmas respostas
+normalizadas, enquanto VAmPI e RealWorld não apresentaram duplicatas estritas
+dentro das campanhas. Uma redução nula não indica ausência de repetição entre
+campanhas: a deduplicação estrita é calculada separadamente em cada execução.
+Os totais também refletem números diferentes de operações e caminhos excluídos,
+conforme a metodologia; não são uma comparação de qualidade entre aplicações.
+
+Para a análise entre campanhas, a união dos IDs semânticos totalizou 570.
+A Tabela~\ref{tab:presenca-final} conta cada ID no máximo uma vez por campanha.
+Dos 570 IDs, 441 apareceram nas cinco repetições da respectiva API, 12 em quatro,
+18 em três, 24 em duas e 75 em apenas uma. Pelo critério de pelo menos quatro
+campanhas, 453 IDs atenderam à definição operacional de estabilidade.
+
+\begin{table}[ht]
+\centering
+\caption{Presença dos IDs semânticos em exatamente $k$ das cinco campanhas por API}
+\label{tab:presenca-final}
+\small
+\begin{tabular}{|l|r|r|r|r|r|r|}
+\hline
+\textbf{API} & \textbf{IDs} & \textbf{5/5} & \textbf{4/5} & \textbf{3/5} & \textbf{2/5} & \textbf{1/5} \\ \hline
+VAmPI & 11 & 6 & 0 & 0 & 0 & 5 \\ \hline
+Petclinic REST & 47 & 47 & 0 & 0 & 0 & 0 \\ \hline
+crAPI & 273 & 154 & 12 & 18 & 24 & 65 \\ \hline
+RealWorld & 17 & 12 & 0 & 0 & 0 & 5 \\ \hline
+Meilisearch & 222 & 222 & 0 & 0 & 0 & 0 \\ \hline
+\textbf{Total} & \textbf{570} & \textbf{441} & \textbf{12} & \textbf{18} & \textbf{24} & \textbf{75} \\ \hline
+\end{tabular}
+\end{table}
+
+Petclinic REST e Meilisearch tiveram todos os IDs presentes nas cinco campanhas.
+A proporção presente em pelo menos quatro foi de 54,5\% em VAmPI, 60,8\% na
+crAPI e 70,6\% no RealWorld. Na crAPI concentraram-se 65 dos 75 IDs observados
+uma única vez, 47 deles em \texttt{POST /identity/api/auth/signup}. Em VAmPI e
+RealWorld, os IDs vistos uma única vez vêm de uma só operação em cada API e
+surgem um por campanha: a resposta inclui o nome do usuário criado naquela
+campanha, o que altera o ID a cada execução, sem mudança de comportamento.
+
+A Tabela~\ref{tab:prioridade-final} descreve a prioridade atribuída, usando o
+maior escore dos casos de cada assinatura estrita em cada campanha. Ao todo,
+1.965 assinaturas receberam \texttt{LOW}, 480 receberam \texttt{MEDIUM} e 15
+receberam \texttt{HIGH}. Em 16 das 2.460 assinaturas coexistiram casos de faixas
+diferentes; três IDs semânticos da crAPI variaram de faixa entre campanhas.
+Essas diferenças são compatíveis com entradas distintas para o FIS, que
+considera a requisição e a evidência além da resposta. Achados com as mesmas
+entradas do FIS receberam sempre o mesmo escore no conjunto analisado.
+
+\begin{table}[ht]
+\centering
+\caption{Prioridade por assinatura estrita e campanha na coleta final}
+\label{tab:prioridade-final}
+\small
+\begin{tabular}{|l|r|r|r|r|r|}
+\hline
+\textbf{API} & \texttt{LOW} & \texttt{MEDIUM} & \texttt{HIGH} & \textbf{Mediana} & \textbf{Máximo} \\ \hline
+VAmPI & 30 & 5 & 0 & 0,16 & 0,50 \\ \hline
+Petclinic REST & 125 & 100 & 10 & 0,17 & 0,84 \\ \hline
+crAPI & 790 & 190 & 5 & 0,16 & 0,73 \\ \hline
+RealWorld & 0 & 65 & 0 & 0,50 & 0,50 \\ \hline
+Meilisearch & 1.020 & 120 & 0 & 0,16 & 0,50 \\ \hline
+\end{tabular}
+\end{table}
+
+Não houve rotulagem cega dos novos achados, transferência dos rótulos da
+Etapa 1 ou recalibração do FIS. Portanto, essas faixas descrevem o comportamento do
+modelo e não permitem calcular sua acurácia. O pacote público descrito na
+Seção~\ref{sec:desenvolvimento} permite reproduzir a análise e rastrear as
+contagens até os planos, as respostas e os achados de cada campanha.
+
 \subsection{Discussão e Limitações}
 
 O principal resultado do corpus de desenvolvimento foi explicar por que o
@@ -112,15 +219,26 @@ próximos da prioridade técnica. A avaliação externa indica que essa
 operacionalização permaneceu coerente no Meilisearch sem retroalimentar o
 modelo congelado.
 
-Os resultados não permitem avaliar a faixa \texttt{HIGH} no \textit{holdout}, estimar gravidade
-real de segurança ou extrapolar para APIs em geral. A concordância de prioridade
-entre os agentes foi baixa na confirmação, e a amostra apresentou forte
-presença de controles de credencial inválida. A referência deve ser entendida
+A referência da Etapa 1 não permite avaliar a faixa \texttt{HIGH} no
+\textit{holdout}, estimar gravidade real de segurança ou extrapolar para APIs
+em geral. No Meilisearch, as instâncias do modelo concordaram pouco entre si
+sobre a prioridade, e a amostra teve forte presença de controles de
+credencial inválida. A referência deve ser entendida
 como operacional e auditável, não como verdade universal.
 
+A coleta final acrescenta evidência de completude das campanhas e de redução
+das observações repetidas, mas mostra estabilidade desigual entre aplicações.
+Seu pacote permite conferir os resultados sem os ambientes originais; repetir
+a coleta exige reconstruir os alvos e pode produzir respostas e contagens
+diferentes. Assim, a reprodução da análise dos artefatos não garante a
+repetição exata dos comportamentos das APIs.
+
 A contribuição observada é um processo rastreável para gerar, detectar,
-deduplicar e priorizar anomalias técnicas, incluindo \textit{contract drift}, robustez e
-controle de acesso. A coleta final ampliará a avaliação de execução,
-deduplicação e estabilidade às cinco APIs, sem repetir a rotulagem cega.
-A comparação de prioridade aqui apresentada permanece restrita aos conjuntos
-históricos; Schemathesis integra somente a comparação bibliográfica.
+deduplicar e priorizar anomalias técnicas, incluindo \textit{contract drift},
+robustez e controle de acesso. Os recortes dos contratos, a ausência de
+sequenciamento geral com estado e a falta de confirmação manual dos novos
+achados limitam o alcance das conclusões. A comparação de acerto da prioridade
+permanece restrita à Etapa 1. Em relação à questão de pesquisa, os resultados
+sustentam a organização de evidências para triagem nas condições estudadas,
+sem demonstrar redução do tempo de trabalho de um analista ou eficácia em uma
+esteira de integração contínua.

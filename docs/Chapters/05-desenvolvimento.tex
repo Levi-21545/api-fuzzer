@@ -64,18 +64,27 @@ persistência pública.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.96\linewidth,trim=0 1679 0 0,clip]{Diagrams/run-traceability.png}
+    \includegraphics[width=0.96\linewidth]{Diagrams/run-traceability.png}
     \caption{Níveis de observação e rastreabilidade dos achados. O
     \texttt{case\_id} relaciona plano, resposta e classificação; a deduplicação
-    produz achados operacionais únicos, e o agrupamento em famílias ocorre em
-    etapa analítica posterior.}
+    produz achados operacionais únicos. O agrupamento posterior em famílias
+    pertence à avaliação da priorização (Etapa 1); na coleta final, a comparação entre
+    campanhas utiliza IDs semânticos.}
     \label{fig:rastreabilidade-achados}
 \end{figure}
 
 Esse conjunto permite rastrear os números do artigo até casos concretos e
-distinguir falha da aplicação, falha ambiental e campanha incompleta. Uma
-amostra pública gerada pelo fluxo contém uma execução L2 de cada alvo e
-demonstra o formato dos artefatos, mas não define o modelo de coleta final.
+distinguir falha da aplicação, falha ambiental e campanha incompleta. O pacote
+público em \path{experiments/tcc-2026/final/} reúne as 25 campanhas da coleta
+final, os cinco contratos e suas licenças. Os registros das campanhas preservam
+plano, respostas, achados e métricas; somente os registros de execução dos
+contêineres foram omitidos. Os manifestos foram adaptados para apontar aos
+contratos incluídos no próprio pacote, e essas adaptações e os resumos
+criptográficos dos manifestos originais constam do índice de proveniência.
+Um analisador posterior, identificado por sua revisão nesse índice, valida as
+campanhas e reproduz o \texttt{final-analysis.json} sem precisar das aplicações
+ou dos diretórios locais usados na execução original. O pacote também inclui
+relatório de resultados e CSV com um ID semântico por linha.
 
 \subsection{Priorização \textit{Fuzzy}}
 

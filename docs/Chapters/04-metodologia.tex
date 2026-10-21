@@ -4,8 +4,11 @@
 Para responder à questão de pesquisa, adota-se uma avaliação aplicada e
 experimental, baseada em execuções locais controladas. Esta seção define o
 papel das aplicações, a geração dos casos, as condições de repetição e as
-métricas usadas para analisar os artefatos produzidos. O protocolo distingue
-as evidências históricas de desenvolvimento da coleta final planejada.
+métricas usadas para analisar os artefatos produzidos. O estudo tem duas
+etapas. Na \textbf{Etapa 1 --- avaliação da priorização}, quatro aplicações
+orientaram a revisão do FIS e uma quinta foi usada para validá-lo depois de
+congelado. Na \textbf{Etapa 2 --- coleta final}, o modelo congelado foi
+executado em cinco campanhas de cada uma das cinco aplicações.
 
 \subsection{Desenho do Estudo e Papel das Aplicações}
 
@@ -20,23 +23,20 @@ Contratos, imagens, configuração da ferramenta e procedimentos de inicializaç
 foram registrados para separar mudanças do objeto avaliado de variações do
 ambiente.
 
-A coleta final terá cinco campanhas independentes para cada aplicação. Antes de
-cada campanha, a aplicação e os dados necessários serão reiniciados para que o
-resultado não dependa do estado deixado pela execução anterior. As quatro APIs
-usadas no desenvolvimento continuarão identificadas como conjunto de pilotos. O
-Meilisearch será analisado no mesmo conjunto de campanhas, mas manterá o papel
-separado de aplicação externa ao desenvolvimento do FIS.
+A coleta final reuniu 25 campanhas novas, cinco por aplicação. Antes de cada
+campanha, a aplicação e os dados necessários foram reiniciados para evitar a
+dependência do estado deixado pela execução anterior. Todas as campanhas usaram
+o \textit{fuzzer} no mesmo \textit{commit} \texttt{ceec101}, com árvore de
+trabalho limpa, revisão e resumo criptográfico da árvore-fonte registrados nos
+manifestos. As quatro aplicações de desenvolvimento e o Meilisearch participaram
+da coleta, preservando seus papéis distintos em relação ao ajuste do FIS.
+As cinco campanhas anteriores de confirmação do Meilisearch e as verificações
+prévias dos executores pertencem à Etapa 1 e não integram essas 25
+execuções.
 
-O Meilisearch já possui cinco campanhas completas de confirmação do FIS.
-Elas permanecem como evidência histórica. A coleta final será formada por 25
-campanhas novas, cinco por aplicação, executadas a partir da mesma revisão do
-repositório e com árvore de trabalho limpa. Os manifestos registrarão a revisão,
-os resumos criptográficos dos contratos e a configuração. Verificações prévias dos executores
-não integram esse conjunto final.
-
-A repetição não existe para fazer a ferramenta sortear casos diferentes. Com o mesmo
-contrato, revisão e configuração, o plano de requisições tende a ser o mesmo.
-Ela verifica se as respostas, os achados e as assinaturas se mantêm depois do
+O objetivo das repetições não é gerar casos diferentes: com o mesmo contrato,
+revisão e configuração, o plano de requisições tende a ser o mesmo. As
+repetições verificam se as respostas e os achados se mantêm depois do
 reinício. Essa distinção é necessária porque a execução ainda pode variar: alguns
 executores geram credenciais automaticamente, e o estado da aplicação, o tempo de
 resposta ou uma falha transitória podem mudar entre campanhas.
@@ -72,15 +72,23 @@ horários e contagens. O plano e os resultados são correlacionados por
 \texttt{case\_id}; campanhas incompletas ou inválidas devem permanecer
 identificáveis, em vez de desaparecer das evidências.
 
-As campanhas definitivas usam a configuração já exercitada nos pilotos. O
-executor percorre todas as operações suportadas pelo módulo que interpreta o
-contrato e executa os níveis L0, L1 e L2. O limite configurado é de 20 casos de
-mutação isolada por corpo no L1 e de 10 pares compatíveis no L2. Esses limites
+As campanhas definitivas usaram a configuração já exercitada nos pilotos. O
+executor percorreu as operações selecionadas depois das exclusões específicas
+de cada alvo e executou os níveis L0, L1 e L2. O limite configurado foi de 20
+casos de mutação isolada por corpo no L1 e de 10 pares compatíveis no L2. Esses limites
 são fixos; a quantidade efetiva pode ser menor quando o contrato oferece menos
-parâmetros, esquemas ou combinações aplicáveis. A concorrência fica em 1, o
-intervalo entre requisições em 250 ms e o tempo limite em 10 s. A autenticação
-automática é usada somente nos alvos em que o executor consegue configurá-la de
-forma reproduzível.
+parâmetros, esquemas ou combinações aplicáveis. A concorrência foi de 1, o
+intervalo entre requisições de 250 ms e o tempo limite de 10 s. A configuração
+foi idêntica nas cinco campanhas de cada API. Entre alvos, variaram a
+autenticação e os caminhos excluídos, registrados nos manifestos.
+
+Foram selecionadas 13 das 14 operações de VAmPI, 36 de 37 do Spring Petclinic
+REST, 44 de 44 da crAPI, 19 de 19 do RealWorld e 85 de 138 do Meilisearch.
+VAmPI excluiu a operação de recriação do banco; Petclinic excluiu o caminho
+\texttt{/oops}, definido para falhar. No Meilisearch, as exclusões abrangeram
+formatos de entrada não suportados, recursos ou integrações ausentes e operações
+que alterariam o índice usado como semente. Esses recortes limitam a cobertura
+do contrato e devem acompanhar a leitura dos resultados.
 
 Aqui, contrato significa o arquivo OpenAPI de cada alvo. Ele descreve as
 operações, caminhos, parâmetros, corpos e respostas que o executor consegue
@@ -98,7 +106,7 @@ inicialização, falha na reinicialização, encerramento do processo ou interru
 requisições sem resultado impedem a interpretação completa da execução.
 
 Uma campanha válida tem o plano completo, um resultado relacionável a cada
-\texttt{case\_id}, artefatos legíveis e registro da versão do alvo, da revisão do
+\texttt{case\_id}, artefatos legíveis e registro da versão do alvo, da revisão da
 ferramenta e da configuração. Quando isso não ocorre, a campanha recebe estado
 inválido e a justificativa fica junto dos seus registros e artefatos; ela não entra no
 agregado válido e não é apagada. Se a causa puder ser corrigida, uma nova
@@ -117,62 +125,104 @@ identificador.
 \end{figure}
 
 Para acompanhar uma execução sem misturar coisas diferentes, o estudo separa
-cinco unidades:
+seis unidades:
 
 \begin{itemize}
     \item uma \textbf{requisição}, que é um caso enviado à API;
     \item uma \textbf{observação classificada}, emitida pelo analisador para
     uma requisição; rejeições esperadas entram nas contagens de execução,
     enquanto as demais observações candidatas são os achados para triagem;
-    \item uma \textbf{assinatura}, isto é, um identificador que agrupa
-    observações equivalentes por aplicação, operação, classificação, status e
-    resposta normalizada;
+    \item uma \textbf{assinatura estrita}, que agrupa, dentro de uma campanha,
+    observações equivalentes por aplicação, operação, classificação, status,
+    resposta normalizada e caminho do erro de validação;
+    \item um \textbf{ID semântico}, que identifica esses grupos entre campanhas
+    da mesma API. Preserva os componentes da assinatura estrita, com uma
+    normalização adicional restrita aos campos \texttt{requestUid} e
+    \texttt{processingTimeMs} nas respostas de \texttt{POST /multi-search}
+    do Meilisearch. Essa normalização foi definida na Etapa 1, depois de se
+    observar que esses dois campos mudavam a cada execução, e mantida sem
+    alteração na Etapa 2;
     \item uma \textbf{campanha}, que é uma execução completa contra uma API;
-    \item uma \textbf{família de comportamento}, que reúne assinaturas que
-    descrevem o mesmo comportamento factual por operação e tipo de divergência.
+    \item uma \textbf{família de comportamento}, usada na Etapa 1 para reunir
+    assinaturas com a mesma operação, tipo de divergência, status e contexto do
+    caso (caso-base, mutação inválida, mutação válida, credencial ausente ou
+    credencial inválida).
 \end{itemize}
 
 Essa separação evita contar várias mutações que produziram a mesma resposta
 como falhas diferentes. Ela também não afirma que cada grupo corresponde a uma
-causa raiz no código da aplicação.
+causa raiz no código da aplicação. O termo ``semântico'' designa aqui uma regra
+operacional de comparação de respostas normalizadas, não uma equivalência
+funcional demonstrada nem uma identificação de defeitos distintos.
 
-Na avaliação histórica de desenvolvimento e confirmação do FIS, foi construída
-uma referência independente do seu resultado. Cada família foi apresentada com o contrato, a
-requisição, a resposta e a repetição observada, mas sem mostrar a classificação
-do analisador nem a prioridade calculada pelo FIS. Três avaliações independentes
-aplicaram a mesma rubrica de \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH}. Quando não houve maioria, uma
-quarta avaliação decidiu o caso sem acesso às avaliações anteriores ou ao FIS.
-Essa referência serve para a comparação operacional; não é uma avaliação de
-especialistas humanos e não confirma vulnerabilidades.
+Para avaliar a prioridade na Etapa 1, foi construída uma referência
+independente do FIS. Cada família foi apresentada em uma ficha com o contrato,
+a requisição, a resposta e o número de repetições em que apareceu; a ficha
+omitia a classificação do analisador, o escore, a faixa e as regras do FIS.
+Três instâncias do modelo de linguagem GPT-5.6 Luna, executadas em contextos
+separados e sem acesso às avaliações umas das outras, aplicaram os mesmos
+critérios de avaliação. Os critérios pedem primeiro uma decisão de validade:
+a família é \textbf{sustentada} quando os fatos permitem afirmar uma anomalia
+técnica e atribuir prioridade, \textbf{não sustentada} quando o comportamento
+é compatível com o contrato e \textbf{indeterminada} quando falta evidência para
+decidir. Só as famílias sustentadas recebem prioridade: por exemplo, uma
+rejeição segura de entrada inválida tende a \texttt{LOW}, uma entrada inválida
+aceita a \texttt{MEDIUM} e a indisponibilidade repetida de uma operação válida a
+\texttt{HIGH}. Prevaleceu a decisão da maioria; quando não houve maioria, uma
+quarta instância do mesmo modelo decidiu, também sem acesso às avaliações
+anteriores ou ao FIS. As duas avaliações usaram os mesmos níveis e a mesma
+decisão de validade; os critérios foram revisados para a validação no
+Meilisearch, e o \textit{prompt} usado nela está publicado em
+\path{experiments/tcc-2026/prompt-referencia-cega.md}.
 
-Nesse conjunto histórico, o FIS é comparado com uma regra mais simples, que usa
-apenas o desvio do status HTTP. As duas abordagens recebem as mesmas famílias
-como entrada. A análise registra a matriz de confusão, a acurácia, o macro-F1
-e o erro ordinal médio,
-codificando \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH} como 0, 1 e 2. O erro ordinal é a média das
-diferenças absolutas entre a faixa prevista e a faixa de referência. Quando
-uma classe estiver ausente na referência, serão apresentados separadamente o
-macro-F1 das três classes e o das classes observadas, declarando a ausência.
-Famílias sem prioridade sustentada são contabilizadas separadamente e não
-entram nessas métricas. Cada família contribui uma única vez para a comparação.
+Como as quatro instâncias são do mesmo modelo, seus julgamentos são
+correlacionados, e a referência não substitui a avaliação de especialistas
+humanos nem confirma vulnerabilidades. Como esses critérios também orientaram a
+revisão do FIS, a comparação mede se o FIS os reproduz em dados que não
+participaram do ajuste, e não se a prioridade está correta em sentido absoluto.
 
-A coleta final não inclui nova rotulagem cega nem transferência dos rótulos
-históricos para os novos achados. Ela avalia execução e completude dos
+Na Etapa 1, o FIS é comparado com uma linha de base que usa apenas o desvio do
+status HTTP, o sinal que dominava o modelo inicial: status documentado recebe
+\texttt{LOW}, status não documentado recebe \texttt{MEDIUM} e erro 5xx ou
+ausência de resposta recebe \texttt{HIGH}. As duas abordagens recebem as mesmas
+famílias como entrada, e cada família recebe o maior escore entre os seus
+membros, como em uma triagem. A análise registra a matriz de confusão, a
+acurácia, a acurácia balanceada (média da taxa de acerto de cada classe), o
+macro-F1, o erro ordinal médio e a correlação de Spearman entre o escore e a
+faixa de referência, codificando \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH}
+como 0, 1 e 2. O erro ordinal é a média das diferenças absolutas entre a faixa
+prevista e a faixa de referência. No Meilisearch, o macro-F1 e a acurácia
+balanceada consideram apenas as classes presentes, pois a referência não teve
+famílias \texttt{HIGH}. Famílias indeterminadas são contabilizadas
+separadamente e não entram nessas métricas. Cada família contribui uma única
+vez para a comparação.
+
+A coleta final não inclui nova rotulagem cega nem transferência dos rótulos da
+Etapa 1 para os novos achados. Ela avalia execução e completude dos
 artefatos, divergências observadas, redução por deduplicação e estabilidade,
 além de descrever a distribuição dos escores e das faixas de prioridade.
-Sem uma referência para esses novos resultados, não serão calculadas métricas
+Sem uma referência para esses novos resultados, não são calculadas métricas
 de acerto da prioridade nem inferida sua correção a partir da distribuição.
-O FIS permanece sem recalibração. Assim, a comparação histórica de prioridade
-e a coleta final constituem evidências complementares, com conjuntos e
-finalidades distintos.
+O FIS permanece sem recalibração. Assim, as duas etapas constituem evidências
+complementares, com conjuntos e finalidades distintos.
 
-Na coleta final, a estabilidade é medida pela presença de
-uma mesma assinatura nas cinco campanhas, sem uma reexecução adicional de cada
-requisição. Uma assinatura é considerada estável quando aparece em pelo menos
-quatro campanhas sob a mesma configuração.
-A proporção estável usa como denominador a união das assinaturas candidatas
-das cinco campanhas da mesma aplicação. Se não houver assinaturas, a proporção
-é registrada como não aplicável e o resultado zero é preservado.
+Na coleta final, a estabilidade é medida pela presença de um mesmo ID semântico
+nas cinco campanhas, sem uma reexecução adicional de cada requisição. Cada ID
+conta no máximo uma vez por campanha e é considerado estável quando aparece em
+pelo menos quatro delas sob a mesma configuração. A proporção estável usa como
+denominador a união dos IDs das cinco campanhas da mesma aplicação. Se não
+houver IDs, a proporção é registrada como não aplicável e o resultado zero é
+preservado.
+
+A redução por deduplicação compara o total de achados brutos com a soma das
+assinaturas estritas das campanhas: $1 - U/R$, em que $R$ representa os achados
+brutos e $U$ as assinaturas estritas. A união de IDs semânticos é outra medida,
+usada para observar presença entre campanhas, e não substitui $U$ nessa fórmula.
+Na descrição do FIS, cada assinatura estrita recebe o maior escore dos seus
+casos, a mesma regra usada para as famílias da Etapa 1. Casos com a mesma
+resposta podem ter prioridades diferentes porque o FIS também considera a
+requisição (se deveria ser rejeitada, se foi enviada sem credencial) e a
+evidência reunida entre os casos.
 
 \subsection{Limitações e Ameaças à Interpretação}
 
@@ -181,7 +231,7 @@ eles podem ser generalizados.
 
 \paragraph{O que é medido.}
 O contrato OpenAPI funciona como uma referência parcial: ele descreve o
-comportamento esperado, mas pode omitir regras existentes na implementação. O
+comportamento esperado, mas pode omitir regras existentes na implementação. A
 ferramenta também interpreta apenas o subconjunto de OpenAPI que suporta. Por isso,
 uma divergência encontrada é um comportamento que merece inspeção, não uma
 prova automática de defeito ou vulnerabilidade. O FIS ordena a prioridade
@@ -205,8 +255,10 @@ limitadas às aplicações, contratos, versões e configurações avaliados.
 
 \paragraph{Força das conclusões.}
 O número de famílias e a distribuição entre \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH} limitam algumas
-métricas. A referência de prioridade foi produzida às cegas segundo uma rubrica,
-com avaliações independentes, mas não por especialistas humanos. O trabalho
+métricas. A referência de prioridade foi produzida às cegas segundo critérios
+definidos,
+por instâncias de um mesmo modelo de linguagem, cujos julgamentos são
+correlacionados, e não por especialistas humanos. O trabalho
 também não mede cobertura de código, não implementa integração com CI ou
 critério de bloqueio de qualidade e não confirma vulnerabilidades automaticamente. Essas questões
 ficam fora do que os resultados podem afirmar.
