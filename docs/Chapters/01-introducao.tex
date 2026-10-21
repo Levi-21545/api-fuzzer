@@ -19,7 +19,7 @@ observar a API externamente, sem instrumentação de código, em um contexto
 
 Este trabalho apresenta uma ferramenta de \textit{fuzzing} automatizado para
 APIs REST, implementada em Python e orientada por um subconjunto de OpenAPI. O
-fluxo interpreta o contrato, gera valores-base e mutações, materializa um
+fluxo interpreta o contrato, gera casos-base e mutações, materializa um
 plano de execução, envia requisições, confronta as respostas com o contrato e
 produz artefatos rastreáveis. Um sistema de inferência \textit{fuzzy} (FIS, do
 inglês \textit{fuzzy inference system}), do tipo Mamdani, atribui prioridade
@@ -29,10 +29,12 @@ A questão central é: \textit{Quais contribuições e limitações a combinaç�
 fuzzing black-box orientado por OpenAPI, deduplicação e priorização fuzzy
 apresenta para a triagem de divergências em APIs REST?}
 
-A avaliação é organizada em três dimensões complementares: (i) execução e
-completude das evidências de anomalias contratuais e comportamentais;
-(ii) estabilidade dos comportamentos entre campanhas; e (iii) redução por
-deduplicação e coerência da prioridade técnica para triagem.
+O objetivo geral é implementar essa combinação e avaliá-la em APIs de código
+aberto executadas localmente. Os objetivos específicos correspondem às três
+dimensões da avaliação: (i) verificar a execução e a completude das evidências
+de anomalias contratuais e comportamentais; (ii) medir a estabilidade dos
+comportamentos entre campanhas; e (iii) medir a redução por deduplicação e
+avaliar a coerência da prioridade técnica para triagem.
 
 Quatro APIs foram utilizadas como pilotos de desenvolvimento, permitindo
 auditar a configuração inicial e formular um modelo revisado. Após o
@@ -43,19 +45,15 @@ Luna, executadas separadamente e sem acesso ao escore do FIS, classificaram
 cada comportamento segundo os mesmos critérios, e uma quarta instância decidiu os
 casos sem maioria. Em seguida, uma coleta final reuniu cinco campanhas de cada uma
 das cinco aplicações para avaliar completude, deduplicação e estabilidade dos
-achados. Os escores dessa coleta são descritos sem nova rotulagem de referência.
-As evidências não implicam superioridade geral sobre outros \textit{fuzzers}
-nem estimativa de impacto real de segurança.
+achados.
 
 O escopo limita-se a APIs REST descritas em OpenAPI. Não são abrangidos
 sequenciamento geral com estado, fluxos completos de OAuth2, avaliação de carga,
 cobertura de código ou confirmação automática de vulnerabilidades. Um achado
 pode representar \textit{contract drift}, incompatibilidade funcional,
 robustez ou comportamento de controle de acesso e ainda exigir interpretação
-antes de ser tratado como defeito.
-
-Integração contínua constitui um contexto de uso potencial e uma motivação,
-mas o trabalho não implementa nem avalia integração com uma esteira.
+antes de ser tratado como defeito. Integração contínua é uma motivação, mas não
+é implementada nem avaliada.
 
 O restante deste artigo está organizado da seguinte forma. A
 Seção~\ref{sec:fundamentacao} apresenta os conceitos necessários. A

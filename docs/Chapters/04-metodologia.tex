@@ -12,11 +12,10 @@ executado em cinco campanhas de cada uma das cinco aplicações.
 
 \subsection{Desenho do Estudo e Papel das Aplicações}
 
-VAmPI, Spring Petclinic REST, crAPI e RealWorld formaram o conjunto usado para
-desenvolver e caracterizar a ferramenta. Os resultados dessas aplicações permitiram
-auditar a configuração inicial do mecanismo de priorização e formular sua
-revisão. O Meilisearch v1.45.1 foi executado somente depois dessa revisão, como
-uma aplicação externa de confirmação, sem participar do ajuste das novas regras.
+Na Etapa 1, VAmPI, Spring Petclinic REST, crAPI e RealWorld serviram para
+desenvolver a ferramenta e auditar a configuração inicial do FIS. O Meilisearch
+v1.45.1 só foi executado depois da revisão do modelo, sem participar do ajuste
+das regras.
 
 As aplicações foram executadas localmente em versões fixadas e reiniciáveis.
 Contratos, imagens, configuração da ferramenta e procedimentos de inicialização
@@ -24,15 +23,10 @@ foram registrados para separar mudanças do objeto avaliado de variações do
 ambiente.
 
 A coleta final reuniu 25 campanhas novas, cinco por aplicação. Antes de cada
-campanha, a aplicação e os dados necessários foram reiniciados para evitar a
-dependência do estado deixado pela execução anterior. Todas as campanhas usaram
-o \textit{fuzzer} no mesmo \textit{commit} \texttt{ceec101}, com árvore de
-trabalho limpa, revisão e resumo criptográfico da árvore-fonte registrados nos
-manifestos. As quatro aplicações de desenvolvimento e o Meilisearch participaram
-da coleta, preservando seus papéis distintos em relação ao ajuste do FIS.
-As cinco campanhas anteriores de confirmação do Meilisearch e as verificações
-prévias dos executores pertencem à Etapa 1 e não integram essas 25
-execuções.
+campanha, a aplicação e seus dados foram reiniciados, para que o resultado não
+dependesse da execução anterior. Todas as campanhas usaram a mesma revisão do
+\textit{fuzzer}, sem alterações locais, registrada nos manifestos. As campanhas
+do Meilisearch feitas na Etapa 1 não integram essas 25 execuções.
 
 O objetivo das repetições não é gerar casos diferentes: com o mesmo contrato,
 revisão e configuração, o plano de requisições tende a ser o mesmo. As
@@ -69,10 +63,9 @@ Cada campanha segue o fluxo contrato, plano, execução, análise e
 pós-processamento. Um manifesto registra identificador do experimento, API,
 repetição, revisão do código, estado Git, resumos criptográficos, ambiente, configuração,
 horários e contagens. O plano e os resultados são correlacionados por
-\texttt{case\_id}; campanhas incompletas ou inválidas devem permanecer
-identificáveis, em vez de desaparecer das evidências.
+\texttt{case\_id}.
 
-As campanhas definitivas usaram a configuração já exercitada nos pilotos. O
+As campanhas da coleta final usaram a configuração já exercitada nos pilotos. O
 executor percorreu as operações selecionadas depois das exclusões específicas
 de cada alvo e executou os níveis L0, L1 e L2. O limite configurado foi de 20
 casos de mutação isolada por corpo no L1 e de 10 pares compatíveis no L2. Esses limites
@@ -88,31 +81,18 @@ VAmPI excluiu a operação de recriação do banco; Petclinic excluiu o caminho
 \texttt{/oops}, definido para falhar. No Meilisearch, as exclusões abrangeram
 formatos de entrada não suportados, recursos ou integrações ausentes e operações
 que alterariam o índice usado como semente. Esses recortes limitam a cobertura
-do contrato e devem acompanhar a leitura dos resultados.
+do contrato. Como os contratos têm tamanhos diferentes, as APIs também produzem
+quantidades diferentes de casos e requisições; cada manifesto registra o número
+planejado e o executado.
 
-Aqui, contrato significa o arquivo OpenAPI de cada alvo. Ele descreve as
-operações, caminhos, parâmetros, corpos e respostas que o executor consegue
-interpretar. Por isso, contratos diferentes geram quantidades diferentes de
-casos e de requisições; não se espera que todas as APIs produzam o mesmo total.
-Cada manifesto registra o número planejado e o número executado, além da
-configuração usada, para que a comparação aplique a mesma regra a contratos de
-tamanhos distintos.
-
-Antes da execução, a verificação de disponibilidade do alvo precisa passar. Durante a campanha,
-``acessível'' significa que o processo continua disponível o suficiente para o
-executor concluir o plano. Uma resposta 4xx ou 5xx de uma operação é uma
-observação do teste e não invalida, por si só, a campanha. Já falha de
-inicialização, falha na reinicialização, encerramento do processo ou interrupção que deixe
-requisições sem resultado impedem a interpretação completa da execução.
-
-Uma campanha válida tem o plano completo, um resultado relacionável a cada
-\texttt{case\_id}, artefatos legíveis e registro da versão do alvo, da revisão da
-ferramenta e da configuração. Quando isso não ocorre, a campanha recebe estado
-inválido e a justificativa fica junto dos seus registros e artefatos; ela não entra no
-agregado válido e não é apagada. Se a causa puder ser corrigida, uma nova
-campanha é executada com o mesmo protocolo. A execução original continua
-preservada como evidência da falha, e a nova execução recebe seu próprio
-identificador.
+Respostas 4xx e 5xx são observações do teste e não invalidam uma campanha. Uma
+campanha é válida quando o plano foi executado por completo, cada
+\texttt{case\_id} tem resultado, os artefatos são legíveis e a versão do alvo,
+a revisão da ferramenta e a configuração estão registradas. Falha de
+inicialização, encerramento do alvo ou interrupção que deixe requisições sem
+resultado tornam a campanha inválida: ela é preservada com a justificativa,
+fica fora do agregado e, se a causa puder ser corrigida, é substituída por uma
+nova campanha, com outro identificador.
 
 \begin{figure}[H]
     \centering
@@ -150,10 +130,8 @@ seis unidades:
 \end{itemize}
 
 Essa separação evita contar várias mutações que produziram a mesma resposta
-como falhas diferentes. Ela também não afirma que cada grupo corresponde a uma
-causa raiz no código da aplicação. O termo ``semântico'' designa aqui uma regra
-operacional de comparação de respostas normalizadas, não uma equivalência
-funcional demonstrada nem uma identificação de defeitos distintos.
+como falhas diferentes. Um grupo não corresponde necessariamente a uma causa
+raiz, e ``semântico'' designa apenas a regra de comparação descrita acima.
 
 Para avaliar a prioridade na Etapa 1, foi construída uma referência
 independente do FIS. Cada família foi apresentada em uma ficha com o contrato,
@@ -177,7 +155,7 @@ Meilisearch, e o \textit{prompt} usado nela está publicado em
 
 Como as quatro instâncias são do mesmo modelo, seus julgamentos são
 correlacionados, e a referência não substitui a avaliação de especialistas
-humanos nem confirma vulnerabilidades. Como esses critérios também orientaram a
+humanos. Como esses critérios também orientaram a
 revisão do FIS, a comparação mede se o FIS os reproduz em dados que não
 participaram do ajuste, e não se a prioridade está correta em sentido absoluto.
 
@@ -197,22 +175,16 @@ famílias \texttt{HIGH}. Famílias indeterminadas são contabilizadas
 separadamente e não entram nessas métricas. Cada família contribui uma única
 vez para a comparação.
 
-A coleta final não inclui nova rotulagem cega nem transferência dos rótulos da
-Etapa 1 para os novos achados. Ela avalia execução e completude dos
-artefatos, divergências observadas, redução por deduplicação e estabilidade,
-além de descrever a distribuição dos escores e das faixas de prioridade.
-Sem uma referência para esses novos resultados, não são calculadas métricas
-de acerto da prioridade nem inferida sua correção a partir da distribuição.
-O FIS permanece sem recalibração. Assim, as duas etapas constituem evidências
-complementares, com conjuntos e finalidades distintos.
+Na Etapa 2 não houve nova referência cega nem reaproveitamento dos rótulos da
+Etapa 1. A coleta avalia execução, deduplicação e estabilidade, e a distribuição
+das prioridades é apenas descrita, sem métricas de acerto. O FIS não foi
+recalibrado.
 
 Na coleta final, a estabilidade é medida pela presença de um mesmo ID semântico
 nas cinco campanhas, sem uma reexecução adicional de cada requisição. Cada ID
 conta no máximo uma vez por campanha e é considerado estável quando aparece em
 pelo menos quatro delas sob a mesma configuração. A proporção estável usa como
-denominador a união dos IDs das cinco campanhas da mesma aplicação. Se não
-houver IDs, a proporção é registrada como não aplicável e o resultado zero é
-preservado.
+denominador a união dos IDs das cinco campanhas da mesma aplicação.
 
 A redução por deduplicação compara o total de achados brutos com a soma das
 assinaturas estritas das campanhas: $1 - U/R$, em que $R$ representa os achados
@@ -226,18 +198,13 @@ evidência reunida entre os casos.
 
 \subsection{Limitações e Ameaças à Interpretação}
 
-As limitações abaixo explicam o que pode influenciar os resultados e até onde
-eles podem ser generalizados.
-
 \paragraph{O que é medido.}
 O contrato OpenAPI funciona como uma referência parcial: ele descreve o
 comportamento esperado, mas pode omitir regras existentes na implementação. A
 ferramenta também interpreta apenas o subconjunto de OpenAPI que suporta. Por isso,
 uma divergência encontrada é um comportamento que merece inspeção, não uma
-prova automática de defeito ou vulnerabilidade. O FIS ordena a prioridade
-técnica desse comportamento; sua pontuação não estima impacto real, explorabilidade
-ou gravidade de segurança. A assinatura agrupa respostas equivalentes, mas não
-identifica a causa no código.
+prova de defeito ou vulnerabilidade. O escore do FIS ordena a triagem e não
+estima impacto real, explorabilidade ou gravidade de segurança.
 
 \paragraph{Condições da execução.}
 Estado residual, ordem das requisições, latência da máquina e falhas internas da
@@ -254,11 +221,8 @@ mas não representa a variedade de todas as APIs REST. As conclusões ficam
 limitadas às aplicações, contratos, versões e configurações avaliados.
 
 \paragraph{Força das conclusões.}
-O número de famílias e a distribuição entre \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH} limitam algumas
-métricas. A referência de prioridade foi produzida às cegas segundo critérios
-definidos,
-por instâncias de um mesmo modelo de linguagem, cujos julgamentos são
-correlacionados, e não por especialistas humanos. O trabalho
-também não mede cobertura de código, não implementa integração com CI ou
-critério de bloqueio de qualidade e não confirma vulnerabilidades automaticamente. Essas questões
-ficam fora do que os resultados podem afirmar.
+O número de famílias e a distribuição entre \texttt{LOW}, \texttt{MEDIUM} e
+\texttt{HIGH} limitam algumas métricas. A referência de prioridade foi produzida
+às cegas por instâncias de um mesmo modelo de linguagem, cujos julgamentos são
+correlacionados, e não por especialistas humanos. O trabalho também não mede
+cobertura de código.

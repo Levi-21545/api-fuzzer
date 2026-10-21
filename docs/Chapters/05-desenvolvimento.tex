@@ -5,8 +5,7 @@ O OpenAPI Contract Fuzzer foi implementado em Python como um fluxo modular.
 A organização separa interpretação do contrato, geração dos casos, execução
 HTTP, análise das respostas, priorização e persistência dos artefatos. Esta
 seção descreve as responsabilidades necessárias para compreender e reproduzir
-o fluxo, sem transformar a estrutura de arquivos do código em arquitetura do
-artigo.
+o fluxo.
 
 \subsection{Do Contrato ao Plano de Execução}
 
@@ -50,8 +49,7 @@ incompatibilidades de esquema e aceitação de entradas que deveriam ser
 rejeitadas. Uma rejeição 4xx documentada e compatível é preservada como
 comportamento esperado e separada dos candidatos. Uma divergência contratual
 continua relevante mesmo quando a API rejeita a entrada com segurança, pois
-pode afetar consumidores; por outro lado, uma observação reportada não equivale
-automaticamente a causa raiz, defeito confirmado ou vulnerabilidade.
+pode afetar consumidores.
 
 O pós-processamento correlaciona plano, resultado e achado por
 \texttt{case\_id}, constrói assinaturas, seleciona representantes e calcula
@@ -74,17 +72,12 @@ persistência pública.
 \end{figure}
 
 Esse conjunto permite rastrear os números do artigo até casos concretos e
-distinguir falha da aplicação, falha ambiental e campanha incompleta. O pacote
-público em \path{experiments/tcc-2026/final/} reúne as 25 campanhas da coleta
-final, os cinco contratos e suas licenças. Os registros das campanhas preservam
-plano, respostas, achados e métricas; somente os registros de execução dos
-contêineres foram omitidos. Os manifestos foram adaptados para apontar aos
-contratos incluídos no próprio pacote, e essas adaptações e os resumos
-criptográficos dos manifestos originais constam do índice de proveniência.
-Um analisador posterior, identificado por sua revisão nesse índice, valida as
-campanhas e reproduz o \texttt{final-analysis.json} sem precisar das aplicações
-ou dos diretórios locais usados na execução original. O pacote também inclui
-relatório de resultados e CSV com um ID semântico por linha.
+distinguir falha da aplicação, falha ambiental e campanha incompleta. As 25
+campanhas da coleta final estão publicadas em \path{experiments/tcc-2026/final/},
+com os cinco contratos e suas licenças, um relatório de resultados e um arquivo
+CSV com um ID semântico por linha; só os registros de execução dos contêineres
+foram omitidos. O pacote inclui o comando que valida as campanhas e reproduz a
+análise sem as aplicações em execução.
 
 \subsection{Priorização \textit{Fuzzy}}
 
@@ -95,8 +88,7 @@ reportados. Entradas, pertinências, regras ativadas e eventual regra alternativ
 preservados nos artefatos para tornar a decisão auditável.
 
 O construto é prioridade técnica da anomalia, abrangendo \textit{contract drift},
-compatibilidade funcional, robustez e controle de acesso. O escore não estima
-impacto real, explorabilidade nem gravidade de segurança. A evolução do modelo
+compatibilidade funcional, robustez e controle de acesso. A evolução do modelo
 e os sinais utilizados em sua revisão são apresentados uma única vez na
 Seção~\ref{sec:revisao-fis}, junto das evidências que motivaram a mudança.
 

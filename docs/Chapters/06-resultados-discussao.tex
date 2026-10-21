@@ -17,10 +17,9 @@ A referência cega distribuiu essas famílias em 99 \texttt{LOW}, 59 \texttt{MED
 
 O Nível 0 forneceu a observação nominal das operações; o Nível 1 isolou o efeito
 dos operadores; e o Nível 2 ampliou a variedade de manifestações, especialmente
-na crAPI. Entretanto, as combinações não produziram uma nova família \texttt{HIGH}
-exclusiva. O resultado não torna L2 irrelevante: interações entre entradas,
-\textit{contract drift}, respostas incompatíveis e variações de robustez também fazem
-parte do objeto, mesmo quando não indicam vulnerabilidade grave.
+na crAPI. As combinações não produziram uma nova família \texttt{HIGH}
+exclusiva, mas revelaram \textit{contract drift}, respostas incompatíveis e
+variações de robustez que também fazem parte do objeto.
 
 \subsection{Auditoria e Revisão do Modelo de Priorização}
 \label{sec:revisao-fis}
@@ -107,9 +106,8 @@ preservados: um caso-base de \texttt{PATCH /experimental-features} com status
 
 \subsection{Coleta Final nas Cinco Aplicações}\label{sec:coleta-final}
 
-As 25 campanhas finais concluíram as 7.175 requisições planejadas. Os manifestos
-registram a mesma revisão limpa da ferramenta, e a validação do pacote não
-identificou campanhas inválidas. Foram observadas 760 respostas 2xx, 5.450
+As 25 campanhas finais concluíram as 7.175 requisições planejadas, e a
+validação do pacote não identificou campanhas inválidas. Foram observadas 760 respostas 2xx, 5.450
 respostas 4xx e 965 respostas 5xx. Esses números descrevem as respostas aos
 casos gerados, incluindo mutações negativas; não constituem uma taxa de
 defeitos das APIs.
@@ -118,8 +116,7 @@ A Tabela~\ref{tab:coleta-final} apresenta as contagens de execução e
 deduplicação. As 2.605 rejeições esperadas são respostas 4xx documentadas e
 compatíveis com o contrato, separadas dos 4.000 achados brutos. A redução de
 38,5\% compara esses achados com as 2.460 assinaturas estritas somadas nas
-campanhas. Não representa redução do número de causas raiz nem do número de
-vulnerabilidades.
+campanhas.
 
 \begin{table}[ht]
 \centering
@@ -145,8 +142,8 @@ No Petclinic REST, várias requisições convergiram para as mesmas respostas
 normalizadas, enquanto VAmPI e RealWorld não apresentaram duplicatas estritas
 dentro das campanhas. Uma redução nula não indica ausência de repetição entre
 campanhas: a deduplicação estrita é calculada separadamente em cada execução.
-Os totais também refletem números diferentes de operações e caminhos excluídos,
-conforme a metodologia; não são uma comparação de qualidade entre aplicações.
+Os totais também refletem números diferentes de operações e caminhos excluídos
+e não comparam a qualidade das aplicações.
 
 Para a análise entre campanhas, a união dos IDs semânticos totalizou 570.
 A Tabela~\ref{tab:presenca-final} conta cada ID no máximo uma vez por campanha.
@@ -204,41 +201,29 @@ Meilisearch & 1.020 & 120 & 0 & 0,16 & 0,50 \\ \hline
 \end{tabular}
 \end{table}
 
-Não houve rotulagem cega dos novos achados, transferência dos rótulos da
-Etapa 1 ou recalibração do FIS. Portanto, essas faixas descrevem o comportamento do
-modelo e não permitem calcular sua acurácia. O pacote público descrito na
-Seção~\ref{sec:desenvolvimento} permite reproduzir a análise e rastrear as
-contagens até os planos, as respostas e os achados de cada campanha.
+Como não houve referência cega na Etapa 2, essas faixas descrevem o
+comportamento do modelo e não permitem calcular sua acurácia.
 
 \subsection{Discussão e Limitações}
 
-O principal resultado do corpus de desenvolvimento foi explicar por que o
-modelo inicial não acrescentava separação categórica ao status. A revisão
-substituiu sinais fáceis de medir, mas pouco discriminativos, por fatos mais
-próximos da prioridade técnica. A avaliação externa indica que essa
-operacionalização permaneceu coerente no Meilisearch sem retroalimentar o
-modelo congelado.
+Na Etapa 1, o principal resultado foi explicar por que o modelo inicial não
+acrescentava nada ao status HTTP. A revisão substituiu sinais fáceis de medir,
+mas pouco discriminativos, por fatos mais próximos da prioridade técnica, e a
+validação no Meilisearch indica que essa mudança se manteve coerente em dados
+que não participaram do ajuste.
 
-A referência da Etapa 1 não permite avaliar a faixa \texttt{HIGH} no
-\textit{holdout}, estimar gravidade real de segurança ou extrapolar para APIs
-em geral. No Meilisearch, as instâncias do modelo concordaram pouco entre si
-sobre a prioridade, e a amostra teve forte presença de controles de
-credencial inválida. A referência deve ser entendida
-como operacional e auditável, não como verdade universal.
+Essa validação tem limites: a referência não teve famílias \texttt{HIGH}, as
+instâncias do modelo concordaram pouco entre si sobre a prioridade e a maioria
+das famílias eram controles de credencial inválida. A referência é operacional,
+não uma verdade universal.
 
-A coleta final acrescenta evidência de completude das campanhas e de redução
-das observações repetidas, mas mostra estabilidade desigual entre aplicações.
-Seu pacote permite conferir os resultados sem os ambientes originais; repetir
-a coleta exige reconstruir os alvos e pode produzir respostas e contagens
-diferentes. Assim, a reprodução da análise dos artefatos não garante a
-repetição exata dos comportamentos das APIs.
+Na Etapa 2, todas as campanhas foram concluídas e a deduplicação reduziu as
+observações repetidas, mas a estabilidade variou entre aplicações. O pacote
+permite conferir a análise sem os ambientes originais; repetir a coleta, porém,
+exige reconstruir os alvos e pode produzir respostas diferentes.
 
-A contribuição observada é um processo rastreável para gerar, detectar,
-deduplicar e priorizar anomalias técnicas, incluindo \textit{contract drift},
-robustez e controle de acesso. Os recortes dos contratos, a ausência de
-sequenciamento geral com estado e a falta de confirmação manual dos novos
-achados limitam o alcance das conclusões. A comparação de acerto da prioridade
-permanece restrita à Etapa 1. Em relação à questão de pesquisa, os resultados
-sustentam a organização de evidências para triagem nas condições estudadas,
-sem demonstrar redução do tempo de trabalho de um analista ou eficácia em uma
-esteira de integração contínua.
+Em relação à questão de pesquisa, os resultados sustentam a organização de
+evidências para triagem nas condições estudadas, com alcance limitado pelos
+recortes dos contratos, pela ausência de sequenciamento com estado e pela falta
+de confirmação manual dos novos achados. O efeito sobre o tempo de trabalho de
+um analista não foi medido.
