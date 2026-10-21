@@ -98,7 +98,7 @@ As colunas "em k/5" contam IDs presentes em exatamente k campanhas. As duas últ
 
 Um score por assinatura estrita em cada campanha: o maior entre os seus casos (mesmo total da tabela de deduplicação). Os scores descrevem a prioridade de triagem atribuída; não medem acerto nem confirmam vulnerabilidades. A comparação com rótulos de referência existe só nos conjuntos históricos.
 
-Casos da mesma assinatura podem ter scores diferentes porque ela agrupa pela resposta, mas o FIS avalia também a requisição: a mesma resposta é mais grave quando a requisição era válida (caso-base) do que quando era uma mutação, e quando foi enviada sem credencial do que com credencial inválida. Por isso, 16 das 2.460 assinaturas reúnem casos de faixas diferentes (Spring Petclinic REST: 10; crAPI: 6).
+Casos com a mesma assinatura podem receber prioridades diferentes porque as entradas do FIS não dependem só da resposta: também consideram a requisição (se deveria ser rejeitada, se foi enviada sem credencial) e a evidência reunida entre os casos. Isso ocorreu em 16 das 2.460 assinaturas (Spring Petclinic REST: 10; crAPI: 6).
 
 3 IDs semânticos mudam de faixa entre campanhas (crAPI: 3): a mesma resposta veio de requisições diferentes em cada campanha.
 
