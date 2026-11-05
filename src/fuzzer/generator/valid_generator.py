@@ -1,14 +1,26 @@
 from typing import Any
 
-from fuzzer.model.schema import Schema
+from fuzzer.model.schema import MAX_SCHEMA_VISITS, Schema
 
 from fuzzer.utils.helpers import uuid4, email, datetime
 from fuzzer.utils.patterns import compile_openapi_pattern
 
 
-def generate_valid_value(schema: Schema | None) -> Any:
+class RecursiveGenerationError(ValueError):
+    """No finite value could be generated within the recursive schema budget."""
+
+
+def generate_valid_value(
+    schema: Schema | None, *, _ancestors: tuple[int, ...] = ()
+) -> Any:
     if not schema:
         return None
+    if _ancestors.count(id(schema)) >= MAX_SCHEMA_VISITS:
+        raise RecursiveGenerationError(
+            "Cannot generate a finite value within the recursive schema budget "
+            f"({MAX_SCHEMA_VISITS} visits per schema per branch)."
+        )
+    ancestors = (*_ancestors, id(schema))
 
     if schema.type == "string":
         return _string(schema)
@@ -25,10 +37,18 @@ def generate_valid_value(schema: Schema | None) -> Any:
     if schema.type == "array":
         # Contract: at least minItems; choice: max(minItems, 1) items.
         size = schema.min_items if isinstance(schema.min_items, int) else 1
-        return [_array_item(schema) for _ in range(max(size, 1))]
+        try:
+            return [
+                generate_valid_value(schema.items, _ancestors=ancestors)
+                for _ in range(max(size, 1))
+            ]
+        except RecursiveGenerationError:
+            if not schema.min_items:
+                return []
+            raise
 
     if schema.type == "object":
-        return _object(schema)
+        return _object(schema, ancestors)
 
     return None
 
@@ -113,12 +133,7 @@ def _number(schema: Schema) -> float:
             value = round(value + multiple_of, 12)
     return value
 
-def _array_item(schema: Schema):
-    if not schema.items:
-        return None
-    return generate_valid_value(schema.items)
-
-def _object(schema: Schema) -> dict[str, Any]:
+def _object(schema: Schema, ancestors: tuple[int, ...]) -> dict[str, Any]:
     obj = {}
     for prop, prop_schema in (schema.properties or {}).items():
         if prop_schema.read_only:
@@ -126,5 +141,11 @@ def _object(schema: Schema) -> dict[str, Any]:
         # With required declared, omit optional properties from the baseline.
         if schema.required and prop not in schema.required:
             continue
-        obj[prop] = generate_valid_value(prop_schema)
+        try:
+            obj[prop] = generate_valid_value(prop_schema, _ancestors=ancestors)
+        except RecursiveGenerationError:
+            if prop in schema.required:
+                raise
+            # An optional recursive branch can be absent; a required one
+            # must propagate the failure rather than produce invalid input.
     return obj

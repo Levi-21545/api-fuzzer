@@ -1,5 +1,8 @@
 from fuzzer.model.schema import Schema
-from fuzzer.generator.valid_generator import generate_valid_value
+from fuzzer.generator.valid_generator import (
+    RecursiveGenerationError,
+    generate_valid_value,
+)
 from fuzzer.mutator.base import Mutator
 from fuzzer.mutator.mutation_operation import MutationOp
 
@@ -24,16 +27,22 @@ class ArrayMutator(Mutator):
 
         # 1. Smallest valid non-empty array.
         size = max(min_items, 1)
-        mutations.append(
-            MutationOp(
-                path=path,
-                op="replace",
-                value=[generate_valid_value(item_schema) for _ in range(size)],
-                operator="minimum_valid_size",
-                constraint="minItems" if min_items > 0 else None,
-                expected_valid=True,
+        try:
+            minimum_items = [generate_valid_value(item_schema) for _ in range(size)]
+        except RecursiveGenerationError:
+            minimum_items = None
+
+        if minimum_items is not None:
+            mutations.append(
+                MutationOp(
+                    path=path,
+                    op="replace",
+                    value=minimum_items,
+                    operator="minimum_valid_size",
+                    constraint="minItems" if min_items > 0 else None,
+                    expected_valid=True,
+                )
             )
-        )
 
         # 2. Empty array when it violates minItems.
         if min_items > 0:
@@ -48,7 +57,7 @@ class ArrayMutator(Mutator):
             )
 
         # 3. Array larger than maxItems.
-        if isinstance(max_items, int):
+        if isinstance(max_items, int) and minimum_items is not None:
             oversized = [
                 generate_valid_value(item_schema)
                 for _ in range(max_items + 1)

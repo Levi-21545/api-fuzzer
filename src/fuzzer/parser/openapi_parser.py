@@ -10,6 +10,18 @@ from fuzzer.model.schema import Schema
 from fuzzer.model.http import HttpMethod
 
 
+_ALLOF_SIBLING_KEYS = (
+    "type",
+    "format",
+    "properties",
+    "items",
+    "required",
+    "readOnly",
+    "minItems",
+    "maxItems",
+)
+
+
 def parse_openapi(spec_path: str) -> APISpec:
     """
     Facade function to parse an OpenAPI specification file.
@@ -25,6 +37,12 @@ class OpenAPIParser:
     def __init__(self, spec_path: str):
         with open(spec_path, "r") as f:
             self.raw = yaml.safe_load(f)
+
+        # Retain the source dicts as well as their identities (including views
+        # created for $ref siblings), so temporary dict IDs cannot be reused.
+        self._schema_cache: dict[int, tuple[Dict[str, Any], Schema]] = {}
+        self._schemas_in_progress: set[int] = set()
+        self._allof_parts: dict[int, tuple[Schema, list[Schema]]] = {}
 
     def parse(self) -> APISpec:
         base_urls = self._parse_servers(self.raw)
@@ -99,15 +117,41 @@ class OpenAPIParser:
                 )
         return list(parsed_by_identity.values())
 
-    def _resolve_local_ref(self, raw: Dict[str, Any]) -> Dict[str, Any]:
-        reference = raw.get("$ref")
-        if reference is None:
-            return raw
-        if not isinstance(reference, str) or not reference.startswith("#/"):
-            raise ValueError(
-                f"Only local OpenAPI references are supported: {reference}"
-            )
+    def _resolve_local_ref(
+        self, raw: Dict[str, Any], *, schema_aliases: bool = False
+    ) -> Dict[str, Any]:
+        seen: set[str] = set()
+        allof_aliases: dict[int, Dict[str, Any]] = {}
+        while True:
+            # A single allOf without interpreted sibling fields is just an
+            # alias. Resolve metadata-only wrappers here to avoid copying a
+            # partially populated target schema.
+            if (
+                schema_aliases
+                and len(raw.get("allOf", [])) == 1
+                and not any(key in raw for key in _ALLOF_SIBLING_KEYS)
+                and "$ref" not in raw
+            ):
+                if id(raw) in allof_aliases:
+                    raise ValueError("Cyclic OpenAPI allOf aliases")
+                allof_aliases[id(raw)] = raw
+                raw = raw["allOf"][0]
+                continue
+            if "$ref" not in raw:
+                return raw
+            reference = raw["$ref"]
+            if not isinstance(reference, str) or not reference.startswith("#/"):
+                raise ValueError(
+                    f"Only local OpenAPI references are supported: {reference}"
+                )
+            if reference in seen:
+                raise ValueError(f"Cyclic OpenAPI reference aliases: {reference}")
+            seen.add(reference)
+            resolved = self._lookup_local_ref(reference)
+            siblings = {key: value for key, value in raw.items() if key != "$ref"}
+            raw = {**resolved, **siblings} if siblings else resolved
 
+    def _lookup_local_ref(self, reference: str) -> Dict[str, Any]:
         resolved: Any = self.raw
         for raw_token in reference[2:].split("/"):
             token = raw_token.replace("~1", "/").replace("~0", "~")
@@ -120,8 +164,7 @@ class OpenAPIParser:
                 f"OpenAPI reference does not point to an object: {reference}"
             )
 
-        siblings = {key: value for key, value in raw.items() if key != "$ref"}
-        return {**resolved, **siblings}
+        return resolved
 
     def _parse_request_body(self, data: Dict[str, Any]):
         body = data.get("requestBody")
@@ -156,7 +199,33 @@ class OpenAPIParser:
     def _parse_schema(self, raw: Dict[str, Any]) -> Schema:
         if not raw:
             return Schema(type=None)
-        raw = self._resolve_local_ref(raw)
+        resolved = self._resolve_local_ref(raw, schema_aliases=True)
+        for source in (raw, resolved):
+            cached = self._schema_cache.get(id(source))
+            if cached is not None:
+                schema = cached[1]
+                self._schema_cache[id(raw)] = (raw, schema)
+                return schema
+
+        # Publish a placeholder before reading children: recursive properties
+        # and array items link back to it instead of expanding forever.
+        schema = Schema(type=None)
+        self._schema_cache[id(raw)] = (raw, schema)
+        self._schema_cache[id(resolved)] = (resolved, schema)
+        self._schemas_in_progress.add(id(schema))
+        try:
+            self._populate_schema(resolved, schema)
+            if len(self._schemas_in_progress) == 1:
+                self._resolve_allof_parts()
+        except Exception:
+            self._schema_cache.clear()
+            self._allof_parts.clear()
+            raise
+        finally:
+            self._schemas_in_progress.discard(id(schema))
+        return schema
+
+    def _populate_schema(self, raw: Dict[str, Any], schema: Schema) -> None:
         if "allOf" in raw:
             parts = [
                 self._parse_schema(part)
@@ -167,32 +236,19 @@ class OpenAPIParser:
                 for key, value in raw.items()
                 if key != "allOf"
             }
-            if any(
-                key in siblings
-                for key in (
-                    "type",
-                    "format",
-                    "properties",
-                    "items",
-                    "required",
-                    "readOnly",
-                    "minItems",
-                    "maxItems",
-                )
-            ):
+            if any(key in siblings for key in _ALLOF_SIBLING_KEYS):
                 parts.append(self._parse_schema(siblings))
-            return self._merge_all_of(parts)
+            # Merge only after the whole graph is populated. A parent may
+            # still be under construction through a property back-reference.
+            self._allof_parts[id(schema)] = (schema, parts)
+            return
 
-        schema = Schema(
-            type=raw.get("type"),
-            format=raw.get("format"),
-            read_only=raw.get("readOnly", False),
-            constraints={},
-            properties={},
-            required=raw.get("required", []),
-            min_items=raw.get("minItems"),
-            max_items=raw.get("maxItems"),
-        )
+        schema.type = raw.get("type")
+        schema.format = raw.get("format")
+        schema.read_only = raw.get("readOnly", False)
+        schema.required = raw.get("required", [])
+        schema.min_items = raw.get("minItems")
+        schema.max_items = raw.get("maxItems")
 
         for key in (
             "minLength",
@@ -228,11 +284,28 @@ class OpenAPIParser:
         if schema.type == "array":
             schema.items = self._parse_schema(raw.get("items", {}))
 
-        return schema
+    def _resolve_allof_parts(self) -> None:
+        active: set[int] = set()
+
+        def merge(schema: Schema) -> None:
+            pending = self._allof_parts.get(id(schema))
+            if pending is None:
+                return
+            if id(schema) in active:
+                raise ValueError("Recursive allOf inheritance is not supported")
+            active.add(id(schema))
+            for part in pending[1]:
+                merge(part)
+            self._merge_all_of(pending[1], target=schema)
+            del self._allof_parts[id(schema)]
+            active.remove(id(schema))
+
+        for schema, _parts in list(self._allof_parts.values()):
+            merge(schema)
 
     @staticmethod
-    def _merge_all_of(parts: list[Schema]) -> Schema:
-        merged = Schema(type=None)
+    def _merge_all_of(parts: list[Schema], *, target: Schema | None = None) -> Schema:
+        merged = target if target is not None else Schema(type=None)
         for part in parts:
             if part.type is not None:
                 if merged.type is not None and merged.type != part.type:

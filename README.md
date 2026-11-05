@@ -22,6 +22,14 @@ por si só, uma causa raiz, um defeito confirmado ou uma vulnerabilidade.
 - resultados limitados às aplicações, contratos, versões e configurações
   avaliados.
 
+Referências locais recursivas são preservadas na validação das respostas. Na
+geração e no percurso das mutações, cada schema pode aparecer até duas vezes
+por ramo; isso não limita a profundidade validada da resposta. A geração encerra
+ramos opcionais ou usa arrays vazios quando permitido. Se não conseguir gerar
+um valor finito, falha explicitamente, sem enviar um caso-base inválido.
+Ciclos formados apenas por aliases de `$ref` ou por herança recursiva `allOf`
+são recusados; isso não acrescenta suporte geral a `oneOf` ou `anyOf`.
+
 ## Arquitetura
 
 O fluxo interno separa interpretação do contrato, geração, execução, análise,
