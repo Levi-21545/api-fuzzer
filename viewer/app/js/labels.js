@@ -17,12 +17,6 @@ export const COUNT_LABELS = {
   planned_by_case_kind: ["Planejadas por tipo de caso", "requisições"],
 };
 
-export const RATE_LABELS = {
-  execution_completion_ratio: "executadas ÷ planejadas",
-  candidate_per_executed_ratio: "achados brutos ÷ requisições executadas",
-  deduplication_reduction_ratio: "1 − assinaturas estritas ÷ achados brutos",
-};
-
 // Texto de results.md, seção "Classes dos achados brutos".
 export const CLASS_HELP = {
   EXPECTED_FAILURE:
@@ -37,6 +31,37 @@ export const CLASS_HELP = {
 
 export const PRIORITY_NOTE =
   "Faixa de prioridade de triagem atribuída pelo FIS (campo severity). Não é gravidade de segurança nem vulnerabilidade confirmada.";
+
+// Campos de metrics.json → fuzzy_assessment, como o pós-processador os conta
+// (src/fuzzer/analysis/run_postprocessor.py).
+export const FIS_ASSESSMENT_FIELDS = {
+  classified_with_assessment: [
+    "Observações avaliadas pelo FIS",
+    "Observações classificadas que têm avaliação do FIS registrada (severity_assessment). Inclui falhas esperadas.",
+  ],
+  classified_fallbacks: [
+    "Observações avaliadas por fallback",
+    "Dessas observações, quantas usaram o fallback: o FIS não conseguiu calcular e o score passou a ser o valor de contradição comportamental. Zero significa que o FIS calculou todas.",
+  ],
+  unique_with_assessment: [
+    "Assinaturas com representante avaliado",
+    "Assinaturas estritas cujo caso representante tem avaliação do FIS registrada.",
+  ],
+  unique_fallbacks: [
+    "Assinaturas com representante em fallback",
+    "Dessas assinaturas, quantas têm o caso representante avaliado pelo fallback em vez do FIS.",
+  ],
+};
+
+// Faixa que cada regra do FIS produz (src/fuzzer/analysis/fuzzy_engine.py).
+export const RULE_PRIORITY = {
+  R1_LOW_CONTRADICTION: "LOW",
+  R2_MEDIUM_CONTRADICTION: "MEDIUM",
+  R3_HIGH_CONTRADICTION_WEAK_EVIDENCE: "MEDIUM",
+  R4_HIGH_CONTRADICTION_STRONG_EVIDENCE: "HIGH",
+  R5_POTENTIAL_ACCESS_EXPOSURE: "MEDIUM",
+  R6_CLEAR_ACCESS_EXPOSURE: "HIGH",
+};
 
 export const PACKAGE_MEASURES = {
   deduplication_reduction: ["Redução pela deduplicação", "1 − assinaturas estritas ÷ achados brutos, somados nas campanhas", "ratio"],

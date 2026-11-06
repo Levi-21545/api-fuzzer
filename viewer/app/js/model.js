@@ -484,6 +484,53 @@ export function distinctValues(rows, field) {
 // Ordem das faixas do FIS para ordenar colunas (não é alfabética).
 export const BAND_RANK = { LOW: 1, MEDIUM: 2, HIGH: 3 };
 
+// Chave para ordenar por faixa e, dentro da mesma faixa, pelo score.
+export function bandKey(band, score) {
+  const rank = BAND_RANK[band];
+  if (!rank) return null;
+  return rank + (typeof score === "number" ? score / 2 : 0);
+}
+
+// Maior score por classe entre os registros de analysis_findings.json.
+export function maxScoreByClass(findings) {
+  const result = new Map();
+  for (const finding of findings ?? []) {
+    const name = finding?.classification;
+    const score = finding?.severity_score;
+    if (typeof name !== "string" || typeof score !== "number") continue;
+    if (!result.has(name) || score > result.get(name)) result.set(name, score);
+  }
+  return result;
+}
+
+// Ordem das classes HTTP: sem resposta e 5xx primeiro, porque são as que o FIS
+// trata como contradição máxima (behavior_contradiction = 1).
+export const HTTP_CLASS_ORDER = ["5xx", "network_error", "4xx", "3xx", "2xx", "1xx"];
+
+// Entradas de uma distribuição {chave: contagem} com o mais prioritário
+// primeiro, independente da contagem. `kind`: "band", "score", "http" ou
+// "class" (este usa `ranking`, um Map classe → maior score; falha esperada
+// fica sempre por último).
+export function priorityEntries(object, kind, ranking = new Map()) {
+  const entries = Object.entries(object ?? {});
+  const position = (list, key) => {
+    const index = list.indexOf(key);
+    return index < 0 ? list.length : index;
+  };
+  const byName = (a, b) => a[0].localeCompare(b[0], "pt-BR", { numeric: true });
+  const compare = {
+    band: (a, b) => (BAND_RANK[b[0]] ?? 0) - (BAND_RANK[a[0]] ?? 0) || byName(a, b),
+    score: (a, b) => (Number(b[0]) || 0) - (Number(a[0]) || 0),
+    http: (a, b) => position(HTTP_CLASS_ORDER, a[0]) - position(HTTP_CLASS_ORDER, b[0]) || byName(a, b),
+    class: (a, b) => {
+      const last = (key) => (key === "EXPECTED_FAILURE" ? 1 : 0);
+      const score = (key) => ranking.get(key) ?? -1;
+      return last(a[0]) - last(b[0]) || score(b[0]) - score(a[0]) || byName(a, b);
+    },
+  }[kind];
+  return compare ? entries.sort(compare) : entries;
+}
+
 // Ordena uma cópia das linhas pelo valor de `get`. Ausentes ficam sempre no
 // fim; texto usa ordem natural ("case-2" antes de "case-10"). A ordenação é
 // estável, então empates mantêm a ordem do arquivo.

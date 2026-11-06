@@ -2,7 +2,8 @@
 // do hash; mudar um filtro substitui a entrada atual do histórico, então
 // Voltar a partir de um detalhe reabre a tabela com os mesmos filtros.
 // Colunas com `sort` (função linha → valor) e `key` podem ser ordenadas pelo
-// cabeçalho: crescente, decrescente e de volta à ordem do arquivo.
+// cabeçalho: crescente, decrescente e de volta à ordem padrão. `defaultSort`
+// ({key, dir, label}) define a ordem inicial; sem ele, vale a ordem do arquivo.
 
 import { clear, fmt, h } from "./dom.js";
 import { distinctValues, filterRows, paginate, sortRows } from "./model.js";
@@ -21,6 +22,7 @@ export function filterableTable({
   columns,
   unit,
   prefilter,
+  defaultSort = null,
 }) {
   const state = { ...params };
   const spec = Object.fromEntries(filters.map((filter) => [filter.name, filter.field]));
@@ -101,7 +103,7 @@ export function filterableTable({
     delete state.ordem;
     delete state.dir;
     replaceParams(segments, state);
-    const fresh = filterableTable({ segments, params: state, rows, filters, toggles, searchFields, searchPlaceholder, columns, unit, prefilter });
+    const fresh = filterableTable({ segments, params: state, rows, filters, toggles, searchFields, searchPlaceholder, columns, unit, prefilter, defaultSort });
     wrapper.replaceWith(fresh);
   }
 
@@ -111,8 +113,9 @@ export function filterableTable({
     for (const select of controls.querySelectorAll("select")) select.classList.toggle("set", select.value !== "");
     const base = prefilter ? prefilter(rows, state) : rows;
     const filtered = filterRows(base, state, spec, searchFields);
-    const sortColumn = columns.find((column) => column.sort && column.key === state.ordem);
-    const direction = state.dir === "desc" ? "desc" : "asc";
+    const explicit = columns.find((column) => column.sort && column.key === state.ordem);
+    const sortColumn = explicit ?? (defaultSort ? columns.find((column) => column.sort && column.key === defaultSort.key) : null);
+    const direction = explicit ? (state.dir === "desc" ? "desc" : "asc") : defaultSort?.dir === "desc" ? "desc" : "asc";
     const matched = sortColumn ? sortRows(filtered, sortColumn.sort, direction) : filtered;
     const page = paginate(matched, Number(state.p), PAGE_SIZE);
     body.append(
@@ -140,12 +143,15 @@ export function filterableTable({
     );
   }
 
-  // Ciclo do clique: crescente → decrescente → ordem do arquivo.
+  // Ciclo do clique: crescente → decrescente → ordem padrão. Na coluna da
+  // ordem padrão, o clique só alterna entre as duas direções.
   function header(column, current) {
     const attrs = { class: column.class ?? "", title: column.title ?? null };
     if (!column.sort) return h("th", attrs, column.header);
-    const next = current === null ? "asc" : current === "asc" ? "desc" : null;
+    let next = current === null ? "asc" : current === "asc" ? "desc" : null;
+    if (next === null && defaultSort?.key === column.key && (defaultSort.dir ?? "asc") === current) next = current === "asc" ? "desc" : "asc";
     const label = { asc: "crescente", desc: "decrescente" };
+    const resetTitle = defaultSort ? `Voltar à ordem padrão (${defaultSort.label})` : "Voltar à ordem do arquivo";
     return h(
       "th",
       { ...attrs, class: `${attrs.class} sortable`, "aria-sort": current ? (current === "asc" ? "ascending" : "descending") : "none" },
@@ -154,7 +160,7 @@ export function filterableTable({
         {
           type: "button",
           class: current ? "sort active" : "sort",
-          title: next ? `Ordenar em ordem ${label[next]}` : "Voltar à ordem do arquivo",
+          title: next ? `Ordenar em ordem ${label[next]}` : resetTitle,
           onclick: () => {
             state.ordem = next ? column.key : "";
             state.dir = next === "desc" ? "desc" : "";

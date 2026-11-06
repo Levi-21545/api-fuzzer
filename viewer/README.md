@@ -91,6 +91,16 @@ Todas as tabelas de casos, assinaturas e IDs têm busca, filtros e ordenação
 pelo cabeçalho. Filtros e ordem ficam na URL, então o botão Voltar retorna à
 mesma tabela e um link copiado abre a mesma visão.
 
+Tabelas e distribuições começam pelo mais prioritário, não pela maior
+contagem:
+
+| Onde | Ordem inicial |
+|---|---|
+| assinaturas, observações, casos e IDs semânticos | faixa mais alta primeiro; na mesma faixa, maior score |
+| distribuições por faixa e por score | `HIGH` → `LOW`; maior score primeiro |
+| distribuições por classe | classe com maior score na campanha (ou entre os IDs da API) primeiro; `EXPECTED_FAILURE` por último |
+| distribuição por classe HTTP | 5xx e sem resposta primeiro, que o FIS trata como contradição máxima |
+
 ## Como ler os números
 
 Cada contagem tem uma unidade. Os exemplos são da campanha 3 da crAPI.
@@ -112,7 +122,11 @@ Duas regras de leitura:
   representante, como em `metrics.json`. Na página da API, a distribuição de
   faixas é a de `final-analysis.json`, que usa o maior score entre os casos.
   As duas só diferem quando uma assinatura tem casos em faixas diferentes; a
-  interface marca esses casos como "mista".
+  faixa aparece com "+1" (ou mais) e o tooltip lista as faixas de todos os
+  casos.
+- Em "Avaliação do FIS", a tabela `unique_by_strongest_rule` conta a primeira
+  regra com força maior que zero na ordem R1–R6, e não a de maior força, apesar
+  do nome do campo. A interface usa o rótulo "Primeira regra ativada".
 - Os números do pacote e os de campanhas avulsas nunca são somados. As páginas
   do pacote têm o selo "agregado do pacote" e as de campanha, "dados da
   campanha".

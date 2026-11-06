@@ -23,6 +23,7 @@ import {
   packageApis,
   packageCampaign,
   paginate,
+  priorityEntries,
   sortRows,
   parseCsv,
   planRows,
@@ -169,9 +170,10 @@ test("pacote final: campanhas, totais e vínculos batem com os arquivos", { skip
   assert.ok(originsChecked > 0);
 });
 
-const hasOutput = await exists(OUTPUT_ROOT);
+// As runs originais só existem na máquina do autor (output/ é ignorado pelo Git).
+const hasOutput = await exists(join(OUTPUT_ROOT, "TCC-FINAL-001"));
 
-test("campanhas originais do runner abrem sem o pacote", { skip: !hasOutput && "output/experiments ausente" }, async () => {
+test("campanhas originais do runner abrem sem o pacote", { skip: !hasOutput && "output/experiments/TCC-FINAL-001 ausente" }, async () => {
   const base = join(OUTPUT_ROOT, "TCC-FINAL-001");
   const reader = fsReader(base);
   let checked = 0;
@@ -188,7 +190,7 @@ test("campanhas originais do runner abrem sem o pacote", { skip: !hasOutput && "
   assert.equal(checked, 25);
 });
 
-test("pacote fora do formato público é reportado, sem traduzir campos", { skip: !hasOutput && "output/experiments ausente" }, async () => {
+test("pacote fora do formato público é reportado, sem traduzir campos", { skip: !hasOutput && "output/experiments/TCC-FINAL-001 ausente" }, async () => {
   const base = join(OUTPUT_ROOT, "TCC-FINAL-001");
   const candidate = (await readdir(base)).find((name) => name.startsWith("public-review-"));
   if (!candidate) return;
@@ -267,6 +269,12 @@ test("utilitários: CSV, filtros, paginação, corpo e rotas", () => {
   assert.deepEqual(sortRows(cases, (r) => r.id).map((r) => r.id), ["case-1", "case-2", "case-3", "case-10"]);
   assert.deepEqual(sortRows(cases, (r) => r.n, "desc").map((r) => r.id), ["case-10", "case-1", "case-3", "case-2"]);
   assert.deepEqual(sortRows(cases, (r) => r.n).map((r) => r.id), ["case-3", "case-10", "case-1", "case-2"]);
+  const keys = (entries) => entries.map(([key]) => key);
+  assert.deepEqual(keys(priorityEntries({ LOW: 90, HIGH: 1, MEDIUM: 5 }, "band")), ["HIGH", "MEDIUM", "LOW"]);
+  assert.deepEqual(keys(priorityEntries({ "0.16": 9, "0.73": 1, "0.5": 3 }, "score")), ["0.73", "0.5", "0.16"]);
+  assert.deepEqual(keys(priorityEntries({ "2xx": 9, "4xx": 5, "5xx": 1 }, "http")), ["5xx", "4xx", "2xx"]);
+  const ranking = new Map([["A", 0.16], ["B", 0.73], ["EXPECTED_FAILURE", 0.9]]);
+  assert.deepEqual(keys(priorityEntries({ EXPECTED_FAILURE: 50, A: 40, B: 1, C: 2 }, "class", ranking)), ["B", "A", "C", "EXPECTED_FAILURE"]);
 
   assert.equal(formatBody('{"a":1}').kind, "json");
   assert.deepEqual(formatBody("<b>oi</b>"), { kind: "text", text: "<b>oi</b>" });

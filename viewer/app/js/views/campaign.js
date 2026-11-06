@@ -2,11 +2,14 @@
 // a campanha dentro do pacote (com os vínculos para IDs semânticos) ou avulsa.
 
 import { getCampaign, getPackage } from "../data.js";
-import { badge, bandBadge, code, countTable, fmt, fmtText, h, kvTable, na, notice, pre, rawJson, section, shortId, stats } from "../dom.js";
-import { CLASS_HELP, COUNT_LABELS, PRIORITY_NOTE, RATE_LABELS, countLabel } from "../labels.js";
+import { badge, bandBadge, code, countTable, fmt, fmtText, h, infoTip, kvTable, na, notice, pre, rawJson, section, shortId, stats, summaryBox } from "../dom.js";
+import { CLASS_HELP, COUNT_LABELS, FIS_ASSESSMENT_FIELDS, PRIORITY_NOTE, RULE_PRIORITY, countLabel } from "../labels.js";
 import {
   BAND_RANK,
   CAMPAIGN_FILES,
+  bandKey,
+  maxScoreByClass,
+  priorityEntries,
   EXPECTED_FAILURE,
   formatBody,
   joinPath,
@@ -177,7 +180,14 @@ function countsCard(ctx) {
   const keys = [...order.filter((key) => key in counts), ...Object.keys(counts).filter((key) => !order.includes(key))];
   return section(
     "Contagens da campanha",
-    stats(keys.map((key) => [countLabel(key)[0], counts[key], countLabel(key)[1]])),
+    stats(
+      keys.map((key) => {
+        // O rótulo curto fica no cartão; o parêntese e a unidade, no tooltip.
+        const [label, unit] = countLabel(key);
+        const detail = label.match(/\(([^)]*)\)$/)?.[1];
+        return [label.replace(/\s*\([^)]*\)$/, ""), counts[key], [detail, unit ? `unidade: ${unit}` : null].filter(Boolean).join("; ") || null];
+      }),
+    ),
     h("p", { class: "muted note" }, "Fonte: analysis/metrics.json → counts. Falhas esperadas não são achados; assinaturas estritas agrupam achados brutos desta campanha."),
   );
 }
@@ -285,33 +295,85 @@ function metricsCards(ctx) {
   if (!metrics) {
     return section("Distribuições", na(ctx.campaign.files.metrics.state === "missing" ? "analysis/metrics.json ausente" : "analysis/metrics.json inválido"));
   }
-  const distribution = (title, object, unit, keyHeader, note) =>
-    section(title, note ? h("p", { class: "muted note" }, note) : null, countTable(object, { unit, keyHeader }));
+  // Mais prioritário primeiro, independente da contagem. Nas tabelas por
+  // classe, a ordem é a do maior score que a classe recebeu nesta campanha.
+  const ranking = maxScoreByClass(ctx.campaign.files.findings.state === "ok" ? ctx.campaign.files.findings.data : []);
+  const classAside = {
+    header: "Maior faixa",
+    cell: (key) => {
+      const findings = ctx.campaign.files.findings.state === "ok" ? ctx.campaign.files.findings.data : [];
+      const best = findings.filter((f) => f?.classification === key).reduce((top, f) => (bandKey(f.severity, f.severity_score) ?? -1) > (bandKey(top?.severity, top?.severity_score) ?? -1) ? f : top, null);
+      return best ? bandBadge(best.severity) : na();
+    },
+  };
+  const distribution = (title, object, unit, keyHeader, kind, note) =>
+    section(
+      title,
+      note ? h("p", { class: "muted note" }, note) : null,
+      countTable(object, {
+        unit,
+        keyHeader,
+        entries: object ? priorityEntries(object, kind, ranking) : undefined,
+        aside: kind === "class" ? classAside : undefined,
+        keyCell: kind === "band" ? (key) => bandBadge(key) : undefined,
+      }),
+    );
   return [
     h("h3", { class: "band" }, "Distribuições — analysis/metrics.json"),
+    h("p", { class: "muted note" }, "Cada tabela começa pelo mais prioritário (faixa, score ou classe com maior score), não pela maior contagem. Classes são ordenadas pelo maior score que receberam nesta campanha."),
     h(
       "div",
       { class: "grid cols-3" },
-      distribution("Requisições executadas por classe HTTP", metrics.executed_by_http_status_class, "requisições", "Classe HTTP"),
-      distribution("Observações classificadas por classe", metrics.raw_by_classification, "observações", "Classe", "Inclui EXPECTED_FAILURE, que não é achado."),
-      distribution("Achados brutos por classe", metrics.candidate_by_classification, "achados brutos", "Classe"),
-      distribution("Assinaturas estritas por classe", metrics.unique_by_classification, "assinaturas", "Classe"),
-      distribution("Assinaturas estritas por faixa", metrics.unique_by_severity, "assinaturas", "Faixa", "Faixa do caso representante. Prioridade de triagem, não gravidade."),
-      distribution("Assinaturas estritas por score", metrics.unique_by_score, "assinaturas", "Score", "Score do caso representante."),
+      distribution("Assinaturas estritas por faixa", metrics.unique_by_severity, "assinaturas", "Faixa", "band", "Faixa do caso representante. Prioridade de triagem, não gravidade."),
+      distribution("Assinaturas estritas por score", metrics.unique_by_score, "assinaturas", "Score", "score", "Score do caso representante, do maior para o menor."),
+      distribution("Requisições executadas por classe HTTP", metrics.executed_by_http_status_class, "requisições", "Classe HTTP", "http", "5xx e sem resposta primeiro: o FIS as trata como contradição máxima."),
     ),
+    classDistribution(metrics, ranking, classAside),
     metrics.by_execution_level ? executionLevels(metrics.by_execution_level) : null,
+    metrics.fuzzy_assessment ? fuzzyAssessment(metrics.fuzzy_assessment) : section("Avaliação do FIS", na("fuzzy_assessment")),
+  ];
+}
+
+// As três distribuições por classe de metrics.json numa só tabela. Uma classe
+// ausente de uma distribuição aparece como "—" (o arquivo não a lista).
+function classDistribution(metrics, ranking, aside) {
+  const sources = [
+    ["raw_by_classification", "Observações classificadas"],
+    ["candidate_by_classification", "Achados brutos"],
+    ["unique_by_classification", "Assinaturas estritas"],
+  ];
+  if (sources.every(([key]) => !metrics[key])) return section("Por classe", na("analysis/metrics.json"));
+  const union = Object.fromEntries(sources.flatMap(([key]) => Object.keys(metrics[key] ?? {}).map((name) => [name, 0])));
+  const classes = priorityEntries(union, "class", ranking).map(([name]) => name);
+  const cell = (key, name) => {
+    const object = metrics[key];
+    if (!object) return h("td", { class: "num" }, na());
+    if (!(name in object)) {
+      const reason = name === EXPECTED_FAILURE ? "Falha esperada não é achado" : "Classe não listada nesta distribuição de metrics.json";
+      return h("td", { class: "num muted", title: reason }, "—");
+    }
+    return h("td", { class: "num" }, fmt(object[name]));
+  };
+  return section(
+    "Por classe",
+    h("p", { class: "muted note" }, "Ordem: classe com maior score nesta campanha primeiro; EXPECTED_FAILURE, que não é achado, por último."),
     h(
       "div",
-      { class: "grid cols-2" },
-      metrics.fuzzy_assessment ? fuzzyAssessment(metrics.fuzzy_assessment) : section("Avaliação do FIS", na("fuzzy_assessment")),
-      section(
-        "Razões",
-        metrics.rates
-          ? kvTable(Object.entries(metrics.rates).map(([key, value]) => [h("span", {}, RATE_LABELS[key] ?? key, h("br"), h("small", {}, code(key))), value]), { layout: "end" })
-          : na("rates"),
+      { class: "scroll" },
+      h(
+        "table",
+        { class: "data" },
+        h("thead", {}, h("tr", {}, h("th", {}, "Classe"), h("th", {}, aside.header), sources.map(([, label]) => h("th", { class: "num" }, label)))),
+        h(
+          "tbody",
+          {},
+          classes.map((name) =>
+            h("tr", { title: CLASS_HELP[name] ?? null }, h("td", {}, code(name)), h("td", {}, aside.cell(name)), sources.map(([key]) => cell(key, name))),
+          ),
+        ),
       ),
     ),
-  ];
+  );
 }
 
 function executionLevels(levels) {
@@ -358,16 +420,50 @@ function executionLevels(levels) {
 }
 
 function fuzzyAssessment(assessment) {
-  const scalars = Object.entries(assessment).filter(([, value]) => typeof value !== "object" || value === null);
+  // Ordem de leitura: total avaliado e, logo abaixo, quantos usaram fallback.
+  const known = Object.keys(FIS_ASSESSMENT_FIELDS);
+  const scalars = Object.entries(assessment)
+    .filter(([, value]) => typeof value !== "object" || value === null)
+    .sort(([a], [b]) => (known.indexOf(a) + 1 || 99) - (known.indexOf(b) + 1 || 99));
+  const rules = assessment.unique_by_strongest_rule;
   return section(
     "Avaliação do FIS",
-    kvTable(scalars.map(([key, value]) => [code(key), value]), { layout: "end" }),
-    assessment.unique_by_strongest_rule
-      ? [
-          h("h3", {}, "Regra mais forte do representante"),
-          countTable(assessment.unique_by_strongest_rule, { unit: "assinaturas", keyHeader: "Regra" }),
-        ]
-      : null,
+    h(
+      "div",
+      { class: "grid cols-2" },
+      h(
+        "div",
+        {},
+        h("h3", {}, "Cobertura da avaliação"),
+        kvTable(
+          scalars.map(([key, value]) => {
+            const [label, help] = FIS_ASSESSMENT_FIELDS[key] ?? [key, null];
+            return [h("span", {}, label, help ? [" ", infoTip(help)] : null, h("br"), h("small", {}, code(key))), value];
+          }),
+          { layout: "end" },
+        ),
+      ),
+      rules
+        ? h(
+            "div",
+            {},
+            h(
+              "h3",
+              {},
+              "Primeira regra ativada no representante ",
+              infoTip(
+                "Campo unique_by_strongest_rule. Apesar do nome, o pós-processador conta a primeira regra com força maior que zero na ordem R1–R6, não a de maior força. FALLBACK_STATUS_DEVIATION indica representante avaliado por fallback.",
+              ),
+            ),
+            countTable(rules, {
+              unit: "assinaturas",
+              keyHeader: "Regra",
+              entries: Object.entries(rules).sort((a, b) => (BAND_RANK[RULE_PRIORITY[b[0]]] ?? 0) - (BAND_RANK[RULE_PRIORITY[a[0]]] ?? 0) || a[0].localeCompare(b[0])),
+              aside: { header: "Faixa da regra", cell: (key) => (RULE_PRIORITY[key] ? bandBadge(RULE_PRIORITY[key]) : na()) },
+            }),
+          )
+        : null,
+    ),
   );
 }
 
@@ -421,7 +517,7 @@ function signaturesTab(ctx, params) {
       "p",
       { class: "muted" },
       "Cada linha agrupa, nesta campanha, achados brutos com a mesma operação, classe, status HTTP, resposta normalizada e caminho do erro de validação. ",
-      "Faixa e score são os do caso representante (o mesmo critério de metrics.json); a coluna seguinte mostra as faixas de todos os casos.",
+      "Faixa e score são os do caso representante (o mesmo critério de metrics.json). Quando os casos do grupo têm outras faixas, a faixa aparece com “+” e o tooltip lista todas. A lista começa pela faixa mais alta.",
     ),
     filterableTable({
       segments: ctx.base,
@@ -434,26 +530,44 @@ function signaturesTab(ctx, params) {
         { name: "op", label: "Operação", field: "endpoint" },
         { name: "classe", label: "Classe", field: "classification" },
         { name: "http", label: "HTTP", field: "status" },
-        { name: "faixa", label: "Faixa (representante)", field: "band" },
+        { name: "faixa", label: "Faixa", field: "band" },
       ],
+      defaultSort: { key: "faixa", dir: "desc", label: "faixa mais alta primeiro" },
       columns: [
         { header: "Assinatura", key: "id", sort: (row) => row.id, cell: (row) => (row.id ? h("a", { href: href([...ctx.base, "sig", row.id]) }, shortId(row.id)) : na()) },
         { header: "Operação", key: "op", sort: (row) => row.endpoint, cell: (row) => fmt(row.endpoint) },
         { header: "Classe", key: "classe", sort: (row) => row.classification, cell: (row) => fmt(row.classification) },
         { header: "HTTP", key: "http", sort: (row) => row.status, class: "num", cell: (row) => fmt(row.status) },
         { header: "Casos", key: "casos", sort: (row) => row.occurrences, class: "num", cell: (row) => fmt(row.occurrences) },
-        { header: "Faixa (repr.)", key: "faixa", sort: (row) => BAND_RANK[row.band] ?? null, cell: (row) => bandBadge(row.band) },
-        { header: "Score (repr.)", key: "score", sort: (row) => row.score, class: "num", cell: (row) => fmt(row.score) },
         {
-          header: "Faixas dos casos",
+          header: "Faixa",
+          key: "faixa",
+          title: "Faixa do caso representante",
           class: "nowrap",
-          cell: (row) =>
-            row.unresolvedCases == null
-              ? na("analysis_findings.json")
-              : [h("span", { class: "bands" }, row.caseBands.map(bandBadge)), row.caseBands.length > 1 ? [" ", badge("mista", "warn")] : null, row.unresolvedCases ? [" ", badge(`${row.unresolvedCases} sem registro`, "error")] : null],
+          sort: (row) => bandKey(row.band, row.score),
+          cell: (row) => representativeBand(row),
         },
+        { header: "Score", key: "score", title: "Score do caso representante", sort: (row) => row.score, class: "num", cell: (row) => fmt(row.score) },
       ],
     }),
+  );
+}
+
+// Faixa do representante; se os casos do grupo tiverem outras faixas, um "+"
+// avisa e o tooltip lista todas.
+function representativeBand(row) {
+  const others = (row.caseBands ?? []).filter((band) => band !== row.band);
+  const parts = [`Faixa do caso representante: ${row.band ?? "não disponível"}.`];
+  if (row.unresolvedCases == null) parts.push("Faixas dos casos não disponíveis (analysis_findings.json).");
+  else parts.push(`Faixas dos casos: ${row.caseBands.join(", ") || "nenhuma"}.`);
+  if (row.unresolvedCases) parts.push(`${row.unresolvedCases} caso(s) sem registro em analysis_findings.json.`);
+  const title = parts.join(" ");
+  return h(
+    "span",
+    { class: "band-cell", title },
+    bandBadge(row.band, title),
+    others.length ? h("span", { class: "more" }, `+${others.length}`) : null,
+    row.unresolvedCases ? h("span", { class: "more error" }, "!") : null,
   );
 }
 
@@ -481,12 +595,13 @@ function observationsTab(ctx, params) {
         { name: "http", label: "HTTP", field: "status" },
         { name: "faixa", label: "Faixa", field: "band" },
       ],
+      defaultSort: { key: "faixa", dir: "desc", label: "faixa mais alta primeiro" },
       columns: [
-        { header: "case_id", key: "caso", sort: (row) => row.caseId, cell: (row) => (row.caseId ? h("a", { href: href([...ctx.base, "case", row.caseId]) }, row.caseId) : na()) },
+        { header: "case_id", key: "caso", class: "nowrap", sort: (row) => row.caseId, cell: (row) => (row.caseId ? h("a", { href: href([...ctx.base, "case", row.caseId]) }, row.caseId) : na()) },
         { header: "Operação", key: "op", sort: (row) => row.endpoint, cell: (row) => fmt(row.endpoint) },
         { header: "Classe", key: "classe", sort: (row) => row.classification, cell: (row) => (row.classification === EXPECTED_FAILURE ? [row.classification, " ", badge("não é achado", "muted")] : fmt(row.classification)) },
         { header: "HTTP", key: "http", sort: (row) => row.status, class: "num", cell: (row) => fmt(row.status) },
-        { header: "Faixa", key: "faixa", sort: (row) => BAND_RANK[row.band] ?? null, cell: (row) => bandBadge(row.band) },
+        { header: "Faixa", key: "faixa", sort: (row) => bandKey(row.band, row.score), cell: (row) => bandBadge(row.band) },
         { header: "Score", key: "score", sort: (row) => row.score, class: "num", cell: (row) => fmt(row.score) },
         { header: "Assinatura estrita", key: "assinatura", sort: (row) => row.signatures, cell: (row) => (row.signatures.length ? row.signatures.map((id) => h("a", { href: href([...ctx.base, "sig", id]) }, shortId(id))) : "—") },
       ],
@@ -515,7 +630,7 @@ function planTab(ctx, params) {
         { name: "classe", label: "Classe", field: "classification" },
       ],
       columns: [
-        { header: "case_id", key: "caso", sort: (row) => row.caseId, cell: (row) => (row.caseId ? h("a", { href: href([...ctx.base, "case", row.caseId]) }, row.caseId) : na()) },
+        { header: "case_id", key: "caso", class: "nowrap", sort: (row) => row.caseId, cell: (row) => (row.caseId ? h("a", { href: href([...ctx.base, "case", row.caseId]) }, row.caseId) : na()) },
         { header: "Tipo", key: "tipo", sort: (row) => row.kind, cell: (row) => fmt(row.kind) },
         { header: "Operação", key: "op", sort: (row) => row.endpoint, cell: (row) => fmt(row.endpoint) },
         { header: "Path enviado", key: "path", sort: (row) => row.path, cell: (row) => fmt(row.path) },
@@ -563,7 +678,7 @@ export async function renderSignature(route, signatureId, params = {}) {
           ["Tipos de caso", (item.case_kinds ?? []).join(", ")],
           ["Níveis de execução", (item.execution_levels ?? []).join(", ")],
         ]),
-        components.classification ? h("p", { class: "muted" }, CLASS_HELP[components.classification] ?? "") : null,
+        findingSummary(components.classification, item.representative?.finding?.description, "Descrição do analisador (caso representante)"),
       ),
       section(
         "Entre campanhas",
@@ -611,6 +726,7 @@ export async function renderSignature(route, signatureId, params = {}) {
           };
         }),
         unit: "casos",
+        defaultSort: { key: "faixa", dir: "desc", label: "faixa mais alta primeiro" },
         searchFields: ["caseId"],
         searchPlaceholder: "buscar case_id",
         filters: [
@@ -618,11 +734,11 @@ export async function renderSignature(route, signatureId, params = {}) {
           { name: "faixa", label: "Faixa", field: "band" },
         ],
         columns: [
-          { header: "case_id", key: "caso", sort: (row) => row.caseId, cell: (row) => h("a", { href: href([...ctx.base, "case", row.caseId]) }, row.caseId) },
+          { header: "case_id", key: "caso", class: "nowrap", sort: (row) => row.caseId, cell: (row) => h("a", { href: href([...ctx.base, "case", row.caseId]) }, row.caseId) },
           { header: "Tipo", key: "tipo", sort: (row) => row.kind, cell: (row) => (row.planState === "ok" ? fmt(row.kind) : na(row.planState)) },
           { header: "Classe", key: "classe", sort: (row) => row.classification, cell: (row) => (row.findingState === "ok" ? fmt(row.classification) : na(row.findingState)) },
           { header: "HTTP", key: "http", sort: (row) => row.status, class: "num", cell: (row) => fmt(row.status) },
-          { header: "Faixa", key: "faixa", sort: (row) => BAND_RANK[row.band] ?? null, cell: (row) => (row.findingState === "ok" ? bandBadge(row.band) : na()) },
+          { header: "Faixa", key: "faixa", sort: (row) => bandKey(row.band, row.score), cell: (row) => (row.findingState === "ok" ? bandBadge(row.band) : na()) },
           { header: "Score", key: "score", sort: (row) => row.score, class: "num", cell: (row) => fmt(row.score) },
           { header: "Representante", key: "repr", sort: (row) => (row.representative ? 0 : 1), title: "Representante primeiro", cell: (row) => (row.representative ? badge("representante", "pkg") : "") },
         ],
@@ -759,17 +875,27 @@ function fisBlock(finding) {
   );
 }
 
+// Síntese do achado: o que a classe significa (results.md) e o que o
+// analisador registrou para este caso.
+function findingSummary(classification, description, descriptionLabel) {
+  return summaryBox([
+    [classification ? ["Definição da classe ", code(classification)] : "Definição da classe", CLASS_HELP[classification] ?? null],
+    [descriptionLabel, typeof description === "string" ? description : null],
+  ]);
+}
+
 // Faixa de resumo do achado: classe, faixa, score, modelo e fallback.
 function findingFacts(f) {
   const assessment = f.severity_assessment;
-  const item = (label, value, wide) => h("div", { class: wide ? "fact wide" : "fact" }, h("div", { class: "label" }, label), h("div", { class: "value" }, value));
+  const item = (label, value, wide, tip) =>
+    h("div", { class: wide ? "fact wide" : "fact" }, h("div", { class: "label" }, label, tip ? [" ", infoTip(tip)] : null), h("div", { class: "value" }, value));
   return h(
     "div",
     { class: "facts-row" },
     item("Classe", f.classification === EXPECTED_FAILURE ? [f.classification, " ", badge("não é achado", "muted")] : fmt(f.classification), true),
-    item("Faixa de prioridade", bandBadge(f.severity)),
+    item("Faixa de prioridade", bandBadge(f.severity), false, PRIORITY_NOTE),
     item("Score", fmt(f.severity_score)),
-    item("Fallback", assessment ? fmt(assessment.fallback_used) : na()),
+    item("Fallback", assessment ? fmt(assessment.fallback_used) : na(), false, "Se sim, o FIS não conseguiu calcular e o score é o valor de contradição comportamental."),
     item("Modelo do FIS", assessment ? code(assessment.model_id ?? "?") : na("severity_assessment"), true),
   );
 }
@@ -864,13 +990,7 @@ export async function renderCase(route, caseId) {
       f
         ? [
             findingFacts(f),
-            h(
-              "div",
-              { class: "finding-text" },
-              h("p", {}, h("span", { class: "muted" }, "Descrição do analisador: "), fmt(f.description)),
-              CLASS_HELP[f.classification] ? h("p", { class: "muted note" }, CLASS_HELP[f.classification]) : null,
-              h("p", { class: "muted note" }, PRIORITY_NOTE),
-            ),
+            findingSummary(f.classification, f.description, "Descrição do analisador"),
             fisBlock(f),
           ]
         : null,

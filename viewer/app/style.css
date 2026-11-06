@@ -155,6 +155,8 @@ p { margin: 0 0 8px; }
 .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .span-all { grid-column: 1 / -1; }
+/* Sem isso, uma tabela larga força a coluna a crescer e vaza do cartão. */
+.columns > *, .grid > *, .compare > * { min-width: 0; }
 @media (max-width: 960px) { .grid.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 680px) { .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; } }
 
@@ -174,10 +176,9 @@ p { margin: 0 0 8px; }
   border-radius: 10px;
   overflow: hidden;
 }
-.stat { background: var(--panel); padding: 12px 14px; flex: 1 1 120px; }
+.stat { background: var(--panel); padding: 12px 14px; flex: 1 1 120px; cursor: default; }
 .stat .value { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.2; }
 .stat .label { font-size: 12.5px; line-height: 1.3; margin-top: 4px; }
-.stat .unit { color: var(--muted); font-size: 12px; }
 
 .notice {
   border: 1px solid var(--info-line);
@@ -224,6 +225,7 @@ table.data th, table.data td, table.kv th, table.kv td {
 }
 table.data tbody tr:last-child td, table.kv tbody tr:last-child th, table.kv tbody tr:last-child td { border-bottom: none; }
 table.data th { background: var(--head); font-weight: 600; font-size: 12.5px; position: sticky; top: 0; }
+table.data.compact th { white-space: nowrap; }
 table.data th:first-child { border-top-left-radius: 6px; }
 table.data th:last-child { border-top-right-radius: 6px; }
 table.kv th { font-weight: normal; color: var(--muted); width: 45%; padding-left: 0; }
@@ -332,19 +334,19 @@ h3.band { margin: 28px 0 0; }
 .source-title .icon { flex: none; color: var(--muted); }
 
 /* Classificação e FIS. */
+/* Sem overflow: hidden, para que o tooltip do ícone de informação apareça. */
 .facts-row {
   display: grid;
   grid-template-columns: 1.6fr 1fr 0.8fr 0.8fr 1.6fr;
   border: 1px solid var(--line);
   border-radius: 8px;
-  overflow: hidden;
-  gap: 1px;
-  background: var(--line);
+  background: var(--panel);
 }
-.facts-row .fact { background: var(--panel); padding: 10px 12px; min-width: 0; }
+.facts-row .fact { padding: 10px 12px; min-width: 0; }
+.facts-row .fact + .fact { border-left: 1px solid var(--line); }
 .facts-row .label { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
 .facts-row .value { margin-top: 4px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-@media (max-width: 900px) { .facts-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } .facts-row .fact.wide { grid-column: 1 / -1; } }
+@media (max-width: 900px) { .facts-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } .facts-row .fact.wide { grid-column: 1 / -1; } .facts-row .fact + .fact { border-left: none; border-top: 1px solid var(--line); } }
 .finding-text { margin: 14px 0 4px; }
 .finding-text p { margin: 0 0 4px; }
 .grid.fis { margin-top: 8px; }
@@ -374,3 +376,66 @@ th.sortable button.sort:hover { color: var(--link); }
 th.sortable button.sort:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
 th.sortable .arrow { color: var(--muted); font-size: 10px; opacity: 0.6; }
 th.sortable button.sort.active .arrow { color: var(--link); opacity: 1; }
+
+/* Ícone de informação com explicação no hover ou no foco. */
+.info-tip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+  font: italic 600 10px/1 Georgia, serif;
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: help;
+  vertical-align: 1px;
+}
+.info-tip:hover, .info-tip:focus-visible { color: var(--link); border-color: var(--link); outline: none; }
+.info-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 300px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--bg);
+  font: normal 400 12.5px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  white-space: normal;
+  text-align: left;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+.info-tip:hover::after, .info-tip:focus-visible::after { opacity: 1; visibility: visible; }
+
+/* Síntese do achado: rótulo curto acima de cada texto. */
+.summary-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--link);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 12px 0 4px;
+}
+.summary-item { background: var(--info-bg); padding: 10px 12px; }
+.summary-item .label { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.summary-item .label code { text-transform: none; letter-spacing: 0; color: var(--fg); }
+.summary-item .text { margin-top: 4px; }
+
+/* Faixa do representante com marcador quando os casos têm outras faixas. */
+.band-cell { display: inline-flex; gap: 4px; align-items: center; cursor: help; }
+.band-cell .more { font-size: 11px; font-weight: 600; color: var(--muted); }
+.band-cell .more.error { color: var(--error-line); }

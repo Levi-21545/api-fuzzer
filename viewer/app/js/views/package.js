@@ -4,7 +4,7 @@
 import { getPackage } from "../data.js";
 import { badge, bandBadge, code, countTable, fmt, fmtText, h, kvTable, linkRow, na, notice, pct, rawJson, scoreRange, section, shortId } from "../dom.js";
 import { COUNT_LABELS, PACKAGE_MEASURES, PRIORITY_NOTE, countLabel } from "../labels.js";
-import { BAND_RANK, PACKAGE_FILES, joinPath, packageApis, runIdByNumber, semanticRows } from "../model.js";
+import { BAND_RANK, PACKAGE_FILES, bandKey, joinPath, packageApis, priorityEntries, runIdByNumber, semanticRows } from "../model.js";
 import { href } from "../router.js";
 import { filterableTable } from "../table.js";
 
@@ -132,7 +132,7 @@ export async function renderPackageApi(source, dir, api, params) {
   const content = {
     campanhas: () => campaignsTable(source, dir, api, pkg, entry),
     ids: () => semanticTable(source, dir, api, pkg, segments, params),
-    resumo: () => apiSummary(entry),
+    resumo: () => apiSummary(entry, semanticRows(pkg, api)),
   }[tab]();
 
   return h(
@@ -147,7 +147,20 @@ export async function renderPackageApi(source, dir, api, params) {
   );
 }
 
-function apiSummary(entry) {
+// Maior score por classe entre os IDs semânticos da API (assinaturas.csv +
+// final-analysis.json), para ordenar as tabelas por classe.
+function classRanking(rows) {
+  const ranking = new Map();
+  for (const row of rows ?? []) {
+    const score = row.scoreRange?.[1];
+    if (!row.classification || typeof score !== "number") continue;
+    if (!ranking.has(row.classification) || score > ranking.get(row.classification)) ranking.set(row.classification, score);
+  }
+  return ranking;
+}
+
+function apiSummary(entry, rows) {
+  const ranking = classRanking(rows);
   return [
     h(
       "div",
@@ -156,7 +169,12 @@ function apiSummary(entry) {
         "Totais (soma das campanhas)",
         kvTable(Object.entries(entry.totals).map(([key, value]) => [countLabel(key)[0], value]), { layout: "end" }),
         h("h3", {}, "Achados brutos por classe"),
-        countTable(entry.candidate_by_classification, { unit: "achados brutos", keyHeader: "Classe" }),
+        countTable(entry.candidate_by_classification, {
+          unit: "achados brutos",
+          keyHeader: "Classe",
+          entries: entry.candidate_by_classification ? priorityEntries(entry.candidate_by_classification, "class", ranking) : undefined,
+        }),
+        h("p", { class: "muted note" }, "Ordem: classe com maior score entre os IDs semânticos da API primeiro, não a maior contagem."),
       ),
       section(
         "Medidas entre campanhas",
@@ -192,7 +210,12 @@ function apiSummary(entry) {
           ]),
           { layout: "end" },
         ),
-        countTable(entry.band_distribution_unique_per_run, { unit: "assinaturas estritas", keyHeader: "Faixa" }),
+        countTable(entry.band_distribution_unique_per_run, {
+          unit: "assinaturas estritas",
+          keyHeader: "Faixa",
+          entries: entry.band_distribution_unique_per_run ? priorityEntries(entry.band_distribution_unique_per_run, "band") : undefined,
+          keyCell: (key) => bandBadge(key),
+        }),
       ),
     ),
     section("Configuração (idêntica nas campanhas da API)", entry.configuration ? configTable(entry.configuration, "wide") : na("configuration")),
@@ -290,6 +313,7 @@ function semanticTable(source, dir, api, pkg, segments, params) {
         { name: "http", label: "HTTP", field: "status" },
         { name: "faixa", label: "Faixa", field: "bands" },
       ],
+      defaultSort: { key: "faixa", dir: "desc", label: "faixa mais alta primeiro" },
       columns: [
         { header: "ID semântico", key: "id", sort: (row) => row.id, cell: (row) => h("a", { href: href([...segments, "id", row.id]) }, shortId(row.id)) },
         { header: "Operação", key: "op", sort: (row) => row.endpoint, cell: (row) => row.endpoint ?? na() },
@@ -297,7 +321,7 @@ function semanticTable(source, dir, api, pkg, segments, params) {
         { header: "HTTP", key: "http", sort: (row) => row.status, class: "num narrow", cell: (row) => fmt(row.status) },
         { header: "Presença", key: "presenca", sort: (row) => row.presence, title: "Campanhas em que o ID aparece (contagem, não acurácia)", class: "num narrow", cell: (row) => `${row.presence}/${row.runCount}` },
         { header: "Score", key: "score", sort: (row) => row.scoreRange?.[1], title: "Mínimo–máximo entre campanhas; um valor quando são iguais. Ordena pelo máximo.", class: "num nowrap", cell: (row) => scoreRange(row.scoreRange) },
-        { header: "Faixas", key: "faixa", sort: (row) => Math.max(0, ...row.bands.map((band) => BAND_RANK[band] ?? 0)) || null, class: "nowrap", cell: (row) => (row.bands.length ? h("span", { class: "bands" }, row.bands.map(bandBadge)) : na()) },
+        { header: "Faixas", key: "faixa", sort: (row) => bandKey(row.bands.reduce((top, band) => ((BAND_RANK[band] ?? 0) > (BAND_RANK[top] ?? 0) ? band : top), null), row.scoreRange?.[1]), class: "nowrap", cell: (row) => (row.bands.length ? h("span", { class: "bands" }, row.bands.map(bandBadge)) : na()) },
       ],
     }),
   );
