@@ -254,6 +254,22 @@ contratos estão em [`experiments/tcc-2026/final/`](experiments/tcc-2026/final/R
 Os [pilotos](experiments/tcc-2026/pilot.yaml) e a confirmação histórica do
 Meilisearch tiveram papéis próprios no desenvolvimento e na avaliação do FIS.
 
+## Visualização dos resultados
+
+O diretório [`viewer/`](viewer/README.md) contém uma interface local, somente
+leitura, para navegar pelo pacote final e por campanhas avulsas: da API ao ID
+semântico, à assinatura estrita e ao caso, com requisição, resposta e FIS lado
+a lado. Ela não recalcula nenhum número; cada valor exibido vem de um arquivo
+publicado. Não há dependências além do Python:
+
+```bash
+python3 viewer/serve.py
+```
+
+Depois, abra `http://127.0.0.1:8765/`. O [README do visualizador](viewer/README.md)
+traz o mapa das telas, o significado de cada contagem e as opções para incluir
+campanhas locais.
+
 ## Estrutura do código
 
 - `src/fuzzer/parser/`: interpretação do contrato OpenAPI;
@@ -264,4 +280,5 @@ Meilisearch tiveram papéis próprios no desenvolvimento e na avaliação do FIS
 - `src/fuzzer/utils/`: manifesto, persistência, redação e utilitários;
 - `scripts/experiments/`: runners e pós-processamento experimental;
 - `experiments/tcc-2026/`: pilotos e coleta final;
+- `viewer/`: visualizador local dos artefatos, somente leitura;
 - `docs/`: artigo e fontes dos diagramas.
