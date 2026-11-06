@@ -1,0 +1,75 @@
+{
+  "artifacts": [
+    "run_manifest.json",
+    "data/execution_plan.json",
+    "data/results.json",
+    "data/target_images.json",
+    "analysis/analysis_findings.json",
+    "analysis/analysis_report.md",
+    "analysis/deduplication_report.md",
+    "analysis/findings_unique.json",
+    "analysis/metrics.json"
+  ],
+  "counts": {
+    "completed_requests": 285,
+    "findings": 270,
+    "planned_requests": 285,
+    "selected_endpoints": 44
+  },
+  "environment": {
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "python": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]"
+  },
+  "error": null,
+  "experiment_id": "TCC-PILOT-001",
+  "finished_at": "2026-08-01T18:08:52.811889+00:00",
+  "fuzzer": {
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": true,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [],
+      "level": 1,
+      "max_mutations_per_payload": 20,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
+    "git": {
+      "branch": "master",
+      "commit": "77e3d6fa82348bdc4ec4a904033c77265f20d1f3",
+      "dirty": false
+    },
+    "source_tree_sha256": "0e7521aea803e9989d72bbbcd0bfc997e0f58eb042fca04cd10105373d1876e3"
+  },
+  "inputs": {
+    "base_url": "http://127.0.0.1:8888",
+    "schema": "../../contracts/crapi-openapi-spec.json",
+    "schema_sha256": "9d57e0e76348a9a6bdff2c841ce791bb9de604a316b724074a998e3c484a4ace",
+    "target_image": "crAPI source 1.1.5; images main; see target_images.json"
+  },
+  "manifest_version": 1,
+  "postprocessing": {
+    "deduplication": {
+      "counts": {
+        "candidate_endpoints": 41,
+        "candidate_findings_raw": 239,
+        "classified_observations": 270,
+        "executed_requests": 285,
+        "expected_failures": 31,
+        "findings_unique_operational": 161,
+        "planned_requests": 285
+      },
+      "error": null,
+      "status": "completed"
+    }
+  },
+  "run_id": "crapi-pilot-20260801T180621Z",
+  "run_number": 0,
+  "started_at": "2026-08-01T18:07:32.495016+00:00",
+  "status": "completed",
+  "target_id": "crapi"
+}

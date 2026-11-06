@@ -251,8 +251,10 @@ análise humana do achado. O desenho do modelo está resumido no
 A coleta final executou 25 campanhas, cinco por API. Runs, resultados e
 contratos estão em [`experiments/tcc-2026/final/`](experiments/tcc-2026/final/README.md).
 
-Os [pilotos](experiments/tcc-2026/pilot.yaml) e a confirmação histórica do
-Meilisearch tiveram papéis próprios no desenvolvimento e na avaliação do FIS.
+Os [oito pilotos canônicos](experiments/tcc-2026/pilots/README.md) e a confirmação
+histórica do Meilisearch tiveram papéis próprios no desenvolvimento e na
+avaliação do FIS. A [rubrica dessa confirmação](experiments/tcc-2026/fis-evaluation/rubric.md)
+também está disponível.
 
 ## Visualização dos resultados
 

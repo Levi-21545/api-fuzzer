@@ -1,0 +1,1822 @@
+[
+  {
+    "case_id": "auth-probe-000001",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "GET /me",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.6126
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.1162109375,
+        "response_time_ms": 4.268832999514416,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.6126,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.3,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/me"
+  },
+  {
+    "case_id": "auth-probe-000002",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "GET /me",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7754
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0673828125,
+        "response_time_ms": 9.890708002785686,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7754,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/me"
+  },
+  {
+    "case_id": "auth-probe-000003",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.6126
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.1162109375,
+        "response_time_ms": 10.20737499493407,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.6126,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.3,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw"
+  },
+  {
+    "case_id": "auth-probe-000004",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7754
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0673828125,
+        "response_time_ms": 13.502125002560206,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7754,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw"
+  },
+  {
+    "case_id": "auth-probe-000005",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.6126
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.1162109375,
+        "response_time_ms": 9.023833998071495,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.6126,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.3,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/email"
+  },
+  {
+    "case_id": "auth-probe-000006",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7754
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0673828125,
+        "response_time_ms": 12.451582995709032,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7754,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/email"
+  },
+  {
+    "case_id": "auth-probe-000007",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.6126
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.1162109375,
+        "response_time_ms": 9.084959005122073,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.6126,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.3,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/password"
+  },
+  {
+    "case_id": "auth-probe-000008",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7754
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0673828125,
+        "response_time_ms": 11.464374998467974,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7754,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/password"
+  },
+  {
+    "case_id": "auth-probe-000009",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": "A",
+      "secret": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.6126
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.1162109375,
+        "response_time_ms": 10.71679199958453,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.6126,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.3,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "auth-probe-000010",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": "A",
+      "secret": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7754
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0673828125,
+        "response_time_ms": 11.210833996301517,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7754,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "auth-probe-000011",
+    "classification": "ERROR_CONTRADICTION",
+    "description": "Error response body for 401 does not match contract. Details: 401 is not of type 'string'",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "request_headers": {},
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.6126
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.1162109375,
+        "response_time_ms": 8.576000000175554,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.6126,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.3,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1/A"
+  },
+  {
+    "case_id": "auth-probe-000012",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7754
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0673828125,
+        "response_time_ms": 12.237458002346102,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7754,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/books/v1/A"
+  },
+  {
+    "case_id": "case-000005",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7428
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0771484375,
+        "response_time_ms": 8.61366699973587,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7428,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000006",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7819
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0654296875,
+        "response_time_ms": 17.72420800261898,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7819,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000007",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7396
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.078125,
+        "response_time_ms": 9.56962499913061,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7396,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000008",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A",
+      "password": "<REDACTED>",
+      "username": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7396
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.078125,
+        "response_time_ms": 8.80637500085868,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7396,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000009",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/register",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": 123,
+      "password": "<REDACTED>",
+      "username": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7493
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0751953125,
+        "response_time_ms": 10.142125000129454,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7493,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/register"
+  },
+  {
+    "case_id": "case-000011",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7428
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0771484375,
+        "response_time_ms": 9.662500000558794,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7428,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000012",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7819
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0654296875,
+        "response_time_ms": 10.497375005797949,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7819,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000013",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>",
+      "username": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7396
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.078125,
+        "response_time_ms": 9.740292000060435,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7396,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000014",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /users/v1/login",
+    "request_headers": {
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>",
+      "username": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7396
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.078125,
+        "response_time_ms": 9.693167005025316,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7396,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/login"
+  },
+  {
+    "case_id": "case-000017",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 401 error.",
+    "endpoint_id": "DELETE /users/v1/{username}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7949
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0615234375,
+        "response_time_ms": 12.823709002987016,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7949,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 401,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw"
+  },
+  {
+    "case_id": "case-000018",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7689
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0693359375,
+        "response_time_ms": 14.362041998538189,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7689,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/email"
+  },
+  {
+    "case_id": "case-000019",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7428
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0771484375,
+        "response_time_ms": 11.699958005920053,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7428,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/email"
+  },
+  {
+    "case_id": "case-000020",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7786
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.06640625,
+        "response_time_ms": 12.741749997076113,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7786,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/email"
+  },
+  {
+    "case_id": "case-000021",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/email",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "email": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7493
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0751953125,
+        "response_time_ms": 11.074375004682224,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7493,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/email"
+  },
+  {
+    "case_id": "case-000023",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7428
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0771484375,
+        "response_time_ms": 9.792875003768131,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7428,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/password"
+  },
+  {
+    "case_id": "case-000024",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.8438
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.046875,
+        "response_time_ms": 11.357499999576248,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.8438,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/password"
+  },
+  {
+    "case_id": "case-000025",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "PUT /users/v1/{username}/password",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "password": "<REDACTED>"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7396
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.078125,
+        "response_time_ms": 12.17687499593012,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7396,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/users/v1/username_janqwnsw/password"
+  },
+  {
+    "case_id": "case-000028",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": "not-an-object",
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7428
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0771484375,
+        "response_time_ms": 9.643292003602255,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7428,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000029",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {},
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7786
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.06640625,
+        "response_time_ms": 13.547208000090905,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7786,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000030",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": 123,
+      "secret": "A"
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7331
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.080078125,
+        "response_time_ms": 9.274916999856941,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7331,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.3,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000031",
+    "classification": "EXPECTED_FAILURE",
+    "description": "API correctly rejected with documented 400 error.",
+    "endpoint_id": "POST /books/v1",
+    "request_headers": {
+      "Authorization": "<REDACTED>",
+      "Content-Type": "application/json"
+    },
+    "request_payload": {
+      "book_title": "A",
+      "secret": 123
+    },
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7461
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.076171875,
+        "response_time_ms": 10.074166006234009,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7461,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 400,
+    "url": "http://127.0.0.1:5002/books/v1"
+  },
+  {
+    "case_id": "case-000032",
+    "classification": "SUCCESS_CONTRADICTION",
+    "description": "Response body for 200 does not match the contract. Details: {'book_title': 'A', 'owner': 'username_janqwnsw', 'secret': 'A'} is not of type 'array'",
+    "endpoint_id": "GET /books/v1/{book_title}",
+    "request_headers": {
+      "Authorization": "<REDACTED>"
+    },
+    "request_payload": null,
+    "severity": "LOW",
+    "severity_assessment": {
+      "activated_rules": [
+        {
+          "description": "low status deviation, normal response time, and expected response size -> low severity",
+          "id": "R3_LOW_DEVIATION_NORMAL_EXPECTED_SIZE",
+          "strength": 1.0
+        },
+        {
+          "description": "low status deviation and empty response -> medium severity",
+          "id": "R5_LOW_DEVIATION_EMPTY_RESPONSE",
+          "strength": 0.7917
+        }
+      ],
+      "fallback_used": false,
+      "inputs": {
+        "response_size_signal": 0.0625,
+        "response_time_ms": 15.813124999112915,
+        "status_deviation": 0.0
+      },
+      "memberships": {
+        "response_size_signal": {
+          "empty": 0.7917,
+          "expected": 1.0,
+          "large": 0.0
+        },
+        "response_time_ms": {
+          "normal": 1.0,
+          "slow": 0.0,
+          "timeout": 0.0
+        },
+        "status_deviation": {
+          "high": 0.0,
+          "low": 1.0,
+          "medium": 0.0
+        }
+      },
+      "model_id": "mamdani-status-time-response-size-v1"
+    },
+    "severity_score": 0.31,
+    "status_code": 200,
+    "url": "http://127.0.0.1:5002/books/v1/A"
+  }
+]

@@ -1,0 +1,76 @@
+{
+  "artifacts": [
+    "run_manifest.json",
+    "data/execution_plan.json",
+    "data/results.json",
+    "analysis/analysis_findings.json",
+    "analysis/analysis_report.md",
+    "analysis/deduplication_report.md",
+    "analysis/findings_unique.json",
+    "analysis/metrics.json"
+  ],
+  "counts": {
+    "completed_requests": 44,
+    "findings": 34,
+    "planned_requests": 44,
+    "selected_endpoints": 13
+  },
+  "environment": {
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "python": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]"
+  },
+  "error": null,
+  "experiment_id": "TCC-PILOT-001",
+  "finished_at": "2026-08-01T18:04:38.700457+00:00",
+  "fuzzer": {
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": true,
+      "auto_auth": true,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [
+        "/createdb"
+      ],
+      "level": 1,
+      "max_mutations_per_payload": 20,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
+    "git": {
+      "branch": "master",
+      "commit": "77e3d6fa82348bdc4ec4a904033c77265f20d1f3",
+      "dirty": false
+    },
+    "source_tree_sha256": "0e7521aea803e9989d72bbbcd0bfc997e0f58eb042fca04cd10105373d1876e3"
+  },
+  "inputs": {
+    "base_url": "http://127.0.0.1:5002",
+    "schema": "../../contracts/vampi-openapi3.yml",
+    "schema_sha256": "35200f354f9c9968182fc19458295ed45bb4c368150348c46d5146a7e40a61c9",
+    "target_image": "erev0s/vampi@sha256:0a5a224b6e14ae7da6a6ea265178ff71286ff903aec74adee98f660bb0e4ca12"
+  },
+  "manifest_version": 1,
+  "postprocessing": {
+    "deduplication": {
+      "counts": {
+        "candidate_endpoints": 6,
+        "candidate_findings_raw": 7,
+        "classified_observations": 34,
+        "executed_requests": 44,
+        "expected_failures": 27,
+        "findings_unique_operational": 7,
+        "planned_requests": 44
+      },
+      "error": null,
+      "status": "completed"
+    }
+  },
+  "run_id": "vampi-pilot-20260801T180423Z",
+  "run_number": 0,
+  "started_at": "2026-08-01T18:04:26.771031+00:00",
+  "status": "completed",
+  "target_id": "vampi"
+}

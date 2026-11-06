@@ -1,0 +1,128 @@
+{
+  "runs": [
+    {
+      "api": "vampi",
+      "changed_files": [],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "original_manifest_sha256": "b6451aa3f63882ba7c7860cbb66e29a66768e947c859758218f6ed4acb6f4ef4",
+      "run_id": "vampi-pilot-20260801T180423Z"
+    },
+    {
+      "api": "vampi",
+      "changed_files": [],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "original_manifest_sha256": "3ca0d9f868ccbab51231637314b4e2e8b1a4f5497165f4681a53c0b8935f56b9",
+      "run_id": "vampi-l2-20260801T190000Z"
+    },
+    {
+      "api": "petclinic",
+      "changed_files": [],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "original_manifest_sha256": "1e95b717e25e10cb562cdf3b7108e48c2715225efdb5716b4a7ba518a0c88e3d",
+      "run_id": "petclinic-pilot-20260801T180445Z"
+    },
+    {
+      "api": "petclinic",
+      "changed_files": [],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/target_container.log"
+      ],
+      "original_manifest_sha256": "29e93204a47430ae04ea0378aca4a24e9193c9492f39413cdc64475c32a8e648",
+      "run_id": "petclinic-l2-20260801T190100Z"
+    },
+    {
+      "api": "crapi",
+      "changed_files": [
+        {
+          "changed_field": "Config.WorkingDir",
+          "original_sha256": "aa93fff44d88a88d6762f69ba0b2253214a599cfcb1019d842565322ff74f27c",
+          "path": "data/target_images.json",
+          "reason": "remove build-machine path"
+        }
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "original_manifest_sha256": "cc2ac5a9d36ba9405364bb595908110fc8a85289ad4c73a1cb79c3e13b46b1ab",
+      "run_id": "crapi-pilot-20260801T180621Z"
+    },
+    {
+      "api": "crapi",
+      "changed_files": [
+        {
+          "changed_field": "Config.WorkingDir",
+          "original_sha256": "f54e369fe5308f156b1ee22df8cb587ca77d4ca3e59096c0141c2a49420246ef",
+          "path": "data/target_images.json",
+          "reason": "remove build-machine path"
+        }
+      ],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "original_manifest_sha256": "c396f5fb8a37fbced4f907878d0c1d0f0e6b66f95d9b280ce5409c0e7ea835d6",
+      "run_id": "crapi-l2-20260801T190300Z"
+    },
+    {
+      "api": "realworld",
+      "changed_files": [],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "original_manifest_sha256": "9eb196b08ae9466453bb7e8b4f2307799315492866616950cd11481691d51598",
+      "run_id": "realworld-pilot-20260801T180931Z"
+    },
+    {
+      "api": "realworld",
+      "changed_files": [],
+      "changed_manifest_fields": [
+        "artifacts",
+        "inputs.schema"
+      ],
+      "omitted_files": [
+        "data/bootstrap.log",
+        "data/target_stack.log"
+      ],
+      "original_manifest_sha256": "6ef916505531c91656c4c9f41252fdd21db45076cca4c3c8c81e8e3957b72514",
+      "run_id": "realworld-l2-20260801T190600Z"
+    }
+  ],
+  "source_archive": "experiments-history-20261007.tar.gz",
+  "source_archive_sha256": "62931942fbde23edb0673ff2897535cbead212d1b81c080e08ba12500d48da6c"
+}

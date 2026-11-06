@@ -1,0 +1,77 @@
+{
+  "artifacts": [
+    "run_manifest.json",
+    "data/execution_plan.json",
+    "data/results.json",
+    "data/target_image.json",
+    "analysis/analysis_findings.json",
+    "analysis/analysis_report.md",
+    "analysis/deduplication_report.md",
+    "analysis/findings_unique.json",
+    "analysis/metrics.json"
+  ],
+  "counts": {
+    "completed_requests": 240,
+    "findings": 233,
+    "planned_requests": 240,
+    "selected_endpoints": 36
+  },
+  "environment": {
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "python": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]"
+  },
+  "error": null,
+  "experiment_id": "TCC-PILOT-001",
+  "finished_at": "2026-08-01T18:06:12.828429+00:00",
+  "fuzzer": {
+    "configuration": {
+      "all_endpoints": true,
+      "auth_probe": false,
+      "auto_auth": false,
+      "concurrency": 1,
+      "deduplicate": false,
+      "delay_ms": 250,
+      "endpoint_limit": null,
+      "excluded_paths": [
+        "/oops"
+      ],
+      "level": 1,
+      "max_mutations_per_payload": 20,
+      "path_filter": null,
+      "timeout_seconds": 10
+    },
+    "git": {
+      "branch": "master",
+      "commit": "77e3d6fa82348bdc4ec4a904033c77265f20d1f3",
+      "dirty": false
+    },
+    "source_tree_sha256": "0e7521aea803e9989d72bbbcd0bfc997e0f58eb042fca04cd10105373d1876e3"
+  },
+  "inputs": {
+    "base_url": "http://127.0.0.1:9966/petclinic/api",
+    "schema": "../../contracts/petclinic-openapi.yml",
+    "schema_sha256": "a1a8ee2f853ebd8af89cd5a958158ac16550b5627da1cf59dca9736e95a597f4",
+    "target_image": "springcommunity/spring-petclinic-rest:4.0.2; see target_image.json"
+  },
+  "manifest_version": 1,
+  "postprocessing": {
+    "deduplication": {
+      "counts": {
+        "candidate_endpoints": 29,
+        "candidate_findings_raw": 90,
+        "classified_observations": 233,
+        "executed_requests": 240,
+        "expected_failures": 143,
+        "findings_unique_operational": 47,
+        "planned_requests": 240
+      },
+      "error": null,
+      "status": "completed"
+    }
+  },
+  "run_id": "petclinic-pilot-20260801T180445Z",
+  "run_number": 0,
+  "started_at": "2026-08-01T18:05:01.566312+00:00",
+  "status": "completed",
+  "target_id": "petclinic"
+}
