@@ -105,43 +105,45 @@
 \pagestyle{plain2}
 
 \begin{abstract}
-Divergences between REST APIs and their OpenAPI contracts undermine the
-integration between systems. This work presents a black-box, contract-guided
-fuzzer that generates valid and mutated requests, checks the responses against
-the contract, groups equivalent findings, and assigns each one a triage
-priority through fuzzy inference. The evaluation used five open-source APIs in
-two stages. In the first, four APIs guided the revision of the prioritization
-model; once frozen, the model was applied to a fifth API, Meilisearch, and
-compared with a reference produced blindly by three instances of a language
-model (GPT-5.6 Luna),
-agreeing on 120 of the 122 behavior groups assessed (98\%), against 4 (3\%) for
-a rule based only on the HTTP status. In the second stage, 25 campaigns, five
-per API, executed all 7,175 planned requests; grouping reduced 4,000 findings to
-2,460 groups (38.5\%), and 441 of the 570 distinct behaviors (77\%) reappeared
-in all five repetitions of their API. The results indicate that the approach
-organizes traceable evidence for triage, without confirming vulnerabilities or
-estimating real impact.
+Divergences between REST APIs and their OpenAPI contracts affect integration
+between systems. This work presents the OpenAPI Contract Fuzzer, a black-box,
+contract-guided fuzzer. It generates base requests to satisfy the interpreted
+contract, mutates them, checks the responses, groups equivalent findings, and
+assigns a triage priority through fuzzy inference. The evaluation used five
+open-source APIs in two stages. In the first, four APIs guided the revision
+of the prioritization model. With its rules and parameters fixed, the model
+was applied to a fifth API, Meilisearch. Its priorities were compared with a
+reference produced blindly by three instances of a language model (GPT-5.6
+Luna). The model agreed on 120 of the 122 families assessed (98\%), against 4
+(3\%) for a rule based only on HTTP status. In the second stage, 25 campaigns,
+five per API, executed all 7,175 planned requests. Grouping reduced 4,000
+findings to 2,460 strict signatures (38.5\%). Of the 570 semantic IDs, which
+identify signatures across campaigns, 441 (77\%) reappeared in all five
+repetitions of their API. The approach organizes traceable evidence for
+triage, without confirming vulnerabilities or estimating real impact.
 \end{abstract}
 
 \keywords{REST APIs, OpenAPI, Fuzzing, Contract Testing, Fuzzy Logic.}
      
 \begin{resumo}
-Divergências entre APIs REST e seus contratos OpenAPI comprometem a integração
-entre sistemas. Este trabalho apresenta um \textit{fuzzer} de caixa-preta
-guiado por contrato que gera requisições válidas e mutadas, compara as
-respostas com o contrato, agrupa achados equivalentes e atribui a cada um uma
-prioridade de triagem por inferência \textit{fuzzy}. A avaliação usou cinco
-APIs de código aberto em duas etapas. Na primeira, quatro APIs orientaram a
-revisão do modelo de priorização; depois de congelado, o modelo foi aplicado a
-uma quinta API, o Meilisearch, e comparado com uma referência produzida às
-cegas por três instâncias de um modelo de linguagem (GPT-5.6 Luna), concordando em 120 dos 122
-grupos de comportamento avaliados (98\%), contra 4 (3\%) de uma regra baseada
-apenas no status HTTP. Na segunda etapa, 25 campanhas, cinco por API,
-executaram as 7.175 requisições planejadas; o agrupamento reduziu 4.000 achados
-a 2.460 grupos (38,5\%), e 441 dos 570 comportamentos distintos (77\%)
-reapareceram nas cinco repetições da respectiva API. Os resultados indicam que
-a abordagem organiza evidências rastreáveis para triagem, sem confirmar
-vulnerabilidades nem estimar impacto real.
+Divergências entre APIs REST e seus contratos OpenAPI afetam a integração
+entre sistemas. Este trabalho apresenta o OpenAPI Contract Fuzzer, um
+\textit{fuzzer} de caixa-preta guiado por contrato. Ele gera requisições-base
+para satisfazer o contrato interpretado, aplica mutações, verifica as
+respostas, agrupa achados equivalentes e atribui prioridade de triagem por
+inferência \textit{fuzzy}. A avaliação usou cinco APIs de código aberto em
+duas etapas. Na primeira, quatro APIs orientaram a revisão do modelo de
+priorização. Com regras e parâmetros fixados, o modelo foi aplicado a uma
+quinta API, o Meilisearch. Suas prioridades foram comparadas com uma
+referência produzida às cegas por três instâncias de um modelo de linguagem
+(GPT-5.6 Luna). O modelo concordou em 120 das 122 famílias avaliadas (98\%),
+contra 4 (3\%) de uma regra baseada apenas no status HTTP. Na segunda etapa,
+25 campanhas, cinco por API, executaram as 7.175 requisições planejadas.
+O agrupamento reduziu 4.000 achados a 2.460 assinaturas estritas (38,5\%).
+Dos 570 IDs semânticos, que identificam assinaturas entre campanhas, 441
+(77\%) reapareceram nas cinco repetições da respectiva API. A abordagem
+organiza evidências rastreáveis para triagem, sem confirmar vulnerabilidades
+nem estimar impacto real.
 \end{resumo}
 
 \palavraschave{APIs REST, OpenAPI, \textit{Fuzzing}, Teste de Contrato, Lógica \textit{Fuzzy}.}

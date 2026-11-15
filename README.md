@@ -253,8 +253,8 @@ contratos estão em [`experiments/tcc-2026/final/`](experiments/tcc-2026/final/R
 
 Os [oito pilotos canônicos](experiments/tcc-2026/pilots/README.md) e a confirmação
 histórica do Meilisearch tiveram papéis próprios no desenvolvimento e na
-avaliação do FIS. A [rubrica dessa confirmação](experiments/tcc-2026/fis-evaluation/rubric.md)
-também está disponível.
+avaliação do FIS. Os [registros das duas avaliações do FIS](experiments/tcc-2026/fis-evaluation/README.md)
+(fichas, votos, consenso e métricas) também estão publicados.
 
 ## Visualização dos resultados
 
