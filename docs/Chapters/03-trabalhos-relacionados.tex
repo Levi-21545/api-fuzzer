@@ -1,12 +1,10 @@
 % TCC — Trabalhos Relacionados
 \section{Trabalhos Relacionados}\label{sec:relacionados}
 
-Esta seção compara estratégias de teste automatizado de APIs REST que usam um
-contrato como entrada. A análise é exclusivamente bibliográfica: nenhuma dessas
-ferramentas foi executada como linha de base experimental. O objetivo não é escolher
-uma vencedora, mas identificar como diferentes trabalhos tratam geração,
-estado, oráculos e apresentação dos resultados, preservando os limites das
-versões e dos experimentos descritos nas fontes.
+Esta seção compara como quatro ferramentas guiadas por contrato geram testes
+e organizam seus resultados. A comparação é feita a partir das publicações de
+cada ferramenta, nas versões e nos experimentos que elas descrevem; as
+ferramentas não foram executadas neste estudo.
 
 Foram selecionados Schemathesis, RESTler, RESTest e RestTestGen porque possuem
 fontes primárias acessíveis e cobrem decisões diretamente relacionadas ao
@@ -17,11 +15,11 @@ declarada com integração contínua.
 
 \subsection{Estratégias de geração e tratamento de estado}
 
-As quatro abordagens partem de uma descrição de API, mas não constroem o espaço
-de testes da mesma forma. RESTler compila Swagger/OpenAPI em uma gramática,
+As quatro abordagens partem de uma descrição de API e constroem os testes de
+formas diferentes. RESTler compila Swagger/OpenAPI em uma gramática,
 infere dependências produtor--consumidor e usa valores extraídos das respostas
-para formar sequências com estado. A execução fornece realimentação para descartar
-sequências inviáveis e aprofundar estados alcançáveis
+para formar sequências com estado. Os resultados da execução permitem descartar
+sequências inviáveis e explorar os estados alcançados
 \cite{atlidakis2019restler}. Seu ponto central é a ordem entre operações e a
 propagação de recursos dinâmicos.
 
@@ -29,9 +27,9 @@ RESTest trabalha no nível de uma operação por caso. Ele gera entradas nominai
 e variantes inválidas e pode enriquecer OpenAPI com IDL4OAS para expressar
 dependências entre parâmetros que o contrato comum não contém. A geração
 baseada em restrições tenta satisfazer ou violar deliberadamente essas
-dependências \cite{martinlopez2020restest}. Assim, sua noção de dependência está
-principalmente dentro da requisição, enquanto a exploração com estado entre
-operações não é o foco do artigo-base.
+dependências \cite{martinlopez2020restest}. Para o RESTest, portanto,
+dependência é sobretudo uma relação entre parâmetros da mesma requisição; a
+exploração de sequências entre operações fica em segundo plano no artigo-base.
 
 Schemathesis deriva geradores e propriedades de OpenAPI ou GraphQL por meio de
 teste baseado em propriedades. A fonte descreve geração de entradas válidas e
@@ -48,27 +46,25 @@ Essas diferenças produzem custos e alcances distintos. No estudo comparativo
 de Corradini et al., RestTestGen, RESTler, bBOXRT e RESTest foram avaliados em
 14 serviços com versões e configurações de 2021; Schemathesis não integrou esse
 corpus. Robustez da ferramenta, enumeração de sequências e diversidade de dados
-competiram pelo mesmo orçamento de teste \cite{corradini2021comparison}. Os
-resultados ajudam a explicar os compromissos, mas não estabelecem superioridade
-atual ou universal de uma estratégia.
+competiram pelo mesmo orçamento de teste \cite{corradini2021comparison}. Esses
+resultados mostram os compromissos entre as estratégias naquele cenário de 2021.
 
 \subsection{Oráculos, evidências e triagem}
 
 As fontes também divergem no que consideram um resultado relevante. O artigo
 inicial do RESTler trata respostas 5xx como falhas observáveis e associa cada uma
-à sequência que a produziu. Como ocorrências repetidas são frequentes, propõe
+à sequência que a produziu. Como achados repetidos são frequentes, propõe
 \emph{bucketization} por sufixos de sequências para facilitar a inspeção; os
 autores relatam que as falhas do estudo puderam ser reproduzidas
-\cite{atlidakis2019restler}. Esse agrupamento é específico ao modelo do RESTler
-e não prova causa raiz comum.
+\cite{atlidakis2019restler}.
 
 RESTest explicita cinco oráculos: ausência de 5xx, conformidade da resposta com
 OAS, rejeição de violações de parâmetros, rejeição de violações de dependências
 e não rejeição de requisições consideradas válidas. Também gera testes Java
 executáveis e oferece execução \textit{offline} ou \textit{online}; a fonte apresenta esta última
 como aplicável a um ambiente de integração contínua
-\cite{martinlopez2020restest}. O artigo não descreve uma ordenação pós-execução ou
-uma deduplicação geral dos achados.
+\cite{martinlopez2020restest}. O artigo não trata de ordenar ou deduplicar os
+achados depois da execução.
 
 Schemathesis deriva propriedades de semânticas HTTP e do esquema, incluindo
 status não declarado, corpo incompatível e rejeição de entrada inválida. O
@@ -76,14 +72,13 @@ mecanismo subjacente de teste baseado em propriedades fornece redução e dedupl
 erros, e os testes derivados podem integrar uma suíte existente ou ser
 executados diretamente \cite{hatfielddodds2021schemathesis}. RestTestGen
 separa oráculos de status e esquema, registra sequências, requisições, respostas
-e resultados dos oráculos em relatórios JSON e pode materializar casos com
-REST-assured \cite{corradini2022resttestgen}. Na fonte-base, nenhuma das duas
-abordagens apresenta um classificador geral de prioridade técnica dos achados.
+e resultados dos oráculos em relatórios JSON e pode gerar casos com
+REST-assured \cite{corradini2022resttestgen}. Nas duas fontes, os achados
+saem sem uma prioridade de inspeção.
 
-Para tornar os limites verificáveis, a Tabela~\ref{tab:ferramentas-relacionadas}
-resume apenas capacidades documentadas nas fontes citadas. ``Não demonstrado''
-significa que o aspecto não foi caracterizado no trabalho consultado, e não que
-seja impossível ou esteja ausente de toda versão posterior.
+A Tabela~\ref{tab:ferramentas-relacionadas} resume as capacidades documentadas
+nas fontes citadas. ``Não demonstrado'' indica apenas que o aspecto não aparece
+no trabalho consultado; versões posteriores podem tê-lo.
 
 \begin{table*}[ht]
 \centering
@@ -109,7 +104,7 @@ Sem ordenação pós-execução demonstrada; integrável a suítes de teste \\ \
 RESTler &
 Swagger/OpenAPI; \textit{black-box}; gramática e dicionários &
 Sequências com estado, relações produtor--consumidor e valores mutados &
-5xx no oráculo-base; sequência preservada e \textit{bucketization} de ocorrências &
+5xx no oráculo-base; sequência preservada e \textit{bucketization} de achados &
 Busca prioriza exploração, não achados; CI não caracterizada na fonte \\ \hline
 RESTest &
 OpenAPI com IDL4OAS opcional; \textit{black-box}; geração aleatória ou por restrições &
@@ -131,18 +126,15 @@ FIS Mamdani pós-execução; CI apenas como contexto de uso \\ \hline
 
 \subsection{Posicionamento da proposta}
 
-A comparação evidencia que geração por OpenAPI, casos negativos, validação de
-status ou esquema, sequências com estado e redução de resultados já aparecem em
-trabalhos anteriores. Também mostra que ``priorização'' pode se referir a
-coisas diferentes: escolher operações e valores durante a geração, guiar a
-busca por sequências ou ordenar evidências depois que a execução terminou. O
-projeto atua no terceiro sentido.
+Geração a partir de OpenAPI, casos negativos, validação de status e esquema,
+sequências com estado e redução de resultados já aparecem nesses trabalhos. A
+comparação também mostra que ``priorização'' tem três sentidos diferentes:
+escolher operações e valores durante a geração, guiar a busca por sequências
+ou ordenar os achados depois que a execução terminou. Este projeto trabalha no
+terceiro sentido.
 
-A lacuna investigada não é a ausência de \textit{fuzzers} de API nem a superioridade de
-uma técnica de geração. O estudo examina as contribuições e limitações de uma
-combinação específica: \textit{fuzzing black-box} orientado por OpenAPI, evidências
-rastreáveis, deduplicação por comportamento observável e prioridade \textit{fuzzy}
-pós-execução. Essa formulação é restrita ao corpus bibliográfico consultado e
-é avaliada nas aplicações do estudo. Como não há comparação experimental
-com as ferramentas desta seção, os resultados não autorizam afirmar maior
-cobertura, eficácia ou qualidade do projeto em relação a elas.
+O estudo examina, portanto, uma combinação específica: \textit{fuzzing}
+\textit{black-box} orientado por OpenAPI, achados rastreáveis, deduplicação e
+prioridade \textit{fuzzy} depois da execução. Como o projeto não foi executado
+lado a lado com as ferramentas desta seção, os resultados não permitem dizer
+que ele tem maior cobertura ou eficácia do que elas.

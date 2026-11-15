@@ -1,14 +1,10 @@
 % TCC — Fundamentação Teórica
 \section{Fundamentação Teórica}\label{sec:fundamentacao}
 
-Esta seção reúne os conceitos necessários para compreender a proposta sem
-antecipar o protocolo experimental. O encadeamento adotado distingue três
-etapas: o contrato fornece uma descrição processável e expectativas parciais;
-o teste \textit{black-box} produz observações e evidências; e a inferência
-\textit{fuzzy} ordena
-os achados já detectados. Essa separação é importante porque gerar uma
-requisição, reconhecer uma divergência e atribuir prioridade são problemas
-relacionados, mas não equivalentes.
+A ferramenta faz três coisas em sequência: lê um contrato OpenAPI, testa a API
+a partir dele e ordena as divergências encontradas. Esta seção apresenta os
+conceitos por trás de cada uma: contratos de APIs REST, teste
+\textit{black-box} com oráculos e inferência \textit{fuzzy}.
 
 \subsection{REST, semântica HTTP e contratos processáveis}
 
@@ -31,18 +27,15 @@ asserções estruturais com palavras-chave como \texttt{type},
 \cite{jsonschema202012}. Essas declarações tornam uma parte do acordo entre
 cliente e serviço legível por ferramentas.
 
-Há uma analogia útil com \textit{Design by Contract}: precondições expressam obrigações
-do cliente, pós-condições expressam garantias do fornecedor e invariantes
-preservam propriedades do objeto \cite{meyer1992designbycontract}. A analogia
-não estabelece equivalência formal. OpenAPI não expressa necessariamente
-invariantes, dependências entre chamadas ou todas as regras de negócio; além
-disso, o documento publicado pode estar incompleto ou desatualizado.
+\textit{Design by Contract} define precondições como obrigações do cliente e
+pós-condições como garantias do fornecedor; invariantes preservam propriedades
+do objeto \cite{meyer1992designbycontract}. OpenAPI descreve parte dessas
+expectativas na interface HTTP. Dependências entre chamadas e regras de negócio
+podem ficar fora do documento, que também pode estar incompleto ou desatualizado.
 
-Neste trabalho, o contrato é uma descrição processável do comportamento
-esperado e não uma especificação completa da aplicação. O \textit{fuzzer} interpreta um
-subconjunto de OpenAPI para construir requisições e conferir propriedades
-observáveis. Logo, toda conclusão deve ser delimitada tanto pelo que o contrato
-declara quanto pelo que a ferramenta efetivamente suporta.
+Neste trabalho, o \textit{fuzzer} interpreta um subconjunto de OpenAPI para
+construir requisições e conferir as respostas. O alcance da análise depende
+das declarações do contrato e dos recursos suportados pela ferramenta.
 
 \subsection{\textit{Fuzzing black-box}, oráculos e evidência}
 
@@ -67,7 +60,7 @@ Autenticação, estado persistente, dados realistas e dependências entre opera�
 continuam sendo obstáculos relevantes \cite{golmohammadi2023rest}. RESTler
 mostra uma resposta específica a parte desse problema: infere relações
 produtor--consumidor do contrato, preserva valores obtidos nas respostas e
-explora sequências de requisições com realimentação da execução
+usa os resultados para explorar novas sequências de requisições
 \cite{atlidakis2019restler}. Essa exploração com estado é diferente de apenas
 repetir operações isoladas.
 
@@ -84,26 +77,20 @@ de geração e oráculos, e que a incompletude dos esquemas limita a exploraçã
 
 Uma observação só é útil para análise posterior se permanecer ligada às
 condições que a produziram. RESTler associa o erro à sequência de requisições e
-agrupa ocorrências provavelmente redundantes; Schemathesis combina redução do
+agrupa achados provavelmente redundantes; Schemathesis combina redução do
 caso que falha com deduplicação de erros; e RestTestGen pode registrar em JSON
 as requisições, respostas e avaliações dos oráculos
 \cite{atlidakis2019restler,hatfielddodds2021schemathesis,corradini2022resttestgen}.
 Esses mecanismos não são idênticos, mas evidenciam três necessidades distintas:
 \emph{rastreabilidade} relaciona a observação à sua origem;
 \emph{reprodução} preserva informação suficiente para provocar novamente o
-comportamento; e \emph{deduplicação} reduz ocorrências equivalentes para a
-triagem. Um grupo deduplicado não corresponde automaticamente a uma causa raiz.
+comportamento; e \emph{deduplicação} reúne achados equivalentes para a
+triagem.
 
-O projeto adota esse vocabulário de forma operacional. Uma ocorrência é o
-resultado individual de um caso executado. Uma divergência é uma propriedade
-observada que contradiz uma expectativa interpretada do contrato ou de um
-detector. Um achado é a evidência estruturada dessa divergência, vinculada ao
-caso e à resposta. Assinaturas e famílias agrupam padrões observáveis para
-evitar que repetições dominem a análise. Em um possível ciclo de integração
-contínua, um resultado útil para triagem deve ser produzido sob orçamento
-conhecido, manter essa cadeia de evidências, separar campanha incompleta de
-comportamento do alvo e apresentar volume tratável. Esses são critérios de uso
-adotados pelo estudo.
+Neste trabalho, divergência designa uma contradição entre resposta e contrato;
+achado é o registro dessa divergência em uma requisição. As unidades de
+contagem e os critérios de agrupamento estão definidos na
+Seção~\ref{sec:metodologia}.
 
 \subsection{Inferência \textit{fuzzy} e prioridade técnica}
 
@@ -123,7 +110,7 @@ pertinência, regras, operadores e o método de desfuzzificação são escolhas 
 projeto; o trabalho de Mamdani não determina os parâmetros adequados para
 este domínio.
 
-Prioridade também exige delimitação. Na literatura de regressão, priorizar
+Na literatura de regressão, priorizar
 casos de teste significa alterar sua ordem para atingir antes um objetivo, como
 revelar falhas \cite{elbaum2002prioritization}; abordagens \textit{fuzzy} já foram
 empregadas para ordenar esses casos antes da execução
@@ -131,13 +118,8 @@ empregadas para ordenar esses casos antes da execução
 analisadores já produziram achados, e o sistema Mamdani ordena quais evidências
 merecem inspeção primeiro.
 
-Por isso, \emph{prioridade técnica} designa neste TCC a urgência relativa de
-triagem segundo os sinais presentes nos artefatos. Ela não equivale a
-severidade universal, impacto de negócio, explorabilidade ou probabilidade de
-vulnerabilidade. Uma vulnerabilidade requer que condições e consequências de
-segurança sejam confirmadas; uma divergência contratual pode ser relevante para
-compatibilidade ou robustez sem constituir vulnerabilidade. O FIS não detecta a
-divergência nem substitui essa análise: ele recebe achados já classificados e
-produz uma ordenação interpretável. Suas entradas, funções e regras são escolhas
-do projeto e precisam ser descritas e avaliadas empiricamente, em vez de serem
-tratadas como consequência automática da literatura \textit{fuzzy}.
+Neste TCC, \emph{prioridade técnica} indica a ordem em que vale a pena
+examinar os achados. O FIS recebe divergências já classificadas e calcula essa
+ordem com base na requisição, na resposta e nas repetições observadas. As
+entradas e regras são escolhas do projeto, descritas na
+Seção~\ref{sec:fis} e avaliadas na Seção~\ref{sec:resultados}.

@@ -11,19 +11,20 @@ limite, formatos inválidos e combinações pouco usuais de parâmetros.
 
 Contratos como a especificação OpenAPI descrevem operações, estruturas, tipos,
 restrições e respostas esperadas. Eles podem orientar a geração sistemática de
-entradas válidas e inválidas e servir como oráculo parcial para identificar
-divergências entre especificação e implementação. Essa abordagem permite
-observar a API externamente, sem instrumentação de código, em um contexto
-\textit{black-box} relacionado à noção de contrato de software
-\cite{meyer1992designbycontract}.
+entradas e a identificação de divergências entre especificação e
+implementação. Essa abordagem permite observar a API externamente, sem
+instrumentação de código, em um contexto \textit{black-box} relacionado à
+noção de contrato de software \cite{meyer1992designbycontract}.
 
-Este trabalho apresenta uma ferramenta de \textit{fuzzing} automatizado para
-APIs REST, implementada em Python e orientada por um subconjunto de OpenAPI. O
-fluxo interpreta o contrato, gera casos-base e mutações, materializa um
-plano de execução, envia requisições, confronta as respostas com o contrato e
-produz artefatos rastreáveis. Um sistema de inferência \textit{fuzzy} (FIS, do
-inglês \textit{fuzzy inference system}), do tipo Mamdani, atribui prioridade
-técnica às anomalias reportadas depois da classificação contratual.
+Este trabalho apresenta o OpenAPI Contract Fuzzer, uma ferramenta de
+\textit{fuzzing} automatizado para APIs REST, implementada em Python e
+orientada por um subconjunto de OpenAPI. Para cada operação do contrato, a
+ferramenta gera um caso-base compatível com o que conseguiu interpretar,
+aplica mutações sobre ele, envia as requisições e compara as respostas com o
+contrato. Um sistema de inferência \textit{fuzzy} (FIS, do inglês
+\textit{fuzzy inference system}), do tipo Mamdani, atribui então uma
+prioridade técnica a cada achado, isto é, a ordem em que vale a pena
+examiná-los.
 
 A questão central é: \textit{Quais contribuições e limitações a combinação de
 fuzzing black-box orientado por OpenAPI, deduplicação e priorização fuzzy
@@ -32,20 +33,20 @@ apresenta para a triagem de divergências em APIs REST?}
 O objetivo geral é implementar essa combinação e avaliá-la em APIs de código
 aberto executadas localmente. Os objetivos específicos correspondem às três
 dimensões da avaliação: (i) verificar a execução e a completude das evidências
-de anomalias contratuais e comportamentais; (ii) medir a estabilidade dos
-comportamentos entre campanhas; e (iii) medir a redução por deduplicação e
+das divergências contratuais e comportamentais; (ii) medir a estabilidade dos
+IDs semânticos entre campanhas; e (iii) medir a redução por deduplicação e
 avaliar a coerência da prioridade técnica para triagem.
 
 Quatro APIs foram utilizadas como pilotos de desenvolvimento, permitindo
-auditar a configuração inicial e formular um modelo revisado. Após o
-congelamento das regras, uma quinta API foi empregada como \textit{holdout}
-externo. Nessa validação externa, a prioridade calculada foi comparada com uma
-referência construída às cegas: três instâncias do modelo de linguagem GPT-5.6
-Luna, executadas separadamente e sem acesso ao escore do FIS, classificaram
-cada comportamento segundo os mesmos critérios, e uma quarta instância decidiu os
-casos sem maioria. Em seguida, uma coleta final reuniu cinco campanhas de cada uma
-das cinco aplicações para avaliar completude, deduplicação e estabilidade dos
-achados.
+auditar a configuração inicial e formular um modelo revisado. Com as regras e
+os parâmetros fixados, uma quinta API foi usada como API de validação externa
+(\textit{holdout}), sem participar do ajuste. Nessa validação, a prioridade
+calculada foi comparada com uma referência construída às cegas: três
+instâncias do modelo de linguagem GPT-5.6 Luna, executadas separadamente e sem
+acesso ao escore do FIS, classificaram cada família segundo os mesmos
+critérios, e uma quarta instância decidiu os casos sem maioria. Em seguida,
+uma coleta final reuniu cinco campanhas de cada uma das cinco aplicações para
+avaliar completude, deduplicação e estabilidade dos achados.
 
 O escopo limita-se a APIs REST descritas em OpenAPI. Não são abrangidos
 sequenciamento geral com estado, fluxos completos de OAuth2, avaliação de carga,
