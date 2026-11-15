@@ -1,14 +1,18 @@
 % TCC — Metodologia
 \section{Metodologia}\label{sec:metodologia}
 
-Para responder à questão de pesquisa, adota-se uma avaliação aplicada e
-experimental, baseada em execuções locais controladas. Esta seção define o
-papel das aplicações, a geração dos casos, as condições de repetição e as
-métricas usadas para analisar os artefatos produzidos. O estudo tem duas
-etapas. Na \textbf{Etapa 1 --- avaliação da priorização}, quatro aplicações
-orientaram a revisão do FIS e uma quinta foi usada para validá-lo depois de
-congelado. Na \textbf{Etapa 2 --- coleta final}, o modelo congelado foi
-executado em cinco campanhas de cada uma das cinco aplicações.
+O OpenAPI Contract Fuzzer lê o contrato, gera requisições e compara as
+respostas com o que está documentado. Cada requisição recebe um identificador,
+\texttt{case\_id}, que liga o plano ao resultado e ao achado. A ferramenta
+agrupa achados equivalentes e usa um sistema de inferência \textit{fuzzy}
+(FIS) para definir a ordem de inspeção, conforme detalhado na
+Seção~\ref{sec:desenvolvimento}.
+
+A avaliação usa execuções locais controladas e tem duas etapas. Na
+\textbf{Etapa 1 --- avaliação da priorização}, quatro aplicações orientaram a
+revisão do FIS e uma quinta validou o modelo com regras e parâmetros fixados.
+Na \textbf{Etapa 2 --- coleta final}, esse modelo foi executado em cinco
+campanhas de cada uma das cinco aplicações.
 
 \subsection{Desenho do Estudo e Papel das Aplicações}
 
@@ -26,21 +30,20 @@ A coleta final reuniu 25 campanhas novas, cinco por aplicação. Antes de cada
 campanha, a aplicação e seus dados foram reiniciados, para que o resultado não
 dependesse da execução anterior. Todas as campanhas usaram a mesma revisão do
 \textit{fuzzer}, sem alterações locais, registrada nos manifestos. As campanhas
-do Meilisearch feitas na Etapa 1 não integram essas 25 execuções.
+do Meilisearch feitas na Etapa 1 ficaram fora dessas 25 execuções.
 
-O objetivo das repetições não é gerar casos diferentes: com o mesmo contrato,
-revisão e configuração, o plano de requisições tende a ser o mesmo. As
-repetições verificam se as respostas e os achados se mantêm depois do
-reinício. Essa distinção é necessária porque a execução ainda pode variar: alguns
-executores geram credenciais automaticamente, e o estado da aplicação, o tempo de
-resposta ou uma falha transitória podem mudar entre campanhas.
+As repetições verificam se as respostas e os achados se mantêm depois do
+reinício. Com o mesmo contrato, revisão e configuração, o plano de requisições
+tende a ser o mesmo. Ainda assim, os scripts de campanha, responsáveis por
+preparar cada API e chamar a ferramenta, podem gerar novas credenciais.
+O estado da aplicação e falhas transitórias também podem mudar os resultados.
 
 \subsection{Geração dos Testes e Níveis de Mutação}
 
 A geração começa com um caso compatível com as informações interpretadas do
 contrato. A partir dele, o motor aplica operadores tipados aos corpos JSON.
-Os parâmetros de caminho, consulta e cabeçalho recebem valores gerados, mas
-não participam desse motor de mutações. Três níveis organizam a exploração:
+Os parâmetros de caminho, consulta e cabeçalho recebem valores gerados, sem
+mutação. Três níveis organizam a exploração:
 
 \begin{itemize}
     \item \textbf{Nível 0 (L0) --- caso-base:} executa a entrada gerada para
@@ -48,8 +51,8 @@ não participam desse motor de mutações. Três níveis organizam a exploraçã
     \item \textbf{Nível 1 (L1) --- mutação isolada:} aplica uma alteração por
     caso, permitindo relacionar a resposta com um operador específico;
     \item \textbf{Nível 2 (L2) --- mutações combinadas:} combina duas alterações
-    compatíveis para explorar interações, preservando orçamento próprio e os
-    casos isolados de L1.
+    compatíveis para explorar interações. O limite de pares por corpo é
+    independente do limite de L1, cujos casos também são executados.
 \end{itemize}
 
 Essa progressão distingue comportamento nominal, efeito individual e interação
@@ -65,12 +68,11 @@ repetição, revisão do código, estado Git, resumos criptográficos, ambiente,
 horários e contagens. O plano e os resultados são correlacionados por
 \texttt{case\_id}.
 
-As campanhas da coleta final usaram a configuração já exercitada nos pilotos. O
-executor percorreu as operações selecionadas depois das exclusões específicas
-de cada alvo e executou os níveis L0, L1 e L2. O limite configurado foi de 20
-casos de mutação isolada por corpo no L1 e de 10 pares compatíveis no L2. Esses limites
-são fixos; a quantidade efetiva pode ser menor quando o contrato oferece menos
-parâmetros, esquemas ou combinações aplicáveis. A concorrência foi de 1, o
+As campanhas da coleta final usaram a mesma configuração dos pilotos. O
+executor percorreu as operações selecionadas, depois das exclusões de cada
+alvo, e executou os níveis L0, L1 e L2. O limite foi de 20 mutações isoladas
+por corpo no L1 e de 10 pares compatíveis no L2; a quantidade efetiva é menor
+quando o contrato oferece menos parâmetros, esquemas ou combinações. A concorrência foi de 1, o
 intervalo entre requisições de 250 ms e o tempo limite de 10 s. A configuração
 foi idêntica nas cinco campanhas de cada API. Entre alvos, variaram a
 autenticação e os caminhos excluídos, registrados nos manifestos.
@@ -85,83 +87,92 @@ do contrato. Como os contratos têm tamanhos diferentes, as APIs também produze
 quantidades diferentes de casos e requisições; cada manifesto registra o número
 planejado e o executado.
 
-Respostas 4xx e 5xx são observações do teste e não invalidam uma campanha. Uma
-campanha é válida quando o plano foi executado por completo, cada
-\texttt{case\_id} tem resultado, os artefatos são legíveis e a versão do alvo,
-a revisão da ferramenta e a configuração estão registradas. Falha de
-inicialização, encerramento do alvo ou interrupção que deixe requisições sem
-resultado tornam a campanha inválida: ela é preservada com a justificativa,
-fica fora do agregado e, se a causa puder ser corrigida, é substituída por uma
-nova campanha, com outro identificador.
+Respostas 4xx e 5xx são resultados normais do teste. Uma campanha é válida
+quando o plano foi executado por completo, cada \texttt{case\_id} tem
+resultado, os artefatos são legíveis e a versão do alvo, a revisão da
+ferramenta e a configuração estão registradas. Se uma falha de inicialização,
+o encerramento do alvo ou uma interrupção deixar requisições sem resultado, a
+campanha é inválida: ela é guardada com a justificativa, fica fora do agregado
+e, se a causa puder ser corrigida, é substituída por uma nova campanha, com
+outro identificador.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.90\linewidth]{Diagrams/experimental-architecture.png}
-    \caption{Ciclo de uma execução experimental isolada. O programa auxiliar específico
+    \caption{Ciclo de uma execução experimental isolada. O script de campanha
     prepara o alvo descartável e invoca a ferramenta. A ligação HTTP representa a
-    troca de requisições e respostas; a evidência é completada com a
-    proveniência do alvo antes da deduplicação e consolidação.}
+    troca de requisições e respostas; os registros incluem a versão e a configuração
+    do alvo antes do agrupamento dos achados.}
     \label{fig:ciclo-experimental}
 \end{figure}
 
-Para acompanhar uma execução sem misturar coisas diferentes, o estudo separa
-seis unidades:
+A Tabela~\ref{tab:vocabulario} define as unidades usadas nas contagens.
 
-\begin{itemize}
-    \item uma \textbf{requisição}, que é um caso enviado à API;
-    \item uma \textbf{observação classificada}, emitida pelo analisador para
-    uma requisição; rejeições esperadas entram nas contagens de execução,
-    enquanto as demais observações candidatas são os achados para triagem;
-    \item uma \textbf{assinatura estrita}, que agrupa, dentro de uma campanha,
-    observações equivalentes por aplicação, operação, classificação, status,
-    resposta normalizada e caminho do erro de validação;
-    \item um \textbf{ID semântico}, que identifica esses grupos entre campanhas
-    da mesma API. Preserva os componentes da assinatura estrita, com uma
-    normalização adicional restrita aos campos \texttt{requestUid} e
-    \texttt{processingTimeMs} nas respostas de \texttt{POST /multi-search}
-    do Meilisearch. Essa normalização foi definida na Etapa 1, depois de se
-    observar que esses dois campos mudavam a cada execução, e mantida sem
-    alteração na Etapa 2;
-    \item uma \textbf{campanha}, que é uma execução completa contra uma API;
-    \item uma \textbf{família de comportamento}, usada na Etapa 1 para reunir
-    assinaturas com a mesma operação, tipo de divergência, status e contexto do
-    caso (caso-base, mutação inválida, mutação válida, credencial ausente ou
-    credencial inválida).
-\end{itemize}
+\begin{table}[ht]
+\centering
+\caption{Vocabulário da avaliação}
+\label{tab:vocabulario}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}p{3.7cm}|>{\raggedright\arraybackslash}p{9.9cm}|}
+\hline
+\textbf{Termo} & \textbf{Significado} \\ \hline
+Requisição (ou caso) & Entrada do plano enviada à API, identificada por \texttt{case\_id}. \\ \hline
+Campanha & Execução completa do plano contra uma API. \\ \hline
+Rejeição esperada & Resposta 4xx documentada e conforme ao contrato. \\ \hline
+Divergência & Contradição entre a resposta e o que o contrato declara. \\ \hline
+Achado & Registro de uma divergência em uma requisição. \\ \hline
+Assinatura estrita & Grupo de achados equivalentes dentro de uma campanha. \\ \hline
+ID semântico & Identificador usado para encontrar a mesma assinatura em campanhas diferentes. \\ \hline
+Família & Agrupamento de assinaturas usado só na Etapa 1. \\ \hline
+Prioridade técnica & Ordem em que vale a pena examinar os achados, nas faixas \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH}. \\ \hline
+\end{tabular}
+\end{table}
 
-Essa separação evita contar várias mutações que produziram a mesma resposta
-como falhas diferentes. Um grupo não corresponde necessariamente a uma causa
-raiz, e ``semântico'' designa apenas a regra de comparação descrita acima.
+A assinatura estrita combina aplicação, operação, classe, status, resposta
+normalizada e caminho do erro de validação. O ID semântico preserva esses
+componentes e aplica uma normalização adicional aos campos \texttt{requestUid}
+e \texttt{processingTimeMs} de \texttt{POST /multi-search} do Meilisearch.
+Esses campos mudavam a cada execução. A normalização foi definida na Etapa 1
+e mantida sem alteração na Etapa 2.
+
+A família reúne assinaturas com a mesma operação, tipo de divergência, status
+e contexto do caso: caso-base, mutação inválida ou válida, ou teste com
+credencial ausente ou inválida. Respostas agrupadas na mesma assinatura ou
+família são equivalentes, mas podem ter causas diferentes.
 
 Para avaliar a prioridade na Etapa 1, foi construída uma referência
 independente do FIS. Cada família foi apresentada em uma ficha com o contrato,
 a requisição, a resposta e o número de repetições em que apareceu; a ficha
 omitia a classificação do analisador, o escore, a faixa e as regras do FIS.
-Três instâncias do modelo de linguagem GPT-5.6 Luna, executadas em contextos
-separados e sem acesso às avaliações umas das outras, aplicaram os mesmos
-critérios de avaliação. Os critérios pedem primeiro uma decisão de validade:
-a família é \textbf{sustentada} quando os fatos permitem afirmar uma anomalia
-técnica e atribuir prioridade, \textbf{não sustentada} quando o comportamento
-é compatível com o contrato e \textbf{indeterminada} quando falta evidência para
+Três instâncias do modelo de linguagem GPT-5.6 Luna avaliaram as fichas em
+contextos separados, sem ver as avaliações umas das outras. Prevaleceu a
+decisão da maioria; quando não houve maioria, uma quarta instância do mesmo
+modelo decidiu, também sem acesso às avaliações anteriores ou ao FIS.
+
+Os critérios pedem primeiro uma decisão de validade. A família é
+\textbf{sustentada} quando os fatos permitem afirmar uma divergência técnica e
+atribuir prioridade, \textbf{não sustentada} quando o comportamento é
+compatível com o contrato e \textbf{indeterminada} quando falta evidência para
 decidir. Só as famílias sustentadas recebem prioridade: por exemplo, uma
 rejeição segura de entrada inválida tende a \texttt{LOW}, uma entrada inválida
-aceita a \texttt{MEDIUM} e a indisponibilidade repetida de uma operação válida a
-\texttt{HIGH}. Prevaleceu a decisão da maioria; quando não houve maioria, uma
-quarta instância do mesmo modelo decidiu, também sem acesso às avaliações
-anteriores ou ao FIS. As duas avaliações usaram os mesmos níveis e a mesma
-decisão de validade; os critérios foram revisados para a validação no
-Meilisearch, e o \textit{prompt} usado nela está publicado no repositório do
+aceita a \texttt{MEDIUM} e a indisponibilidade repetida de uma operação válida
+a \texttt{HIGH}. As duas avaliações usaram os mesmos níveis e a mesma decisão
+de validade; o texto dos critérios foi revisado para a validação no
+Meilisearch.
+
+Os critérios, as fichas, os votos das três instâncias, as adjudicações, o
+consenso e as métricas das duas avaliações estão publicados no repositório do
 projeto\footnote{\url{https://github.com/Levi-21545/api-fuzzer}}, em
-\path{experiments/tcc-2026/fis-evaluation/rubric.md}.
+\path{experiments/tcc-2026/fis-evaluation/}.
 
 Como as quatro instâncias são do mesmo modelo, seus julgamentos são
 correlacionados, e a referência não substitui a avaliação de especialistas
-humanos. Como esses critérios também orientaram a
-revisão do FIS, a comparação mede se o FIS os reproduz em dados que não
-participaram do ajuste, e não se a prioridade está correta em sentido absoluto.
+humanos. Os mesmos critérios também orientaram a revisão do FIS; por isso, a
+comparação mede quanto o modelo reproduz esses critérios em dados que ficaram
+fora do ajuste.
 
 Na Etapa 1, o FIS é comparado com uma linha de base que usa apenas o desvio do
-status HTTP, o sinal que dominava o modelo inicial: status documentado recebe
+status HTTP, a informação que dominava o modelo inicial: status documentado recebe
 \texttt{LOW}, status não documentado recebe \texttt{MEDIUM} e erro 5xx ou
 ausência de resposta recebe \texttt{HIGH}. As duas abordagens recebem as mesmas
 famílias como entrada, e cada família recebe o maior escore entre os seus
@@ -172,58 +183,47 @@ faixa de referência, codificando \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH}
 como 0, 1 e 2. O erro ordinal é a média das diferenças absolutas entre a faixa
 prevista e a faixa de referência. No Meilisearch, o macro-F1 e a acurácia
 balanceada consideram apenas as classes presentes, pois a referência não teve
-famílias \texttt{HIGH}. Famílias indeterminadas são contabilizadas
-separadamente e não entram nessas métricas. Cada família contribui uma única
-vez para a comparação.
+famílias \texttt{HIGH}. Famílias indeterminadas são contadas à parte e ficam
+fora dessas métricas. Cada família entra uma única vez na comparação.
 
-Na Etapa 2 não houve nova referência cega nem reaproveitamento dos rótulos da
-Etapa 1. A coleta avalia execução, deduplicação e estabilidade, e a distribuição
-das prioridades é apenas descrita, sem métricas de acerto. O FIS não foi
-recalibrado.
+Na Etapa 2, a coleta avalia execução, deduplicação e estabilidade. As
+prioridades são descritas sem métricas de acerto, pois essa etapa não tem
+rótulos de referência. O FIS manteve os parâmetros fixados na Etapa 1.
 
 Na coleta final, a estabilidade é medida pela presença de um mesmo ID semântico
-nas cinco campanhas, sem uma reexecução adicional de cada requisição. Cada ID
+nas cinco campanhas. Cada ID
 conta no máximo uma vez por campanha e é considerado estável quando aparece em
 pelo menos quatro delas sob a mesma configuração. A proporção estável usa como
 denominador a união dos IDs das cinco campanhas da mesma aplicação.
 
 A redução por deduplicação compara o total de achados brutos com a soma das
 assinaturas estritas das campanhas: $1 - U/R$, em que $R$ representa os achados
-brutos e $U$ as assinaturas estritas. A união de IDs semânticos é outra medida,
-usada para observar presença entre campanhas, e não substitui $U$ nessa fórmula.
+brutos e $U$ as assinaturas estritas. A união de IDs semânticos serve apenas
+para medir a presença entre campanhas.
 Na descrição do FIS, cada assinatura estrita recebe o maior escore dos seus
-casos, a mesma regra usada para as famílias da Etapa 1. Casos com a mesma
+casos, o mesmo critério usado para as famílias da Etapa 1. Casos com a mesma
 resposta podem ter prioridades diferentes porque o FIS também considera a
 requisição (se deveria ser rejeitada, se foi enviada sem credencial) e a
 evidência reunida entre os casos.
 
 \subsection{Limitações e Ameaças à Interpretação}
 
-\paragraph{O que é medido.}
-O contrato OpenAPI funciona como uma referência parcial: ele descreve o
-comportamento esperado, mas pode omitir regras existentes na implementação. A
-ferramenta também interpreta apenas o subconjunto de OpenAPI que suporta. Por isso,
-uma divergência encontrada é um comportamento que merece inspeção, não uma
-prova de defeito ou vulnerabilidade. O escore do FIS ordena a triagem e não
-estima impacto real, explorabilidade ou gravidade de segurança.
+O contrato OpenAPI é uma referência parcial: descreve o comportamento
+esperado, mas pode omitir regras que existem na implementação, e a ferramenta
+interpreta apenas o subconjunto de OpenAPI que suporta. Uma divergência é,
+portanto, um comportamento que merece inspeção, e não a prova de um defeito ou
+de uma vulnerabilidade. Da mesma forma, o escore do FIS ordena a triagem; ele
+não mede impacto real nem gravidade de segurança.
 
-\paragraph{Condições da execução.}
-Estado residual, ordem das requisições, latência da máquina e falhas internas da
-aplicação podem mudar o resultado de uma campanha. A reinicialização entre campanhas,
-concorrência 1, atraso fixo e manifestos reduzem essas diferenças. Ainda assim,
-não é possível garantir que toda variação do ambiente tenha sido eliminada.
+Estado residual, ordem das requisições, latência e falhas internas da
+aplicação podem mudar o resultado de uma campanha. O reinício entre campanhas,
+a concorrência 1, o atraso fixo e os manifestos reduzem essas diferenças, sem
+eliminar toda variação do ambiente.
 
-\paragraph{Alcance das aplicações.}
-O estudo usa cinco aplicações: quatro participaram do desenvolvimento e dos
-pilotos, e o Meilisearch foi mantido como aplicação externa para confirmar a
-priorização. Esse desenho permite testar o modelo fora do conjunto de
-desenvolvimento que o originou,
-mas não representa a variedade de todas as APIs REST. As conclusões ficam
-limitadas às aplicações, contratos, versões e configurações avaliados.
-
-\paragraph{Força das conclusões.}
-O número de famílias e a distribuição entre \texttt{LOW}, \texttt{MEDIUM} e
-\texttt{HIGH} limitam algumas métricas. A referência de prioridade foi produzida
-às cegas por instâncias de um mesmo modelo de linguagem, cujos julgamentos são
-correlacionados, e não por especialistas humanos. O trabalho também não mede
-cobertura de código.
+As cinco aplicações permitem testar o modelo fora do conjunto que o originou,
+mas não representam todas as APIs REST; as conclusões valem para as
+aplicações, os contratos, as versões e as configurações avaliados. Por fim, o
+número de famílias e sua distribuição entre \texttt{LOW}, \texttt{MEDIUM} e
+\texttt{HIGH} limitam algumas métricas, a referência de prioridade veio de
+instâncias de um mesmo modelo de linguagem, e o trabalho não mede cobertura de
+código.

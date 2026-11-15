@@ -6,37 +6,51 @@ Este trabalho investigou quais contribuições e limitações a combinação de
 priorização \textit{fuzzy} apresenta para a triagem de divergências em APIs
 REST. Para isso, foi implementado um fluxo que interpreta um subconjunto de
 OpenAPI, gera casos-base e mutações, executa as requisições, identifica
-divergências, agrupa observações equivalentes, atribui prioridade técnica e
+divergências, agrupa achados equivalentes, atribui prioridade técnica e
 preserva os artefatos de cada campanha.
 
-Nas três dimensões avaliadas, os resultados indicam:
+Os três objetivos específicos foram cumpridos nas condições avaliadas:
 
 \begin{itemize}
-    \item \textbf{execução e completude:} as 25 campanhas da coleta final
+    \item \textbf{verificar execução e completude:} as 25 campanhas da coleta final
     concluíram as 7.175 requisições planejadas, e as contagens do artigo podem
     ser rastreadas até os planos, as respostas e os achados publicados;
-    \item \textbf{estabilidade:} 441 dos 570 IDs semânticos reapareceram nas
+    \item \textbf{medir estabilidade:} 441 dos 570 IDs semânticos reapareceram nas
     cinco repetições da respectiva API e 453 em pelo menos quatro. A presença
     foi completa no Petclinic REST e no Meilisearch; em VAmPI e RealWorld, a
     variação veio de dados gerados em cada campanha, e a crAPI concentrou a
     maior parte dos IDs observados uma única vez;
-    \item \textbf{deduplicação e prioridade:} o agrupamento reduziu 4.000
+    \item \textbf{medir deduplicação e avaliar prioridade:} o agrupamento reduziu 4.000
     achados brutos a 2.460 assinaturas estritas (38,5\%). Na Etapa 1, o FIS
     revisado concordou com a referência cega em 120 de 122 famílias do
     Meilisearch, contra 4 da linha de base baseada somente no status.
 \end{itemize}
 
-A principal contribuição é um processo rastreável que transforma um contrato
-OpenAPI em evidências organizadas para triagem de \textit{contract drift},
-incompatibilidades funcionais, problemas de robustez e indícios de controle de
-acesso, com uma prioridade cujos critérios podem ser auditados. Os resultados
-não confirmam vulnerabilidades nem estimam impacto real. As conclusões são
-limitadas pelo número de aplicações, pelos recortes dos contratos, pelo OpenAPI
-como oráculo parcial e por uma referência de prioridade produzida por um modelo
-de linguagem, sem casos \texttt{HIGH} no Meilisearch. Na coleta final, os
-escores têm interpretação descritiva.
+Em resposta à pergunta de pesquisa, as contribuições são o fluxo rastreável
+do contrato até o achado, o agrupamento que reduz o volume para triagem e a
+prioridade \textit{fuzzy} com regras legíveis. A avaliação no Meilisearch
+mostrou que os critérios de prioridade também foram reproduzidos em uma API
+fora do desenvolvimento.
 
-Como trabalhos futuros, ficam a ampliação das aplicações e dos recursos de
-OpenAPI suportados, a resolução de dependências entre operações, a avaliação da
-triagem por especialistas humanos, a integração com uma esteira de integração
-contínua e a comparação com outras ferramentas sob um mesmo protocolo.
+As limitações são o número de aplicações, os recortes dos contratos e o
+subconjunto de OpenAPI suportado. O contrato cobre apenas o comportamento
+descrito na interface, e a ferramenta não resolve dependências gerais entre
+operações com estado. A referência de prioridade veio de instâncias de um
+mesmo modelo de linguagem, sem famílias \texttt{HIGH} no Meilisearch; na
+coleta final, os escores são apenas descritivos. Os resultados não confirmam
+vulnerabilidades nem estimam impacto real.
+
+Os trabalhos futuros decorrem desses limites. A referência produzida por
+modelo de linguagem exige avaliação por especialistas humanos. As dificuldades
+com estado, como as observadas na crAPI, pedem tratamento de dependências entre
+operações e de identificadores dinâmicos. A cobertura parcial do contrato
+motiva suporte a mais recursos de OpenAPI. A ausência de comparação
+experimental pede uma avaliação com outras ferramentas sob o mesmo protocolo.
+A integração contínua, ainda fora da implementação avaliada, é um próximo
+contexto de uso a testar.
+
+A principal lição foi que o primeiro modelo repetia o status HTTP: tempo e
+tamanho da resposta não ajudaram a distinguir prioridades. O que mudou a
+prioridade foi o contexto do caso: a entrada deveria ser rejeitada? A operação
+foi chamada sem credencial? Essas perguntas aproximaram as regras da inspeção
+que os achados exigem.

@@ -1,11 +1,9 @@
 % TCC — Desenvolvimento
 \section{Desenvolvimento da Ferramenta}\label{sec:desenvolvimento}
 
-O OpenAPI Contract Fuzzer foi implementado em Python como um fluxo modular.
-A organização separa interpretação do contrato, geração dos casos, execução
-HTTP, análise das respostas, priorização e persistência dos artefatos. Esta
-seção descreve as responsabilidades necessárias para compreender e reproduzir
-o fluxo.
+O OpenAPI Contract Fuzzer foi implementado em Python. Seus módulos
+interpretam o contrato, geram e executam requisições e registram a análise
+das respostas com a prioridade de cada achado.
 
 \subsection{Do Contrato ao Plano de Execução}
 
@@ -24,7 +22,7 @@ um \texttt{case\_id} e registra se representa caso-base, mutação ou teste de
 autenticação, além dos metadados das mutações. O plano completo é persistido
 antes das chamadas à API.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.62\linewidth,height=0.67\textheight,
     keepaspectratio]{Diagrams/system-architecture.png}
@@ -39,17 +37,29 @@ antes das chamadas à API.
 
 A execução utiliza cliente HTTP assíncrono, semáforo de concorrência, atraso e
 tempo limite configuráveis. Para cada caso são registrados URL, status, tempo,
-tamanho, corpo e erro de transporte. Os executores experimentais cuidam da
-inicialização, da reinicialização e da proveniência específica das aplicações sem alterar
-o núcleo da ferramenta.
+tamanho, corpo e erro de transporte. Os scripts de campanha preparam e
+reiniciam as aplicações e registram suas versões e configurações.
 
-O analisador confronta status e esquemas observados com o contrato. Entre as
-classificações estão falhas de transporte, erros 5xx, status não documentados,
-incompatibilidades de esquema e aceitação de entradas que deveriam ser
-rejeitadas. Uma rejeição 4xx documentada e compatível é preservada como
-comportamento esperado e separada dos candidatos. Uma divergência contratual
-continua relevante mesmo quando a API rejeita a entrada com segurança, pois
-pode afetar consumidores.
+O analisador confronta status e corpos das respostas com o contrato. Uma
+rejeição 4xx documentada e conforme ao esquema é registrada como rejeição
+esperada. As divergências são registradas como achados nas cinco classes da
+Tabela~\ref{tab:classes-analisador}.
+
+\begin{table}[ht]
+\centering
+\caption{Classes de divergência registradas pelo analisador}
+\label{tab:classes-analisador}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}p{5.4cm}|>{\raggedright\arraybackslash}p{8.2cm}|}
+\hline
+\textbf{Classe} & \textbf{Definição} \\ \hline
+\texttt{ERROR\_CONTRADICTION} & Erro 4xx documentado, mas o corpo não é JSON ou não segue o contrato. \\ \hline
+\texttt{SERVER\_ERROR} & Resposta 5xx. \\ \hline
+\texttt{SUCCESS\_CONTRADICTION} & Resposta 2xx não documentada, ou corpo fora do contrato. \\ \hline
+\texttt{UNEXPECTED\_ERROR\_STATUS} & Erro 4xx não documentado para a operação, ou requisição sem resposta. \\ \hline
+\texttt{UNEXPECTED\_SUCCESS} & Resposta 2xx a uma requisição que deveria ser rejeitada (payload mutado ou credencial ausente/inválida). \\ \hline
+\end{tabular}
+\end{table}
 
 O pós-processamento correlaciona plano, resultado e achado por
 \texttt{case\_id}, constrói assinaturas, seleciona representantes e calcula
@@ -57,15 +67,14 @@ métricas. Cada diretório de campanha reúne \texttt{run\_manifest.json}, plano
 execução, resultados brutos, achados estruturados, conjunto deduplicado e
 relatórios em Markdown. O manifesto preserva configuração, revisão e estado do
 código, resumos criptográficos do contrato e da árvore-fonte, ambiente, horários, contagens e
-estado da campanha. Cabeçalhos e valores sensíveis são redigidos antes da
-persistência pública.
+estado da campanha. Cabeçalhos e valores sensíveis são ocultados antes da publicação.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.96\linewidth]{Diagrams/run-traceability.png}
     \caption{Níveis de observação e rastreabilidade dos achados. O
     \texttt{case\_id} relaciona plano, resposta e classificação; a deduplicação
-    produz achados operacionais únicos. O agrupamento posterior em famílias
+    produz assinaturas estritas. O agrupamento posterior em famílias
     pertence à avaliação da priorização (Etapa 1); na coleta final, a comparação entre
     campanhas utiliza IDs semânticos.}
     \label{fig:rastreabilidade-achados}
@@ -77,21 +86,81 @@ campanhas da coleta final estão publicadas no repositório do projeto, em
 \path{experiments/tcc-2026/final/},
 com os cinco contratos e suas licenças, um relatório de resultados e um arquivo
 CSV com um ID semântico por linha; só os registros de execução dos contêineres
-foram omitidos. O pacote inclui o comando que valida as campanhas e reproduz a
+foram omitidos. Os artefatos incluem o comando que valida as campanhas e reproduz a
 análise sem as aplicações em execução.
 
-\subsection{Priorização \textit{Fuzzy}}
+\subsection{Priorização \textit{Fuzzy}}\label{sec:fis}
 
-Depois da classificação contratual, um sistema Mamdani combina sinais
-observáveis para produzir um escore contínuo e as faixas \texttt{LOW}, \texttt{MEDIUM} e \texttt{HIGH}. O
-FIS não decide se existe divergência; ele organiza a inspeção dos achados já
-reportados. Entradas, pertinências, regras ativadas e eventual regra alternativa são
-preservados nos artefatos para tornar a decisão auditável.
+Depois da classificação, um sistema Mamdani calcula a prioridade técnica de
+cada achado a partir de três entradas, todas no intervalo de 0 a 1:
 
-O construto é prioridade técnica da anomalia, abrangendo \textit{contract drift},
-compatibilidade funcional, robustez e controle de acesso. A evolução do modelo
-e os sinais utilizados em sua revisão são apresentados uma única vez na
-Seção~\ref{sec:revisao-fis}, junto das evidências que motivaram a mudança.
+\begin{itemize}
+    \item \textbf{contradição comportamental}: quanto a resposta contraria o
+    que se esperava do caso, com os valores da
+    Tabela~\ref{tab:entradas-fis};
+    \item \textbf{força da evidência}: 0,5 por padrão; passa a 1,0 quando a
+    mesma assinatura reúne três ou mais respostas 5xx, ou sem resposta, a
+    casos que não deveriam ser rejeitados;
+    \item \textbf{exposição de controle de acesso}: 0 por padrão; 0,6 quando a
+    API responde com 2xx a uma credencial inválida e 1,0 quando responde com
+    2xx a uma requisição sem credencial.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Valor da contradição comportamental em cada situação}
+\label{tab:entradas-fis}
+\small
+\begin{tabular}{|l|l|r|}
+\hline
+\textbf{Caso} & \textbf{Resposta} & \textbf{Contradição} \\ \hline
+Qualquer & 5xx ou sem resposta & 1,0 \\ \hline
+\multirow{2}{*}{Deveria ser rejeitado\textsuperscript{a}} & 2xx (aceito) & 0,7 \\ \cline{2-3}
+ & rejeitado & 0,15 \\ \hline
+\multirow{5}{*}{Válido} & 2xx com corpo fora do esquema & 0,65 \\ \cline{2-3}
+ & 2xx não documentado & 0,25 \\ \cline{2-3}
+ & 2xx documentado e corpo conforme & 0,0 \\ \cline{2-3}
+ & 400 não documentado, em operação com corpo & 0,6 \\ \cline{2-3}
+ & outros 3xx e 4xx & 0,2 \\ \hline
+\multicolumn{3}{l}{\footnotesize \textsuperscript{a} Mutação inválida ou teste
+com credencial ausente ou inválida.}
+\end{tabular}
+\end{table}
+
+As funções de pertinência convertem esses valores em graus de contradição
+baixa, média ou alta, evidência limitada ou forte e exposição nenhuma,
+potencial ou clara. As seis regras são:
+
+\begin{enumerate}[label=R\arabic*.,leftmargin=*]
+    \item contradição baixa leva a prioridade \texttt{LOW};
+    \item contradição média leva a prioridade \texttt{MEDIUM};
+    \item contradição alta com evidência limitada leva a \texttt{MEDIUM};
+    \item contradição alta com evidência forte leva a \texttt{HIGH};
+    \item exposição potencial de acesso leva a \texttt{MEDIUM};
+    \item exposição clara de acesso leva a \texttt{HIGH}.
+\end{enumerate}
+
+A desfuzzificação pelo centroide produz um escore contínuo. A faixa é
+\texttt{LOW} abaixo de 0,33, \texttt{MEDIUM} de 0,33 até abaixo de 0,66 e
+\texttt{HIGH} a partir de 0,66. Se nenhuma regra disparar, o escore recebe o
+próprio valor da contradição. Os artefatos registram as entradas, as
+pertinências, as regras ativadas e o uso dessa regra alternativa.
+
+Como as entradas assumem poucos valores fixos, o modelo \textit{fuzzy} não
+foi escolhido para medir graus finos. Ele foi escolhido por dois motivos: o
+escore contínuo ordena achados dentro da mesma faixa, e as regras ficam
+escritas em termos próximos dos usados na triagem, o que permite conferir
+cada decisão nos artefatos. O estudo não comparou o FIS com uma tabela de
+regras sem lógica \textit{fuzzy}.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.84\linewidth]{Diagrams/fuzzy-prioritization.png}
+    \caption{Fluxo auditável do sistema Mamdani de priorização. Dados do
+    contrato, da resposta e da autenticação são fuzzificados e combinados por
+    seis regras. A saída indica a ordem de inspeção dos achados.}
+    \label{fig:priorizacao-fuzzy}
+\end{figure}
 
 A cobertura de OpenAPI permanece parcial. Outros tipos de mídia,
 \texttt{oneOf}, \texttt{anyOf}, referências externas e parte das regras de
@@ -99,3 +168,40 @@ serialização não são suportados. A ferramenta também não resolve dependên
 gerais entre recursos ou sequências com estado; identificadores dinâmicos podem
 apontar para recursos inexistentes. Esses limites restringem as operações
 exercitáveis e acompanham a interpretação dos resultados.
+
+\subsection{Exemplo de um Achado Rastreável}
+
+Na primeira campanha final do Spring Petclinic REST, o caso
+\texttt{case-000127} substituiu o objeto JSON do corpo pela cadeia
+\texttt{not-an-object}. O operador \texttt{wrong\_type} registra que essa
+entrada deveria ser rejeitada. A Tabela~\ref{tab:exemplo-achado} acompanha o
+caso desde o plano até a prioridade calculada.
+
+\begin{table}[ht]
+\centering
+\caption{Exemplo rastreável da coleta final no Spring Petclinic REST}
+\label{tab:exemplo-achado}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}p{3.6cm}|>{\raggedright\arraybackslash}p{10.0cm}|}
+\hline
+\textbf{Registro} & \textbf{Valor nos artefatos} \\ \hline
+Campanha & \path{petclinic-final-r1-20260924T021826Z} \\ \hline
+Caso e operação & \texttt{case-000127}; \texttt{POST} \path|/owners/{ownerId}/pets/{petId}/visits|. \\ \hline
+Caminho enviado & \texttt{/owners/0/pets/0/visits}. \\ \hline
+Mutação & \texttt{wrong\_type}, operação \texttt{replace} na raiz do corpo, com valor \texttt{not-an-object}. \\ \hline
+Resposta e classe & HTTP 500; \texttt{SERVER\_ERROR}. \\ \hline
+Entradas do FIS & Contradição 1,0; evidência 0,5; exposição de acesso 0,0. \\ \hline
+Regra ativada & R3: contradição alta com evidência limitada; força de ativação 0,6667. \\ \hline
+Escore e faixa & 0,5; \texttt{MEDIUM}. \\ \hline
+Agrupamento & A assinatura estrita reuniu 6 achados brutos nessa campanha. \\ \hline
+\end{tabular}
+\end{table}
+
+O plano registra a mutação em \path{data/execution_plan.json}; a classe e o
+FIS estão em \path{analysis/analysis_findings.json}; a assinatura e sua
+contagem estão em \path{analysis/findings_unique.json}. Esses arquivos ficam
+no diretório da campanha, sob \path{experiments/tcc-2026/final/petclinic/}.
+A mesma assinatura apareceu nas cinco campanhas. Ela reúne seis respostas
+5xx, mas a evidência continua em 0,5: a regra de recorrência vale apenas para
+casos que não deveriam ser rejeitados, e este caso enviava uma entrada
+inválida.

@@ -48,13 +48,20 @@ critérios, e uma quarta instância decidiu os casos sem maioria. Em seguida,
 uma coleta final reuniu cinco campanhas de cada uma das cinco aplicações para
 avaliar completude, deduplicação e estabilidade dos achados.
 
-O escopo limita-se a APIs REST descritas em OpenAPI. Não são abrangidos
-sequenciamento geral com estado, fluxos completos de OAuth2, avaliação de carga,
-cobertura de código ou confirmação automática de vulnerabilidades. Um achado
-pode representar \textit{contract drift}, incompatibilidade funcional,
-robustez ou comportamento de controle de acesso e ainda exigir interpretação
-antes de ser tratado como defeito. Integração contínua é uma motivação, mas não
-é implementada nem avaliada.
+O trabalho contribui em três frentes. A primeira é a rastreabilidade:
+qualquer achado pode ser seguido até o contrato, a requisição e a resposta que
+o produziram, e cada número do artigo pode ser conferido nos artefatos
+publicados. A segunda é o agrupamento, que junta respostas equivalentes para
+que cada comportamento seja examinado uma única vez. A terceira é uma
+prioridade \textit{fuzzy} com regras que podem ser lidas e conferidas, testada
+em uma API mantida fora do desenvolvimento do modelo.
+
+O escopo abrange APIs REST descritas em OpenAPI. Sequenciamento geral com
+estado, fluxos completos de OAuth2, avaliação de carga e cobertura de código
+ficam fora do estudo. Um achado pode indicar desatualização do contrato
+(\textit{contract drift}), incompatibilidade funcional ou problemas de
+robustez e controle de acesso. Integração contínua é uma motivação para uso
+futuro.
 
 O restante deste artigo está organizado da seguinte forma. A
 Seção~\ref{sec:fundamentacao} apresenta os conceitos necessários. A

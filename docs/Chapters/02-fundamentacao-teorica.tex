@@ -67,10 +67,9 @@ repetir operações isoladas.
 Um oráculo de teste decide se a observação satisfaz alguma expectativa. Status
 de servidor, status não declarado, conformidade do corpo com o esquema e
 aceitação de uma entrada inválida são exemplos de propriedades verificáveis a
-partir da interface. Nenhuma delas, isoladamente, comprova que toda a operação
-está correta. O contrato atua, portanto, como \emph{oráculo parcial}: permite
-detectar contradições relativas às declarações disponíveis, mas não cobre
-efeitos de negócio, intenção do fornecedor, impacto ou segurança. Estudos da
+partir da interface. Por isso, o contrato é um \emph{oráculo parcial}: ele permite julgar apenas
+o que está declarado na interface. Saber se uma operação alterou os dados
+certos ou expôs informação indevida exige outras verificações. Estudos da
 área mostram que ferramentas baseadas em OpenAPI adotam combinações distintas
 de geração e oráculos, e que a incompletude dos esquemas limita a exploração
 \textit{black-box} \cite{golmohammadi2023rest,zhang2023openproblems}.
