@@ -1,0 +1,22 @@
+[
+  {
+    "blind_id": "MCF-87edd4f98b3a",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.91,
+    "rationale": "O baseline autenticado retornou 400 não documentado nas cinco execuções, mas a ficha não informa se a funcionalidade da rota estava habilitada.",
+    "missing_evidence": [
+      "Estado de habilitação da funcionalidade da rota."
+    ]
+  },
+  {
+    "blind_id": "MCF-c0222fc41a2f",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.91,
+    "rationale": "O baseline autenticado retornou 400 não documentado nas cinco execuções, mas a ficha não informa se a funcionalidade de métricas estava habilitada.",
+    "missing_evidence": [
+      "Estado de habilitação da funcionalidade de métricas."
+    ]
+  }
+]

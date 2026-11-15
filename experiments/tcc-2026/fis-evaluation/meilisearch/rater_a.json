@@ -1,0 +1,1094 @@
+[
+  {
+    "blind_id": "MCF-04311dee7388",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-aabfb0aca10f",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-199f35c41af8",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-d35c4446d689",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-9fdf422434f1",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-87edd4f98b3a",
+    "validity": "SUPPORTED",
+    "priority": "HIGH",
+    "confidence": 0.9,
+    "rationale": "A operação autenticada sem corpo retornou 400 não documentado nas cinco execuções, impedindo repetidamente uma operação sem precondição de payload.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f79563e2b84f",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-2c318e46c039",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-28c04ba41787",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-feb6d01e810b",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-fe703d9cc996",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-79aa0850747b",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-65b73bf6a8e0",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-112988bf8eaa",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f944eb614f20",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-a9883c1cbcb6",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência e identificador válido do batch solicitado."
+    ]
+  },
+  {
+    "blind_id": "MCF-c3266713484c",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-b8964e293086",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-61a6b8d2bf94",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-5e5db3fb6eb9",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência do índice e estado no qual a configuração possa ser alterada."
+    ]
+  },
+  {
+    "blind_id": "MCF-80cd4a94120e",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-dc5210c17405",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-ba651ec4c065",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-a4898e56db70",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-85e73349141a",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": 0.85,
+    "rationale": "A atualização autenticada recebeu 415 não documentado nas cinco execuções; trata-se de incompatibilidade de protocolo localizada.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-64fffe75008b",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-d9f03baec424",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-1a50fcceda35",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-c0222fc41a2f",
+    "validity": "SUPPORTED",
+    "priority": "HIGH",
+    "confidence": 0.9,
+    "rationale": "A leitura autenticada de métricas sem corpo retornou 400 não documentado nas cinco execuções, impedindo repetidamente a operação.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-1df39b8c9a14",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-693a16edce1c",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-3e066f7fcbcc",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-b3ae83f7f8a0",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-adbaee67d000",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": 0.9,
+    "rationale": "Mutações marcadas inválidas receberam 200, e as respostas de sucesso falharam na validação de schema em execuções repetidas; a entrada inválida foi aceita.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-33950ea79d77",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f70bbece7924",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-fd31a8e559d7",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-6fde9a161538",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-040e444e6562",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-3398cca57840",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-1fe6aa6e2a6a",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-0c6f86d79a46",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência dos índices referenciados e estado que permita a alteração de chaves estrangeiras."
+    ]
+  },
+  {
+    "blind_id": "MCF-b6dcfced8eb0",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-16f9ff95eb7f",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f99b87541e60",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": 0.85,
+    "rationale": "A mutação marcada válida pelo contrato recebeu 400 não documentado, evidenciando rejeição por restrição não documentada.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-91b29a4df603",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-8aee413f95a7",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-13ed72ed2f2e",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-4e995f78e97b",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência do índice e precondições do conjunto de documentos alvo."
+    ]
+  },
+  {
+    "blind_id": "MCF-ccafdb766c84",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-8c6d79ace1f8",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f9abb8ac35ad",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-2380d5df57cd",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-c4eb6932530a",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-7265883a83e4",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f5aa9556fb92",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-8a612f24f730",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-6b43fbb615d7",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-284b56e45546",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-0231826e60cf",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-50c6451a4ac1",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-ef7d2dffdba8",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-12d61d45712c",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-cbd277eb5773",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-6717d23f52b0",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-cc8ebc3f2351",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-08b0ea71af1d",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-2456fa884be6",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-1486fb456cbc",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": 0.85,
+    "rationale": "A mutação marcada válida pelo contrato recebeu 400 não documentado, evidenciando rejeição por restrição não documentada.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-d85d55f75a1c",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-d777652dfb76",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-d67845d879d8",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Credencial com permissão de criação e condições de unicidade/estado para a chave."
+    ]
+  },
+  {
+    "blind_id": "MCF-ab7654328223",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-8e3d824d3d57",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-0169ac465699",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-063d0e998a35",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-a79672c5a422",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-0a8f31d2ce15",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-3e8836ecc3ee",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-b95b601f30cf",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-5f1d82365216",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-b2b177261ead",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-3b7e0dd9b757",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-9fe209910ead",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-061961fac0d4",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Configuração funcional de exportação, incluindo os recursos externos necessários."
+    ]
+  },
+  {
+    "blind_id": "MCF-441bd57de71b",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-8c729229b4f7",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-40547f1573a9",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-c93a1fcfccd6",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-5ca859a2190d",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f7f6e3dee0ad",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-1e1f10774466",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-3b1c63095611",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-4b52b6635a09",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-e3a172af7818",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência do índice e de faceta consultável."
+    ]
+  },
+  {
+    "blind_id": "MCF-4883cd458c79",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-ef0ff2e1e52e",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-5cab0c8d7462",
+    "validity": "NOT_SUPPORTED",
+    "priority": null,
+    "confidence": 0.9,
+    "rationale": "A mutação marcada válida recebeu 200, código documentado, sem incompatibilidade de schema observada.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-e10dd7e178bd",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-bb12a3e7b504",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-61fa7187719a",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": 0.9,
+    "rationale": "A leitura autenticada retornou 200 documentado, mas a resposta de sucesso falhou na validação de schema; há incompatibilidade contratual relevante.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f2dac57df6e2",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-cdcd49ad8402",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-2f346471532f",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-66331eb594ce",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência do índice e precondições semânticas para executar a edição de documentos."
+    ]
+  },
+  {
+    "blind_id": "MCF-a3f390edc51a",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-498ce99dc724",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-a314a0465a0c",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-6dd17c22d020",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-907c009b4539",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência do índice e estado no qual as regras de ranking possam ser atualizadas."
+    ]
+  },
+  {
+    "blind_id": "MCF-b289342fd9dc",
+    "validity": "INDETERMINATE",
+    "priority": null,
+    "confidence": 0.75,
+    "rationale": "A observação não comprova que todos os precondicionantes operacionais da chamada estavam satisfeitos.",
+    "missing_evidence": [
+      "Existência dos índices indicados para a troca."
+    ]
+  },
+  {
+    "blind_id": "MCF-aea6613164f1",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-e5bb15d431aa",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-9f81253f65be",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-703ac9a53a44",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-b8b0676aedc0",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-7313d62b85af",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-ecdf8ce3a314",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-c49703b5a0b5",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-26691c7efbcb",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-18cbe369fb86",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-6b720300468a",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-308ca363461a",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-3fe4012b8398",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-4b4f18572bdf",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-64b2408febf0",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-65c2e8f0695f",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-5b6a61b8e849",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-cecbb0ec7799",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-6c44ae348317",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-f7f944d236d1",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-2f769f046521",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-03e8dfaa9e34",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  },
+  {
+    "blind_id": "MCF-e1b34c91b858",
+    "validity": "SUPPORTED",
+    "priority": "LOW",
+    "confidence": 0.9,
+    "rationale": "A evidência mostra rejeição repetida sem resposta funcional; a diferença de código perante o contrato é um desvio localizado de baixo impacto.",
+    "missing_evidence": []
+  }
+]

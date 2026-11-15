@@ -1,0 +1,58 @@
+[
+  {
+    "blind_id": "F-3c7850963879",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": "medium",
+    "rationale": "Os dois e-mails são strings e satisfazem o esquema documentado; mesmo assim, a operação autenticada recebeu 400, código ausente do contrato que só documenta 200. Isso rejeita uma chamada válida segundo o contrato.",
+    "missing_evidence": "Repetição com valores alternativos que ainda atendam ao esquema documentado, para medir abrangência."
+  },
+  {
+    "blind_id": "F-8fd0602e2947",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": "medium",
+    "rationale": "O e-mail fornecido é string e cumpre o único requisito documentado, porém a operação retornou 400, fora dos códigos 200 e 404 contratados. A divergência rejeita uma entrada válida pelo contrato.",
+    "missing_evidence": "Repetição com outros e-mails que atendam ao esquema documentado para confirmar a extensão do desvio."
+  },
+  {
+    "blind_id": "F-c95232aa2e22",
+    "validity": "SUPPORTED",
+    "priority": "HIGH",
+    "confidence": "high",
+    "rationale": "A criação de owner usa todos os campos obrigatórios e satisfaz comprimento e padrões documentados, mas retorna 500 de erro inesperado. A ocorrência foi registrada três vezes nos níveis 0 e 1, impedindo repetidamente uma operação válida.",
+    "missing_evidence": "Dados de uma criação bem-sucedida sob o mesmo estado para delimitar se a falha depende de estado externo."
+  },
+  {
+    "blind_id": "F-b0f18ab0fec4",
+    "validity": "SUPPORTED",
+    "priority": "HIGH",
+    "confidence": "high",
+    "rationale": "O username é o único campo obrigatório e atende ao tamanho documentado, mas a criação de usuário retorna 500. Seis ocorrências abrangendo os níveis 0, 1 e 2 demonstram impedimento recorrente de operação válida.",
+    "missing_evidence": "Execuções com outros usernames válidos e estado de persistência conhecido para determinar a causa operacional."
+  },
+  {
+    "blind_id": "F-64c1640d8149",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": "medium",
+    "rationale": "Email e senha são strings, conforme os requisitos documentados, mas o login retornou 400, enquanto o contrato só lista 200 e 500. A chamada válida pelo contrato é rejeitada incorretamente.",
+    "missing_evidence": "Repetição com outras credenciais sintaticamente válidas para estabelecer recorrência e impacto."
+  },
+  {
+    "blind_id": "F-047f452978c1",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": "medium",
+    "rationale": "Com credencial configurada, pincode e vin são strings e atendem ao esquema documentado, mas a inclusão retorna 400 não documentado em vez de 200 ou 403. Isso rejeita uma operação válida pelo contrato.",
+    "missing_evidence": "Repetição com outros valores válidos e confirmação do estado necessário do veículo."
+  },
+  {
+    "blind_id": "F-60f2ac5dc19c",
+    "validity": "SUPPORTED",
+    "priority": "MEDIUM",
+    "confidence": "medium",
+    "rationale": "Todos os quatro campos obrigatórios são strings, como exige o esquema, mas o cadastro retorna 400, código não documentado entre 200, 403 e 500. Duas ocorrências nos níveis 0 e 1 mostram rejeição de chamada válida pelo contrato.",
+    "missing_evidence": "Repetição com outros dados que atendam ao esquema documentado para confirmar a abrangência da rejeição."
+  }
+]

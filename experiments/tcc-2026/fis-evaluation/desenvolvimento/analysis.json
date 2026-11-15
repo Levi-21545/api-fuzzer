@@ -1,0 +1,657 @@
+{
+  "adjudicated": 7,
+  "agreement": {
+    "exact_priority_among_unanimously_supported": 136,
+    "exact_priority_rate": 0.9444,
+    "exact_validity": 144,
+    "exact_validity_rate": 0.8944,
+    "unanimously_supported": 144
+  },
+  "breakdowns": {
+    "analyzer_classification": {
+      "ERROR_CONTRADICTION": {
+        "n": 32,
+        "reference": {
+          "LOW": 32
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "LOW->LOW": 32
+        },
+        "rubric_candidate_prediction": {
+          "LOW": 32
+        },
+        "v2_accuracy": 1.0,
+        "v2_confusion": {
+          "LOW->LOW": 32
+        },
+        "v2_prediction": {
+          "LOW": 32
+        }
+      },
+      "SERVER_ERROR": {
+        "n": 45,
+        "reference": {
+          "HIGH": 2,
+          "MEDIUM": 43
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "HIGH->HIGH": 2,
+          "MEDIUM->MEDIUM": 43
+        },
+        "rubric_candidate_prediction": {
+          "HIGH": 2,
+          "MEDIUM": 43
+        },
+        "v2_accuracy": 0.0444,
+        "v2_confusion": {
+          "HIGH->HIGH": 2,
+          "MEDIUM->HIGH": 43
+        },
+        "v2_prediction": {
+          "HIGH": 45
+        }
+      },
+      "SUCCESS_CONTRADICTION": {
+        "n": 9,
+        "reference": {
+          "LOW": 3,
+          "MEDIUM": 6
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "LOW->LOW": 3,
+          "MEDIUM->MEDIUM": 6
+        },
+        "rubric_candidate_prediction": {
+          "LOW": 3,
+          "MEDIUM": 6
+        },
+        "v2_accuracy": 0.4444,
+        "v2_confusion": {
+          "LOW->MEDIUM": 3,
+          "MEDIUM->LOW": 2,
+          "MEDIUM->MEDIUM": 4
+        },
+        "v2_prediction": {
+          "LOW": 2,
+          "MEDIUM": 7
+        }
+      },
+      "UNEXPECTED_ERROR_STATUS": {
+        "n": 69,
+        "reference": {
+          "LOW": 64,
+          "MEDIUM": 5
+        },
+        "rubric_candidate_accuracy": 0.9275,
+        "rubric_candidate_confusion": {
+          "LOW->LOW": 64,
+          "MEDIUM->LOW": 5
+        },
+        "rubric_candidate_prediction": {
+          "LOW": 69
+        },
+        "v2_accuracy": 0.0725,
+        "v2_confusion": {
+          "LOW->MEDIUM": 64,
+          "MEDIUM->MEDIUM": 5
+        },
+        "v2_prediction": {
+          "MEDIUM": 69
+        }
+      },
+      "UNEXPECTED_SUCCESS": {
+        "n": 6,
+        "reference": {
+          "HIGH": 1,
+          "MEDIUM": 5
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "HIGH->HIGH": 1,
+          "MEDIUM->MEDIUM": 5
+        },
+        "rubric_candidate_prediction": {
+          "HIGH": 1,
+          "MEDIUM": 5
+        },
+        "v2_accuracy": 0.8333,
+        "v2_confusion": {
+          "HIGH->MEDIUM": 1,
+          "MEDIUM->MEDIUM": 5
+        },
+        "v2_prediction": {
+          "MEDIUM": 6
+        }
+      }
+    },
+    "api": {
+      "crapi": {
+        "n": 96,
+        "reference": {
+          "HIGH": 1,
+          "LOW": 68,
+          "MEDIUM": 27
+        },
+        "rubric_candidate_accuracy": 0.9479,
+        "rubric_candidate_confusion": {
+          "HIGH->HIGH": 1,
+          "LOW->LOW": 68,
+          "MEDIUM->LOW": 5,
+          "MEDIUM->MEDIUM": 22
+        },
+        "rubric_candidate_prediction": {
+          "HIGH": 1,
+          "LOW": 73,
+          "MEDIUM": 22
+        },
+        "v2_accuracy": 0.1562,
+        "v2_confusion": {
+          "HIGH->MEDIUM": 1,
+          "LOW->LOW": 5,
+          "LOW->MEDIUM": 63,
+          "MEDIUM->HIGH": 16,
+          "MEDIUM->LOW": 1,
+          "MEDIUM->MEDIUM": 10
+        },
+        "v2_prediction": {
+          "HIGH": 16,
+          "LOW": 6,
+          "MEDIUM": 74
+        }
+      },
+      "petclinic": {
+        "n": 45,
+        "reference": {
+          "HIGH": 2,
+          "LOW": 25,
+          "MEDIUM": 18
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "HIGH->HIGH": 2,
+          "LOW->LOW": 25,
+          "MEDIUM->MEDIUM": 18
+        },
+        "rubric_candidate_prediction": {
+          "HIGH": 2,
+          "LOW": 25,
+          "MEDIUM": 18
+        },
+        "v2_accuracy": 0.5778,
+        "v2_confusion": {
+          "HIGH->HIGH": 2,
+          "LOW->LOW": 21,
+          "LOW->MEDIUM": 4,
+          "MEDIUM->HIGH": 15,
+          "MEDIUM->MEDIUM": 3
+        },
+        "v2_prediction": {
+          "HIGH": 17,
+          "LOW": 21,
+          "MEDIUM": 7
+        }
+      },
+      "realworld": {
+        "n": 13,
+        "reference": {
+          "MEDIUM": 13
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "MEDIUM->MEDIUM": 13
+        },
+        "rubric_candidate_prediction": {
+          "MEDIUM": 13
+        },
+        "v2_accuracy": 0.0769,
+        "v2_confusion": {
+          "MEDIUM->HIGH": 12,
+          "MEDIUM->MEDIUM": 1
+        },
+        "v2_prediction": {
+          "HIGH": 12,
+          "MEDIUM": 1
+        }
+      },
+      "vampi": {
+        "n": 7,
+        "reference": {
+          "LOW": 6,
+          "MEDIUM": 1
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "LOW->LOW": 6,
+          "MEDIUM->MEDIUM": 1
+        },
+        "rubric_candidate_prediction": {
+          "LOW": 6,
+          "MEDIUM": 1
+        },
+        "v2_accuracy": 0.8571,
+        "v2_confusion": {
+          "LOW->LOW": 6,
+          "MEDIUM->LOW": 1
+        },
+        "v2_prediction": {
+          "LOW": 7
+        }
+      }
+    },
+    "review_context": {
+      "baseline": {
+        "n": 45,
+        "reference": {
+          "HIGH": 2,
+          "LOW": 29,
+          "MEDIUM": 14
+        },
+        "rubric_candidate_accuracy": 0.8889,
+        "rubric_candidate_confusion": {
+          "HIGH->HIGH": 2,
+          "LOW->LOW": 29,
+          "MEDIUM->LOW": 5,
+          "MEDIUM->MEDIUM": 9
+        },
+        "rubric_candidate_prediction": {
+          "HIGH": 2,
+          "LOW": 34,
+          "MEDIUM": 9
+        },
+        "v2_accuracy": 0.6,
+        "v2_confusion": {
+          "HIGH->HIGH": 2,
+          "LOW->LOW": 20,
+          "LOW->MEDIUM": 9,
+          "MEDIUM->HIGH": 7,
+          "MEDIUM->LOW": 2,
+          "MEDIUM->MEDIUM": 5
+        },
+        "v2_prediction": {
+          "HIGH": 9,
+          "LOW": 22,
+          "MEDIUM": 14
+        }
+      },
+      "invalid_credential": {
+        "n": 22,
+        "reference": {
+          "LOW": 10,
+          "MEDIUM": 12
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "LOW->LOW": 10,
+          "MEDIUM->MEDIUM": 12
+        },
+        "rubric_candidate_prediction": {
+          "LOW": 10,
+          "MEDIUM": 12
+        },
+        "v2_accuracy": 0.0,
+        "v2_confusion": {
+          "LOW->MEDIUM": 10,
+          "MEDIUM->HIGH": 12
+        },
+        "v2_prediction": {
+          "HIGH": 12,
+          "MEDIUM": 10
+        }
+      },
+      "invalid_mutation": {
+        "n": 52,
+        "reference": {
+          "LOW": 21,
+          "MEDIUM": 31
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "LOW->LOW": 21,
+          "MEDIUM->MEDIUM": 31
+        },
+        "rubric_candidate_prediction": {
+          "LOW": 21,
+          "MEDIUM": 31
+        },
+        "v2_accuracy": 0.2885,
+        "v2_confusion": {
+          "LOW->LOW": 6,
+          "LOW->MEDIUM": 15,
+          "MEDIUM->HIGH": 22,
+          "MEDIUM->MEDIUM": 9
+        },
+        "v2_prediction": {
+          "HIGH": 22,
+          "LOW": 6,
+          "MEDIUM": 24
+        }
+      },
+      "missing_credential": {
+        "n": 39,
+        "reference": {
+          "HIGH": 1,
+          "LOW": 38
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "HIGH->HIGH": 1,
+          "LOW->LOW": 38
+        },
+        "rubric_candidate_prediction": {
+          "HIGH": 1,
+          "LOW": 38
+        },
+        "v2_accuracy": 0.1538,
+        "v2_confusion": {
+          "HIGH->MEDIUM": 1,
+          "LOW->LOW": 6,
+          "LOW->MEDIUM": 32
+        },
+        "v2_prediction": {
+          "LOW": 6,
+          "MEDIUM": 33
+        }
+      },
+      "valid_mutation": {
+        "n": 3,
+        "reference": {
+          "LOW": 1,
+          "MEDIUM": 2
+        },
+        "rubric_candidate_accuracy": 1.0,
+        "rubric_candidate_confusion": {
+          "LOW->LOW": 1,
+          "MEDIUM->MEDIUM": 2
+        },
+        "rubric_candidate_prediction": {
+          "LOW": 1,
+          "MEDIUM": 2
+        },
+        "v2_accuracy": 0.0,
+        "v2_confusion": {
+          "LOW->MEDIUM": 1,
+          "MEDIUM->HIGH": 2
+        },
+        "v2_prediction": {
+          "HIGH": 2,
+          "MEDIUM": 1
+        }
+      }
+    }
+  },
+  "consensus_priority": {
+    "HIGH": 3,
+    "LOW": 99,
+    "MEDIUM": 59
+  },
+  "consensus_validity": {
+    "SUPPORTED": 161
+  },
+  "families": 161,
+  "metrics_final": {
+    "rubric_candidate": {
+      "accuracy": 0.9689,
+      "confusion": {
+        "HIGH->HIGH": 3,
+        "LOW->LOW": 99,
+        "MEDIUM->LOW": 5,
+        "MEDIUM->MEDIUM": 54
+      },
+      "macro_f1_three_classes": 0.977,
+      "n": 161,
+      "ordinal_mae": 0.0311,
+      "spearman": 0.9386
+    },
+    "status_only": {
+      "accuracy": 0.2981,
+      "confusion": {
+        "HIGH->HIGH": 2,
+        "HIGH->MEDIUM": 1,
+        "LOW->LOW": 32,
+        "LOW->MEDIUM": 67,
+        "MEDIUM->HIGH": 43,
+        "MEDIUM->LOW": 2,
+        "MEDIUM->MEDIUM": 14
+      },
+      "macro_f1_three_classes": 0.2544,
+      "n": 161,
+      "ordinal_mae": 0.7019,
+      "spearman": 0.7169
+    },
+    "v2": {
+      "accuracy": 0.2981,
+      "confusion": {
+        "HIGH->HIGH": 2,
+        "HIGH->MEDIUM": 1,
+        "LOW->LOW": 32,
+        "LOW->MEDIUM": 67,
+        "MEDIUM->HIGH": 43,
+        "MEDIUM->LOW": 2,
+        "MEDIUM->MEDIUM": 14
+      },
+      "macro_f1_three_classes": 0.2544,
+      "n": 161,
+      "ordinal_mae": 0.7019,
+      "spearman": 0.7104
+    },
+    "v3": {
+      "accuracy": 1.0,
+      "confusion": {
+        "HIGH->HIGH": 3,
+        "LOW->LOW": 99,
+        "MEDIUM->MEDIUM": 59
+      },
+      "macro_f1_three_classes": 1.0,
+      "n": 161,
+      "ordinal_mae": 0.0,
+      "spearman": 0.986
+    }
+  },
+  "remaining_unresolved": [],
+  "resolved_without_adjudication": 154,
+  "rubric_candidate_mismatches": [
+    {
+      "blind_id": "F-3c7850963879",
+      "classification": "UNEXPECTED_ERROR_STATUS",
+      "occurrence_count": 1,
+      "prediction": "LOW",
+      "reason": "generated-valid request was rejected without proof that semantic preconditions held",
+      "reference": "MEDIUM",
+      "review_context": "baseline",
+      "status_code": 400,
+      "status_documented": false,
+      "target": "crapi"
+    },
+    {
+      "blind_id": "F-8fd0602e2947",
+      "classification": "UNEXPECTED_ERROR_STATUS",
+      "occurrence_count": 1,
+      "prediction": "LOW",
+      "reason": "generated-valid request was rejected without proof that semantic preconditions held",
+      "reference": "MEDIUM",
+      "review_context": "baseline",
+      "status_code": 400,
+      "status_documented": false,
+      "target": "crapi"
+    },
+    {
+      "blind_id": "F-64c1640d8149",
+      "classification": "UNEXPECTED_ERROR_STATUS",
+      "occurrence_count": 1,
+      "prediction": "LOW",
+      "reason": "generated-valid request was rejected without proof that semantic preconditions held",
+      "reference": "MEDIUM",
+      "review_context": "baseline",
+      "status_code": 400,
+      "status_documented": false,
+      "target": "crapi"
+    },
+    {
+      "blind_id": "F-047f452978c1",
+      "classification": "UNEXPECTED_ERROR_STATUS",
+      "occurrence_count": 1,
+      "prediction": "LOW",
+      "reason": "generated-valid request was rejected without proof that semantic preconditions held",
+      "reference": "MEDIUM",
+      "review_context": "baseline",
+      "status_code": 400,
+      "status_documented": false,
+      "target": "crapi"
+    },
+    {
+      "blind_id": "F-60f2ac5dc19c",
+      "classification": "UNEXPECTED_ERROR_STATUS",
+      "occurrence_count": 2,
+      "prediction": "LOW",
+      "reason": "generated-valid request was rejected without proof that semantic preconditions held",
+      "reference": "MEDIUM",
+      "review_context": "baseline",
+      "status_code": 400,
+      "status_documented": false,
+      "target": "crapi"
+    }
+  ],
+  "unresolved_before_adjudication": [
+    {
+      "blind_id": "F-3c7850963879",
+      "priority": null,
+      "ratings": [
+        {
+          "priority": "LOW",
+          "validity": "SUPPORTED"
+        },
+        {
+          "priority": null,
+          "validity": "INDETERMINATE"
+        },
+        {
+          "priority": "MEDIUM",
+          "validity": "SUPPORTED"
+        }
+      ],
+      "validity": "SUPPORTED"
+    },
+    {
+      "blind_id": "F-8fd0602e2947",
+      "priority": null,
+      "ratings": [
+        {
+          "priority": "LOW",
+          "validity": "SUPPORTED"
+        },
+        {
+          "priority": null,
+          "validity": "INDETERMINATE"
+        },
+        {
+          "priority": "MEDIUM",
+          "validity": "SUPPORTED"
+        }
+      ],
+      "validity": "SUPPORTED"
+    },
+    {
+      "blind_id": "F-c95232aa2e22",
+      "priority": null,
+      "ratings": [
+        {
+          "priority": "MEDIUM",
+          "validity": "SUPPORTED"
+        },
+        {
+          "priority": null,
+          "validity": "INDETERMINATE"
+        },
+        {
+          "priority": "HIGH",
+          "validity": "SUPPORTED"
+        }
+      ],
+      "validity": "SUPPORTED"
+    },
+    {
+      "blind_id": "F-b0f18ab0fec4",
+      "priority": null,
+      "ratings": [
+        {
+          "priority": "MEDIUM",
+          "validity": "SUPPORTED"
+        },
+        {
+          "priority": null,
+          "validity": "INDETERMINATE"
+        },
+        {
+          "priority": "HIGH",
+          "validity": "SUPPORTED"
+        }
+      ],
+      "validity": "SUPPORTED"
+    },
+    {
+      "blind_id": "F-64c1640d8149",
+      "priority": null,
+      "ratings": [
+        {
+          "priority": "LOW",
+          "validity": "SUPPORTED"
+        },
+        {
+          "priority": null,
+          "validity": "INDETERMINATE"
+        },
+        {
+          "priority": "MEDIUM",
+          "validity": "SUPPORTED"
+        }
+      ],
+      "validity": "SUPPORTED"
+    },
+    {
+      "blind_id": "F-047f452978c1",
+      "priority": null,
+      "ratings": [
+        {
+          "priority": "LOW",
+          "validity": "SUPPORTED"
+        },
+        {
+          "priority": null,
+          "validity": "INDETERMINATE"
+        },
+        {
+          "priority": "MEDIUM",
+          "validity": "SUPPORTED"
+        }
+      ],
+      "validity": "SUPPORTED"
+    },
+    {
+      "blind_id": "F-60f2ac5dc19c",
+      "priority": null,
+      "ratings": [
+        {
+          "priority": "LOW",
+          "validity": "SUPPORTED"
+        },
+        {
+          "priority": null,
+          "validity": "INDETERMINATE"
+        },
+        {
+          "priority": "MEDIUM",
+          "validity": "SUPPORTED"
+        }
+      ],
+      "validity": "SUPPORTED"
+    }
+  ],
+  "variant_band_differences_from_v2": {
+    "rubric_candidate": 118,
+    "status_only": 0,
+    "v3": 113
+  }
+}
