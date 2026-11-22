@@ -22,7 +22,7 @@ um \texttt{case\_id} e registra se representa caso-base, mutação ou teste de
 autenticação, além dos metadados das mutações. O plano completo é persistido
 antes das chamadas à API.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.62\linewidth,height=0.67\textheight,
     keepaspectratio]{Diagrams/system-architecture.png}
@@ -45,7 +45,7 @@ rejeição 4xx documentada e conforme ao esquema é registrada como rejeição
 esperada. As divergências são registradas como achados nas cinco classes da
 Tabela~\ref{tab:classes-analisador}.
 
-\begin{table}[ht]
+\begin{table}[H]
 \centering
 \caption{Classes de divergência registradas pelo analisador}
 \label{tab:classes-analisador}
@@ -69,7 +69,7 @@ relatórios em Markdown. O manifesto preserva configuração, revisão e estado 
 código, resumos criptográficos do contrato e da árvore-fonte, ambiente, horários, contagens e
 estado da campanha. Cabeçalhos e valores sensíveis são ocultados antes da publicação.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.96\linewidth]{Diagrams/run-traceability.png}
     \caption{Níveis de observação e rastreabilidade dos achados. O
@@ -153,7 +153,7 @@ escritas em termos próximos dos usados na triagem, o que permite conferir
 cada decisão nos artefatos. O estudo não comparou o FIS com uma tabela de
 regras sem lógica \textit{fuzzy}.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.84\linewidth]{Diagrams/fuzzy-prioritization.png}
     \caption{Fluxo auditável do sistema Mamdani de priorização. Dados do
@@ -177,7 +177,7 @@ Na primeira campanha final do Spring Petclinic REST, o caso
 entrada deveria ser rejeitada. A Tabela~\ref{tab:exemplo-achado} acompanha o
 caso desde o plano até a prioridade calculada.
 
-\begin{table}[ht]
+\begin{table}[H]
 \centering
 \caption{Exemplo rastreável da coleta final no Spring Petclinic REST}
 \label{tab:exemplo-achado}

@@ -68,6 +68,16 @@ repetição, revisão do código, estado Git, resumos criptográficos, ambiente,
 horários e contagens. O plano e os resultados são correlacionados por
 \texttt{case\_id}.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.90\linewidth]{Diagrams/experimental-architecture.png}
+    \caption{Ciclo de uma execução experimental isolada. O script de campanha
+    prepara o alvo descartável e invoca a ferramenta. A ligação HTTP representa a
+    troca de requisições e respostas; os registros incluem a versão e a configuração
+    do alvo antes do agrupamento dos achados.}
+    \label{fig:ciclo-experimental}
+\end{figure}
+
 As campanhas da coleta final usaram a mesma configuração dos pilotos. O
 executor percorreu as operações selecionadas, depois das exclusões de cada
 alvo, e executou os níveis L0, L1 e L2. O limite foi de 20 mutações isoladas
@@ -96,19 +106,9 @@ campanha é inválida: ela é guardada com a justificativa, fica fora do agregad
 e, se a causa puder ser corrigida, é substituída por uma nova campanha, com
 outro identificador.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.90\linewidth]{Diagrams/experimental-architecture.png}
-    \caption{Ciclo de uma execução experimental isolada. O script de campanha
-    prepara o alvo descartável e invoca a ferramenta. A ligação HTTP representa a
-    troca de requisições e respostas; os registros incluem a versão e a configuração
-    do alvo antes do agrupamento dos achados.}
-    \label{fig:ciclo-experimental}
-\end{figure}
-
 A Tabela~\ref{tab:vocabulario} define as unidades usadas nas contagens.
 
-\begin{table}[ht]
+\begin{table}[H]
 \centering
 \caption{Vocabulário da avaliação}
 \label{tab:vocabulario}

@@ -78,6 +78,10 @@
 \hbadness=10000
 
 \sloppy
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom
 
 \input{article-config/event-info}
 
@@ -127,6 +131,7 @@ similar findings. A rule that considers only the status matched it in 4.
 \keywords{REST APIs, OpenAPI, Fuzzing, Contract Testing, Fuzzy Logic.}
      
 \begin{resumo}
+\looseness=-1
 Contratos OpenAPI descrevem entradas e respostas esperadas de APIs REST,
 servindo como oráculo parcial para testes sem acesso ao código. O
 \textit{fuzzing} guiado por contrato produz achados repetidos e de
@@ -160,10 +165,9 @@ em 4.
 \input{Chapters/06-resultados-discussao}
 \input{Chapters/07-conclusao}
 
-\section{Referências}
-
 \bibliographystyle{article-config/sbc}
-\renewcommand{\refname}{}
+\clearpage
+\renewcommand{\refname}{Referências}
 \bibliography{Referencias/referencias}
 
 \end{document}
